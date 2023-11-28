@@ -89,11 +89,9 @@ public class ReflectiveExcelReader {
             ColumnProperty columnProperty = columnIndexToPropertyMap.get(columnIndex);
             if (columnProperty != null) {
                 cellDetails.add(new CellDetails.CellDetailsBuilder()
-                        .columnName(columnProperty.getColumnName())
+                        .cell(cell)
                         .cellValue(getCellValueAsString(cell))
-                        .cellType(cell.getCellType())
-                        .rowIndex(cell.getRowIndex())
-                        .columnIndex(columnIndex)
+                        .columnName(columnProperty.getColumnName())
                         .build());
             }
         }

@@ -18,7 +18,7 @@ public class CurrencyDeserializer implements CellDeserializer<Currency> {
 
     @Override
     public Currency deserialize(CellDetails cellDetails) throws DeserializationFailedException {
-        String value = cellDetails.getCellValue();
+        String value = cellDetails.getValue();
         if (KNOWN_CURRENCIES.contains(value)) {
             return Currency.getInstance(value);
         }

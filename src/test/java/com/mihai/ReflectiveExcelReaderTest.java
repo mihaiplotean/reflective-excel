@@ -18,8 +18,6 @@ class ReflectiveExcelReaderTest {
 
         ReflectiveExcelReader reader = new ReflectiveExcelReader(file);
         reader.registerDeserializer(TodoPriority.class, CellDeserializers.forEnum(TodoPriority.class));
-        // todo: dateFormat does not properly work due to locale
-        reader.registerDeserializer(Date.class, CellDeserializers.forDate("MM/dd/yy"));
 
         List<TodoRow> rows = reader.readRows(TodoRow.class);
 

@@ -17,7 +17,7 @@ public class DateDeserializer implements CellDeserializer<Date> {
 
     @Override
     public Date deserialize(CellDetails cellDetails) throws DeserializationFailedException {
-        String date = cellDetails.getCellValue();
+        String date = cellDetails.getValue();
         try {
             return dateFormat.parse(date);
         } catch (ParseException ex) {

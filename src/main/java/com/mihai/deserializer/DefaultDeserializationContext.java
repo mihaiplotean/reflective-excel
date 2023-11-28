@@ -2,7 +2,9 @@ package com.mihai.deserializer;
 
 import com.mihai.CellDetails;
 
+import java.time.LocalDateTime;
 import java.util.Currency;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +24,8 @@ public class DefaultDeserializationContext implements DeserializationContext {
         registerDeserializer(Float.class, CellDeserializers.forFloat());
         registerDeserializer(Boolean.class, CellDeserializers.forBoolean());
         registerDeserializer(Currency.class, CellDeserializers.forCurrency());
+        registerDeserializer(Date.class, CellDeserializers.forDate());
+        registerDeserializer(LocalDateTime.class, CellDeserializers.forLocalDateTime());
     }
 
     @SuppressWarnings("unchecked")

@@ -1,44 +1,51 @@
 package com.mihai;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.util.CellReference;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public class CellDetails {
 
-    private final String columnName;
+    private final Cell cell;
     private final String cellValue;
-    private final CellType cellType;
-    private final int rowIndex;
-    private final int columnIndex;
+    private final String columnName;
     private final String cellReference;
 
     public CellDetails(CellDetailsBuilder builder) {
-        this.columnName = builder.columnName;
+        this.cell = builder.cell;
         this.cellValue = builder.cellValue;
-        this.cellType = builder.cellType;
-        this.rowIndex = builder.rowIndex;
-        this.columnIndex = builder.columnIndex;
-        this.cellReference = new CellReference(builder.rowIndex, builder.columnIndex).formatAsString();
+        this.columnName = builder.columnName;
+        this.cellReference = cell.getAddress().formatAsString();
+    }
+
+    public String getValue() {
+        return cellValue;
     }
 
     public String getColumnName() {
         return columnName;
     }
 
-    public String getCellValue() {
-        return cellValue;
-    }
-
-    public Object getCellType() {
-        return cellType;
-    }
-
     public int getRowIndex() {
-        return rowIndex;
+        return cell.getRowIndex();
     }
 
     public int getColumnIndex() {
-        return columnIndex;
+        return cell.getColumnIndex();
+    }
+
+    public CellType getCellType() {
+        return cell.getCellType();
+    }
+
+    public Date getDateValue() {
+        return cell.getDateCellValue();
+    }
+
+    public LocalDateTime getLocalDateTimeValue() {
+        return cell.getLocalDateTimeCellValue();
     }
 
     public String getCellReference() {
@@ -46,14 +53,12 @@ public class CellDetails {
     }
 
     public static class CellDetailsBuilder {
-        private String columnName;
+        private Cell cell;
         private String cellValue;
-        private CellType cellType;
-        private int rowIndex;
-        private int columnIndex;
+        private String columnName;
 
-        public CellDetailsBuilder columnName(String columnName) {
-            this.columnName = columnName;
+        public CellDetailsBuilder cell(Cell cell) {
+            this.cell = cell;
             return this;
         }
 
@@ -62,18 +67,8 @@ public class CellDetails {
             return this;
         }
 
-        public CellDetailsBuilder cellType(CellType cellType) {
-            this.cellType = cellType;
-            return this;
-        }
-
-        public CellDetailsBuilder rowIndex(int rowIndex) {
-            this.rowIndex = rowIndex;
-            return this;
-        }
-
-        public CellDetailsBuilder columnIndex(int columnIndex) {
-            this.columnIndex = columnIndex;
+        public CellDetailsBuilder columnName(String columnName) {
+            this.columnName = columnName;
             return this;
         }
 

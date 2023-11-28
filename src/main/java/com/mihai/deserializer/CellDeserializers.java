@@ -1,7 +1,10 @@
 package com.mihai.deserializer;
 
 import com.mihai.CellDetails;
+import org.apache.poi.ss.usermodel.CellType;
 
+import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Date;
 
@@ -12,12 +15,12 @@ public class CellDeserializers {
     }
 
     public static CellDeserializer<String> forString() {
-        return CellDetails::getCellValue;
+        return CellDetails::getValue;
     }
 
     public static CellDeserializer<Integer> forInteger() {
         return cellDetails -> {
-            String cellValue = cellDetails.getCellValue();
+            String cellValue = cellDetails.getValue();
             try {
                 return Integer.parseInt(cellValue);
             } catch (NumberFormatException ex) {
@@ -30,7 +33,7 @@ public class CellDeserializers {
 
     public static CellDeserializer<Long> forLong() {
         return cellDetails -> {
-            String cellValue = cellDetails.getCellValue();
+            String cellValue = cellDetails.getValue();
             try {
                 return Long.parseLong(cellValue);
             } catch (NumberFormatException ex) {
@@ -43,7 +46,7 @@ public class CellDeserializers {
 
     public static CellDeserializer<Double> forDouble() {
         return cellDetails -> {
-            String cellValue = cellDetails.getCellValue();
+            String cellValue = cellDetails.getValue();
             try {
                 return Double.parseDouble(cellValue);
             } catch (NumberFormatException ex) {
@@ -56,7 +59,7 @@ public class CellDeserializers {
 
     public static CellDeserializer<Float> forFloat() {
         return cellDetails -> {
-            String cellValue = cellDetails.getCellValue();
+            String cellValue = cellDetails.getValue();
             try {
                 return Float.parseFloat(cellValue);
             } catch (NumberFormatException ex) {
@@ -69,7 +72,7 @@ public class CellDeserializers {
 
     public static CellDeserializer<Boolean> forBoolean() {
         return cellDetails -> {
-            String cellValue = cellDetails.getCellValue();
+            String cellValue = cellDetails.getValue();
             if (cellValue.equalsIgnoreCase("true")) {
                 return true;
             }
@@ -88,7 +91,7 @@ public class CellDeserializers {
 
     public static <E extends Enum<E>> CellDeserializer<E> forEnum(Class<E> enumClazz) {
         return cellDetails -> {
-            String cellValue = cellDetails.getCellValue();
+            String cellValue = cellDetails.getValue();
             for (E enumConstant : enumClazz.getEnumConstants()) {
                 if (enumConstant.toString().equalsIgnoreCase(cellValue)) {
                     return enumConstant;
@@ -100,7 +103,27 @@ public class CellDeserializers {
         };
     }
 
-    public static CellDeserializer<Date> forDate(String dateFormat) {
-        return new DateDeserializer(dateFormat);
+    public static CellDeserializer<Date> forDate() {
+        return cellDetails -> {
+            try {
+                return cellDetails.getDateValue();
+            } catch (IllegalStateException | NumberFormatException e) {
+                throw new DeserializationFailedException(String.format(
+                        "Value \"%s\" defined in cell %s does not have a date number format", cellDetails.getValue(), cellDetails.getCellReference()
+                ));
+            }
+        };
+    }
+
+    public static CellDeserializer<LocalDateTime> forLocalDateTime() {
+        return cellDetails -> {
+            try {
+                return cellDetails.getLocalDateTimeValue();
+            } catch (IllegalStateException | NumberFormatException e) {
+                throw new DeserializationFailedException(String.format(
+                        "Value \"%s\" defined in cell %s does not have a date number format", cellDetails.getValue(), cellDetails.getCellReference()
+                ));
+            }
+        };
     }
 }
