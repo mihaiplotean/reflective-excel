@@ -1,6 +1,6 @@
 package com.mihai.deserializer;
 
-import com.mihai.CellDetails;
+import com.mihai.ExcelCell;
 
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -30,12 +30,12 @@ public class DefaultDeserializationContext implements DeserializationContext {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserialize(Class<T> clazz, CellDetails cellDetails) throws DeserializationFailedException {
+    public <T> T deserialize(Class<T> clazz, ExcelCell excelCell) throws DeserializationFailedException {
         CellDeserializer<?> cellDeserializer = deserializerMap.get(clazz);
         if (cellDeserializer == null) {
             throw DeserializationFailedException.missingDeserializer(clazz);
         }
-        return (T) cellDeserializer.deserialize(cellDetails);
+        return (T) cellDeserializer.deserialize(excelCell);
     }
 
     @Override

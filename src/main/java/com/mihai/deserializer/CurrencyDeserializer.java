@@ -1,6 +1,6 @@
 package com.mihai.deserializer;
 
-import com.mihai.CellDetails;
+import com.mihai.ExcelCell;
 
 import java.util.Currency;
 import java.util.Set;
@@ -17,13 +17,13 @@ public class CurrencyDeserializer implements CellDeserializer<Currency> {
     }
 
     @Override
-    public Currency deserialize(CellDetails cellDetails) throws DeserializationFailedException {
-        String value = cellDetails.getValue();
+    public Currency deserialize(ExcelCell excelCell) throws DeserializationFailedException {
+        String value = excelCell.getValue();
         if (KNOWN_CURRENCIES.contains(value)) {
             return Currency.getInstance(value);
         }
         throw new DeserializationFailedException(String.format(
-                "Currency %s defined in cell %s is not known", value, cellDetails.getCellReference()
+                "Currency %s defined in cell %s is not known", value, excelCell.getCellReference()
         ));
     }
 }

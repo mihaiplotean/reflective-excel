@@ -1,9 +1,7 @@
 package com.mihai.deserializer;
 
-import com.mihai.CellDetails;
-import org.apache.poi.ss.usermodel.CellType;
+import com.mihai.ExcelCell;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Date;
@@ -15,7 +13,7 @@ public class CellDeserializers {
     }
 
     public static CellDeserializer<String> forString() {
-        return CellDetails::getValue;
+        return ExcelCell::getValue;
     }
 
     public static CellDeserializer<Integer> forInteger() {

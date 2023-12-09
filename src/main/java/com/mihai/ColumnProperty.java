@@ -4,20 +4,51 @@ import java.lang.reflect.Field;
 
 public class ColumnProperty {
 
-    private final String columnName;
+    private enum ColumnType {
+        FIXED,
+        DYNAMIC
+    }
+
+    private final ExcelCell cell;
     private final Field field;
+    private final ColumnType columnType;
 
-
-    public ColumnProperty(String columnName, Field field) {
-        this.columnName = columnName;
+    private ColumnProperty(ExcelCell cell, Field field, ColumnType columnType) {
+        this.cell = cell;
         this.field = field;
+        this.columnType = columnType;
+    }
+
+    public static ColumnProperty fixedColumn(ExcelCell cell, Field field) {
+        return new ColumnProperty(cell, field, ColumnType.FIXED);
+    }
+
+    public static ColumnProperty dynamicColumn(ExcelCell cell, Field field) {
+        return new ColumnProperty(cell, field, ColumnType.DYNAMIC);
     }
 
     public String getColumnName() {
-        return columnName;
+        return cell.getColumnName();
+    }
+
+
+    public ExcelCell getCell() {
+        return cell;
     }
 
     public Field getField() {
         return field;
+    }
+
+    public Class<?> getFieldType() {
+        return field.getType();
+    }
+
+    public boolean isDynamic() {
+        return columnType == ColumnType.DYNAMIC;
+    }
+
+    public boolean isFixed() {
+        return columnType == ColumnType.FIXED;
     }
 }

@@ -1,6 +1,9 @@
 package com.mihai;
 
 import com.mihai.deserializer.CellDeserializers;
+import com.mihai.row.PopulationRow;
+import com.mihai.row.TodoPriority;
+import com.mihai.row.TodoRow;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -50,5 +53,26 @@ class ReflectiveExcelReaderTest {
         calendar.set(Calendar.MILLISECOND, 0);
 
         return calendar.getTime();
+    }
+
+    @Test
+    public void testDynamicColumns() {
+        File file = new File(getClass().getClassLoader().getResource("test-population.xlsx").getFile());
+
+        List<PopulationRow> rows = new ReflectiveExcelReader(file).readRows(PopulationRow.class);
+
+        PopulationRow firstRow = rows.get(0);
+        assertEquals(1, firstRow.getId());
+        assertEquals("Moldova", firstRow.getCountry());
+        assertEquals(120, firstRow.getPopulation(2021));
+        assertEquals(130, firstRow.getPopulation(2022));
+        assertEquals(200, firstRow.getPopulation(2023));
+
+        PopulationRow secondRow = rows.get(1);
+        assertEquals(2, secondRow.getId());
+        assertEquals("Netherlands", secondRow.getCountry());
+        assertEquals(321, secondRow.getPopulation(2021));
+        assertEquals(420, secondRow.getPopulation(2022));
+        assertEquals(500, secondRow.getPopulation(2023));
     }
 }

@@ -4,16 +4,14 @@ import com.mihai.deserializer.CellDeserializer;
 import com.mihai.deserializer.DefaultDeserializationContext;
 import com.mihai.deserializer.DeserializationContext;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ReflectiveExcelReader {
@@ -40,7 +38,7 @@ public class ReflectiveExcelReader {
     public <T> List<T> readRows(Class<T> clazz) {
         ExcelRow rowDetails = clazz.getAnnotation(ExcelRow.class);
         List<T> rows = new ArrayList<>();
-        try (Workbook workbook = new XSSFWorkbook(file)) {
+        try (Workbook workbook = WorkbookFactory.create(file)) {
             if (workbook.getNumberOfSheets() == 0) {
                 return Collections.emptyList();
             }
@@ -53,22 +51,43 @@ public class ReflectiveExcelReader {
                 rows.add(createRow(clazz, getRowCellDetails(row)));
             }
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                 IllegalAccessException | IOException | InvalidFormatException e) {
+                 IllegalAccessException | IOException e) {
             throw new RuntimeException(e);
         }
 
         return List.copyOf(rows);
     }
 
-    private Map<Integer, ColumnProperty> getColumnIndexToClassFieldMap(Row row, Class<?> clazz) {
+    private Map<Integer, ColumnProperty> getColumnIndexToClassFieldMap(Row headerRow, Class<?> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Map<String, Field> columnNameToFieldMap = FieldUtils.getFieldsListWithAnnotation(clazz, ExcelColumn.class).stream()
                 .collect(Collectors.toMap(field -> field.getAnnotation(ExcelColumn.class).name(), field -> field, (a, b) -> a));
+        Map<Class<? extends DynamicColumnDetector>, Field> dynamicColumnDetectorToFieldMap = FieldUtils.getFieldsListWithAnnotation(clazz, DynamicColumns.class).stream()
+                .collect(Collectors.toMap(field -> field.getAnnotation(DynamicColumns.class).detector(), field -> field, (a, b) -> a));
         Map<Integer, ColumnProperty> columnIndexToClassFieldMap = new HashMap<>();
-        for (Cell cell : row) {
+
+        List<ColumnIndex> headers = new ArrayList<>();
+        for (Cell cell : headerRow) {
+            headers.add(new ColumnIndex(cell.getColumnIndex(), getCellValueAsString(cell)));
+        }
+
+        for (Cell cell : headerRow) {
             String headerName = getCellValueAsString(cell);
             Field field = columnNameToFieldMap.get(headerName);
+            ExcelCell cellWrapper = cellWrapper(cell, headerName);
             if (field != null) {
-                columnIndexToClassFieldMap.put(cell.getColumnIndex(), new ColumnProperty(headerName, field));
+                columnIndexToClassFieldMap.put(cell.getColumnIndex(), ColumnProperty.fixedColumn(cellWrapper, field));
+            } else {
+                for (Map.Entry<Class<? extends DynamicColumnDetector>, Field> entry : dynamicColumnDetectorToFieldMap.entrySet()) {
+                    Class<? extends DynamicColumnDetector> dynamicColumnDetectorClass = entry.getKey();
+                    DynamicColumnDetector detector = dynamicColumnDetectorClass.getConstructor().newInstance();
+                    boolean dynamicColumn = detector.isDynamicColumn(
+                            new MaybeDynamicColumn(headers,
+                                    new ColumnIndex(cell.getColumnIndex(), getCellValueAsString(cell))));
+                    if (dynamicColumn) {
+                        columnIndexToClassFieldMap.put(cell.getColumnIndex(), ColumnProperty.dynamicColumn(cellWrapper, entry.getValue()));
+                        break;
+                    }
+                }
             }
         }
         return columnIndexToClassFieldMap;
@@ -82,20 +101,24 @@ public class ReflectiveExcelReader {
         return workbook.getSheet(sheetName);
     }
 
-    private List<CellDetails> getRowCellDetails(Row row) {
-        List<CellDetails> cellDetails = new ArrayList<>();
+    private List<ExcelCell> getRowCellDetails(Row row) {
+        List<ExcelCell> excelCellDetails = new ArrayList<>();
         for (Cell cell : row) {
             int columnIndex = cell.getColumnIndex();
             ColumnProperty columnProperty = columnIndexToPropertyMap.get(columnIndex);
             if (columnProperty != null) {
-                cellDetails.add(new CellDetails.CellDetailsBuilder()
-                        .cell(cell)
-                        .cellValue(getCellValueAsString(cell))
-                        .columnName(columnProperty.getColumnName())
-                        .build());
+                excelCellDetails.add(cellWrapper(cell, columnProperty.getColumnName()));
             }
         }
-        return cellDetails;
+        return excelCellDetails;
+    }
+
+    private static ExcelCell cellWrapper(Cell cell, String columnName) {
+        return new ExcelCell.CellDetailsBuilder()
+                .cell(cell)
+                .cellValue(getCellValueAsString(cell))
+                .columnName(columnName)
+                .build();
     }
 
     private static String getCellValueAsString(Cell cell) {
@@ -103,14 +126,95 @@ public class ReflectiveExcelReader {
         return dataFormatter.formatCellValue(cell);
     }
 
-    private <T> T createRow(Class<T> clazz, List<CellDetails> rowDetails)
+    private <T> T createRow(Class<T> clazz, List<ExcelCell> rowCells)
             throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         T row = clazz.getConstructor().newInstance();
-        for (CellDetails cellDetails : rowDetails) {
-            Field field = columnIndexToPropertyMap.get(cellDetails.getColumnIndex()).getField();
-            Object fieldValue = deserializationContext.deserialize(field.getType(), cellDetails);
-            FieldUtils.writeField(field, row, fieldValue, true);
+
+        Map<Field, Object> initializedObjectPerField = new HashMap<>();
+
+        for (ExcelCell excelCell : rowCells) {
+            ColumnProperty columnProperty = columnIndexToPropertyMap.get(excelCell.getColumnIndex());
+            Field field = columnProperty.getField();
+
+
+            if (columnProperty.isDynamic()) {
+                if (field.getType().isAssignableFrom(ArrayList.class)) {
+                    List<Object> values = (List<Object>) initializedObjectPerField.computeIfAbsent(field, key -> new ArrayList<>());
+                    ParameterizedType genericType = (ParameterizedType) field.getGenericType();
+                    Class<?> argumentType = (Class<?>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?
+                    Object listValue = deserializationContext.deserialize(argumentType, excelCell);
+                    values.add(listValue);
+                }
+                if (field.getType().isAssignableFrom(LinkedHashMap.class)) {
+                    Map<Object, Object> values = (Map<Object, Object>) initializedObjectPerField.computeIfAbsent(field, key -> new LinkedHashMap<>());
+                    ParameterizedType genericType = (ParameterizedType) field.getGenericType();
+                    Class<?> keyArgumentType = (Class<?>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?
+                    Class<?> valueArgumentType = (Class<?>) genericType.getActualTypeArguments()[1];  // todo: unsafe cast?
+                    Object mapKey = deserializationContext.deserialize(keyArgumentType, columnProperty.getCell());
+                    Object mapValue = deserializationContext.deserialize(valueArgumentType, excelCell);
+                    values.put(mapKey, mapValue);
+                }
+            } else {
+                Object fieldValue = deserializationContext.deserialize(field.getType(), excelCell);
+                initializedObjectPerField.put(field, fieldValue);
+            }
+
         }
+
+        for (Map.Entry<Field, Object> entry : initializedObjectPerField.entrySet()) {
+            Field field = entry.getKey();
+            Object value = entry.getValue();
+            FieldUtils.writeField(field, row, value, true);
+        }
+
         return row;
     }
+
+//    private void validateFieldTypeIfColumnDynamic(Field field, ColumnProperty columnProperty) {
+//        if (columnProperty.isDynamic()) {
+//            Class<?> type = field.getType();
+//            if (type == List.class) {
+//                return;
+//            }
+//            if (type == Map.class) {
+//                return;
+//            }
+//        }
+//        throw new IllegalArgumentException("Only a list or map can be assigned as a dynamic field!");
+//    }
+//
+//    private void deserializeDynamicField(Field field, ExcelCell excelCell) {
+//
+////        new DynamicColumTypeBinding(field).getGenericArgumentTypes().stream()
+////                .map(type -> )
+//
+//        if (field.getType() == Map.class) {
+//            Type genericType = field.getGenericType();
+//            if (genericType instanceof ParameterizedType parameterizedType) {
+//
+//                // Get the actual type arguments
+//                Type[] typeArguments = parameterizedType.getActualTypeArguments();
+//
+//                Type keyType = typeArguments[0];
+//                Type valueType = typeArguments[1];
+//
+//                System.out.println("Key Type: " + keyType);
+//                System.out.println("Value Type: " + valueType);
+//            }
+//        }
+//        if (field.getType() == List.class) {
+//            Type genericType = field.getGenericType();
+//            if (genericType instanceof ParameterizedType parameterizedType) {
+//
+//                Type[] typeArguments = parameterizedType.getActualTypeArguments();
+//
+//                Type listType = typeArguments[0];
+//
+//                if(listType instanceof Class<?> clazz) {
+//                    Object fieldValue = deserializationContext.deserialize(clazz, excelCell);
+//                }
+//
+//            }
+//        }
+//    }
 }

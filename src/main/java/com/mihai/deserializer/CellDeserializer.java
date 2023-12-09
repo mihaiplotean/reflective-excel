@@ -1,8 +1,8 @@
 package com.mihai.deserializer;
 
-import com.mihai.CellDetails;
+import com.mihai.ExcelCell;
 
 public interface CellDeserializer<T> {
 
-    T deserialize(CellDetails cellDetails) throws DeserializationFailedException;
+    T deserialize(ExcelCell excelCell) throws DeserializationFailedException;
 }
