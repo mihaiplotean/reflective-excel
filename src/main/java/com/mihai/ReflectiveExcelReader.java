@@ -1,5 +1,7 @@
 package com.mihai;
 
+import com.mihai.annotation.DynamicColumns;
+import com.mihai.annotation.ExcelColumn;
 import com.mihai.deserializer.CellDeserializer;
 import com.mihai.deserializer.DefaultDeserializationContext;
 import com.mihai.deserializer.DeserializationContext;
@@ -17,13 +19,19 @@ import java.util.stream.Collectors;
 public class ReflectiveExcelReader {
 
     private final File file;
+    private final ExcelReadingSettings settings;
 
     private DeserializationContext deserializationContext;
 
     private Map<Integer, ColumnProperty> columnIndexToPropertyMap = Collections.emptyMap();
 
     public ReflectiveExcelReader(File file) {
+        this(file, ExcelReadingSettings.DEFAULT);
+    }
+
+    public ReflectiveExcelReader(File file, ExcelReadingSettings settings) {
         this.file = file;
+        this.settings = settings;
         this.deserializationContext = new DefaultDeserializationContext();
     }
 
@@ -36,15 +44,17 @@ public class ReflectiveExcelReader {
     }
 
     public <T> List<T> readRows(Class<T> clazz) {
-        ExcelRow rowDetails = clazz.getAnnotation(ExcelRow.class);
         List<T> rows = new ArrayList<>();
         try (Workbook workbook = WorkbookFactory.create(file)) {
             if (workbook.getNumberOfSheets() == 0) {
                 return Collections.emptyList();
             }
-            Sheet sheet = getSheet(workbook, rowDetails);
+            Sheet sheet = getSheet(workbook);
             for (Row row : sheet) {
-                if (row.getRowNum() == 0) {
+                if (row.getRowNum() < settings.getHeaderStartRow()) {
+                    continue;
+                }
+                if (row.getRowNum() == settings.getHeaderStartRow()) {
                     columnIndexToPropertyMap = getColumnIndexToClassFieldMap(row, clazz);
                     continue;
                 }
@@ -67,10 +77,15 @@ public class ReflectiveExcelReader {
 
         List<ColumnIndex> headers = new ArrayList<>();
         for (Cell cell : headerRow) {
-            headers.add(new ColumnIndex(cell.getColumnIndex(), getCellValueAsString(cell)));
+            if (settings.getHeaderStartColumn() >= cell.getColumnIndex()) {
+                headers.add(new ColumnIndex(cell.getColumnIndex(), getCellValueAsString(cell)));
+            }
         }
 
         for (Cell cell : headerRow) {
+            if (settings.getHeaderStartColumn() < cell.getColumnIndex()) {
+                continue;
+            }
             String headerName = getCellValueAsString(cell);
             Field field = columnNameToFieldMap.get(headerName);
             ExcelCell cellWrapper = cellWrapper(cell, headerName);
@@ -93,10 +108,10 @@ public class ReflectiveExcelReader {
         return columnIndexToClassFieldMap;
     }
 
-    private Sheet getSheet(Workbook workbook, ExcelRow row) {
-        String sheetName = row.sheetName();
-        if (sheetName.isBlank()) {
-            return workbook.getSheetAt(0);
+    private Sheet getSheet(Workbook workbook) {
+        String sheetName = settings.getSheetName();
+        if (sheetName == null) {
+            return workbook.getSheetAt(settings.getSheetIndex());
         }
         return workbook.getSheet(sheetName);
     }
@@ -104,6 +119,9 @@ public class ReflectiveExcelReader {
     private List<ExcelCell> getRowCellDetails(Row row) {
         List<ExcelCell> excelCellDetails = new ArrayList<>();
         for (Cell cell : row) {
+            if(cell.getColumnIndex() < settings.getHeaderStartColumn()) {
+                continue;
+            }
             int columnIndex = cell.getColumnIndex();
             ColumnProperty columnProperty = columnIndexToPropertyMap.get(columnIndex);
             if (columnProperty != null) {
@@ -169,52 +187,4 @@ public class ReflectiveExcelReader {
 
         return row;
     }
-
-//    private void validateFieldTypeIfColumnDynamic(Field field, ColumnProperty columnProperty) {
-//        if (columnProperty.isDynamic()) {
-//            Class<?> type = field.getType();
-//            if (type == List.class) {
-//                return;
-//            }
-//            if (type == Map.class) {
-//                return;
-//            }
-//        }
-//        throw new IllegalArgumentException("Only a list or map can be assigned as a dynamic field!");
-//    }
-//
-//    private void deserializeDynamicField(Field field, ExcelCell excelCell) {
-//
-////        new DynamicColumTypeBinding(field).getGenericArgumentTypes().stream()
-////                .map(type -> )
-//
-//        if (field.getType() == Map.class) {
-//            Type genericType = field.getGenericType();
-//            if (genericType instanceof ParameterizedType parameterizedType) {
-//
-//                // Get the actual type arguments
-//                Type[] typeArguments = parameterizedType.getActualTypeArguments();
-//
-//                Type keyType = typeArguments[0];
-//                Type valueType = typeArguments[1];
-//
-//                System.out.println("Key Type: " + keyType);
-//                System.out.println("Value Type: " + valueType);
-//            }
-//        }
-//        if (field.getType() == List.class) {
-//            Type genericType = field.getGenericType();
-//            if (genericType instanceof ParameterizedType parameterizedType) {
-//
-//                Type[] typeArguments = parameterizedType.getActualTypeArguments();
-//
-//                Type listType = typeArguments[0];
-//
-//                if(listType instanceof Class<?> clazz) {
-//                    Object fieldValue = deserializationContext.deserialize(clazz, excelCell);
-//                }
-//
-//            }
-//        }
-//    }
 }

@@ -1,7 +1,7 @@
 package com.mihai.row;
 
-import com.mihai.ExcelColumn;
-import com.mihai.ExcelRow;
+import com.mihai.annotation.ExcelColumn;
+import com.mihai.annotation.ExcelRow;
 
 import java.util.Date;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package com.mihai;
+package com.mihai.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface DynamicColumns {
+public @interface ExcelColumn {
 
-    Class<? extends DynamicColumnDetector> detector();
+    String name();
 }
