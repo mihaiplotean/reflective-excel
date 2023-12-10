@@ -40,7 +40,7 @@ public class ExcelReadingSettings {
     public static final class ExcelReadingSettingsBuilder {
         private String sheetName;
         private int sheetIndex;
-        private String headerStartCellReference = "A0";
+        private String headerStartCellReference = "A1";
 
         public ExcelReadingSettingsBuilder sheetName(String sheetName) {
             this.sheetName = sheetName;

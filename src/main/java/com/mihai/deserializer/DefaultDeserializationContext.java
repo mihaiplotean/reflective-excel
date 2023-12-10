@@ -17,6 +17,11 @@ public class DefaultDeserializationContext implements DeserializationContext {
     }
 
     protected void registerDeserializers() {
+        registerDeserializer(int.class, CellDeserializers.forInteger());
+        registerDeserializer(long.class, CellDeserializers.forLong());
+        registerDeserializer(double.class, CellDeserializers.forDouble());
+        registerDeserializer(float.class, CellDeserializers.forFloat());
+
         registerDeserializer(String.class, CellDeserializers.forString());
         registerDeserializer(Integer.class, CellDeserializers.forInteger());
         registerDeserializer(Long.class, CellDeserializers.forLong());

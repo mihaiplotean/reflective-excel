@@ -1,12 +1,15 @@
 package com.mihai;
 
 import com.mihai.annotation.DynamicColumns;
+import com.mihai.annotation.ExcelCellValue;
 import com.mihai.annotation.ExcelColumn;
+import com.mihai.annotation.ExcelProperty;
 import com.mihai.deserializer.CellDeserializer;
 import com.mihai.deserializer.DefaultDeserializationContext;
 import com.mihai.deserializer.DeserializationContext;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellReference;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,17 +80,17 @@ public class ReflectiveExcelReader {
 
         List<ColumnIndex> headers = new ArrayList<>();
         for (Cell cell : headerRow) {
-            if (settings.getHeaderStartColumn() >= cell.getColumnIndex()) {
+            if (cell.getColumnIndex() >= settings.getHeaderStartColumn()) {
                 headers.add(new ColumnIndex(cell.getColumnIndex(), getCellValueAsString(cell)));
             }
         }
 
         for (Cell cell : headerRow) {
-            if (settings.getHeaderStartColumn() < cell.getColumnIndex()) {
+            if (cell.getColumnIndex() < settings.getHeaderStartColumn()) {
                 continue;
             }
             String headerName = getCellValueAsString(cell);
-            Field field = columnNameToFieldMap.get(headerName);
+            Field field = columnNameToFieldMap.get(headerName);  // todo: make it case insensitive
             ExcelCell cellWrapper = cellWrapper(cell, headerName);
             if (field != null) {
                 columnIndexToClassFieldMap.put(cell.getColumnIndex(), ColumnProperty.fixedColumn(cellWrapper, field));
@@ -119,7 +122,7 @@ public class ReflectiveExcelReader {
     private List<ExcelCell> getRowCellDetails(Row row) {
         List<ExcelCell> excelCellDetails = new ArrayList<>();
         for (Cell cell : row) {
-            if(cell.getColumnIndex() < settings.getHeaderStartColumn()) {
+            if (cell.getColumnIndex() < settings.getHeaderStartColumn()) {
                 continue;
             }
             int columnIndex = cell.getColumnIndex();
@@ -186,5 +189,68 @@ public class ReflectiveExcelReader {
         }
 
         return row;
+    }
+
+    public <T> T readProperties(Class<T> clazz) {
+        try (Workbook workbook = WorkbookFactory.create(file)) {
+            Sheet sheet = getSheet(workbook);
+
+            T properties = clazz.getConstructor().newInstance();
+
+            Map<String, Field> cellReferenceToFieldMap = FieldUtils.getFieldsListWithAnnotation(clazz, ExcelCellValue.class).stream()
+                    .collect(Collectors.toMap(field -> field.getAnnotation(ExcelCellValue.class).cellReference(), field -> field, (a, b) -> a));
+            for (Map.Entry<String, Field> entry : cellReferenceToFieldMap.entrySet()) {
+                CellReference cellReference = new CellReference(entry.getKey());
+                int row = cellReference.getRow();
+                int column = cellReference.getCol();
+                Cell cell = getCell(sheet, row, column);  // todo: can be null
+                ExcelCell cellWrapper = cellWrapper(cell, null);
+
+                Field field = entry.getValue();
+                Object fieldValue = deserializationContext.deserialize(field.getType(), cellWrapper);
+                FieldUtils.writeField(field, row, fieldValue, true);
+            }
+
+            Map<ExcelProperty, Field> propertyToFieldMap = FieldUtils.getFieldsListWithAnnotation(clazz, ExcelProperty.class).stream()
+                    .collect(Collectors.toMap(field -> field.getAnnotation(ExcelProperty.class), field -> field, (a, b) -> a));
+            for (Map.Entry<ExcelProperty, Field> entry : propertyToFieldMap.entrySet()) {
+                ExcelProperty property = entry.getKey();
+                CellReference cellReference = new CellReference(property.cellReference());
+                int row = cellReference.getRow();
+                int column = cellReference.getCol();
+                Cell cell = getCell(sheet, row, column);    // todo: can be null
+                if(!cell.getStringCellValue().equalsIgnoreCase(property.name())) {
+                    throw new IllegalStateException("Property name does not match the one defined");
+                }
+
+                Cell valueCell;    // todo: can be null
+                ExcelPropertyValueLocation location = property.valueLocation();
+                if(location == ExcelPropertyValueLocation.ON_THE_LEFT) {
+                    valueCell = getCell(sheet, row, column + 1);
+
+                } else if (location == ExcelPropertyValueLocation.BELLOW) {
+                    valueCell = getCell(sheet, row + 1, column);
+                }
+                else {
+                    throw new IllegalStateException("unknown location");
+                }
+                ExcelCell cellWrapper = cellWrapper(valueCell, null);
+
+                Field field = entry.getValue();
+                Object fieldValue = deserializationContext.deserialize(field.getType(), cellWrapper);
+                FieldUtils.writeField(field, properties, fieldValue, true);  // todo: support primitives
+            }
+
+            return properties;
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
+                 IllegalAccessException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Cell getCell(Sheet sheet, int rowIndex, int columnIndex) {
+        return Optional.ofNullable(sheet.getRow(rowIndex))
+                .map(row -> row.getCell(columnIndex))
+                .orElse(null);
     }
 }

@@ -1,9 +1,7 @@
 package com.mihai;
 
 import com.mihai.deserializer.CellDeserializers;
-import com.mihai.row.PopulationRow;
-import com.mihai.row.TodoPriority;
-import com.mihai.row.TodoRow;
+import com.mihai.row.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -74,5 +72,28 @@ class ReflectiveExcelReaderTest {
         assertEquals(321, secondRow.getPopulation(2021));
         assertEquals(420, secondRow.getPopulation(2022));
         assertEquals(500, secondRow.getPopulation(2023));
+    }
+
+    @Test
+    public void testPropertiesWithRows() {
+        File file = new File(getClass().getClassLoader().getResource("test-month-expenses.xlsx").getFile());
+
+        ExcelReadingSettings settings = ExcelReadingSettings.with()
+                .headerStartCellReference("B5")
+                .create();
+
+        ReflectiveExcelReader reader = new ReflectiveExcelReader(file, settings);
+        List<FoodExpenseRow> rows = reader.readRows(FoodExpenseRow.class);
+        FoodExpenseRow firstRow = rows.get(0);
+        assertEquals("Pasta", firstRow.getName());
+        assertEquals(10, firstRow.getPrice());
+
+        FoodExpenseRow secondRow = rows.get(1);
+        assertEquals("Rice", secondRow.getName());
+        assertEquals(20, secondRow.getPrice());
+
+        FoodExpensesProperties properties = reader.readProperties(FoodExpensesProperties.class);
+        assertEquals(7, properties.getMonth());
+        assertEquals(2021, properties.getYear());
     }
 }
