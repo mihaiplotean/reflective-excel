@@ -13,6 +13,7 @@ import org.apache.poi.ss.util.CellReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class ReflectiveExcelReader {
 
-    private final File file;
+    private final WorkbookCreator workbookCreator;
     private final ExcelReadingSettings settings;
 
     private DeserializationContext deserializationContext;
@@ -33,7 +34,19 @@ public class ReflectiveExcelReader {
     }
 
     public ReflectiveExcelReader(File file, ExcelReadingSettings settings) {
-        this.file = file;
+        this(new WorkbookFromFileCreator(file), settings);
+    }
+
+    public ReflectiveExcelReader(InputStream inputStream) {
+        this(inputStream, ExcelReadingSettings.DEFAULT);
+    }
+
+    public ReflectiveExcelReader(InputStream inputStream, ExcelReadingSettings settings) {
+        this(new WorkbookFromInputStreamCreator(inputStream), settings);
+    }
+
+    private ReflectiveExcelReader(WorkbookCreator workbookCreator, ExcelReadingSettings settings) {
+        this.workbookCreator = workbookCreator;
         this.settings = settings;
         this.deserializationContext = new DefaultDeserializationContext();
     }
@@ -48,7 +61,7 @@ public class ReflectiveExcelReader {
 
     public <T> List<T> readRows(Class<T> clazz) {
         List<T> rows = new ArrayList<>();
-        try (Workbook workbook = WorkbookFactory.create(file)) {
+        try (Workbook workbook = workbookCreator.create()) {
             if (workbook.getNumberOfSheets() == 0) {
                 return Collections.emptyList();
             }
@@ -192,7 +205,7 @@ public class ReflectiveExcelReader {
     }
 
     public <T> T readProperties(Class<T> clazz) {
-        try (Workbook workbook = WorkbookFactory.create(file)) {
+        try (Workbook workbook = workbookCreator.create()) {
             Sheet sheet = getSheet(workbook);
 
             T properties = clazz.getConstructor().newInstance();
