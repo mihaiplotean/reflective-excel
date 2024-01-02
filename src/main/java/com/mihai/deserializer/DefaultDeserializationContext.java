@@ -1,5 +1,6 @@
 package com.mihai.deserializer;
 
+import com.mihai.exception.BadInputException;
 import com.mihai.ExcelCell;
 
 import java.time.LocalDateTime;
@@ -35,10 +36,10 @@ public class DefaultDeserializationContext implements DeserializationContext {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserialize(Class<T> clazz, ExcelCell excelCell) throws DeserializationFailedException {
+    public <T> T deserialize(Class<T> clazz, ExcelCell excelCell) throws BadInputException {
         CellDeserializer<?> cellDeserializer = deserializerMap.get(clazz);
         if (cellDeserializer == null) {
-            throw DeserializationFailedException.missingDeserializer(clazz);
+            throw BadInputException.missingDeserializer(clazz);
         }
         return (T) cellDeserializer.deserialize(excelCell);
     }

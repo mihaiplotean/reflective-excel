@@ -1,5 +1,6 @@
 package com.mihai;
 
+import com.mihai.detector.RowDetector;
 import org.apache.poi.ss.util.CellReference;
 
 public class ExcelReadingSettings {
@@ -9,11 +10,13 @@ public class ExcelReadingSettings {
     private final String sheetName;
     private final int sheetIndex;
     private final CellReference headerStartCellReference;
+    private final RowDetector endRowDetector;
 
     private ExcelReadingSettings(ExcelReadingSettingsBuilder builder) {
         sheetName = builder.sheetName;
         sheetIndex = builder.sheetIndex;
         headerStartCellReference = new CellReference(builder.headerStartCellReference);
+        endRowDetector = builder.endRowDetector;
     }
 
     public String getSheetName() {
@@ -32,15 +35,24 @@ public class ExcelReadingSettings {
         return headerStartCellReference.getCol();
     }
 
+    public boolean isEndRow(RowCells rowCells) {
+        return endRowDetector.test(rowCells);
+    }
 
     public static ExcelReadingSettingsBuilder with() {
         return new ExcelReadingSettingsBuilder();
     }
 
     public static final class ExcelReadingSettingsBuilder {
+
+        private static final RowDetector ALL_CELLS_EMPTY = RowCells::allEmpty;
+
         private String sheetName;
         private int sheetIndex;
         private String headerStartCellReference = "A1";
+//        private RowDetector headerRowDetector =
+//        private RowDetector startRowDetector =
+        private RowDetector endRowDetector = ALL_CELLS_EMPTY;
 
         public ExcelReadingSettingsBuilder sheetName(String sheetName) {
             this.sheetName = sheetName;
@@ -54,6 +66,11 @@ public class ExcelReadingSettings {
 
         public ExcelReadingSettingsBuilder headerStartCellReference(String headerStartCellReference) {
             this.headerStartCellReference = headerStartCellReference;
+            return this;
+        }
+
+        public ExcelReadingSettingsBuilder endRowDetector(RowDetector endRowDetector) {
+            this.endRowDetector = endRowDetector;
             return this;
         }
 

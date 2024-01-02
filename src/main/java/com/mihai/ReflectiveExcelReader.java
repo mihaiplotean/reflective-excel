@@ -1,12 +1,13 @@
 package com.mihai;
 
-import com.mihai.annotation.DynamicColumns;
-import com.mihai.annotation.ExcelCellValue;
-import com.mihai.annotation.ExcelColumn;
-import com.mihai.annotation.ExcelProperty;
+import com.mihai.annotation.*;
 import com.mihai.deserializer.CellDeserializer;
 import com.mihai.deserializer.DefaultDeserializationContext;
 import com.mihai.deserializer.DeserializationContext;
+import com.mihai.detector.DynamicColumnDetector;
+import com.mihai.workbook.WorkbookCreator;
+import com.mihai.workbook.WorkbookFromFileCreator;
+import com.mihai.workbook.WorkbookFromInputStreamCreator;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
@@ -74,7 +75,11 @@ public class ReflectiveExcelReader {
                     columnIndexToPropertyMap = getColumnIndexToClassFieldMap(row, clazz);
                     continue;
                 }
-                rows.add(createRow(clazz, getRowCellDetails(row)));
+                RowCells rowCells = getRowCellDetails(row);
+                if (settings.isEndRow(rowCells)) {
+                    break;
+                }
+                rows.add(createRow(clazz, rowCells));
             }
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
                  IllegalAccessException | IOException e) {
@@ -132,7 +137,7 @@ public class ReflectiveExcelReader {
         return workbook.getSheet(sheetName);
     }
 
-    private List<ExcelCell> getRowCellDetails(Row row) {
+    private RowCells getRowCellDetails(Row row) {
         List<ExcelCell> excelCellDetails = new ArrayList<>();
         for (Cell cell : row) {
             if (cell.getColumnIndex() < settings.getHeaderStartColumn()) {
@@ -144,7 +149,7 @@ public class ReflectiveExcelReader {
                 excelCellDetails.add(cellWrapper(cell, columnProperty.getColumnName()));
             }
         }
-        return excelCellDetails;
+        return new RowCells(excelCellDetails);
     }
 
     private static ExcelCell cellWrapper(Cell cell, String columnName) {
@@ -157,10 +162,11 @@ public class ReflectiveExcelReader {
 
     private static String getCellValueAsString(Cell cell) {
         DataFormatter dataFormatter = new DataFormatter();
-        return dataFormatter.formatCellValue(cell);
+        FormulaEvaluator formulaEvaluator = cell.getSheet().getWorkbook().getCreationHelper().createFormulaEvaluator();
+        return dataFormatter.formatCellValue(cell, formulaEvaluator);
     }
 
-    private <T> T createRow(Class<T> clazz, List<ExcelCell> rowCells)
+    private <T> T createRow(Class<T> clazz, RowCells rowCells)
             throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         T row = clazz.getConstructor().newInstance();
 
@@ -169,7 +175,6 @@ public class ReflectiveExcelReader {
         for (ExcelCell excelCell : rowCells) {
             ColumnProperty columnProperty = columnIndexToPropertyMap.get(excelCell.getColumnIndex());
             Field field = columnProperty.getField();
-
 
             if (columnProperty.isDynamic()) {
                 if (field.getType().isAssignableFrom(ArrayList.class)) {
@@ -204,7 +209,7 @@ public class ReflectiveExcelReader {
         return row;
     }
 
-    public <T> T readProperties(Class<T> clazz) {
+    public <T> T read(Class<T> clazz) {
         try (Workbook workbook = workbookCreator.create()) {
             Sheet sheet = getSheet(workbook);
 
@@ -253,6 +258,11 @@ public class ReflectiveExcelReader {
                 Object fieldValue = deserializationContext.deserialize(field.getType(), cellWrapper);
                 FieldUtils.writeField(field, properties, fieldValue, true);  // todo: support primitives
             }
+//
+//            List<Field> excelRowsFields = FieldUtils.getFieldsListWithAnnotation(clazz, ExcelRows.class);
+//            for (Field excelRowsField : excelRowsFields) {
+//                readRows(excelRowsField.get)
+//            }
 
             return properties;
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |

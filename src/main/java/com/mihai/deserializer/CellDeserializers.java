@@ -1,5 +1,6 @@
 package com.mihai.deserializer;
 
+import com.mihai.exception.BadInputException;
 import com.mihai.ExcelCell;
 
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ public class CellDeserializers {
             try {
                 return Integer.parseInt(cellValue);
             } catch (NumberFormatException ex) {
-                throw new DeserializationFailedException(String.format(
+                throw new BadInputException(String.format(
                         "Value \"%s\" defined in cell %s is not an integer", cellValue, cellDetails.getCellReference()
                 ));
             }
@@ -35,7 +36,7 @@ public class CellDeserializers {
             try {
                 return Long.parseLong(cellValue);
             } catch (NumberFormatException ex) {
-                throw new DeserializationFailedException(String.format(
+                throw new BadInputException(String.format(
                         "Value \"%s\" defined in cell %s is not a long", cellValue, cellDetails.getCellReference()
                 ));
             }
@@ -48,7 +49,7 @@ public class CellDeserializers {
             try {
                 return Double.parseDouble(cellValue);
             } catch (NumberFormatException ex) {
-                throw new DeserializationFailedException(String.format(
+                throw new BadInputException(String.format(
                         "Value \"%s\" defined in cell %s is not a decimal", cellValue, cellDetails.getCellReference()
                 ));
             }
@@ -61,7 +62,7 @@ public class CellDeserializers {
             try {
                 return Float.parseFloat(cellValue);
             } catch (NumberFormatException ex) {
-                throw new DeserializationFailedException(String.format(
+                throw new BadInputException(String.format(
                         "Value \"%s\" defined in cell %s is not a float", cellValue, cellDetails.getCellReference()
                 ));
             }
@@ -77,7 +78,7 @@ public class CellDeserializers {
             if (cellValue.equalsIgnoreCase("false")) {
                 return false;
             }
-            throw new DeserializationFailedException(String.format(
+            throw new BadInputException(String.format(
                     "Value \"%s\" defined in cell %s is not \"true\" or \"false\"", cellValue, cellDetails.getCellReference()
             ));
         };
@@ -95,7 +96,7 @@ public class CellDeserializers {
                     return enumConstant;
                 }
             }
-            throw new DeserializationFailedException(String.format(
+            throw new BadInputException(String.format(
                     "Value \"%s\" defined in cell %s is not a known enum value", cellValue, cellDetails.getCellReference()
             ));
         };
@@ -106,7 +107,7 @@ public class CellDeserializers {
             try {
                 return cellDetails.getDateValue();
             } catch (IllegalStateException | NumberFormatException e) {
-                throw new DeserializationFailedException(String.format(
+                throw new BadInputException(String.format(
                         "Value \"%s\" defined in cell %s does not have a date number format", cellDetails.getValue(), cellDetails.getCellReference()
                 ));
             }
@@ -118,7 +119,7 @@ public class CellDeserializers {
             try {
                 return cellDetails.getLocalDateTimeValue();
             } catch (IllegalStateException | NumberFormatException e) {
-                throw new DeserializationFailedException(String.format(
+                throw new BadInputException(String.format(
                         "Value \"%s\" defined in cell %s does not have a date number format", cellDetails.getValue(), cellDetails.getCellReference()
                 ));
             }

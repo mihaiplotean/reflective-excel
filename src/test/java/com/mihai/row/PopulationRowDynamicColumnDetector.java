@@ -1,6 +1,6 @@
 package com.mihai.row;
 
-import com.mihai.DynamicColumnDetector;
+import com.mihai.detector.DynamicColumnDetector;
 import com.mihai.MaybeDynamicColumn;
 
 public class PopulationRowDynamicColumnDetector implements DynamicColumnDetector {

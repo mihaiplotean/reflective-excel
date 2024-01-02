@@ -92,7 +92,7 @@ class ReflectiveExcelReaderTest {
         assertEquals("Rice", secondRow.getName());
         assertEquals(20, secondRow.getPrice());
 
-        FoodExpensesProperties properties = reader.readProperties(FoodExpensesProperties.class);
+        FoodExpensesProperties properties = reader.read(FoodExpensesProperties.class);
         assertEquals(7, properties.getMonth());
         assertEquals(2021, properties.getYear());
     }

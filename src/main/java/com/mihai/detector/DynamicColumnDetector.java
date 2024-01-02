@@ -1,4 +1,6 @@
-package com.mihai;
+package com.mihai.detector;
+
+import com.mihai.MaybeDynamicColumn;
 
 public interface DynamicColumnDetector {
 

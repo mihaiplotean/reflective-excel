@@ -1,4 +1,4 @@
-package com.mihai;
+package com.mihai.workbook;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
