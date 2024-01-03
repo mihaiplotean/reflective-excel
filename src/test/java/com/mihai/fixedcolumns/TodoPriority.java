@@ -1,4 +1,4 @@
-package com.mihai.row;
+package com.mihai.fixedcolumns;
 
 public enum TodoPriority {
     LOW("Low"),

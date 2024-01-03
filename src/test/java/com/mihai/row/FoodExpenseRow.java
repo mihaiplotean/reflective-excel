@@ -8,7 +8,6 @@ public class FoodExpenseRow {
     private String name;
 
     @ExcelColumn(name = "Price")
-
     private double price;
 
     public String getName() {

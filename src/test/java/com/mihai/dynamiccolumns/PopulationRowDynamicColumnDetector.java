@@ -1,4 +1,4 @@
-package com.mihai.row;
+package com.mihai.dynamiccolumns;
 
 import com.mihai.detector.DynamicColumnDetector;
 import com.mihai.MaybeDynamicColumn;

@@ -1,12 +1,10 @@
-package com.mihai.row;
+package com.mihai.fixedcolumns;
 
 import com.mihai.annotation.ExcelColumn;
-import com.mihai.annotation.ExcelRow;
 
 import java.util.Date;
 import java.util.Objects;
 
-@ExcelRow
 public class TodoRow {
 
     @ExcelColumn(name = "Description")

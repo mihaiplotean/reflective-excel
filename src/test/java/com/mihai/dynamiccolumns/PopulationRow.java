@@ -1,12 +1,10 @@
-package com.mihai.row;
+package com.mihai.dynamiccolumns;
 
 import com.mihai.annotation.DynamicColumns;
 import com.mihai.annotation.ExcelColumn;
-import com.mihai.annotation.ExcelRow;
 
 import java.util.Map;
 
-@ExcelRow
 public class PopulationRow {
 
     @ExcelColumn(name = "Id")
