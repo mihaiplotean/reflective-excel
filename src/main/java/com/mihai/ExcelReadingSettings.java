@@ -52,6 +52,7 @@ public class ExcelReadingSettings {
         private String headerStartCellReference = "A1";
 //        private RowDetector headerRowDetector =
 //        private RowDetector startRowDetector =
+//        private RowDetector skipRowDetector =
         private RowDetector endRowDetector = ALL_CELLS_EMPTY;
 
         public ExcelReadingSettingsBuilder sheetName(String sheetName) {

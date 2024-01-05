@@ -1,23 +1,21 @@
 package com.mihai;
 
-import java.util.List;
-
 public class MaybeDynamicColumn {
 
-    private final List<ColumnIndex> columnIndices;
-    private final ColumnIndex currentColumn;
+    private final ReadingContext context;
+    private final PropertyCell column;
 
-    public MaybeDynamicColumn(List<ColumnIndex> columnIndices, ColumnIndex currentColumn) {
-        this.columnIndices = columnIndices;
-        this.currentColumn = currentColumn;
+    public MaybeDynamicColumn(ReadingContext context, PropertyCell column) {
+        this.context = context;
+        this.column = column;
     }
 
     public String getName() {
-        return currentColumn.getColumnName();
+        return column.getValue();
     }
 
     public int getIndex() {
-        return currentColumn.getIndex();
+        return column.getColumnNumber();
     }
 
     public boolean isAfter(String otherColumn) {
@@ -49,9 +47,12 @@ public class MaybeDynamicColumn {
     }
 
     private int indexOf(String columnName) {
-        for (ColumnIndex columnIndex : columnIndices) {
-            if(columnName.equalsIgnoreCase(columnIndex.getColumnName())) {
-                return columnIndex.getIndex();
+        assert context.getCurrentRowNumber() == column.getRowNumber() : "Current column must be on the same row as the currently processed row";
+
+        RowCells currentRow = context.getCurrentRow();
+        for (PropertyCell cell : currentRow) {
+            if(columnName.equalsIgnoreCase(cell.getValue())) {
+                return cell.getColumnNumber();
             }
         }
         return -1;

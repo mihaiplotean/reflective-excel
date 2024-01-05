@@ -1,25 +1,19 @@
 package com.mihai;
 
-import com.mihai.annotation.*;
 import com.mihai.deserializer.CellDeserializer;
 import com.mihai.deserializer.DefaultDeserializationContext;
 import com.mihai.deserializer.DeserializationContext;
-import com.mihai.detector.DynamicColumnDetector;
 import com.mihai.workbook.WorkbookCreator;
 import com.mihai.workbook.WorkbookFromFileCreator;
 import com.mihai.workbook.WorkbookFromInputStreamCreator;
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.List;
 
 public class ReflectiveExcelReader {
 
@@ -65,8 +59,7 @@ public class ReflectiveExcelReader {
             }
             Sheet sheet = getSheet(workbook);
             return new SheetReader(sheet, deserializationContext, settings).readRows(clazz);
-        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                 IllegalAccessException | IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -83,8 +76,7 @@ public class ReflectiveExcelReader {
         try (Workbook workbook = workbookCreator.create()) {
             Sheet sheet = getSheet(workbook);
             return new SheetReader(sheet, deserializationContext, settings).read(clazz);
-        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                 IllegalAccessException | IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

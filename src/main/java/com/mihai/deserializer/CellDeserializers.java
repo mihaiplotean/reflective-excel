@@ -1,7 +1,7 @@
 package com.mihai.deserializer;
 
 import com.mihai.exception.BadInputException;
-import com.mihai.ExcelCell;
+import com.mihai.PropertyCell;
 
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -14,7 +14,7 @@ public class CellDeserializers {
     }
 
     public static CellDeserializer<String> forString() {
-        return ExcelCell::getValue;
+        return PropertyCell::getValue;
     }
 
     public static CellDeserializer<Integer> forInteger() {

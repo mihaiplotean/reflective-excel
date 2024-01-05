@@ -1,5 +1,6 @@
 package com.mihai.detector;
 
+import com.mihai.ReadingContext;
 import com.mihai.RowCells;
 
 public class RowDetectors {

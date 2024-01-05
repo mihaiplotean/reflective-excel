@@ -1,7 +1,7 @@
 package com.mihai.deserializer;
 
 import com.mihai.exception.BadInputException;
-import com.mihai.ExcelCell;
+import com.mihai.PropertyCell;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -17,13 +17,13 @@ public class DateDeserializer implements CellDeserializer<Date> {
     }
 
     @Override
-    public Date deserialize(ExcelCell excelCell) throws BadInputException {
-        String date = excelCell.getValue();
+    public Date deserialize(PropertyCell propertyCell) throws BadInputException {
+        String date = propertyCell.getValue();
         try {
             return dateFormat.parse(date);
         } catch (ParseException ex) {
             throw new BadInputException(String.format(
-                    "Value \"%s\" defined in cell %s is not a date that matches the specified format", date, excelCell.getCellReference()
+                    "Value \"%s\" defined in cell %s is not a date that matches the specified format", date, propertyCell.getCellReference()
             ));
         }
     }

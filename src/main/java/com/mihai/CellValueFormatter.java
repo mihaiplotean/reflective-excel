@@ -12,10 +12,16 @@ public class CellValueFormatter {
 
     public CellValueFormatter(Workbook workbook) {
         this.dataFormatter = new DataFormatter();
+        dataFormatter.setUseCachedValuesForFormulaCells(true);
         this.formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
     }
 
     public String toString(Cell cell) {
-        return dataFormatter.formatCellValue(cell, formulaEvaluator);
+        try {
+            return dataFormatter.formatCellValue(cell, formulaEvaluator);
+        }
+        catch (IllegalStateException exception) {
+            return dataFormatter.formatCellValue(cell, null);  // fallback
+        }
     }
 }

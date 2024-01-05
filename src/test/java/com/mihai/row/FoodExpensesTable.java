@@ -7,10 +7,10 @@ import java.util.List;
 
 public class FoodExpensesTable {
 
-    @ExcelProperty(name = "Month", cellReference = "B2")
+    @ExcelProperty(name = "Month", nameReference = "B2", valueReference = "C2")
     private int month;
 
-    @ExcelProperty(name = "Year", cellReference = "B3")
+    @ExcelProperty(name = "Year", nameReference = "B3", valueReference = "C3")
     private int year;
 
     @ExcelRows

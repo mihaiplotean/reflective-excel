@@ -1,9 +1,9 @@
 package com.mihai.deserializer;
 
 import com.mihai.exception.BadInputException;
-import com.mihai.ExcelCell;
+import com.mihai.PropertyCell;
 
 public interface CellDeserializer<T> {
 
-    T deserialize(ExcelCell excelCell) throws BadInputException;
+    T deserialize(PropertyCell propertyCell) throws BadInputException;
 }

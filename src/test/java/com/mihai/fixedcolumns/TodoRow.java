@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class TodoRow {
 
-    @ExcelColumn(name = "Description")
+    @ExcelColumn(name = "Description")  // todo: case insensitive!
     private String description;
     @ExcelColumn(name = "Deadline")
     private Date dueDate;

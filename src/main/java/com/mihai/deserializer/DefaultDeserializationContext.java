@@ -1,7 +1,7 @@
 package com.mihai.deserializer;
 
 import com.mihai.exception.BadInputException;
-import com.mihai.ExcelCell;
+import com.mihai.PropertyCell;
 
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -36,12 +36,12 @@ public class DefaultDeserializationContext implements DeserializationContext {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserialize(Class<T> clazz, ExcelCell excelCell) throws BadInputException {
+    public <T> T deserialize(Class<T> clazz, PropertyCell propertyCell) throws BadInputException {
         CellDeserializer<?> cellDeserializer = deserializerMap.get(clazz);
         if (cellDeserializer == null) {
             throw BadInputException.missingDeserializer(clazz);
         }
-        return (T) cellDeserializer.deserialize(excelCell);
+        return (T) cellDeserializer.deserialize(propertyCell);
     }
 
     @Override
