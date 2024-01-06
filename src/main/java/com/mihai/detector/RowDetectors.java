@@ -4,6 +4,9 @@ import com.mihai.workbook.PropertyCell;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class RowDetectors {
@@ -36,14 +39,18 @@ public class RowDetectors {
         return (context, rowCells) -> {
             Set<String> rowValues = rowCells.stream()
                     .map(PropertyCell::getValue)
-                    .collect(Collectors.toSet());
+                    .collect(toCaseInsensitiveSet());
             return rowValues.containsAll(values);
         };
     }
 
     public static RowDetector allCellsEmpty() {
         return (context, rowCells) -> rowCells.stream()
-                    .map(PropertyCell::getValue)
-                    .allMatch(StringUtils::isEmpty);
+                .map(PropertyCell::getValue)
+                .allMatch(StringUtils::isEmpty);
+    }
+
+    private static Collector<String, ?, Set<String>> toCaseInsensitiveSet() {
+        return Collectors.toCollection(() -> new TreeSet<>(String.CASE_INSENSITIVE_ORDER));
     }
 }

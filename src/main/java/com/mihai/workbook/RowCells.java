@@ -20,6 +20,13 @@ public class RowCells implements Iterable<PropertyCell> {
         return cells;
     }
 
+    public PropertyCell getCell(int columnIndex) {
+        return cells.stream()
+                .filter(cell -> cell.getColumnNumber() == columnIndex)
+                .findFirst()
+                .orElse(null);
+    }
+
     public int getRowNumber() {
         return row.getRowNum();
     }

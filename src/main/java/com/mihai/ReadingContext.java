@@ -1,6 +1,8 @@
 package com.mihai;
 
 import com.mihai.deserializer.DeserializationContext;
+import com.mihai.exception.BadInputException;
+import com.mihai.exception.BadInputExceptionConsumer;
 import com.mihai.workbook.PropertyCell;
 import com.mihai.workbook.ReadableSheet;
 import com.mihai.workbook.RowCells;
@@ -10,11 +12,17 @@ public class ReadingContext {
     private final ReadableSheet sheet;
     private final TableRowCellPointer cellPointer;
     private final DeserializationContext deserializationContext;
+    private final BadInputExceptionConsumer exceptionConsumer;
+    private final DeserializedCellValues cellValues;
 
-    public ReadingContext(TableRowCellPointer cellPointer, DeserializationContext deserializationContext) {
+    public ReadingContext(TableRowCellPointer cellPointer,
+                          DeserializationContext deserializationContext,
+                          BadInputExceptionConsumer exceptionConsumer) {
         this.sheet = cellPointer.getSheet();
         this.cellPointer = cellPointer;
         this.deserializationContext = deserializationContext;
+        this.exceptionConsumer = exceptionConsumer;
+        this.cellValues = new DeserializedCellValues();
     }
 
     public TableHeaders getCurrentTableHeaders() {
@@ -42,7 +50,7 @@ public class ReadingContext {
     }
 
     public <T> T getCurrentCellValue(Class<T> clazz) {
-        return deserializationContext.deserialize(clazz, getCurrentCell());
+        return deserialize(clazz, getCurrentCell());
     }
 
     public String getCellValue(String cellReference) {
@@ -66,7 +74,7 @@ public class ReadingContext {
         if (cell == null) {
             return null;
         }
-        return deserializationContext.deserialize(clazz, cell);
+        return deserialize(clazz, cell);
     }
 
     public <T> T getCellValue(int row, int column, Class<T> clazz) {
@@ -74,6 +82,26 @@ public class ReadingContext {
         if (cell == null) {
             return null;
         }
-        return deserializationContext.deserialize(clazz, cell);
+        return deserialize(clazz, cell);
+    }
+
+    private <T> T deserialize(Class<T> clazz, PropertyCell cell) {
+        int row = cell.getRowNumber();
+        int column = cell.getColumnNumber();
+
+        T cachedValue = cellValues.getValue(row, column, clazz);
+        if(cachedValue != null) {
+            return cachedValue;
+        }
+
+        try {
+            T value = deserializationContext.deserialize(this, clazz, cell);
+            cellValues.putValue(row, column, clazz, value);
+            return value;
+        }
+        catch (BadInputException exception) {
+            exceptionConsumer.accept(getCurrentRow(), exception);
+        }
+        return null;
     }
 }

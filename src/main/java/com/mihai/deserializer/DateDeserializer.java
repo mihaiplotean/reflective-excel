@@ -1,5 +1,6 @@
 package com.mihai.deserializer;
 
+import com.mihai.ReadingContext;
 import com.mihai.exception.BadInputException;
 import com.mihai.workbook.PropertyCell;
 
@@ -17,13 +18,13 @@ public class DateDeserializer implements CellDeserializer<Date> {
     }
 
     @Override
-    public Date deserialize(PropertyCell propertyCell) throws BadInputException {
-        String date = propertyCell.getValue();
+    public Date deserialize(ReadingContext context, PropertyCell cell) throws BadInputException {
+        String date = cell.getValue();
         try {
             return dateFormat.parse(date);
         } catch (ParseException ex) {
             throw new BadInputException(String.format(
-                    "Value \"%s\" defined in cell %s is not a date that matches the specified format", date, propertyCell.getCellReference()
+                    "Value \"%s\" defined in cell %s is not a date that matches the specified format", date, cell.getCellReference()
             ));
         }
     }

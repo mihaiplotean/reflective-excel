@@ -25,7 +25,7 @@ public class SheetReader implements RowReader {
         this.sheet = new ReadableSheet(sheet);
         this.settings = settings;
         this.rowCellPointer = new TableRowCellPointer(this.sheet);
-        this.readingContext = new ReadingContext(rowCellPointer, deserializationContext);
+        this.readingContext = new ReadingContext(rowCellPointer, deserializationContext, settings.getExceptionConsumer());
         this.rowColumnDetector = createRowColumnDetector();
     }
 
@@ -107,22 +107,13 @@ public class SheetReader implements RowReader {
             AnnotatedField field = columnFieldMapping.getField(propertyCell.getColumnNumber());
             if (field != null) {
                 AnnotatedFieldValue fieldValue = fieldValues.computeIfAbsent(field, AnnotatedField::newFieldValue);
-                readFieldValue(fieldValue);
+                fieldValue.readValue(readingContext);
             }
         }
 
         fieldValues.values().forEach(fieldValue -> fieldValue.writeTo(object));
 
         return object;
-    }
-
-    private void readFieldValue(AnnotatedFieldValue value) {
-        try {
-            value.readValue(readingContext);
-        }
-        catch (BadInputException e) {
-            settings.getExceptionConsumer().accept(readingContext.getCurrentRow(), e);
-        }
     }
 
     public <T> T read(Class<T> clazz) {
@@ -138,7 +129,7 @@ public class SheetReader implements RowReader {
         List<AnnotatedFieldValue> fieldValues = new ArrayList<>();
         fields.forEach(field -> {
             AnnotatedFieldValue fieldValue = field.newFieldValue();
-            readFieldValue(fieldValue);
+            fieldValue.readValue(readingContext);
             fieldValues.add(fieldValue);
         });
 

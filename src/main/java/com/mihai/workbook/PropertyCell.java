@@ -45,4 +45,8 @@ public class PropertyCell {
     public String getCellReference() {
         return cellReference;
     }
+
+    public boolean equalLocation(PropertyCell other) {
+        return getRowNumber() == other.getRowNumber() && getColumnNumber() == other.getColumnNumber();
+    }
 }

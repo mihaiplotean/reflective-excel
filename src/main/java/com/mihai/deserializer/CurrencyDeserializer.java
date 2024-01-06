@@ -1,5 +1,6 @@
 package com.mihai.deserializer;
 
+import com.mihai.ReadingContext;
 import com.mihai.exception.BadInputException;
 import com.mihai.workbook.PropertyCell;
 
@@ -18,13 +19,13 @@ public class CurrencyDeserializer implements CellDeserializer<Currency> {
     }
 
     @Override
-    public Currency deserialize(PropertyCell propertyCell) throws BadInputException {
-        String value = propertyCell.getValue();
+    public Currency deserialize(ReadingContext context, PropertyCell cell) throws BadInputException {
+        String value = cell.getValue();
         if (KNOWN_CURRENCIES.contains(value)) {
             return Currency.getInstance(value);
         }
         throw new BadInputException(String.format(
-                "Currency %s defined in cell %s is not known", value, propertyCell.getCellReference()
+                "Currency %s defined in cell %s is not known", value, cell.getCellReference()
         ));
     }
 }

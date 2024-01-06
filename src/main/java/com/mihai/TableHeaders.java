@@ -25,7 +25,19 @@ public class TableHeaders {
         return List.copyOf(columnIndexToHeaderCellsMap.values());
     }
 
+    public boolean contains(PropertyCell cell) {
+        return columnIndexToHeaderCellsMap.values().stream()
+                .anyMatch(headerCell -> headerCell.equalLocation(cell));
+    }
+
     public PropertyCell getHeader(int columnIndex) {
         return columnIndexToHeaderCellsMap.get(columnIndex);
+    }
+
+    public PropertyCell getHeader(String headerName) {
+        return columnIndexToHeaderCellsMap.values().stream()
+                .filter(headerCell -> headerCell.getValue().equalsIgnoreCase(headerName))
+                .findFirst()
+                .orElse(null);
     }
 }

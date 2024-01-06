@@ -1,8 +1,10 @@
 package com.mihai.deserializer;
 
+import com.mihai.ReadingContext;
 import com.mihai.exception.BadInputException;
 import com.mihai.workbook.PropertyCell;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Date;
@@ -32,16 +34,17 @@ public class DefaultDeserializationContext implements DeserializationContext {
         registerDeserializer(Currency.class, CellDeserializers.forCurrency());
         registerDeserializer(Date.class, CellDeserializers.forDate());
         registerDeserializer(LocalDateTime.class, CellDeserializers.forLocalDateTime());
+        registerDeserializer(LocalDate.class, CellDeserializers.forLocalDate());
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserialize(Class<T> clazz, PropertyCell propertyCell) throws BadInputException {
+    public <T> T deserialize(ReadingContext context, Class<T> clazz, PropertyCell propertyCell) throws BadInputException {
         CellDeserializer<?> cellDeserializer = deserializerMap.get(clazz);
         if (cellDeserializer == null) {
             throw BadInputException.missingDeserializer(clazz);
         }
-        return (T) cellDeserializer.deserialize(propertyCell);
+        return (T) cellDeserializer.deserialize(context, propertyCell);
     }
 
     @Override
