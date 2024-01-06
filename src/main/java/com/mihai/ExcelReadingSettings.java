@@ -1,6 +1,10 @@
 package com.mihai;
 
+import com.mihai.exception.BadInputExceptionConsumer;
+import com.mihai.detector.ColumnDetector;
+import com.mihai.detector.ColumnDetectors;
 import com.mihai.detector.RowDetector;
+import com.mihai.detector.RowDetectors;
 import org.apache.poi.ss.util.CellReference;
 
 public class ExcelReadingSettings {
@@ -9,14 +13,26 @@ public class ExcelReadingSettings {
 
     private final String sheetName;
     private final int sheetIndex;
-    private final CellReference headerStartCellReference;
+
     private final RowDetector endRowDetector;
+    private final RowDetector headerRowDetector;
+
+    private final RowDetector skipRowDetector;
+    private final ColumnDetector skipColumnDetector;
+
+    private final BadInputExceptionConsumer exceptionConsumer;
 
     private ExcelReadingSettings(ExcelReadingSettingsBuilder builder) {
         sheetName = builder.sheetName;
         sheetIndex = builder.sheetIndex;
-        headerStartCellReference = new CellReference(builder.headerStartCellReference);
+
+        skipColumnDetector = builder.skipColumnDetector;
+
         endRowDetector = builder.endRowDetector;
+        headerRowDetector = builder.headerRowDetector;
+        skipRowDetector = builder.skipRowDetector;
+
+        exceptionConsumer = builder.exceptionConsumer;
     }
 
     public String getSheetName() {
@@ -27,16 +43,24 @@ public class ExcelReadingSettings {
         return sheetIndex;
     }
 
-    public int getHeaderStartRow() {
-        return headerStartCellReference.getRow();
+    public ColumnDetector getSkipColumnDetector() {
+        return skipColumnDetector;
     }
 
-    public int getHeaderStartColumn() {
-        return headerStartCellReference.getCol();
+    public RowDetector getEndRowDetector() {
+        return endRowDetector;
     }
 
-    public boolean isEndRow(RowCells rowCells) {
-        return endRowDetector.test(rowCells);
+    public RowDetector getHeaderRowDetector() {
+        return headerRowDetector;
+    }
+
+    public RowDetector getSkipRowDetector() {
+        return skipRowDetector;
+    }
+
+    public BadInputExceptionConsumer getExceptionConsumer() {
+        return exceptionConsumer;
     }
 
     public static ExcelReadingSettingsBuilder with() {
@@ -45,15 +69,17 @@ public class ExcelReadingSettings {
 
     public static final class ExcelReadingSettingsBuilder {
 
-        private static final RowDetector ALL_CELLS_EMPTY = RowCells::allEmpty;
-
         private String sheetName;
         private int sheetIndex;
-        private String headerStartCellReference = "A1";
-//        private RowDetector headerRowDetector =
-//        private RowDetector startRowDetector =
-//        private RowDetector skipRowDetector =
-        private RowDetector endRowDetector = ALL_CELLS_EMPTY;
+
+        private RowDetector endRowDetector = RowDetectors.allCellsEmpty();
+        private RowDetector headerRowDetector = RowDetectors.isFirstRow();
+        private RowDetector skipRowDetector = RowDetectors.never();
+        private ColumnDetector skipColumnDetector = ColumnDetectors.never();
+
+        private BadInputExceptionConsumer exceptionConsumer = (row, exception) -> {
+            throw exception;
+        };
 
         public ExcelReadingSettingsBuilder sheetName(String sheetName) {
             this.sheetName = sheetName;
@@ -66,12 +92,29 @@ public class ExcelReadingSettings {
         }
 
         public ExcelReadingSettingsBuilder headerStartCellReference(String headerStartCellReference) {
-            this.headerStartCellReference = headerStartCellReference;
+            CellReference reference = new CellReference(headerStartCellReference);
+            this.headerRowDetector = RowDetectors.isRowWithNumber(reference.getRow());
+            this.skipColumnDetector = ColumnDetectors.isBefore(reference.getCol());
             return this;
         }
 
         public ExcelReadingSettingsBuilder endRowDetector(RowDetector endRowDetector) {
             this.endRowDetector = endRowDetector;
+            return this;
+        }
+
+        public ExcelReadingSettingsBuilder headerRowDetector(RowDetector headerRowDetector) {
+            this.headerRowDetector = headerRowDetector;
+            return this;
+        }
+
+        public ExcelReadingSettingsBuilder skipRowDetector(RowDetector skipRowDetector) {
+            this.skipRowDetector = skipRowDetector;
+            return this;
+        }
+
+        public ExcelReadingSettingsBuilder onException(BadInputExceptionConsumer exceptionConsumer) {
+            this.exceptionConsumer = exceptionConsumer;
             return this;
         }
 

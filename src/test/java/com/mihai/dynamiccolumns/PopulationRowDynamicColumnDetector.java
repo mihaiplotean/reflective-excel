@@ -1,16 +1,15 @@
 package com.mihai.dynamiccolumns;
 
-import com.mihai.PropertyCell;
+import com.mihai.workbook.PropertyCell;
 import com.mihai.ReadingContext;
-import com.mihai.RowCells;
-import com.mihai.detector.DynamicColumnDetector;
+import com.mihai.detector.ColumnDetector;
 import com.mihai.MaybeDynamicColumn;
 
-public class PopulationRowDynamicColumnDetector implements DynamicColumnDetector {
+public class PopulationRowDynamicColumnDetector implements ColumnDetector {
 
     @Override
-    public boolean isDynamic(ReadingContext context, PropertyCell headerCell) {
-        MaybeDynamicColumn column = new MaybeDynamicColumn(context, headerCell);
+    public boolean test(ReadingContext context, PropertyCell columnCell) {
+        MaybeDynamicColumn column = new MaybeDynamicColumn(context, columnCell);
         return column.isAfter("country");
     }
 }

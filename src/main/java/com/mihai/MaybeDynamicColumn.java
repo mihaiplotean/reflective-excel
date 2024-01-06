@@ -1,5 +1,8 @@
 package com.mihai;
 
+import com.mihai.workbook.PropertyCell;
+import com.mihai.workbook.RowCells;
+
 public class MaybeDynamicColumn {
 
     private final ReadingContext context;

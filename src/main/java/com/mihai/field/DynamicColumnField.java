@@ -1,6 +1,6 @@
 package com.mihai.field;
 
-import com.mihai.detector.DynamicColumnDetector;
+import com.mihai.detector.ColumnDetector;
 import com.mihai.field.value.AnnotatedFieldValue;
 import com.mihai.field.value.DynamicColumnFieldValue;
 
@@ -8,15 +8,15 @@ import java.lang.reflect.Field;
 
 public class DynamicColumnField implements AnnotatedField {
 
-    private final DynamicColumnDetector columnDetector;
+    private final ColumnDetector columnDetector;
     private final Field field;
 
-    public DynamicColumnField(DynamicColumnDetector columnDetector, Field field) {
+    public DynamicColumnField(ColumnDetector columnDetector, Field field) {
         this.columnDetector = columnDetector;
         this.field = field;
     }
 
-    public DynamicColumnDetector getColumnDetector() {
+    public ColumnDetector getColumnDetector() {
         return columnDetector;
     }
 

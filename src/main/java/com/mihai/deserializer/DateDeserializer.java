@@ -1,7 +1,7 @@
 package com.mihai.deserializer;
 
 import com.mihai.exception.BadInputException;
-import com.mihai.PropertyCell;
+import com.mihai.workbook.PropertyCell;
 
 import java.text.DateFormat;
 import java.text.ParseException;

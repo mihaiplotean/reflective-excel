@@ -1,5 +1,9 @@
 package com.mihai;
 
+import com.mihai.workbook.PropertyCell;
+import com.mihai.workbook.ReadableSheet;
+import com.mihai.workbook.RowCells;
+
 import java.util.Iterator;
 
 public class TableRowCellPointer {

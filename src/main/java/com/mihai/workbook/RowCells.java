@@ -1,6 +1,5 @@
-package com.mihai;
+package com.mihai.workbook;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.util.Iterator;
@@ -23,12 +22,6 @@ public class RowCells implements Iterable<PropertyCell> {
 
     public int getRowNumber() {
         return row.getRowNum();
-    }
-
-    public boolean allEmpty() {
-        return cells.stream()
-                .map(PropertyCell::getValue)
-                .allMatch(StringUtils::isEmpty);
     }
 
     @Override

@@ -1,9 +1,10 @@
 package com.mihai;
 
-import com.mihai.detector.DynamicColumnDetector;
+import com.mihai.detector.ColumnDetector;
 import com.mihai.field.AnnotatedField;
 import com.mihai.field.DynamicColumnField;
 import com.mihai.field.FixedColumnField;
+import com.mihai.workbook.PropertyCell;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +32,8 @@ public class ColumnToFieldMapping {
                     .map(field -> (AnnotatedField) field)
                     .orElseGet(() -> {
                         for (DynamicColumnField dynamicColumnField : dynamicColumnFields) {
-                            DynamicColumnDetector detector = dynamicColumnField.getColumnDetector();
-                            if (detector.isDynamic(context, headerCell)) {
+                            ColumnDetector detector = dynamicColumnField.getColumnDetector();
+                            if (detector.test(context, headerCell)) {
                                 return dynamicColumnField;
                             }
                         }

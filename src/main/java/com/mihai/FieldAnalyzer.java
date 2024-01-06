@@ -1,14 +1,12 @@
 package com.mihai;
 
 import com.mihai.annotation.*;
-import com.mihai.detector.DynamicColumnDetector;
+import com.mihai.detector.ColumnDetector;
 import com.mihai.field.*;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.function.Supplier;
 
 public class FieldAnalyzer {
 
@@ -51,8 +49,8 @@ public class FieldAnalyzer {
 //        fields.forEach();  // validate empty constructor existence?
         return fields.stream()
                 .map(field -> {
-                    Class<? extends DynamicColumnDetector> detectorClazz = field.getAnnotation(DynamicColumns.class).detector();
-                    DynamicColumnDetector detector = ReflectionUtilities.newObject(detectorClazz);
+                    Class<? extends ColumnDetector> detectorClazz = field.getAnnotation(DynamicColumns.class).detector();
+                    ColumnDetector detector = ReflectionUtilities.newObject(detectorClazz);
                     return new DynamicColumnField(detector, field);
                 })
                 .toList();
@@ -74,7 +72,7 @@ public class FieldAnalyzer {
     }
 
     private void validateDynamicFieldHasEmptyConstructor(Field field) {
-        Class<? extends DynamicColumnDetector> detector = field.getAnnotation(DynamicColumns.class).detector();
+        Class<? extends ColumnDetector> detector = field.getAnnotation(DynamicColumns.class).detector();
     }
 
     public List<CellValueField> getExcelCellValueFields() {

@@ -3,9 +3,9 @@ package com.mihai;
 import com.mihai.deserializer.CellDeserializer;
 import com.mihai.deserializer.DefaultDeserializationContext;
 import com.mihai.deserializer.DeserializationContext;
-import com.mihai.workbook.WorkbookCreator;
-import com.mihai.workbook.WorkbookFromFileCreator;
-import com.mihai.workbook.WorkbookFromInputStreamCreator;
+import com.mihai.workbook.creation.WorkbookCreator;
+import com.mihai.workbook.creation.WorkbookFromFileCreator;
+import com.mihai.workbook.creation.WorkbookFromInputStreamCreator;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
