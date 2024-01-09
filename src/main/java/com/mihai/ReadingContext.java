@@ -3,9 +3,9 @@ package com.mihai;
 import com.mihai.deserializer.DeserializationContext;
 import com.mihai.exception.BadInputException;
 import com.mihai.exception.BadInputExceptionConsumer;
-import com.mihai.workbook.PropertyCell;
-import com.mihai.workbook.ReadableSheet;
-import com.mihai.workbook.RowCells;
+import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableSheet;
+import com.mihai.workbook.sheet.RowCells;
 
 public class ReadingContext {
 

@@ -1,7 +1,7 @@
 package com.mihai.detector;
 
 import com.mihai.ReadingContext;
-import com.mihai.workbook.RowCells;
+import com.mihai.workbook.sheet.RowCells;
 
 public interface RowDetector {
 

@@ -1,12 +1,12 @@
 package com.mihai;
 
 import com.mihai.deserializer.DeserializationContext;
-import com.mihai.exception.BadInputException;
 import com.mihai.field.AnnotatedField;
 import com.mihai.field.value.AnnotatedFieldValue;
-import com.mihai.workbook.PropertyCell;
-import com.mihai.workbook.ReadableSheet;
-import com.mihai.workbook.RowCells;
+import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableSheet;
+import com.mihai.workbook.sheet.RowCells;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.util.*;
@@ -15,11 +15,11 @@ public class SheetReader implements RowReader {
 
     private final ReadableSheet sheet;
     private final ExcelReadingSettings settings;
+    private final ReadingContext readingContext;
 
-    private ReadingContext readingContext;
     private TableRowCellPointer rowCellPointer;
     private RowColumnDetector rowColumnDetector;
-    private ColumnToFieldMapping columnFieldMapping;
+    private ColumnFieldMapping columnFieldMapping;
 
     public SheetReader(Sheet sheet, DeserializationContext deserializationContext, ExcelReadingSettings settings) {
         this.sheet = new ReadableSheet(sheet);
@@ -53,6 +53,8 @@ public class SheetReader implements RowReader {
         while (rowCellPointer.moreRowsExist()) {
             RowCells row = rowCellPointer.nextRow();
 
+            // todo: row contains all cell, but should contain only the cells of the table?
+            // todo: TableRow extends RowCells -> returned by rowCellPointer#getCurrentTableRow
             if (rowColumnDetector.isEndRow(row)) {
                 break;
             }
@@ -78,21 +80,38 @@ public class SheetReader implements RowReader {
     }
 
     private TableHeaders readHeaders() {
-        List<PropertyCell> headers = new ArrayList<>();
+        List<PropertyCell> headerCells = new ArrayList<>();
         RowCells row = rowCellPointer.getCurrentRow();
 
         for (PropertyCell cell : row) {
+            if(StringUtils.isEmpty(cell.getValue())) {
+                continue;
+            }
             if (rowColumnDetector.shouldSkipColumn(cell)) {
                 continue;
             }
-            headers.add(cell);
+            headerCells.add(cell);
         }
-        return new TableHeaders(row.getRowNumber(), headers);
+
+        int endRow = headerCells.stream()
+                .map(PropertyCell::getBoundEndRow)
+                .max(Integer::compare)
+                .orElse(0);
+
+        moveToRow(endRow);
+
+        return new TableHeaderReader(sheet).read(rowCellPointer.getCurrentRow(), headerCells);
     }
 
-    private ColumnToFieldMapping createColumnFieldMapping(Class<?> clazz) {
-        ColumnToFieldMapping mapping = new ColumnToFieldMapping(clazz);
-        mapping.create(rowCellPointer, readingContext);
+    private void moveToRow(int rowNumber) {
+        while (rowCellPointer.getCurrentRowNumber() < rowNumber) {
+            rowCellPointer.nextRow();
+        }
+    }
+
+    private ColumnFieldMapping createColumnFieldMapping(Class<?> clazz) {
+        ColumnFieldMapping mapping = new ColumnFieldMapping(readingContext, clazz);
+        mapping.create(readingContext.getCurrentTableHeaders());
         return mapping;
     }
 

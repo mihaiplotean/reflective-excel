@@ -1,4 +1,4 @@
-package com.mihai.workbook;
+package com.mihai.workbook.sheet;
 
 import com.mihai.CellValueFormatter;
 import org.apache.poi.ss.usermodel.Cell;
@@ -14,10 +14,12 @@ import java.util.Optional;
 public class ReadableSheet implements Iterable<RowCells> {
 
     private final Sheet sheet;
+    private final MergedRegionValues mergedRegionValues;
     private final CellValueFormatter cellValueFormatter;
 
     public ReadableSheet(Sheet sheet) {
         this.sheet = sheet;
+        this.mergedRegionValues = new MergedRegionValues(sheet);
         this.cellValueFormatter = new CellValueFormatter(sheet.getWorkbook());  // todo: make overridable
     }
 
@@ -33,8 +35,20 @@ public class ReadableSheet implements Iterable<RowCells> {
                 .orElse(null);
     }
 
+    public CellBounds getCellBounds(int rowIndex, int columnIndex) {
+        return Optional.ofNullable(sheet.getRow(rowIndex))
+                .map(row -> row.getCell(columnIndex))
+                .map(this::getCellBounds)
+                .orElse(null);
+    }
+
+    public CellBounds getCellBounds(Cell cell) {
+        return mergedRegionValues.getCellBounds(cell);
+    }
+
     public PropertyCell asPropertyCell(Cell cell) {
-        return new PropertyCell(cell, cellValueFormatter.toString(cell));
+        CellBounds cellBounds = getCellBounds(cell);
+        return new PropertyCell(cell, cellBounds, cellValueFormatter.toString(cellBounds.valueCell()));
     }
 
     @Override

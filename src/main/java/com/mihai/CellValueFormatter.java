@@ -1,9 +1,7 @@
 package com.mihai;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 public class CellValueFormatter {
 
@@ -21,7 +19,8 @@ public class CellValueFormatter {
             return dataFormatter.formatCellValue(cell, formulaEvaluator);
         }
         catch (IllegalStateException exception) {
-            return dataFormatter.formatCellValue(cell, null);  // fallback
+            // fallback - can happen if a formula from a foreign workbook is referenced
+            return dataFormatter.formatCellValue(cell, null);
         }
     }
 }

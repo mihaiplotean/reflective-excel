@@ -1,12 +1,14 @@
 package com.mihai.field;
 
+import com.mihai.ReadingContext;
+import com.mihai.TableHeader;
 import com.mihai.detector.ColumnDetector;
 import com.mihai.field.value.AnnotatedFieldValue;
 import com.mihai.field.value.DynamicColumnFieldValue;
 
 import java.lang.reflect.Field;
 
-public class DynamicColumnField implements AnnotatedField {
+public class DynamicColumnField implements AnnotatedHeaderField {
 
     private final ColumnDetector columnDetector;
     private final Field field;
@@ -27,5 +29,10 @@ public class DynamicColumnField implements AnnotatedField {
     @Override
     public AnnotatedFieldValue newFieldValue() {
         return new DynamicColumnFieldValue(field);
+    }
+
+    @Override
+    public boolean canMapTo(ReadingContext context, TableHeader header) {
+        return columnDetector.test(context, header.getCell());
     }
 }

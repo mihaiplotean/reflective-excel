@@ -7,7 +7,7 @@ public class DeserializedCellValues {
 
     private final Map<DeserializedCellValue, Object> valueCache = new HashMap<>();
 
-    public void putValue(int row, int colum, Class<?> type, Object value) {
+    public <T> void putValue(int row, int colum, Class<T> type, T value) {
         DeserializedCellValue valueReference = new DeserializedCellValue(row, colum, type);
         valueCache.put(valueReference, value);
     }

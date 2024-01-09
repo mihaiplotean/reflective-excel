@@ -1,19 +1,21 @@
-package com.mihai.workbook;
+package com.mihai.workbook.sheet;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 public class PropertyCell {
 
     private final Cell cell;
+    private final CellBounds cellBounds;
     private final String cellValue;
     private final String cellReference;
 
-    public PropertyCell(Cell cell, String cellValue) {
+    public PropertyCell(Cell cell, CellBounds cellBounds, String cellValue) {
         this.cell = cell;
+        this.cellBounds = cellBounds;
         this.cellValue = cellValue;
         this.cellReference = cell.getAddress().formatAsString();
     }
@@ -30,16 +32,12 @@ public class PropertyCell {
         return cell.getColumnIndex();
     }
 
-    public CellType getCellType() {
-        return cell.getCellType();
-    }
-
     public Date getDateValue() {
-        return cell.getDateCellValue();
+        return cellBounds.valueCell().getDateCellValue();
     }
 
     public LocalDateTime getLocalDateTimeValue() {
-        return cell.getLocalDateTimeCellValue();
+        return cellBounds.valueCell().getLocalDateTimeCellValue();
     }
 
     public String getCellReference() {
@@ -48,5 +46,25 @@ public class PropertyCell {
 
     public boolean equalLocation(PropertyCell other) {
         return getRowNumber() == other.getRowNumber() && getColumnNumber() == other.getColumnNumber();
+    }
+
+    public boolean equalBounds(PropertyCell other) {
+        return Objects.equals(cellBounds, other.cellBounds);
+    }
+
+    public int getBoundStartRow() {
+        return cellBounds.startRow();
+    }
+
+    public int getBoundEndRow() {
+        return cellBounds.endRow();
+    }
+
+    public int getBoundStartColumn() {
+        return cellBounds.startColumn();
+    }
+
+    public int getBoundEndColumn() {
+        return cellBounds.endColumn();
     }
 }

@@ -95,4 +95,10 @@ public class FieldAnalyzer {
                 .map(field -> new RowsField(rowReader, field))
                 .toList();
     }
+
+    public List<GroupedColumnsField> getCellGroupFields() {
+        return FieldUtils.getFieldsListWithAnnotation(clazz, ExcelCellGroup.class).stream()
+                .map(field -> new GroupedColumnsField(field.getAnnotation(ExcelCellGroup.class).name(), field))
+                .toList();
+    }
 }

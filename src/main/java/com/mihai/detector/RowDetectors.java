@@ -1,11 +1,10 @@
 package com.mihai.detector;
 
-import com.mihai.workbook.PropertyCell;
+import com.mihai.workbook.sheet.PropertyCell;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 

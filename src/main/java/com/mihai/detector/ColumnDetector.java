@@ -1,6 +1,6 @@
 package com.mihai.detector;
 
-import com.mihai.workbook.PropertyCell;
+import com.mihai.workbook.sheet.PropertyCell;
 import com.mihai.ReadingContext;
 
 public interface ColumnDetector {

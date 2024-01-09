@@ -1,7 +1,7 @@
 package com.mihai;
 
-import com.mihai.workbook.PropertyCell;
-import com.mihai.workbook.RowCells;
+import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.RowCells;
 
 public class MaybeDynamicColumn {
 

@@ -1,8 +1,8 @@
 package com.mihai;
 
-import com.mihai.workbook.PropertyCell;
-import com.mihai.workbook.ReadableSheet;
-import com.mihai.workbook.RowCells;
+import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableSheet;
+import com.mihai.workbook.sheet.RowCells;
 
 import java.util.Iterator;
 
@@ -28,10 +28,10 @@ public class TableRowCellPointer {
     }
 
     public int getCurrentRowNumber() {
-        if(currentCell == null) {
+        if(currentRowCells == null) {
             return -1;
         }
-        return currentCell.getRowNumber();
+        return currentRowCells.getRowNumber();
     }
 
     public int getCurrentColumnNumber() {

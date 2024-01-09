@@ -1,11 +1,13 @@
 package com.mihai.field;
 
+import com.mihai.ReadingContext;
+import com.mihai.TableHeader;
 import com.mihai.field.value.AnnotatedFieldValue;
 import com.mihai.field.value.FixedColumnFieldValue;
 
 import java.lang.reflect.Field;
 
-public class FixedColumnField implements AnnotatedField {
+public class FixedColumnField implements AnnotatedHeaderField {
 
     private final String columnName;
     private final Field field;
@@ -27,5 +29,10 @@ public class FixedColumnField implements AnnotatedField {
     @Override
     public AnnotatedFieldValue newFieldValue() {
         return new FixedColumnFieldValue(field);
+    }
+
+    @Override
+    public boolean canMapTo(ReadingContext context, TableHeader header) {
+        return header.getValue().equalsIgnoreCase(columnName);
     }
 }

@@ -2,7 +2,7 @@ package com.mihai.deserializer;
 
 import com.mihai.ReadingContext;
 import com.mihai.exception.BadInputException;
-import com.mihai.workbook.PropertyCell;
+import com.mihai.workbook.sheet.PropertyCell;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
