@@ -33,6 +33,10 @@ public class ReadingContext {
         return cellPointer.getCurrentRow();
     }
 
+    public RowCells getRow(int rowNumber) {
+        return cellPointer.boundToCurrentTable(sheet.getRow(rowNumber));
+    }
+
     public PropertyCell getCurrentCell() {
         return cellPointer.getCurrentCell();
     }
@@ -50,7 +54,7 @@ public class ReadingContext {
     }
 
     public <T> T getCurrentCellValue(Class<T> clazz) {
-        return deserialize(clazz, getCurrentCell());
+        return deserialize(getCurrentCell(), clazz);
     }
 
     public String getCellValue(String cellReference) {
@@ -74,7 +78,7 @@ public class ReadingContext {
         if (cell == null) {
             return null;
         }
-        return deserialize(clazz, cell);
+        return deserialize(cell, clazz);
     }
 
     public <T> T getCellValue(int row, int column, Class<T> clazz) {
@@ -82,10 +86,10 @@ public class ReadingContext {
         if (cell == null) {
             return null;
         }
-        return deserialize(clazz, cell);
+        return deserialize(cell, clazz);
     }
 
-    private <T> T deserialize(Class<T> clazz, PropertyCell cell) {
+    private <T> T deserialize(PropertyCell cell, Class<T> clazz) {
         int row = cell.getRowNumber();
         int column = cell.getColumnNumber();
 

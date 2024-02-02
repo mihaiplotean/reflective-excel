@@ -34,6 +34,10 @@ public class RowDetectors {
         return (context, rowCells) -> rowCells.getRowNumber() < rowNumber;
     }
 
+    public static RowDetector hasAllValues(String... values) {
+        return hasAllValues(Set.of(values));
+    }
+
     public static RowDetector hasAllValues(Set<String> values) {
         return (context, rowCells) -> {
             Set<String> rowValues = rowCells.stream()
@@ -47,6 +51,10 @@ public class RowDetectors {
         return (context, rowCells) -> rowCells.stream()
                 .map(PropertyCell::getValue)
                 .allMatch(StringUtils::isEmpty);
+    }
+
+    public static RowDetector nextRowEmpty() {
+        return (context, rowCells) -> context.getRow(rowCells.getRowNumber() + 1).isEmpty();
     }
 
     private static Collector<String, ?, Set<String>> toCaseInsensitiveSet() {

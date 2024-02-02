@@ -1,9 +1,6 @@
 package com.mihai.groupedcolumns;
 
-import com.mihai.ExcelReadingSettings;
 import com.mihai.ReflectiveExcelReader;
-import com.mihai.row.FoodExpenseRow;
-import com.mihai.row.FoodExpensesTable;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;

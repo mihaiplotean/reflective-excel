@@ -18,29 +18,19 @@ import java.util.List;
 public class ReflectiveExcelReader {
 
     private final WorkbookCreator workbookCreator;
-    private final ExcelReadingSettings settings;
 
     private DeserializationContext deserializationContext;
 
     public ReflectiveExcelReader(File file) {
-        this(file, ExcelReadingSettings.DEFAULT);
-    }
-
-    public ReflectiveExcelReader(File file, ExcelReadingSettings settings) {
-        this(new WorkbookFromFileCreator(file), settings);
+        this(new WorkbookFromFileCreator(file));
     }
 
     public ReflectiveExcelReader(InputStream inputStream) {
-        this(inputStream, ExcelReadingSettings.DEFAULT);
+        this(new WorkbookFromInputStreamCreator(inputStream));
     }
 
-    public ReflectiveExcelReader(InputStream inputStream, ExcelReadingSettings settings) {
-        this(new WorkbookFromInputStreamCreator(inputStream), settings);
-    }
-
-    private ReflectiveExcelReader(WorkbookCreator workbookCreator, ExcelReadingSettings settings) {
+    private ReflectiveExcelReader(WorkbookCreator workbookCreator) {
         this.workbookCreator = workbookCreator;
-        this.settings = settings;
         this.deserializationContext = new DefaultDeserializationContext();
     }
 
@@ -53,28 +43,45 @@ public class ReflectiveExcelReader {
     }
 
     public <T> List<T> readRows(Class<T> clazz) {
+        return readRows(clazz, ExcelReadingSettings.DEFAULT);
+    }
+
+    public <T> List<T> readRows(Class<T> clazz, ExcelReadingSettings settings) {
         try (Workbook workbook = workbookCreator.create()) {
             if (workbook.getNumberOfSheets() == 0) {
                 return Collections.emptyList();
             }
-            Sheet sheet = getSheet(workbook);
+            Sheet sheet = getSheet(workbook, settings);
             return new SheetReader(sheet, deserializationContext, settings).readRows(clazz);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Sheet getSheet(Workbook workbook) {
+    private Sheet getSheet(Workbook workbook, ExcelReadingSettings settings) {
         String sheetName = settings.getSheetName();
         if (sheetName == null) {
-            return workbook.getSheetAt(settings.getSheetIndex());
+            int numberOfSheets = workbook.getNumberOfSheets();
+            int sheetIndex = settings.getSheetIndex();
+            return workbook.getSheetAt(translateIndex(sheetIndex, numberOfSheets));
         }
         return workbook.getSheet(sheetName);
     }
 
+    private int translateIndex(int index, int total) {
+        if (index >= 0) {
+            return index;
+        }
+        return total + index;
+    }
+
     public <T> T read(Class<T> clazz) {
+        return read(clazz, ExcelReadingSettings.DEFAULT);
+    }
+
+    public <T> T read(Class<T> clazz, ExcelReadingSettings settings) {
         try (Workbook workbook = workbookCreator.create()) {
-            Sheet sheet = getSheet(workbook);
+            Sheet sheet = getSheet(workbook, settings);
             return new SheetReader(sheet, deserializationContext, settings).read(clazz);
         } catch (IOException e) {
             throw new RuntimeException(e);

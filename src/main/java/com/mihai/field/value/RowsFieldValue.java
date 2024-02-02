@@ -1,8 +1,8 @@
 package com.mihai.field.value;
 
-import com.mihai.ReadingContext;
-import com.mihai.ReflectionUtilities;
-import com.mihai.RowReader;
+import com.mihai.*;
+import com.mihai.detector.ColumnDetector;
+import com.mihai.detector.RowDetector;
 import com.mihai.exception.BadInputException;
 
 import java.lang.reflect.Field;
@@ -15,11 +15,27 @@ public class RowsFieldValue implements AnnotatedFieldValue {
     private final RowReader rowReader;
     private final Field field;
 
+    private final RowDetector lastRowDetector;
+    private final RowDetector headerRowDetector;
+    private final RowDetector skipRowDetector;
+    private final ColumnDetector headerStartColumnDetector;
+    private final ColumnDetector headerLastColumnDetector;
+
     private List<?> fieldValue = Collections.emptyList();
 
-    public RowsFieldValue(RowReader rowReader, Field field) {
+    public RowsFieldValue(RowReader rowReader, Field field,
+                          RowDetector lastRowDetector,
+                          RowDetector headerRowDetector,
+                          RowDetector skipRowDetector,
+                          ColumnDetector headerStartColumnDetector,
+                          ColumnDetector headerLastColumnDetector) {
         this.rowReader = rowReader;
         this.field = field;
+        this.lastRowDetector = lastRowDetector;
+        this.headerRowDetector = headerRowDetector;
+        this.skipRowDetector = skipRowDetector;
+        this.headerStartColumnDetector = headerStartColumnDetector;
+        this.headerLastColumnDetector = headerLastColumnDetector;
     }
 
     @Override
@@ -33,10 +49,20 @@ public class RowsFieldValue implements AnnotatedFieldValue {
         if (type == List.class) {
             ParameterizedType genericType = (ParameterizedType) field.getGenericType();
             Class<?> argumentType = (Class<?>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?
-            fieldValue = rowReader.readRows(argumentType);
+            fieldValue = rowReader.readRows(argumentType, createRowColumnDetector(context));
         }
         else {
             throw new IllegalStateException("Only List.class can be annotated as row value");
         }
+    }
+
+    private RowColumnDetector createRowColumnDetector(ReadingContext context) {
+        return RowColumnDetector.builder(context)
+                .lastRowDetector(lastRowDetector)
+                .headerRowDetector(headerRowDetector)
+                .skipRowDetector(skipRowDetector)
+                .headerStartColumnDetector(headerStartColumnDetector)
+                .headerLastColumnDetector(headerLastColumnDetector)
+                .build();
     }
 }

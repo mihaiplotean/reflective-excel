@@ -9,22 +9,24 @@ public class RowColumnDetector {
 
     private final ReadingContext context;
 
-    private final RowDetector endRowDetector;
+    private final RowDetector lastRowDetector;
     private final RowDetector headerRowDetector;
 
     private final RowDetector skipRowDetector;
-    private final ColumnDetector skipColumnDetector;
+    private final ColumnDetector headerStartColumnDetector;
+    private final ColumnDetector headerLastColumnDetector;
 
     private RowColumnDetector(RowColumnDetectorBuilder builder) {
-        context = builder.context;
-        endRowDetector = builder.endRowDetector;
-        headerRowDetector = builder.headerRowDetector;
-        skipRowDetector = builder.skipRowDetector;
-        skipColumnDetector = builder.skipColumnDetector;
+        this.context = builder.context;
+        this.lastRowDetector = builder.lastRowDetector;
+        this.headerRowDetector = builder.headerRowDetector;
+        this.skipRowDetector = builder.skipRowDetector;
+        this.headerStartColumnDetector = builder.headerStartColumnDetector;
+        this.headerLastColumnDetector = builder.headerLastColumnDetector;
     }
 
-    public boolean isEndRow(RowCells row) {
-        return endRowDetector.test(context, row);
+    public boolean isLastRow(RowCells row) {
+        return lastRowDetector.test(context, row);
     }
 
     public boolean isHeaderRow(RowCells row) {
@@ -35,8 +37,12 @@ public class RowColumnDetector {
         return skipRowDetector.test(context, row);
     }
 
-    public boolean shouldSkipColumn(PropertyCell cell) {
-        return skipColumnDetector.test(context, cell);
+    public boolean isHeaderStartColumn(PropertyCell cell) {
+        return headerStartColumnDetector.test(context, cell);
+    }
+
+    public boolean isHeaderLastColumn(PropertyCell cell) {
+        return headerLastColumnDetector.test(context, cell);
     }
 
     public static RowColumnDetectorBuilder builder(ReadingContext context) {
@@ -47,8 +53,9 @@ public class RowColumnDetector {
 
         private final ReadingContext context;
 
-        private ColumnDetector skipColumnDetector;
-        private RowDetector endRowDetector;
+        private ColumnDetector headerStartColumnDetector;
+        private ColumnDetector headerLastColumnDetector;
+        private RowDetector lastRowDetector;
         private RowDetector headerRowDetector;
         private RowDetector skipRowDetector;
 
@@ -56,8 +63,8 @@ public class RowColumnDetector {
             this.context = context;
         }
 
-        public RowColumnDetectorBuilder endRowDetector(RowDetector endRowDetector) {
-            this.endRowDetector = endRowDetector;
+        public RowColumnDetectorBuilder lastRowDetector(RowDetector lastRowDetector) {
+            this.lastRowDetector = lastRowDetector;
             return this;
         }
 
@@ -71,8 +78,13 @@ public class RowColumnDetector {
             return this;
         }
 
-        public RowColumnDetectorBuilder skipColumnDetector(ColumnDetector skipColumnDetector) {
-            this.skipColumnDetector = skipColumnDetector;
+        public RowColumnDetectorBuilder headerStartColumnDetector(ColumnDetector headerStartColumnDetector) {
+            this.headerStartColumnDetector = headerStartColumnDetector;
+            return this;
+        }
+
+        public RowColumnDetectorBuilder headerLastColumnDetector(ColumnDetector headerLastColumnDetector) {
+            this.headerLastColumnDetector = headerLastColumnDetector;
             return this;
         }
 

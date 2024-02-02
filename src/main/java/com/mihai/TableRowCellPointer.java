@@ -5,6 +5,7 @@ import com.mihai.workbook.sheet.ReadableSheet;
 import com.mihai.workbook.sheet.RowCells;
 
 import java.util.Iterator;
+import java.util.List;
 
 public class TableRowCellPointer {
 
@@ -58,9 +59,19 @@ public class TableRowCellPointer {
     }
 
     public RowCells nextRow() {
-        currentRowCells = rowIterator.next();
+        currentRowCells = boundToCurrentTable(rowIterator.next());
         cellIterator = currentRowCells.iterator();
         return currentRowCells;
+    }
+
+    public RowCells boundToCurrentTable(RowCells rowCells) {
+        if(currentTableHeaders == null) {
+            return rowCells;
+        }
+        List<PropertyCell> tableRowCells = rowCells.stream()
+                .filter(cell -> currentTableHeaders.getHeader(cell.getColumnNumber()) != null)
+                .toList();
+        return new RowCells(rowCells.getRowNumber(), tableRowCells);
     }
 
     public boolean moreRowsExist() {
@@ -74,5 +85,13 @@ public class TableRowCellPointer {
 
     public boolean moreCellsInRowExist() {
         return cellIterator.hasNext();
+    }
+
+    public void reset() {
+        this.rowIterator = sheet.iterator();
+        this.currentTableHeaders = null;
+        this.currentRowCells = null;
+        this.currentCell = null;
+        this.cellIterator = null;
     }
 }

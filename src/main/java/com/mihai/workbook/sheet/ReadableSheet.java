@@ -6,10 +6,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellReference;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ReadableSheet implements Iterable<RowCells> {
 
@@ -21,6 +18,18 @@ public class ReadableSheet implements Iterable<RowCells> {
         this.sheet = sheet;
         this.mergedRegionValues = new MergedRegionValues(sheet);
         this.cellValueFormatter = new CellValueFormatter(sheet.getWorkbook());  // todo: make overridable
+    }
+
+    public RowCells getRow(int rowNumber) {
+        Row actualRow = sheet.getRow(rowNumber);
+        if(actualRow == null) {
+            return new RowCells(rowNumber, Collections.emptyList());
+        }
+        List<PropertyCell> cells = new ArrayList<>();
+        for (Cell cell : actualRow) {
+            cells.add(asPropertyCell(cell));
+        }
+        return new RowCells(rowNumber, cells);
     }
 
     public PropertyCell getCell(String cellReference) {
@@ -56,10 +65,12 @@ public class ReadableSheet implements Iterable<RowCells> {
         Iterator<Row> iterator = sheet.iterator();
 
         return new Iterator<>() {
+
             @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
+
 
             @Override
             public RowCells next() {
@@ -68,7 +79,7 @@ public class ReadableSheet implements Iterable<RowCells> {
                 for (Cell cell : row) {
                     cells.add(asPropertyCell(cell));
                 }
-                return new RowCells(row, cells);
+                return new RowCells(row.getRowNum(), cells);
             }
         };
     }

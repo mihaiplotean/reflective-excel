@@ -92,7 +92,12 @@ public class FieldAnalyzer {
 
     public List<RowsField> getExcelRowsFields(RowReader rowReader) {
         return FieldUtils.getFieldsListWithAnnotation(clazz, ExcelRows.class).stream()
-                .map(field -> new RowsField(rowReader, field))
+                .map(field -> {
+                    ExcelRows annotation = field.getAnnotation(ExcelRows.class);
+                    return new RowsField(rowReader, field, annotation.lastRowDetector(),
+                            annotation.headerRowDetector(), annotation.skipRowDetector(),
+                            annotation.headerStartColumnDetector(), annotation.headerEndColumnDetector());
+                })
                 .toList();
     }
 

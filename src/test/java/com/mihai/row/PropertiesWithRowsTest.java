@@ -4,7 +4,6 @@ import com.mihai.ExcelReadingSettings;
 import com.mihai.ReflectiveExcelReader;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -20,9 +19,9 @@ public class PropertiesWithRowsTest {
                 .headerStartCellReference("B5")
                 .create();
 
-        ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream, settings);
+        ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream);
 
-        FoodExpensesTable table = reader.read(FoodExpensesTable.class);
+        FoodExpensesTable table = reader.read(FoodExpensesTable.class, settings);
         assertEquals(7, table.getMonth());
         assertEquals(2021, table.getYear());
 

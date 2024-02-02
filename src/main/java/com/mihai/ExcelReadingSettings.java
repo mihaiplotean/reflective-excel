@@ -14,11 +14,12 @@ public class ExcelReadingSettings {
     private final String sheetName;
     private final int sheetIndex;
 
-    private final RowDetector endRowDetector;
+    private final RowDetector lastRowDetector;
     private final RowDetector headerRowDetector;
 
     private final RowDetector skipRowDetector;
-    private final ColumnDetector skipColumnDetector;
+    private final ColumnDetector headerStartColumnDetector;
+    private final ColumnDetector headerLastColumnDetector;
 
     private final BadInputExceptionConsumer exceptionConsumer;
 
@@ -26,9 +27,10 @@ public class ExcelReadingSettings {
         sheetName = builder.sheetName;
         sheetIndex = builder.sheetIndex;
 
-        skipColumnDetector = builder.skipColumnDetector;
+        headerStartColumnDetector = builder.headerStartColumnDetector;
+        headerLastColumnDetector = builder.headerLastColumnDetector;
 
-        endRowDetector = builder.endRowDetector;
+        lastRowDetector = builder.lastRowDetector;
         headerRowDetector = builder.headerRowDetector;
         skipRowDetector = builder.skipRowDetector;
 
@@ -43,12 +45,16 @@ public class ExcelReadingSettings {
         return sheetIndex;
     }
 
-    public ColumnDetector getSkipColumnDetector() {
-        return skipColumnDetector;
+    public ColumnDetector getHeaderStartColumnDetector() {
+        return headerStartColumnDetector;
     }
 
-    public RowDetector getEndRowDetector() {
-        return endRowDetector;
+    public ColumnDetector getHeaderLastColumnDetector() {
+        return headerLastColumnDetector;
+    }
+
+    public RowDetector getLastRowDetector() {
+        return lastRowDetector;
     }
 
     public RowDetector getHeaderRowDetector() {
@@ -72,10 +78,11 @@ public class ExcelReadingSettings {
         private String sheetName;
         private int sheetIndex;
 
-        private RowDetector endRowDetector = RowDetectors.allCellsEmpty();
+        private RowDetector lastRowDetector = RowDetectors.nextRowEmpty();
         private RowDetector headerRowDetector = RowDetectors.isFirstRow();
         private RowDetector skipRowDetector = RowDetectors.never();
-        private ColumnDetector skipColumnDetector = ColumnDetectors.never();
+        private ColumnDetector headerStartColumnDetector = ColumnDetectors.isFirstColumn();
+        private ColumnDetector headerLastColumnDetector = ColumnDetectors.nextCellEmpty();
 
         private BadInputExceptionConsumer exceptionConsumer = (row, exception) -> {
             throw exception;
@@ -94,12 +101,12 @@ public class ExcelReadingSettings {
         public ExcelReadingSettingsBuilder headerStartCellReference(String headerStartCellReference) {
             CellReference reference = new CellReference(headerStartCellReference);
             this.headerRowDetector = RowDetectors.isRowWithNumber(reference.getRow());
-            this.skipColumnDetector = ColumnDetectors.isBefore(reference.getCol());
+            this.headerStartColumnDetector = ColumnDetectors.isColumnWithNumber(reference.getCol());
             return this;
         }
 
         public ExcelReadingSettingsBuilder endRowDetector(RowDetector endRowDetector) {
-            this.endRowDetector = endRowDetector;
+            this.lastRowDetector = endRowDetector;
             return this;
         }
 
@@ -110,6 +117,16 @@ public class ExcelReadingSettings {
 
         public ExcelReadingSettingsBuilder skipRowDetector(RowDetector skipRowDetector) {
             this.skipRowDetector = skipRowDetector;
+            return this;
+        }
+
+        public ExcelReadingSettingsBuilder headerStartColumnDetector(ColumnDetector headerStartColumnDetector) {
+            this.headerStartColumnDetector = headerStartColumnDetector;
+            return this;
+        }
+
+        public ExcelReadingSettingsBuilder headerLastColumnDetector(ColumnDetector headerLastColumnDetector) {
+            this.headerLastColumnDetector = headerLastColumnDetector;
             return this;
         }
 

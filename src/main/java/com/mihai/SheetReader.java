@@ -6,7 +6,6 @@ import com.mihai.field.value.AnnotatedFieldValue;
 import com.mihai.workbook.sheet.PropertyCell;
 import com.mihai.workbook.sheet.ReadableSheet;
 import com.mihai.workbook.sheet.RowCells;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.util.*;
@@ -18,30 +17,44 @@ public class SheetReader implements RowReader {
     private final ReadingContext readingContext;
 
     private TableRowCellPointer rowCellPointer;
-    private RowColumnDetector rowColumnDetector;
     private ColumnFieldMapping columnFieldMapping;
+
+    private RowColumnDetector rowColumnDetector;
 
     public SheetReader(Sheet sheet, DeserializationContext deserializationContext, ExcelReadingSettings settings) {
         this.sheet = new ReadableSheet(sheet);
         this.settings = settings;
         this.rowCellPointer = new TableRowCellPointer(this.sheet);
         this.readingContext = new ReadingContext(rowCellPointer, deserializationContext, settings.getExceptionConsumer());
-        this.rowColumnDetector = createRowColumnDetector();
     }
 
     private RowColumnDetector createRowColumnDetector() {
         return RowColumnDetector.builder(readingContext)
-                .endRowDetector(settings.getEndRowDetector())
+                .lastRowDetector(settings.getLastRowDetector())
                 .headerRowDetector(settings.getHeaderRowDetector())
-                .skipColumnDetector(settings.getSkipColumnDetector())
+                .headerStartColumnDetector(settings.getHeaderStartColumnDetector())
+                .headerLastColumnDetector(settings.getHeaderLastColumnDetector())
                 .skipRowDetector(settings.getSkipRowDetector())
                 .build();
     }
 
     @Override
+    public ExcelReadingSettings getSettings() {
+        return settings;
+    }
+
+    @Override
     public <T> List<T> readRows(Class<T> clazz) {
+        return readRows(clazz, createRowColumnDetector());
+    }
+
+    @Override
+    public <T> List<T> readRows(Class<T> clazz, RowColumnDetector rowColumnDetector) {
+        this.rowColumnDetector = rowColumnDetector;
+
         List<T> rows = new ArrayList<>();
 
+        rowCellPointer.reset();
         RowCells headerRow = goToHeaderRow();
         if(headerRow == null) {
             return Collections.emptyList();
@@ -55,7 +68,8 @@ public class SheetReader implements RowReader {
 
             // todo: row contains all cell, but should contain only the cells of the table?
             // todo: TableRow extends RowCells -> returned by rowCellPointer#getCurrentTableRow
-            if (rowColumnDetector.isEndRow(row)) {
+            if (rowColumnDetector.isLastRow(row)) {
+                rows.add(createRow(clazz));
                 break;
             }
 
@@ -66,7 +80,7 @@ public class SheetReader implements RowReader {
             rows.add(createRow(clazz));
         }
 
-        return List.copyOf(rows);
+        return rows;
     }
 
     private RowCells goToHeaderRow() {
@@ -83,14 +97,24 @@ public class SheetReader implements RowReader {
         List<PropertyCell> headerCells = new ArrayList<>();
         RowCells row = rowCellPointer.getCurrentRow();
 
+        int startColumn = row.stream()
+                .filter(cell -> rowColumnDetector.isHeaderStartColumn(cell))
+                .findFirst()
+                .map(PropertyCell::getColumnNumber)
+                .orElse(Integer.MAX_VALUE);
+
+        int endColumn = row.stream()
+                .filter(cell -> cell.getColumnNumber() >= startColumn)
+                .filter(cell -> rowColumnDetector.isHeaderLastColumn(cell))
+                .findFirst()
+                .map(PropertyCell::getColumnNumber)
+                .orElse(Integer.MIN_VALUE);
+
         for (PropertyCell cell : row) {
-            if(StringUtils.isEmpty(cell.getValue())) {
-                continue;
+            int columnNumber = cell.getColumnNumber();
+            if(startColumn <= columnNumber && columnNumber <= endColumn) {
+                headerCells.add(cell);
             }
-            if (rowColumnDetector.shouldSkipColumn(cell)) {
-                continue;
-            }
-            headerCells.add(cell);
         }
 
         int endRow = headerCells.stream()

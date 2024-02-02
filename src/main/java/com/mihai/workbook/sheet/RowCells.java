@@ -1,5 +1,6 @@
 package com.mihai.workbook.sheet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.util.Iterator;
@@ -8,12 +9,12 @@ import java.util.stream.Stream;
 
 public class RowCells implements Iterable<PropertyCell> {
 
-    private final Row row;
+    private final int row;
     private final List<PropertyCell> cells;
 
-    public RowCells(Row row, List<PropertyCell> cells) {
+    public RowCells(int row, List<PropertyCell> cells) {
         this.row = row;
-        this.cells = cells;
+        this.cells = List.copyOf(cells);
     }
 
     public List<PropertyCell> getCells() {
@@ -28,7 +29,13 @@ public class RowCells implements Iterable<PropertyCell> {
     }
 
     public int getRowNumber() {
-        return row.getRowNum();
+        return row;
+    }
+
+    public boolean isEmpty() {
+        return cells.stream()
+                .map(PropertyCell::getValue)
+                .allMatch(StringUtils::isEmpty);
     }
 
     @Override
