@@ -1,6 +1,6 @@
 package com.mihai.detector;
 
-import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableCell;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
@@ -41,7 +41,7 @@ public class RowDetectors {
     public static RowDetector hasAllValues(Set<String> values) {
         return (context, rowCells) -> {
             Set<String> rowValues = rowCells.stream()
-                    .map(PropertyCell::getValue)
+                    .map(ReadableCell::getValue)
                     .collect(toCaseInsensitiveSet());
             return rowValues.containsAll(values);
         };
@@ -49,7 +49,7 @@ public class RowDetectors {
 
     public static RowDetector allCellsEmpty() {
         return (context, rowCells) -> rowCells.stream()
-                .map(PropertyCell::getValue)
+                .map(ReadableCell::getValue)
                 .allMatch(StringUtils::isEmpty);
     }
 

@@ -3,7 +3,7 @@ package com.mihai.multipletables.supplier;
 import com.mihai.ReadingContext;
 import com.mihai.detector.ColumnDetector;
 import com.mihai.detector.ColumnDetectors;
-import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableCell;
 
 public class SupplierHeaderColumnDetector implements ColumnDetector {
 
@@ -13,7 +13,7 @@ public class SupplierHeaderColumnDetector implements ColumnDetector {
     );
 
     @Override
-    public boolean test(ReadingContext context, PropertyCell columnCell) {
+    public boolean test(ReadingContext context, ReadableCell columnCell) {
         return DELEGATE.test(context, columnCell);
     }
 }

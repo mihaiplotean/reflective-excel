@@ -1,14 +1,14 @@
 package com.mihai;
 
-import com.mihai.workbook.sheet.PropertyCell;
-import com.mihai.workbook.sheet.RowCells;
+import com.mihai.workbook.sheet.ReadableCell;
+import com.mihai.workbook.sheet.ReadableRow;
 
 public class MaybeDynamicColumn {
 
     private final ReadingContext context;
-    private final PropertyCell column;
+    private final ReadableCell column;
 
-    public MaybeDynamicColumn(ReadingContext context, PropertyCell column) {
+    public MaybeDynamicColumn(ReadingContext context, ReadableCell column) {
         this.context = context;
         this.column = column;
     }
@@ -52,8 +52,8 @@ public class MaybeDynamicColumn {
     private int indexOf(String columnName) {
         assert context.getCurrentRowNumber() == column.getRowNumber() : "Current column must be on the same row as the currently processed row";
 
-        RowCells currentRow = context.getCurrentRow();
-        for (PropertyCell cell : currentRow) {
+        ReadableRow currentRow = context.getCurrentRow();
+        for (ReadableCell cell : currentRow) {
             if(columnName.equalsIgnoreCase(cell.getValue())) {
                 return cell.getColumnNumber();
             }

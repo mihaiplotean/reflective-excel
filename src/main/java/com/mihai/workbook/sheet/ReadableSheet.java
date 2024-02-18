@@ -8,7 +8,7 @@ import org.apache.poi.ss.util.CellReference;
 
 import java.util.*;
 
-public class ReadableSheet implements Iterable<RowCells> {
+public class ReadableSheet implements Iterable<ReadableRow> {
 
     private final Sheet sheet;
     private final MergedRegionValues mergedRegionValues;
@@ -20,24 +20,24 @@ public class ReadableSheet implements Iterable<RowCells> {
         this.cellValueFormatter = new CellValueFormatter(sheet.getWorkbook());  // todo: make overridable
     }
 
-    public RowCells getRow(int rowNumber) {
+    public ReadableRow getRow(int rowNumber) {
         Row actualRow = sheet.getRow(rowNumber);
         if(actualRow == null) {
-            return new RowCells(rowNumber, Collections.emptyList());
+            return new ReadableRow(rowNumber, Collections.emptyList());
         }
-        List<PropertyCell> cells = new ArrayList<>();
+        List<ReadableCell> cells = new ArrayList<>();
         for (Cell cell : actualRow) {
             cells.add(asPropertyCell(cell));
         }
-        return new RowCells(rowNumber, cells);
+        return new ReadableRow(rowNumber, cells);
     }
 
-    public PropertyCell getCell(String cellReference) {
+    public ReadableCell getCell(String cellReference) {
         CellReference reference = new CellReference(cellReference);
         return getCell(reference.getRow(), reference.getCol());
     }
 
-    public PropertyCell getCell(int rowIndex, int columnIndex) {
+    public ReadableCell getCell(int rowIndex, int columnIndex) {
         return Optional.ofNullable(sheet.getRow(rowIndex))
                 .map(row -> row.getCell(columnIndex))
                 .map(this::asPropertyCell)
@@ -55,13 +55,13 @@ public class ReadableSheet implements Iterable<RowCells> {
         return mergedRegionValues.getCellBounds(cell);
     }
 
-    public PropertyCell asPropertyCell(Cell cell) {
+    public ReadableCell asPropertyCell(Cell cell) {
         CellBounds cellBounds = getCellBounds(cell);
-        return new PropertyCell(cell, cellBounds, cellValueFormatter.toString(cellBounds.valueCell()));
+        return new ReadableCell(cell, cellBounds, cellValueFormatter.toString(cellBounds.valueCell()));
     }
 
     @Override
-    public Iterator<RowCells> iterator() {
+    public Iterator<ReadableRow> iterator() {
         Iterator<Row> iterator = sheet.iterator();
 
         return new Iterator<>() {
@@ -73,13 +73,13 @@ public class ReadableSheet implements Iterable<RowCells> {
 
 
             @Override
-            public RowCells next() {
+            public ReadableRow next() {
                 Row row = iterator.next();
-                List<PropertyCell> cells = new ArrayList<>();
+                List<ReadableCell> cells = new ArrayList<>();
                 for (Cell cell : row) {
                     cells.add(asPropertyCell(cell));
                 }
-                return new RowCells(row.getRowNum(), cells);
+                return new ReadableRow(row.getRowNum(), cells);
             }
         };
     }

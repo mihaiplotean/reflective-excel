@@ -2,7 +2,7 @@ package com.mihai.deserializer;
 
 import com.mihai.ReadingContext;
 import com.mihai.exception.BadInputException;
-import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableCell;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +17,7 @@ public class LocalDateDeserializer implements CellDeserializer<LocalDate> {
     }
 
     @Override
-    public LocalDate deserialize(ReadingContext context, PropertyCell cell) throws BadInputException {
+    public LocalDate deserialize(ReadingContext context, ReadableCell cell) throws BadInputException {
         String date = cell.getValue();
         try {
             return LocalDate.parse(date, dateTimeFormatter);

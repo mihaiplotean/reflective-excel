@@ -1,6 +1,6 @@
 package com.mihai.field.value;
 
-import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableCell;
 import com.mihai.ReadingContext;
 import com.mihai.ReflectionUtilities;
 
@@ -46,7 +46,7 @@ public class DynamicColumnFieldValue implements AnnotatedFieldValue {
             Class<?> keyArgumentType = (Class<?>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?
             Class<?> valueArgumentType = (Class<?>) genericType.getActualTypeArguments()[1];  // todo: unsafe cast?
 
-            PropertyCell headerCell = context.getCurrentTableHeaders().getHeader(context.getCurrentColumnNumber());
+            ReadableCell headerCell = context.getCurrentTableHeaders().getHeader(context.getCurrentColumnNumber());
             Object mapKey = context.getCellValue(headerCell.getCellReference(), keyArgumentType);
             Object mapValue = context.getCurrentCellValue(valueArgumentType);
 

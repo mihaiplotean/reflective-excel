@@ -1,8 +1,8 @@
 package com.mihai.exception;
 
-import com.mihai.workbook.sheet.RowCells;
+import com.mihai.workbook.sheet.ReadableRow;
 
 public interface BadInputExceptionConsumer {
 
-    void accept(RowCells row, BadInputException exception);
+    void accept(ReadableRow row, BadInputException exception);
 }

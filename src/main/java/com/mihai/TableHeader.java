@@ -1,17 +1,17 @@
 package com.mihai;
 
-import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableCell;
 
 import java.util.*;
 
 public class TableHeader {
 
-    private final PropertyCell cell;
+    private final ReadableCell cell;
     private final List<TableHeader> children = new ArrayList<>();
 
     private TableHeader parent;
 
-    public TableHeader(PropertyCell cell) {
+    public TableHeader(ReadableCell cell) {
         this.cell = cell;
     }
 
@@ -37,7 +37,7 @@ public class TableHeader {
         return cell.getValue();
     }
 
-    public PropertyCell getCell() {
+    public ReadableCell getCell() {
         return cell;
     }
 

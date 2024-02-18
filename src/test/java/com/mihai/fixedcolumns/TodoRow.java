@@ -17,6 +17,12 @@ public class TodoRow {
     public TodoRow() {
     }
 
+    public TodoRow(String description, Date dueDate, TodoPriority priority) {
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+    }
+
     public String getDescription() {
         return description;
     }

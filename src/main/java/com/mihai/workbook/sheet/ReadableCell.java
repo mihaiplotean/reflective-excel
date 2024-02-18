@@ -6,14 +6,14 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
-public class PropertyCell {
+public class ReadableCell {
 
     private final Cell cell;
     private final CellBounds cellBounds;
     private final String cellValue;
     private final String cellReference;
 
-    public PropertyCell(Cell cell, CellBounds cellBounds, String cellValue) {
+    public ReadableCell(Cell cell, CellBounds cellBounds, String cellValue) {
         this.cell = cell;
         this.cellBounds = cellBounds;
         this.cellValue = cellValue;
@@ -44,11 +44,11 @@ public class PropertyCell {
         return cellReference;
     }
 
-    public boolean equalLocation(PropertyCell other) {
+    public boolean equalLocation(ReadableCell other) {
         return getRowNumber() == other.getRowNumber() && getColumnNumber() == other.getColumnNumber();
     }
 
-    public boolean equalBounds(PropertyCell other) {
+    public boolean equalBounds(ReadableCell other) {
         return Objects.equals(cellBounds, other.cellBounds);
     }
 

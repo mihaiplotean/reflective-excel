@@ -3,9 +3,9 @@ package com.mihai;
 import com.mihai.deserializer.DeserializationContext;
 import com.mihai.exception.BadInputException;
 import com.mihai.exception.BadInputExceptionConsumer;
-import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableCell;
 import com.mihai.workbook.sheet.ReadableSheet;
-import com.mihai.workbook.sheet.RowCells;
+import com.mihai.workbook.sheet.ReadableRow;
 
 public class ReadingContext {
 
@@ -29,15 +29,15 @@ public class ReadingContext {
         return cellPointer.getCurrentTableHeaders();
     }
 
-    public RowCells getCurrentRow() {
+    public ReadableRow getCurrentRow() {
         return cellPointer.getCurrentRow();
     }
 
-    public RowCells getRow(int rowNumber) {
+    public ReadableRow getRow(int rowNumber) {
         return cellPointer.boundToCurrentTable(sheet.getRow(rowNumber));
     }
 
-    public PropertyCell getCurrentCell() {
+    public ReadableCell getCurrentCell() {
         return cellPointer.getCurrentCell();
     }
 
@@ -58,7 +58,7 @@ public class ReadingContext {
     }
 
     public String getCellValue(String cellReference) {
-        PropertyCell cell = sheet.getCell(cellReference);
+        ReadableCell cell = sheet.getCell(cellReference);
         if (cell == null) {
             return null;
         }
@@ -66,7 +66,7 @@ public class ReadingContext {
     }
 
     public String getCellValue(int row, int column) {
-        PropertyCell cell = sheet.getCell(row, column);
+        ReadableCell cell = sheet.getCell(row, column);
         if (cell == null) {
             return null;
         }
@@ -74,7 +74,7 @@ public class ReadingContext {
     }
 
     public <T> T getCellValue(String cellReference, Class<T> clazz) {
-        PropertyCell cell = sheet.getCell(cellReference);
+        ReadableCell cell = sheet.getCell(cellReference);
         if (cell == null) {
             return null;
         }
@@ -82,14 +82,14 @@ public class ReadingContext {
     }
 
     public <T> T getCellValue(int row, int column, Class<T> clazz) {
-        PropertyCell cell = sheet.getCell(row, column);
+        ReadableCell cell = sheet.getCell(row, column);
         if (cell == null) {
             return null;
         }
         return deserialize(cell, clazz);
     }
 
-    private <T> T deserialize(PropertyCell cell, Class<T> clazz) {
+    private <T> T deserialize(ReadableCell cell, Class<T> clazz) {
         int row = cell.getRowNumber();
         int column = cell.getColumnNumber();
 

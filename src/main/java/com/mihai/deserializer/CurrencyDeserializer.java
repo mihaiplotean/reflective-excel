@@ -2,7 +2,7 @@ package com.mihai.deserializer;
 
 import com.mihai.ReadingContext;
 import com.mihai.exception.BadInputException;
-import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableCell;
 
 import java.util.Currency;
 import java.util.Set;
@@ -19,7 +19,7 @@ public class CurrencyDeserializer implements CellDeserializer<Currency> {
     }
 
     @Override
-    public Currency deserialize(ReadingContext context, PropertyCell cell) throws BadInputException {
+    public Currency deserialize(ReadingContext context, ReadableCell cell) throws BadInputException {
         String value = cell.getValue();
         if (KNOWN_CURRENCIES.contains(value)) {
             return Currency.getInstance(value);

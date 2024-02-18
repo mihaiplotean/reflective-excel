@@ -2,8 +2,8 @@ package com.mihai;
 
 import com.mihai.detector.ColumnDetector;
 import com.mihai.detector.RowDetector;
-import com.mihai.workbook.sheet.PropertyCell;
-import com.mihai.workbook.sheet.RowCells;
+import com.mihai.workbook.sheet.ReadableCell;
+import com.mihai.workbook.sheet.ReadableRow;
 
 public class RowColumnDetector {
 
@@ -25,23 +25,23 @@ public class RowColumnDetector {
         this.headerLastColumnDetector = builder.headerLastColumnDetector;
     }
 
-    public boolean isLastRow(RowCells row) {
+    public boolean isLastRow(ReadableRow row) {
         return lastRowDetector.test(context, row);
     }
 
-    public boolean isHeaderRow(RowCells row) {
+    public boolean isHeaderRow(ReadableRow row) {
         return headerRowDetector.test(context, row);
     }
 
-    public boolean shouldSkipRow(RowCells row) {
+    public boolean shouldSkipRow(ReadableRow row) {
         return skipRowDetector.test(context, row);
     }
 
-    public boolean isHeaderStartColumn(PropertyCell cell) {
+    public boolean isHeaderStartColumn(ReadableCell cell) {
         return headerStartColumnDetector.test(context, cell);
     }
 
-    public boolean isHeaderLastColumn(PropertyCell cell) {
+    public boolean isHeaderLastColumn(ReadableCell cell) {
         return headerLastColumnDetector.test(context, cell);
     }
 

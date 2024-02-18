@@ -19,6 +19,12 @@ public class PopulationRow {
     public PopulationRow() {
     }
 
+    public PopulationRow(Integer id, String country, Map<Integer, Integer> populationPerYear) {
+        this.id = id;
+        this.country = country;
+        this.populationPerYear = populationPerYear;
+    }
+
     public Integer getId() {
         return id;
     }

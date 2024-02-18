@@ -2,7 +2,7 @@ package com.mihai.deserializer;
 
 import com.mihai.ReadingContext;
 import com.mihai.exception.BadInputException;
-import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableCell;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,12 +39,12 @@ public class DefaultDeserializationContext implements DeserializationContext {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserialize(ReadingContext context, Class<T> clazz, PropertyCell propertyCell) throws BadInputException {
+    public <T> T deserialize(ReadingContext context, Class<T> clazz, ReadableCell cell) throws BadInputException {
         CellDeserializer<?> cellDeserializer = deserializerMap.get(clazz);
         if (cellDeserializer == null) {
             throw BadInputException.missingDeserializer(clazz);
         }
-        return (T) cellDeserializer.deserialize(context, propertyCell);
+        return (T) cellDeserializer.deserialize(context, cell);
     }
 
     @Override

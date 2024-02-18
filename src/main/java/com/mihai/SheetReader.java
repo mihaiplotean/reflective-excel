@@ -3,9 +3,9 @@ package com.mihai;
 import com.mihai.deserializer.DeserializationContext;
 import com.mihai.field.AnnotatedField;
 import com.mihai.field.value.AnnotatedFieldValue;
-import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableCell;
 import com.mihai.workbook.sheet.ReadableSheet;
-import com.mihai.workbook.sheet.RowCells;
+import com.mihai.workbook.sheet.ReadableRow;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.util.*;
@@ -55,7 +55,7 @@ public class SheetReader implements RowReader {
         List<T> rows = new ArrayList<>();
 
         rowCellPointer.reset();
-        RowCells headerRow = goToHeaderRow();
+        ReadableRow headerRow = goToHeaderRow();
         if(headerRow == null) {
             return Collections.emptyList();
         }
@@ -64,7 +64,7 @@ public class SheetReader implements RowReader {
         columnFieldMapping = createColumnFieldMapping(clazz);
 
         while (rowCellPointer.moreRowsExist()) {
-            RowCells row = rowCellPointer.nextRow();
+            ReadableRow row = rowCellPointer.nextRow();
 
             // todo: row contains all cell, but should contain only the cells of the table?
             // todo: TableRow extends RowCells -> returned by rowCellPointer#getCurrentTableRow
@@ -83,9 +83,9 @@ public class SheetReader implements RowReader {
         return rows;
     }
 
-    private RowCells goToHeaderRow() {
+    private ReadableRow goToHeaderRow() {
         while (rowCellPointer.moreRowsExist()) {
-            RowCells row = rowCellPointer.nextRow();
+            ReadableRow row = rowCellPointer.nextRow();
             if (rowColumnDetector.isHeaderRow(row)) {
                 return row;
             }
@@ -94,23 +94,23 @@ public class SheetReader implements RowReader {
     }
 
     private TableHeaders readHeaders() {
-        List<PropertyCell> headerCells = new ArrayList<>();
-        RowCells row = rowCellPointer.getCurrentRow();
+        List<ReadableCell> headerCells = new ArrayList<>();
+        ReadableRow row = rowCellPointer.getCurrentRow();
 
         int startColumn = row.stream()
                 .filter(cell -> rowColumnDetector.isHeaderStartColumn(cell))
                 .findFirst()
-                .map(PropertyCell::getColumnNumber)
+                .map(ReadableCell::getColumnNumber)
                 .orElse(Integer.MAX_VALUE);
 
         int endColumn = row.stream()
                 .filter(cell -> cell.getColumnNumber() >= startColumn)
                 .filter(cell -> rowColumnDetector.isHeaderLastColumn(cell))
                 .findFirst()
-                .map(PropertyCell::getColumnNumber)
+                .map(ReadableCell::getColumnNumber)
                 .orElse(Integer.MIN_VALUE);
 
-        for (PropertyCell cell : row) {
+        for (ReadableCell cell : row) {
             int columnNumber = cell.getColumnNumber();
             if(startColumn <= columnNumber && columnNumber <= endColumn) {
                 headerCells.add(cell);
@@ -118,7 +118,7 @@ public class SheetReader implements RowReader {
         }
 
         int endRow = headerCells.stream()
-                .map(PropertyCell::getBoundEndRow)
+                .map(ReadableCell::getBoundEndRow)
                 .max(Integer::compare)
                 .orElse(0);
 
@@ -145,9 +145,9 @@ public class SheetReader implements RowReader {
         Map<AnnotatedField, AnnotatedFieldValue> fieldValues = new HashMap<>();
 
         while (rowCellPointer.moreCellsInRowExist()) {
-            PropertyCell propertyCell = rowCellPointer.nextCell();
+            ReadableCell cell = rowCellPointer.nextCell();
 
-            AnnotatedField field = columnFieldMapping.getField(propertyCell.getColumnNumber());
+            AnnotatedField field = columnFieldMapping.getField(cell.getColumnNumber());
             if (field != null) {
                 AnnotatedFieldValue fieldValue = fieldValues.computeIfAbsent(field, AnnotatedField::newFieldValue);
                 fieldValue.readValue(readingContext);

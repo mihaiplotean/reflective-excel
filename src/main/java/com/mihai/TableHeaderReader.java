@@ -1,9 +1,9 @@
 package com.mihai;
 
 import com.mihai.workbook.sheet.CellBounds;
-import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableCell;
 import com.mihai.workbook.sheet.ReadableSheet;
-import com.mihai.workbook.sheet.RowCells;
+import com.mihai.workbook.sheet.ReadableRow;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +18,9 @@ public class TableHeaderReader {
         this.sheet = sheet;
     }
 
-    public TableHeaders read(RowCells lastHeaderRow, List<PropertyCell> headerCells) {
+    public TableHeaders read(ReadableRow lastHeaderRow, List<ReadableCell> headerCells) {
         int startRow = headerCells.stream()
-                .map(PropertyCell::getBoundStartRow)
+                .map(ReadableCell::getBoundStartRow)
                 .min(Integer::compare)
                 .orElse(0);
 
@@ -32,13 +32,13 @@ public class TableHeaderReader {
         return new TableHeaders(headers);
     }
 
-    private boolean withinColumnBound(PropertyCell cell, List<PropertyCell> cells) {
+    private boolean withinColumnBound(ReadableCell cell, List<ReadableCell> cells) {
         return cells.stream()
                 .anyMatch(headerCell -> headerCell.getBoundStartColumn() <= cell.getBoundStartColumn()
                         && cell.getBoundEndColumn() <= headerCell.getBoundEndColumn());
     }
 
-    private TableHeader buildHeader(int startRow, PropertyCell headerCell) {
+    private TableHeader buildHeader(int startRow, ReadableCell headerCell) {
         int boundStartRow = headerCell.getBoundStartRow();
         CellBounds cellBounds = getCellBounds(headerCell);
         TableHeader tableHeader = headerPerBounds.get(cellBounds);
@@ -60,11 +60,11 @@ public class TableHeaderReader {
         return tableHeader;
     }
 
-    private CellBounds getCellBounds(PropertyCell cell) {
+    private CellBounds getCellBounds(ReadableCell cell) {
         return sheet.getCellBounds(cell.getRowNumber(), cell.getColumnNumber());
     }
 
-    private PropertyCell getCellAbove(PropertyCell cell) {
+    private ReadableCell getCellAbove(ReadableCell cell) {
         int boundStartRow = cell.getBoundStartRow();
         return sheet.getCell(boundStartRow - 1, cell.getColumnNumber());
     }

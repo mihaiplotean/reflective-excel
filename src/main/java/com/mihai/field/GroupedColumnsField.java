@@ -28,6 +28,10 @@ public class GroupedColumnsField implements AnnotatedHeaderField {
         return field;
     }
 
+    public String getGroupName() {
+        return groupName;
+    }
+
     @Override
     public AnnotatedFieldValue newFieldValue() {
         return new GroupedColumnsFieldValue(field, columnFieldMapping);

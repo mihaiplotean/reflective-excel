@@ -1,27 +1,26 @@
 package com.mihai.workbook.sheet;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Row;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class RowCells implements Iterable<PropertyCell> {
+public class ReadableRow implements Iterable<ReadableCell> {
 
     private final int row;
-    private final List<PropertyCell> cells;
+    private final List<ReadableCell> cells;
 
-    public RowCells(int row, List<PropertyCell> cells) {
+    public ReadableRow(int row, List<ReadableCell> cells) {
         this.row = row;
         this.cells = List.copyOf(cells);
     }
 
-    public List<PropertyCell> getCells() {
+    public List<ReadableCell> getCells() {
         return cells;
     }
 
-    public PropertyCell getCell(int columnIndex) {
+    public ReadableCell getCell(int columnIndex) {
         return cells.stream()
                 .filter(cell -> cell.getColumnNumber() == columnIndex)
                 .findFirst()
@@ -34,16 +33,16 @@ public class RowCells implements Iterable<PropertyCell> {
 
     public boolean isEmpty() {
         return cells.stream()
-                .map(PropertyCell::getValue)
+                .map(ReadableCell::getValue)
                 .allMatch(StringUtils::isEmpty);
     }
 
     @Override
-    public Iterator<PropertyCell> iterator() {
+    public Iterator<ReadableCell> iterator() {
         return cells.iterator();
     }
 
-    public Stream<PropertyCell> stream() {
+    public Stream<ReadableCell> stream() {
         return cells.stream();
     }
 }

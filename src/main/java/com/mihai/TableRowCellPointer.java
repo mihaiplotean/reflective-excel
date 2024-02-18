@@ -1,8 +1,8 @@
 package com.mihai;
 
-import com.mihai.workbook.sheet.PropertyCell;
+import com.mihai.workbook.sheet.ReadableCell;
 import com.mihai.workbook.sheet.ReadableSheet;
-import com.mihai.workbook.sheet.RowCells;
+import com.mihai.workbook.sheet.ReadableRow;
 
 import java.util.Iterator;
 import java.util.List;
@@ -13,11 +13,11 @@ public class TableRowCellPointer {
 
     private TableHeaders currentTableHeaders;
 
-    private RowCells currentRowCells;
-    private PropertyCell currentCell;
+    private ReadableRow currentRow;
+    private ReadableCell currentCell;
 
-    private Iterator<RowCells> rowIterator;
-    private Iterator<PropertyCell> cellIterator;
+    private Iterator<ReadableRow> rowIterator;
+    private Iterator<ReadableCell> cellIterator;
 
     public TableRowCellPointer(ReadableSheet sheet) {
         this.sheet = sheet;
@@ -29,10 +29,10 @@ public class TableRowCellPointer {
     }
 
     public int getCurrentRowNumber() {
-        if(currentRowCells == null) {
+        if(currentRow == null) {
             return -1;
         }
-        return currentRowCells.getRowNumber();
+        return currentRow.getRowNumber();
     }
 
     public int getCurrentColumnNumber() {
@@ -50,35 +50,35 @@ public class TableRowCellPointer {
         this.currentTableHeaders = currentTableHeaders;
     }
 
-    public RowCells getCurrentRow() {
-        return currentRowCells;
+    public ReadableRow getCurrentRow() {
+        return currentRow;
     }
 
-    public PropertyCell getCurrentCell() {
+    public ReadableCell getCurrentCell() {
         return currentCell;
     }
 
-    public RowCells nextRow() {
-        currentRowCells = boundToCurrentTable(rowIterator.next());
-        cellIterator = currentRowCells.iterator();
-        return currentRowCells;
+    public ReadableRow nextRow() {
+        currentRow = boundToCurrentTable(rowIterator.next());
+        cellIterator = currentRow.iterator();
+        return currentRow;
     }
 
-    public RowCells boundToCurrentTable(RowCells rowCells) {
+    public ReadableRow boundToCurrentTable(ReadableRow row) {
         if(currentTableHeaders == null) {
-            return rowCells;
+            return row;
         }
-        List<PropertyCell> tableRowCells = rowCells.stream()
+        List<ReadableCell> tableRowCells = row.stream()
                 .filter(cell -> currentTableHeaders.getHeader(cell.getColumnNumber()) != null)
                 .toList();
-        return new RowCells(rowCells.getRowNumber(), tableRowCells);
+        return new ReadableRow(row.getRowNumber(), tableRowCells);
     }
 
     public boolean moreRowsExist() {
         return rowIterator.hasNext();
     }
 
-    public PropertyCell nextCell() {
+    public ReadableCell nextCell() {
         currentCell = cellIterator.next();
         return currentCell;
     }
@@ -90,7 +90,7 @@ public class TableRowCellPointer {
     public void reset() {
         this.rowIterator = sheet.iterator();
         this.currentTableHeaders = null;
-        this.currentRowCells = null;
+        this.currentRow = null;
         this.currentCell = null;
         this.cellIterator = null;
     }
