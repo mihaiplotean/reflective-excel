@@ -1,9 +1,7 @@
 package com.mihai.reader;
 
 import com.mihai.FieldAnalyzer;
-import com.mihai.field.*;
 import com.mihai.reader.field.*;
-import reader.field.*;
 
 import java.util.HashMap;
 import java.util.List;
