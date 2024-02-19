@@ -1,9 +1,9 @@
 package com.mihai.dynamiccolumns;
 
-import com.mihai.workbook.sheet.ReadableCell;
-import com.mihai.ReadingContext;
-import com.mihai.detector.ColumnDetector;
-import com.mihai.MaybeDynamicColumn;
+import com.mihai.reader.workbook.sheet.ReadableCell;
+import com.mihai.reader.ReadingContext;
+import com.mihai.reader.detector.ColumnDetector;
+import com.mihai.reader.MaybeDynamicColumn;
 
 public class PopulationRowDynamicColumnDetector implements ColumnDetector {
 

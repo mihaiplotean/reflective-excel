@@ -1,7 +1,5 @@
 package com.mihai.writer;
 
-import com.mihai.ExcelReadingSettings;
-
 public class ExcelWritingSettings {
 
     public static final ExcelWritingSettings DEFAULT = new ExcelWritingSettingsBuilder().create();

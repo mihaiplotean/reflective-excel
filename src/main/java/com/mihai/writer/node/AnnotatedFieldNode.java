@@ -2,10 +2,10 @@ package com.mihai.writer.node;
 
 import com.mihai.FieldAnalyzer;
 import com.mihai.ReflectionUtilities;
-import com.mihai.field.AnnotatedHeaderField;
-import com.mihai.field.DynamicColumnField;
-import com.mihai.field.FixedColumnField;
-import com.mihai.field.GroupedColumnsField;
+import com.mihai.reader.field.AnnotatedHeaderField;
+import com.mihai.reader.field.DynamicColumnField;
+import com.mihai.reader.field.FixedColumnField;
+import com.mihai.reader.field.GroupedColumnsField;
 
 import java.lang.reflect.Field;
 import java.util.*;

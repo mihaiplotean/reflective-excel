@@ -1,7 +1,7 @@
 package com.mihai.fixedcolumns;
 
-import com.mihai.ReflectiveExcelReader;
-import com.mihai.deserializer.CellDeserializers;
+import com.mihai.reader.ReflectiveExcelReader;
+import com.mihai.reader.deserializer.CellDeserializers;
 import com.mihai.writer.ReflectiveExcelWriter;
 import org.junit.jupiter.api.Test;
 

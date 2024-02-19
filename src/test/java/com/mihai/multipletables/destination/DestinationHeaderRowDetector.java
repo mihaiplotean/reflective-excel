@@ -1,9 +1,9 @@
 package com.mihai.multipletables.destination;
 
-import com.mihai.ReadingContext;
-import com.mihai.detector.RowDetector;
-import com.mihai.detector.RowDetectors;
-import com.mihai.workbook.sheet.ReadableRow;
+import com.mihai.reader.ReadingContext;
+import com.mihai.reader.detector.RowDetector;
+import com.mihai.reader.detector.RowDetectors;
+import com.mihai.reader.workbook.sheet.ReadableRow;
 
 public class DestinationHeaderRowDetector implements RowDetector {
 

@@ -1,7 +1,7 @@
 package com.mihai.row;
 
-import com.mihai.ExcelReadingSettings;
-import com.mihai.ReflectiveExcelReader;
+import com.mihai.reader.ExcelReadingSettings;
+import com.mihai.reader.ReflectiveExcelReader;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;

@@ -1,8 +1,6 @@
 package com.mihai.multipletables;
 
-import com.mihai.ExcelReadingSettings;
-import com.mihai.ReflectiveExcelReader;
-import com.mihai.row.FoodExpensesTable;
+import com.mihai.reader.ReflectiveExcelReader;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;

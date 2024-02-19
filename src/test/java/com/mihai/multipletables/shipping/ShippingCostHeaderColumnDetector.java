@@ -1,9 +1,9 @@
 package com.mihai.multipletables.shipping;
 
-import com.mihai.ReadingContext;
-import com.mihai.detector.ColumnDetector;
-import com.mihai.detector.ColumnDetectors;
-import com.mihai.workbook.sheet.ReadableCell;
+import com.mihai.reader.ReadingContext;
+import com.mihai.reader.detector.ColumnDetector;
+import com.mihai.reader.detector.ColumnDetectors;
+import com.mihai.reader.workbook.sheet.ReadableCell;
 
 public class ShippingCostHeaderColumnDetector implements ColumnDetector {
 

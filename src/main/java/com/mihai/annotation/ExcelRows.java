@@ -1,8 +1,8 @@
 package com.mihai.annotation;
 
-import com.mihai.detector.ColumnDetector;
-import com.mihai.detector.RowDetector;
-import com.mihai.detector.UseAsSpecifiedInReadSettings;
+import com.mihai.reader.detector.ColumnDetector;
+import com.mihai.reader.detector.RowDetector;
+import com.mihai.reader.detector.UseAsSpecifiedInReadSettings;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

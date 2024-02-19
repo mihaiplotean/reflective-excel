@@ -1,7 +1,6 @@
 package com.mihai.dynamiccolumns;
 
-import com.mihai.ReflectiveExcelReader;
-import com.mihai.fixedcolumns.TodoRow;
+import com.mihai.reader.ReflectiveExcelReader;
 import com.mihai.writer.ReflectiveExcelWriter;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +10,6 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
