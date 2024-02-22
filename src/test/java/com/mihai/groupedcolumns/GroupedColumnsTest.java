@@ -69,6 +69,7 @@ public class GroupedColumnsTest {
                 new FoodRow(new PizzaGroup(new PizzaSize("20cm", "28cm"), "Capriciosa"), 42)
         );
 
-        new ReflectiveExcelWriter(tempFile).writeRows(rows, FoodRow.class);
+        ReflectiveExcelWriter writer = new ReflectiveExcelWriter(tempFile);
+        writer.writeRows(rows, FoodRow.class);
     }
 }

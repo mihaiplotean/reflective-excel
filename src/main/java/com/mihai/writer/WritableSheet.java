@@ -1,13 +1,11 @@
 package com.mihai.writer;
 
-import com.mihai.writer.serializer.WritableCellStyle;
+import com.mihai.writer.style.WritableCellStyle;
 import org.apache.poi.ss.formula.BaseFormulaEvaluator;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
+import org.apache.poi.ss.util.RegionUtil;
 
 public class WritableSheet {
 
@@ -17,6 +15,14 @@ public class WritableSheet {
     public WritableSheet(Sheet sheet) {
         this.sheet = sheet;
         this.cellStyleCreator = new CellStyleCreator(sheet.getWorkbook());
+    }
+
+    public Sheet getSheet() {
+        return sheet;
+    }
+
+    public Workbook getWorkbook() {
+        return sheet.getWorkbook();
     }
 //
 //    public Row createNextRow() {
@@ -33,15 +39,11 @@ public class WritableSheet {
         return row;
     }
 
-    public void writeCell(WritableCell writableCell) {
+    public Cell writeCell(WritableCell writableCell) {
         WritableRow startRow = getOrCreateRow(writableCell.getStartRow());
         Cell cell = startRow.getOrCreateCell(writableCell.getStartColumn());
         writableCell.writeTo(cell);
-        WritableCellStyle style = writableCell.getStyle();
-        if(style != null) {
-            cell.setCellStyle(cellStyleCreator.getCellStyle(style));
-        }
-        mergeCellBounds(cell, writableCell);
+        return cell;
     }
 
     private WritableRow getOrCreateRow(int rowNumber) {
@@ -52,7 +54,7 @@ public class WritableSheet {
         return new WritableRow(row);
     }
 
-    private void mergeCellBounds(Cell cell, WritableCell writableCell) {
+    public void mergeCellBounds(Cell cell, WritableCell writableCell) {
         int startRow = writableCell.getStartRow();
         int endRow = writableCell.getEndRow();
         int startColumn = writableCell.getStartColumn();
@@ -61,6 +63,29 @@ public class WritableSheet {
             sheet.addMergedRegion(new CellRangeAddress(startRow, endRow, startColumn, endColumn));
             CellUtil.setAlignment(cell, HorizontalAlignment.CENTER);
         }
+    }
+
+    public void applyRegionStyle(CellRangeAddress rangeAddress, CellStyle style) {
+        BorderStyle borderTop = style.getBorderTop();
+        if (borderTop != null) {
+            RegionUtil.setBorderTop(borderTop, rangeAddress, sheet);
+        }
+        BorderStyle borderRight = style.getBorderRight();
+        if (borderRight != null) {
+            RegionUtil.setBorderRight(borderRight, rangeAddress, sheet);
+        }
+        BorderStyle borderBottom = style.getBorderBottom();
+        if (borderTop != null) {
+            RegionUtil.setBorderBottom(borderBottom, rangeAddress, sheet);
+        }
+        BorderStyle borderLeft = style.getBorderLeft();
+        if (borderLeft != null) {
+            RegionUtil.setBorderBottom(borderLeft, rangeAddress, sheet);
+        }
+        RegionUtil.setTopBorderColor(style.getTopBorderColor(), rangeAddress, sheet);
+        RegionUtil.setRightBorderColor(style.getRightBorderColor(), rangeAddress, sheet);
+        RegionUtil.setBottomBorderColor(style.getBottomBorderColor(), rangeAddress, sheet);
+        RegionUtil.setLeftBorderColor(style.getLeftBorderColor(), rangeAddress, sheet);
     }
 
     public void evaluateAllFormulas() {
@@ -73,7 +98,7 @@ public class WritableSheet {
                 int columnIndex = cell.getColumnIndex();
                 int originalColumnWidth = sheet.getColumnWidth(columnIndex);
                 sheet.autoSizeColumn(columnIndex);
-                if(originalColumnWidth > sheet.getColumnWidth(columnIndex)) {
+                if (originalColumnWidth > sheet.getColumnWidth(columnIndex)) {
                     sheet.setColumnWidth(columnIndex, originalColumnWidth);
                 }
             }

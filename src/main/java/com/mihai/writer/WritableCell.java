@@ -1,7 +1,8 @@
 package com.mihai.writer;
 
-import com.mihai.writer.serializer.WritableCellStyle;
+import com.mihai.writer.style.WritableCellStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,9 +43,9 @@ public class WritableCell {
         return value;
     }
 
-    public WritableCellStyle getStyle() {
-        return style;
-    }
+//    public WritableCellStyle getStyle() {
+//        return style;
+//    }
 
     public void writeTo(Cell cell) {
         if (value instanceof Number) {
@@ -62,6 +63,18 @@ public class WritableCell {
         } else {
             cell.setCellValue(value.toString());
         }
+    }
+
+    public boolean spansMultipleCells() {
+        return !spansOneCell();
+    }
+
+    public boolean spansOneCell() {
+        return endRow - startRow == 0 && endColumn - startColumn == 0;
+    }
+
+    public CellRangeAddress getCellRangeAddress() {
+        return new CellRangeAddress(startRow, endRow, startColumn, endColumn);
     }
 
     public int getStartRow() {
