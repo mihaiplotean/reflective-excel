@@ -91,6 +91,10 @@ public class FieldAnalyzer {
                 .toList();
     }
 
+    public List<RowsField> getExcelRowsFields() {
+        return getExcelRowsFields(null);
+    }
+
     public List<RowsField> getExcelRowsFields(RowReader rowReader) {
         return FieldUtils.getFieldsListWithAnnotation(clazz, ExcelRows.class).stream()
                 .map(field -> {

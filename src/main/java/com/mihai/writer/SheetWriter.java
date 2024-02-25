@@ -1,5 +1,8 @@
 package com.mihai.writer;
 
+import com.mihai.FieldAnalyzer;
+import com.mihai.reader.field.AnnotatedField;
+import com.mihai.reader.field.CellValueField;
 import com.mihai.writer.node.RootFieldNode;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.serializer.SerializationContext;
@@ -7,6 +10,7 @@ import com.mihai.writer.style.CellStyleContext;
 import com.mihai.writer.style.DefaultStyleContext;
 import org.apache.poi.ss.usermodel.Sheet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SheetWriter {
@@ -35,5 +39,18 @@ public class SheetWriter {
 
         sheet.evaluateAllFormulas();
         sheet.autoResizeAllColumns();
+    }
+
+    public <T> void write(Class<T> clazz) {
+        FieldAnalyzer fieldAnalyzer = new FieldAnalyzer(clazz);
+
+        List<AnnotatedField> fields = new ArrayList<>();
+        fields.addAll(fieldAnalyzer.getExcelCellValueFields());
+        fields.addAll(fieldAnalyzer.getExcelPropertyFields());
+        fields.addAll(fieldAnalyzer.getExcelRowsFields());
+
+        for (CellValueField field : fieldAnalyzer.getExcelCellValueFields()) {
+
+        }
     }
 }
