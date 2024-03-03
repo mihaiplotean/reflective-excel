@@ -13,7 +13,7 @@ public class StyleProviders {
     }
 
     public static StyleProvider forDate() {
-        return (context, target) -> WritableCellStyle.withDataFormat(DateFormatUtils.getLocalizedDatePattern("dd/MM/yyy"));
+        return (context, target) -> WritableCellStyle.withDataFormat(DateFormatUtils.getLocalizedDatePattern("dd/MM/yyyy"));
     }
 
     public static StyleProvider of(WritableCellStyle style) {
