@@ -1,19 +1,15 @@
 package com.mihai.writer.node;
 
-import com.mihai.ReflectionUtilities;
-
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-public class GroupedFieldNode implements AnnotatedFieldNodeInterface {
+public class GroupedFieldNode implements AnnotatedFieldNode {
 
     private final Field field;
     private final Object target;
     private final String name;
-    private final List<AnnotatedFieldNodeInterface> children;
+    private final List<AnnotatedFieldNode> children;
 
     public GroupedFieldNode(Field field, Object target, String name) {
         this.field = field;
@@ -40,20 +36,20 @@ public class GroupedFieldNode implements AnnotatedFieldNodeInterface {
     @Override
     public int getLength() {
         return children.stream()
-                .mapToInt(AnnotatedFieldNodeInterface::getLength)
+                .mapToInt(AnnotatedFieldNode::getLength)
                 .sum();
     }
 
     @Override
     public int getHeight() {
         return 1 + children.stream()
-                .mapToInt(AnnotatedFieldNodeInterface::getHeight)
+                .mapToInt(AnnotatedFieldNode::getHeight)
                 .max()
                 .orElse(0);
     }
 
     @Override
-    public List<AnnotatedFieldNodeInterface> getChildren() {
+    public List<AnnotatedFieldNode> getChildren() {
         return children;
     }
 

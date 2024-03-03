@@ -1,6 +1,8 @@
 package com.mihai.writer.style.font;
 
+import com.mihai.writer.style.color.CellColor;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.IndexedColors;
 
 import java.util.Objects;
 
@@ -8,6 +10,7 @@ public class CellFont {
 
     private final String name;
     private final short size;  // Font#setFontHeightInPoints
+    private final CellColor color;
 
     private final boolean bold;
     private final boolean italic;
@@ -16,6 +19,7 @@ public class CellFont {
     private CellFont(CellFontBuilder cellFontBuilder) {
         name = cellFontBuilder.name;
         size = cellFontBuilder.size;
+        color = cellFontBuilder.color;
         bold = cellFontBuilder.bold;
         italic = cellFontBuilder.italic;
         underLine = cellFontBuilder.underLine;
@@ -27,6 +31,10 @@ public class CellFont {
 
     public short getSize() {
         return size;
+    }
+
+    public CellColor getColor() {
+        return color;
     }
 
     public boolean isBold() {
@@ -45,6 +53,7 @@ public class CellFont {
         return new CellFontBuilder()
                 .name(!StringUtils.isEmpty(name) ? name : other.name)
                 .size(size > 0 ? size : other.size)
+                .color(color != null ? color : other.color)
                 .bold(bold || other.bold)
                 .italic(italic || other.italic)
                 .underLine(underLine || other.underLine)
@@ -63,6 +72,7 @@ public class CellFont {
         return Objects.equals(name, cellFont.name)
                 && size == cellFont.size
                 && bold == cellFont.bold
+                && Objects.equals(color, cellFont.color)
                 && italic == cellFont.italic
                 && underLine == cellFont.underLine;
     }
@@ -76,6 +86,7 @@ public class CellFont {
 
         private String name;
         private short size;
+        private CellColor color;
 
         private boolean bold;
         private boolean italic;
@@ -88,6 +99,11 @@ public class CellFont {
 
         public CellFontBuilder size(short size) {
             this.size = size;
+            return this;
+        }
+
+        public CellFontBuilder color(CellColor color) {
+            this.color = color;
             return this;
         }
 

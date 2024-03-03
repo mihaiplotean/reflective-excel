@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
 
-public class DynamicFieldLeafNode implements AnnotatedFieldNodeInterface {
+public class DynamicFieldLeafNode implements AnnotatedFieldNode {
 
     private final Class<?> type;
     private final Object name;
@@ -40,7 +40,7 @@ public class DynamicFieldLeafNode implements AnnotatedFieldNodeInterface {
     }
 
     @Override
-    public List<AnnotatedFieldNodeInterface> getChildren() {
+    public List<AnnotatedFieldNode> getChildren() {
         return Collections.emptyList();
     }
 

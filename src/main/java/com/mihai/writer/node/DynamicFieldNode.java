@@ -7,7 +7,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Map;
 
-public class DynamicFieldNode implements AnnotatedFieldNodeInterface {
+public class DynamicFieldNode implements AnnotatedFieldNode {
 
     private final Field field;
     private final Map<Object, Object> columnToValueMap;
@@ -51,7 +51,7 @@ public class DynamicFieldNode implements AnnotatedFieldNodeInterface {
     }
 
     @Override
-    public List<? extends AnnotatedFieldNodeInterface> getChildren() {
+    public List<? extends AnnotatedFieldNode> getChildren() {
         return columnToValueMap.keySet().stream()
                 .map(value -> new DynamicFieldLeafNode(valueType, value))
                 .toList();

@@ -1,5 +1,6 @@
 package com.mihai.writer.style.border;
 
+import com.mihai.writer.style.color.CellColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
@@ -12,7 +13,7 @@ public class CellBorder {
     private final BorderStyle bottomBorderStyle;
     private final BorderStyle leftBorderStyle;
 
-    private final IndexedColors color;  // how to make this a custom color? Possible idea: creationHelper.createExtendedColor().getIndex()
+    private final CellColor color;  // how to make this a custom color? Possible idea: creationHelper.createExtendedColor().getIndex()
 
     public CellBorder(BorderStyle borderStyle) {
         topBorderStyle = borderStyle;
@@ -46,7 +47,7 @@ public class CellBorder {
         return leftBorderStyle;
     }
 
-    public IndexedColors getColor() {
+    public CellColor getColor() {
         return color;
     }
 
@@ -73,7 +74,7 @@ public class CellBorder {
                 && rightBorderStyle == that.rightBorderStyle
                 && bottomBorderStyle == that.bottomBorderStyle
                 && leftBorderStyle == that.leftBorderStyle
-                && color == that.color;
+                && Objects.equals(color, that.color);
     }
 
     @Override
@@ -88,7 +89,7 @@ public class CellBorder {
         private BorderStyle bottomBorderStyle;
         private BorderStyle leftBorderStyle;
 
-        private IndexedColors color;
+        private CellColor color;
 
         public CellBorderBuilder topBorderStyle(BorderStyle topBorderStyle) {
             this.topBorderStyle = topBorderStyle;
@@ -110,7 +111,7 @@ public class CellBorder {
             return this;
         }
 
-        public CellBorderBuilder color(IndexedColors color) {
+        public CellBorderBuilder color(CellColor color) {
             this.color = color;
             return this;
         }

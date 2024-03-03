@@ -1,10 +1,9 @@
 package com.mihai.writer;
 
-import com.mihai.writer.node.AnnotatedFieldNodeInterface;
+import com.mihai.writer.node.AnnotatedFieldNode;
 import com.mihai.writer.node.RootFieldNode;
 import com.mihai.writer.serializer.SerializationContext;
 import com.mihai.writer.style.CellStyleContext;
-import com.mihai.writer.style.StyleProvider;
 import com.mihai.writer.style.WritableCellStyle;
 
 public class HeaderWriter {
@@ -22,14 +21,14 @@ public class HeaderWriter {
     public RootFieldNode writeHeaders(Class<?> clazz, Object firstRow) {
         RootFieldNode rootNode = new RootFieldNode(clazz, firstRow);
         int currentColumn = 0;
-        for (AnnotatedFieldNodeInterface child : rootNode.getChildren()) {
+        for (AnnotatedFieldNode child : rootNode.getChildren()) {
             writeHeader(child, rootNode.getHeight() + 1, 0, currentColumn);
             currentColumn += child.getLength();
         }
         return rootNode;
     }
 
-    private void writeHeader(AnnotatedFieldNodeInterface node, int headerHeight, int currentRow, int currentColumn) {
+    private void writeHeader(AnnotatedFieldNode node, int headerHeight, int currentRow, int currentColumn) {
         if (node.getHeight() > 0 && node.getLength() > 0) {
             Object valueToWrite = serializationContext.serialize((Class<Object>) node.getType(), node.getName());
             WritableCellStyle style = styleContext.getHeaderStyle(null, node.getName());
@@ -43,7 +42,7 @@ public class HeaderWriter {
 
             currentRow += headerHeight - node.getHeight();
         }
-        for (AnnotatedFieldNodeInterface child : node.getChildren()) {
+        for (AnnotatedFieldNode child : node.getChildren()) {
             writeHeader(child, headerHeight - 1, currentRow, currentColumn);
             currentColumn += child.getLength();
         }

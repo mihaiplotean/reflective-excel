@@ -8,6 +8,7 @@ public interface CellStyleContext {
 
     WritableCellStyle getHeaderStyle(WritingContext context, Object headerValue);
 
+    // todo: does not make sense for style to depend on class, should depend on the column?
     void registerColumnStyleProvider(Class<?> clazz, StyleProvider style);
 
     <T> WritableCellStyle getColumnStyle(WritingContext context, Class<T> clazz, T value);

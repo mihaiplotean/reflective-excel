@@ -6,7 +6,7 @@ public class RootFieldNode {
 
     private final Class<?> type;
     private final Object target;
-    private final List<AnnotatedFieldNodeInterface> children;
+    private final List<AnnotatedFieldNode> children;
 
     public RootFieldNode(Class<?> type, Object target) {
         this.type = type;
@@ -14,7 +14,7 @@ public class RootFieldNode {
         this.children = getChildFields();
     }
 
-    private List<AnnotatedFieldNodeInterface> getChildFields() {
+    private List<AnnotatedFieldNode> getChildFields() {
 //        FieldAnalyzer fieldAnalyzer = new FieldAnalyzer(type);
 //
 //        List<AnnotatedFieldNodeInterface> childFields = new ArrayList<>();
@@ -39,18 +39,18 @@ public class RootFieldNode {
 
     public int getLength() {
         return children.stream()
-                .mapToInt(AnnotatedFieldNodeInterface::getLength)
+                .mapToInt(AnnotatedFieldNode::getLength)
                 .sum();
     }
 
     public int getHeight() {
         return children.stream()
-                .mapToInt(AnnotatedFieldNodeInterface::getHeight)
+                .mapToInt(AnnotatedFieldNode::getHeight)
                 .max()
                 .orElse(0);
     }
 
-    public List<AnnotatedFieldNodeInterface> getChildren() {
+    public List<AnnotatedFieldNode> getChildren() {
         return children;
     }
 }

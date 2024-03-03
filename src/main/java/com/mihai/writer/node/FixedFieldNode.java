@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
 
-public class FixedFieldNode implements AnnotatedFieldNodeInterface {
+public class FixedFieldNode implements AnnotatedFieldNode {
 
     private final Field field;
     private final String name;
@@ -42,7 +42,7 @@ public class FixedFieldNode implements AnnotatedFieldNodeInterface {
     }
 
     @Override
-    public List<AnnotatedFieldNodeInterface> getChildren() {
+    public List<AnnotatedFieldNode> getChildren() {
         return Collections.emptyList();
     }
 

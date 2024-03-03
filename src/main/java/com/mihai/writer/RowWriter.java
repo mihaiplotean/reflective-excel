@@ -1,6 +1,6 @@
 package com.mihai.writer;
 
-import com.mihai.writer.node.AnnotatedFieldNodeInterface;
+import com.mihai.writer.node.AnnotatedFieldNode;
 import com.mihai.writer.node.RootFieldNode;
 import com.mihai.writer.node.TypedValue;
 import com.mihai.writer.serializer.SerializationContext;
@@ -30,7 +30,7 @@ public class RowWriter {
     public void writeRow(Object row) {
         WritableCellStyle rowStyle = cellStyleContext.getRowStyle(null, row);
         int currentColumn = 0;
-        for (AnnotatedFieldNodeInterface tableHeader : rootNode.getChildren()) {
+        for (AnnotatedFieldNode tableHeader : rootNode.getChildren()) {
             List<TypedValue> leafValues = tableHeader.getLeafValues(row);
             for (TypedValue typedValue : leafValues) {
                 Object valueToWrite = serializationContext.serialize((Class<Object>) typedValue.getType(), typedValue.getValue());

@@ -18,10 +18,10 @@ public class AnnotatedFieldNodeCreator {
         this.target = target;
     }
 
-    public List<AnnotatedFieldNodeInterface> getChildFields() {
+    public List<AnnotatedFieldNode> getChildFields() {
         FieldAnalyzer fieldAnalyzer = new FieldAnalyzer(type);
 
-        List<AnnotatedFieldNodeInterface> childFields = new ArrayList<>();
+        List<AnnotatedFieldNode> childFields = new ArrayList<>();
 
         childFields.addAll(fieldAnalyzer.getFixedColumnFields().stream()
                 .map(field -> new FixedFieldNode(field.getField(), field.getColumnName()))

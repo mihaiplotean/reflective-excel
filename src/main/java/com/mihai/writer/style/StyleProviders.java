@@ -13,10 +13,11 @@ public class StyleProviders {
     }
 
     public static StyleProvider forDate() {
-        return (context, target) -> WritableCellStyle.withDataFormat("dd/MM/yyy");
+        return (context, target) -> WritableCellStyle.withDataFormat(DateFormatUtils.getLocalizedDatePattern("dd/MM/yyy"));
     }
 
     public static StyleProvider of(WritableCellStyle style) {
         return (context, target) -> style;
     }
+
 }

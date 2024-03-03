@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public final class ExcelAssert {
 
@@ -48,7 +50,7 @@ public final class ExcelAssert {
     private void assertEqualWorkbooks(WorkbookCreator workbookCreator) throws IOException {
         try (Workbook workbookA = this.workbookCreator.create();
              Workbook workbookB = workbookCreator.create()) {
-            for (String sheetName : settings.getSheetNames()) {
+            for (String sheetName : getSheetNames(workbookA)) {
                 Sheet sheetA = workbookA.getSheet(sheetName);
                 Assertions.assertNotNull(sheetA, "Actual workbook is missing sheet " + sheetName);
 
@@ -58,5 +60,15 @@ public final class ExcelAssert {
                 new SheetAssert(sheetA, sheetB, settings).assertEqualSheets();
             }
         }
+    }
+
+    private List<String> getSheetNames(Workbook workbook) {
+        List<String> sheetNames = settings.getSheetNames();
+        if(sheetNames.isEmpty()) {
+            return IntStream.range(0, workbook.getNumberOfSheets())
+                    .mapToObj(workbook::getSheetName)
+                    .toList();
+        }
+        return sheetNames;
     }
 }

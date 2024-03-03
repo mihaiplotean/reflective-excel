@@ -20,12 +20,12 @@ public class DefaultStyleContext implements CellStyleContext {
     protected void registerStyleProviders() {
         registerColumnStyleProvider(Date.class, StyleProviders.forDate());
 
-        WritableCellStyle boldTextCellBorders = WritableCellStyles.boldText()
-                .combineWith(WritableCellStyles.allSideBorder())
-                .combineWith(WritableCellStyles.backgroundColor(232, 220, 202));
-        setHeaderStyleProvider(StyleProviders.of(boldTextCellBorders));
-
-        setRowStyleProvider(StyleProviders.of(WritableCellStyles.allSideBorder()));
+//        WritableCellStyle boldTextCellBorders = WritableCellStyles.boldText()
+//                .combineWith(WritableCellStyles.allSideBorder())
+//                .combineWith(WritableCellStyles.backgroundColor(232, 220, 202));
+//        setHeaderStyleProvider(StyleProviders.of(boldTextCellBorders));
+//
+//        setRowStyleProvider(StyleProviders.of(WritableCellStyles.allSideBorder()));
     }
 
     @Override

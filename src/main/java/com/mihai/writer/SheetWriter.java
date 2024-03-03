@@ -19,10 +19,10 @@ public class SheetWriter {
     private final SerializationContext serializationContext;
     private final CellStyleContext cellStyleContext;
 
-    public SheetWriter(Sheet sheet) {
+    public SheetWriter(Sheet sheet, SerializationContext serializationContext, CellStyleContext cellStyleContext) {
         this.sheet = new WritableSheet(sheet);
-        this.serializationContext = new DefaultSerializationContext();
-        this.cellStyleContext = new DefaultStyleContext();
+        this.serializationContext = serializationContext;
+        this.cellStyleContext = cellStyleContext;
     }
 
     public <T> void writeRows(List<T> rows, Class<T> clazz) {

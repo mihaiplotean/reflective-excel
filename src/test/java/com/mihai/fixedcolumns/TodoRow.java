@@ -9,10 +9,10 @@ public class TodoRow {
 
     @ExcelColumn(name = "Description")  // todo: case insensitive!
     private String description;
-    @ExcelColumn(name = "Deadline")
-    private Date dueDate;
     @ExcelColumn(name = "Priority")
     private TodoPriority priority;
+    @ExcelColumn(name = "Deadline")
+    private Date dueDate;
 
     public TodoRow() {
     }

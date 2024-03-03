@@ -7,20 +7,20 @@ public class ExcelAssertSettings {
 
     public static final ExcelAssertSettings DEFAULT = ExcelAssertSettings.builder().build();
 
-    private final boolean caseInsensitive;
+    private final boolean caseSensitive;
     private final boolean compareCellStyles;
     private final List<String> sheetNames;
     private final int differencesStopCount;
 
     private ExcelAssertSettings(ExcelAssertSettingsBuilder builder) {
-        caseInsensitive = builder.caseSensitive;
+        caseSensitive = builder.caseSensitive;
         compareCellStyles = builder.compareCellStyles;
         sheetNames = builder.sheetNames;
         differencesStopCount = builder.differencesStopCount;
     }
 
-    public boolean isCaseInsensitive() {
-        return caseInsensitive;
+    public boolean isCaseSensitive() {
+        return caseSensitive;
     }
 
     public boolean isCompareCellStyles() {
@@ -41,7 +41,7 @@ public class ExcelAssertSettings {
 
     public static final class ExcelAssertSettingsBuilder {
 
-        private boolean caseSensitive = true;
+        private boolean caseSensitive;
         private boolean compareCellStyles = true;
         private List<String> sheetNames = Collections.emptyList();
         private int differencesStopCount = 10;

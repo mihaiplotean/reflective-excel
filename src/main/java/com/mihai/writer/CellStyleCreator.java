@@ -1,11 +1,15 @@
 package com.mihai.writer;
 
+import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
 import com.mihai.writer.style.color.CellColor;
 import com.mihai.writer.style.font.CellFont;
-import com.mihai.writer.style.WritableCellStyle;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -82,8 +86,20 @@ public class CellStyleCreator {
     }
 
     private Color createColor(CellColor cellColor) {
+        if(workbook instanceof HSSFWorkbook xlsWorkbook) {
+            return findOrCreateXlsColor(xlsWorkbook, cellColor);
+        }
         ExtendedColor color = creationHelper.createExtendedColor();
         color.setRGB(new byte[]{cellColor.getRed(), cellColor.getGreen(), cellColor.getBlue()});
+        return color;
+    }
+
+    private static HSSFColor findOrCreateXlsColor(HSSFWorkbook xlsWorkbook, CellColor cellColor) {
+        HSSFPalette palette = xlsWorkbook.getCustomPalette();
+        HSSFColor color = palette.findColor(cellColor.getRed(), cellColor.getGreen(), cellColor.getBlue());
+        if(color == null) {
+            return palette.addColor(cellColor.getRed(), cellColor.getGreen(), cellColor.getBlue());
+        }
         return color;
     }
 
@@ -118,9 +134,10 @@ public class CellStyleCreator {
         if (leftBorderStyle != null) {
             cellStyle.setBorderLeft(leftBorderStyle);
         }
-        IndexedColors color = border.getColor();
-        if (color != null) {
-            cellStyle.setTopBorderColor(color.getIndex());
+        CellColor borderColor = border.getColor();
+        if (borderColor != null) {
+            Color color = colorMap.computeIfAbsent(borderColor, this::createColor);
+            cellStyle.setTopBorderColor(getColorIndex(color));
         }
     }
 
@@ -140,12 +157,27 @@ public class CellStyleCreator {
         if(fontSize > 0) {
             font.setFontHeightInPoints(fontSize);
         }
+        CellColor fontColor = fontReference.getColor();
+        if(fontColor != null) {
+            Color color = colorMap.computeIfAbsent(fontColor, this::createColor);
+            font.setColor(getColorIndex(color));
+        }
         font.setBold(fontReference.isBold());
         font.setItalic(fontReference.isItalic());
         if (fontReference.isUnderLine()) {
             font.setUnderline(Font.U_SINGLE);
         }
         return font;
+    }
+
+    private static short getColorIndex(Color color) {
+        if(color instanceof HSSFColor xlsColor) {
+            return xlsColor.getIndex();
+        }
+        if(color instanceof XSSFColor xlsxColor) {
+            return xlsxColor.getIndex();
+        }
+        return 0;
     }
 
     private static void setTextWrap(WritableCellStyle style, CellStyle cellStyle) {
