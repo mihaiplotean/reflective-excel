@@ -8,6 +8,7 @@ import com.mihai.reader.detector.UseAsSpecifiedInReadSettings;
 import com.mihai.ReflectionUtilities;
 import com.mihai.reader.field.value.AnnotatedFieldValue;
 import com.mihai.reader.field.value.RowsFieldValue;
+import org.apache.poi.ss.util.CellReference;
 
 import java.lang.reflect.Field;
 

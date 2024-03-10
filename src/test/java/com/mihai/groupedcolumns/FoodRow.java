@@ -11,6 +11,9 @@ public class FoodRow {
     @ExcelColumn(name = "id")
     private Integer id;
 
+    public FoodRow() {
+    }
+
     public FoodRow(PizzaGroup group, Integer id) {
         this.group = group;
         this.id = id;

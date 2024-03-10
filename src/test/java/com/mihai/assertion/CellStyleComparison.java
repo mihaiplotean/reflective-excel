@@ -3,14 +3,12 @@ package com.mihai.assertion;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
 import com.mihai.writer.style.font.CellFont;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 
 import java.util.*;
 
 import static org.apache.poi.ss.util.CellUtil.*;
 
-public class CellStyleDifferences {
+public class CellStyleComparison {
 
     private static final String BACKGROUND_COLOR = "background color";
     private static final String BORDER_COLOR = "border color";
@@ -24,7 +22,7 @@ public class CellStyleDifferences {
     private final WritableCellStyle cellStyleA;  // can it be null?
     private final WritableCellStyle cellStyleB;
 
-    public CellStyleDifferences(WritableCellStyle cellStyleA, WritableCellStyle cellStyleB) {
+    public CellStyleComparison(WritableCellStyle cellStyleA, WritableCellStyle cellStyleB) {
         this.cellStyleA = cellStyleA;
         this.cellStyleB = cellStyleB;
     }

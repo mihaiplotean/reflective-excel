@@ -26,4 +26,13 @@ public class ShippingSheet {
     @ExcelRows(headerRowDetector = DestinationHeaderRowDetector.class,
             headerStartColumnDetector = DestinationHeaderColumnDetector.class)
     private List<DestinationRow> destinationRows;
+
+    public ShippingSheet() {
+    }
+
+    public ShippingSheet(List<ShippingCostRow> shippingCostRows, List<SupplierRow> supplierRows, List<DestinationRow> destinationRows) {
+        this.shippingCostRows = shippingCostRows;
+        this.supplierRows = supplierRows;
+        this.destinationRows = destinationRows;
+    }
 }

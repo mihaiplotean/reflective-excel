@@ -10,6 +10,9 @@ public class Address {
     @ExcelColumn(name = "work")
     private String work;
 
+    public Address() {
+    }
+
     public Address(String home, String work) {
         this.home = home;
         this.work = work;

@@ -14,6 +14,9 @@ public class AddressesRow {
     @ExcelCellGroup(name = "Address B")
     private Address addressB;
 
+    public AddressesRow() {
+    }
+
     public AddressesRow(Integer id, Address addressA, Address addressB) {
         this.id = id;
         this.addressA = addressA;

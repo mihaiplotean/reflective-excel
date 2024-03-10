@@ -8,24 +8,19 @@ import java.util.Map;
 
 public class DefaultStyleContext implements CellStyleContext {
 
-    private final Map<Class<?>, StyleProvider> styleProviderMap = new HashMap<>();
+    private final Map<Class<?>, WritableCellStyle> typeStyleProviderMap = new HashMap<>();
 
     private StyleProvider headerStyleProvider = StyleProviders.noStyle();
     private StyleProvider rowStyleProvider = StyleProviders.noStyle();
+    private StyleProvider columnStyleProvider = StyleProviders.noStyle();
+    private StyleProvider celltyleProvider = StyleProviders.noStyle();
 
     public DefaultStyleContext() {
         registerStyleProviders();
     }
 
     protected void registerStyleProviders() {
-        registerColumnStyleProvider(Date.class, StyleProviders.forDate());
-
-//        WritableCellStyle boldTextCellBorders = WritableCellStyles.boldText()
-//                .combineWith(WritableCellStyles.allSideBorder())
-//                .combineWith(WritableCellStyles.backgroundColor(232, 220, 202));
-//        setHeaderStyleProvider(StyleProviders.of(boldTextCellBorders));
-//
-//        setRowStyleProvider(StyleProviders.of(WritableCellStyles.allSideBorder()));
+        registerTypeStyleProvider(Date.class, WritableCellStyles.forDate());
     }
 
     @Override
@@ -39,14 +34,13 @@ public class DefaultStyleContext implements CellStyleContext {
     }
 
     @Override
-    public void registerColumnStyleProvider(Class<?> clazz, StyleProvider style) {
-        styleProviderMap.put(clazz, style);
+    public void registerTypeStyleProvider(Class<?> clazz, WritableCellStyle style) {
+        typeStyleProviderMap.put(clazz, style);
     }
 
     @Override
-    public <T> WritableCellStyle getColumnStyle(WritingContext context, Class<T> clazz, T value) {
-        StyleProvider styleProvider = styleProviderMap.getOrDefault(clazz, StyleProviders.noStyle());
-        return styleProvider.getStyle(context, value);
+    public <T> WritableCellStyle getTypeStyle(WritingContext context, Class<T> clazz) {
+        return typeStyleProviderMap.getOrDefault(clazz, WritableCellStyles.noStyle());
     }
 
     @Override
@@ -57,5 +51,25 @@ public class DefaultStyleContext implements CellStyleContext {
     @Override
     public WritableCellStyle getRowStyle(WritingContext context, Object row) {
         return rowStyleProvider.getStyle(context, row);
+    }
+
+    @Override
+    public void setColumnStyleProvider(StyleProvider style) {
+        this.columnStyleProvider = style;
+    }
+
+    @Override
+    public WritableCellStyle getColumnStyle(WritingContext context, Object columnName) {
+        return columnStyleProvider.getStyle(context, columnName);
+    }
+
+    @Override
+    public void setCellStyleProvider(StyleProvider style) {
+        this.celltyleProvider = style;
+    }
+
+    @Override
+    public WritableCellStyle getCellStyle(WritingContext context, Object cellValue) {
+        return celltyleProvider.getStyle(context, context);
     }
 }

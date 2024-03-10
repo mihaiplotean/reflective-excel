@@ -6,6 +6,8 @@ import com.mihai.writer.style.font.CellFonts;
 
 public final class WritableCellStyles {
 
+    private static final WritableCellStyle NO_STYLE = WritableCellStyle.builder().build();
+
     private static final WritableCellStyle BOLD_TEXT = WritableCellStyle.builder()
             .font(CellFonts.bold())
             .build();
@@ -16,6 +18,16 @@ public final class WritableCellStyles {
 
     private WritableCellStyles() {
         throw new IllegalStateException("Utility class");
+    }
+
+    public static WritableCellStyle noStyle() {
+        return NO_STYLE;
+    }
+
+    public static WritableCellStyle forDate() {
+        return WritableCellStyle.builder()
+                .format(DateFormatUtils.getLocalizedDatePattern("dd/MM/yyyy"))
+                .build();
     }
 
     public static WritableCellStyle boldText() {

@@ -6,14 +6,18 @@ import com.mihai.writer.serializer.SerializationContext;
 import com.mihai.writer.style.CellStyleContext;
 import com.mihai.writer.style.WritableCellStyle;
 
+import java.util.List;
+
 public class HeaderWriter {
 
     private final CellWriter cellWriter;
+    private final WritingContext writingContext;
     private final SerializationContext serializationContext;
     private final CellStyleContext styleContext;
 
-    public HeaderWriter(CellWriter cellWriter, SerializationContext serializationContext, CellStyleContext styleContext) {
+    public HeaderWriter(CellWriter cellWriter, WritingContext writingContext, SerializationContext serializationContext, CellStyleContext styleContext) {
         this.cellWriter = cellWriter;
+        this.writingContext = writingContext;
         this.serializationContext = serializationContext;
         this.styleContext = styleContext;
     }
@@ -31,19 +35,20 @@ public class HeaderWriter {
     private void writeHeader(AnnotatedFieldNode node, int headerHeight, int currentRow, int currentColumn) {
         if (node.getHeight() > 0 && node.getLength() > 0) {
             Object valueToWrite = serializationContext.serialize((Class<Object>) node.getType(), node.getName());
-            WritableCellStyle style = styleContext.getHeaderStyle(null, node.getName());
+            WritableCellStyle style = styleContext.getHeaderStyle(writingContext, node.getName());
+            WritableCellStyle typeStyle = styleContext.getTypeStyle(writingContext, node.getName().getClass());
 
             WritableCell cell = new WritableCell(valueToWrite,
                     currentRow,
                     currentColumn,
                     currentRow + headerHeight - node.getHeight() - 1,
                     currentColumn + node.getLength() - 1);
-            cellWriter.writeCell(cell, style);
+            cellWriter.writeCell(cell, List.of(style, typeStyle));
 
             currentRow += headerHeight - node.getHeight();
         }
         for (AnnotatedFieldNode child : node.getChildren()) {
-            writeHeader(child, headerHeight - 1, currentRow, currentColumn);
+            writeHeader(child, node.getHeight() > 0 ? headerHeight - 1 : headerHeight, currentRow, currentColumn);
             currentColumn += child.getLength();
         }
     }

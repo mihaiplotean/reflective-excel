@@ -1,23 +1,33 @@
 package com.mihai.writer;
 
 import com.mihai.writer.style.WritableCellStyle;
-import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.RegionUtil;
 
 import java.util.List;
 
 public class CellWriter {
 
     private final WritableSheet sheet;
-    private final CellStyleCreator cellStyleCreator;
+
+    private int offsetRows;
+    private int offsetColumns;
 
     public CellWriter(WritableSheet sheet) {
         this.sheet = sheet;
-        this.cellStyleCreator = new CellStyleCreator(sheet.getWorkbook());
+    }
+
+    public void setOffSet(int offsetRows, int offsetColumns) {
+        this.offsetRows = offsetRows;
+        this.offsetColumns = offsetColumns;
+    }
+
+    public int getOffsetRows() {
+        return offsetRows;
+    }
+
+    public int getOffsetColumns() {
+        return offsetColumns;
     }
 
     public void writeCell(WritableCell cellReference) {
@@ -29,17 +39,31 @@ public class CellWriter {
     }
 
     public void writeCell(WritableCell cellReference, List<WritableCellStyle> styles) {
-        Cell cell = sheet.writeCell(cellReference);
+        WritableCell writableCell = applyOffset(cellReference);
+        Cell cell = sheet.writeCell(writableCell);
 
         styles.stream()
                 .reduce(WritableCellStyle::combineWith)
-                .ifPresent(cellStyle -> applyCellStyle(cellStyle, cell, cellReference));
+                .ifPresent(cellStyle -> applyCellStyle(cellStyle, cell, writableCell));
 
-        sheet.mergeCellBounds(cell, cellReference);
+        sheet.mergeCellBounds(cell, writableCell);
+    }
+
+    private WritableCell applyOffset(WritableCell cell) {
+        if(offsetRows == 0 && offsetColumns == 0) {
+            return cell;
+        }
+        return new WritableCell(
+                cell.getValue(),
+                offsetRows + cell.getStartRow(),
+                offsetColumns + cell.getStartColumn(),
+                offsetRows + cell.getEndRow(),
+                offsetColumns + cell.getEndColumn()
+        );
     }
 
     private void applyCellStyle(WritableCellStyle cellStyle, Cell cell, WritableCell cellReference) {
-        CellStyle style = cellStyleCreator.getCellStyle(cellStyle);
+        CellStyle style = sheet.getCellStyleCreator().getCellStyle(cellStyle);
         cell.setCellStyle(style);
         if(cellReference.spansMultipleCells()) {
             sheet.applyRegionStyle(cellReference.getCellRangeAddress(), style);

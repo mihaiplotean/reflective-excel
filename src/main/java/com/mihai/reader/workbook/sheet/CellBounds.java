@@ -7,10 +7,7 @@ import java.util.Objects;
 public final class CellBounds {
 
     private final Cell valueCell;
-    private final int startRow;
-    private final int startColumn;
-    private final int endRow;
-    private final int endColumn;
+    private final Bounds bounds;
 
     public CellBounds(Cell cell) {
         this(cell, cell.getRowIndex(), cell.getColumnIndex(), cell.getRowIndex(), cell.getColumnIndex());
@@ -18,22 +15,7 @@ public final class CellBounds {
 
     public CellBounds(Cell valueCell, int startRow, int startColumn, int endRow, int endColumn) {
         this.valueCell = valueCell;
-        this.startRow = startRow;
-        this.startColumn = startColumn;
-        this.endRow = endRow;
-        this.endColumn = endColumn;
-    }
-
-    public boolean inBounds(int row, int column) {
-        return rowInBounds(row) && columnInBounds(column);
-    }
-
-    private boolean rowInBounds(int row) {
-        return startRow <= row && row <= endRow;
-    }
-
-    private boolean columnInBounds(int column) {
-        return startColumn <= column && column <= endColumn;
+        this.bounds = new Bounds(startRow, startColumn, endRow, endColumn);
     }
 
     public Cell valueCell() {
@@ -41,19 +23,19 @@ public final class CellBounds {
     }
 
     public int startRow() {
-        return startRow;
+        return bounds.getStartRow();
     }
 
     public int startColumn() {
-        return startColumn;
+        return bounds.getStartColumn();
     }
 
     public int endRow() {
-        return endRow;
+        return bounds.getEndRow();
     }
 
     public int endColumn() {
-        return endColumn;
+        return bounds.getEndColumn();
     }
 
     @Override
@@ -61,15 +43,12 @@ public final class CellBounds {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CellBounds that = (CellBounds) o;
-        return startRow == that.startRow
-                && startColumn == that.startColumn
-                && endRow == that.endRow
-                && endColumn == that.endColumn
-                && Objects.equals(valueCell, that.valueCell);
+        return Objects.equals(valueCell, that.valueCell)
+                && Objects.equals(bounds, that.bounds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(valueCell, startRow, startColumn, endRow, endColumn);
+        return Objects.hash(valueCell, bounds);
     }
 }

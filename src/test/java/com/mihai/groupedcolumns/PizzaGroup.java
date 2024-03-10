@@ -11,6 +11,9 @@ public class PizzaGroup {
     @ExcelColumn(name = "name")
     private String pizzaName;
 
+    public PizzaGroup() {
+    }
+
     public PizzaGroup(PizzaSize size, String pizzaName) {
         this.size = size;
         this.pizzaName = pizzaName;

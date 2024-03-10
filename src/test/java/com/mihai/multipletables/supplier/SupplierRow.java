@@ -10,6 +10,14 @@ public class SupplierRow {
     @ExcelColumn(name = "Capacity")
     private int capacity;
 
+    public SupplierRow() {
+    }
+
+    public SupplierRow(String supplier, int capacity) {
+        this.supplier = supplier;
+        this.capacity = capacity;
+    }
+
     public String getSupplier() {
         return supplier;
     }

@@ -1,6 +1,5 @@
 package com.mihai.writer;
 
-import com.mihai.writer.style.WritableCellStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.util.CellRangeAddress;
 
@@ -12,7 +11,6 @@ import java.util.Date;
 public class WritableCell {
 
     private final Object value;
-    private final WritableCellStyle style;
     private final int startRow;
     private final int startColumn;
     private final int endRow;
@@ -22,17 +20,8 @@ public class WritableCell {
         this(value, row, column, row, column);
     }
 
-    public WritableCell(Object value, WritableCellStyle style, int row, int column) {
-        this(value, style, row, column, row, column);
-    }
-
     public WritableCell(Object value, int startRow, int startColumn, int endRow, int endColumn) {
-        this(value, null, startRow, startColumn, endRow, endColumn);
-    }
-
-    public WritableCell(Object value, WritableCellStyle style, int startRow, int startColumn, int endRow, int endColumn) {
         this.value = value;
-        this.style = style;
         this.startRow = startRow;
         this.startColumn = startColumn;
         this.endRow = endRow;

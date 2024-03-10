@@ -1,26 +1,25 @@
 package com.mihai.writer;
 
+import com.mihai.writer.table.WrittenTable;
+import com.mihai.writer.table.WrittenTables;
+
 public class WritingContext {
 
-    private final WritableSheet sheet;
-//    private final SerializationContext serializationContext;
-//    private final CellStyleContext cellStyleContext;
+    private final WrittenTables tables;
 
-    public WritingContext(WritableSheet sheet) {
-        this.sheet = sheet;
-//        this.serializationContext = serializationContext;
-//        this.cellStyleContext = cellStyleContext;
+    public WritingContext(WrittenTables tables) {
+        this.tables = tables;
     }
 
-//    public <T> Object getValueToWrite(Class<T> type, Object rowValue) {
-//        return serializationContext.serialize((Class<Object>) type, rowValue);
-//    }
-//
-//    public <T> Object getCellStyle(Class<T> type, Object rowValue) {
-//        return serializationContext.serialize((Class<Object>) type, rowValue);
-//    }
-//
-//    public WritableCellStyle getHeaderCellStyle(Object headerValue) {
-//        return cellStyleContext.getHeaderStyle(this, headerValue);
-//    }
+    /**
+     * @param tableId id of the table
+     * @return the table bounds of a table which has already been written.
+     */
+    public WrittenTable getTable(String tableId) {
+        return tables.getTable(tableId);
+    }
+
+    public WrittenTable getLastTable() {
+        return tables.getLastTable();
+    }
 }

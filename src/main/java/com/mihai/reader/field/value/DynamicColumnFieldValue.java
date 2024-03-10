@@ -36,7 +36,7 @@ public class DynamicColumnFieldValue implements AnnotatedFieldValue {
         if (type == List.class) {
             List<Object> values = (List<Object>) fieldValue;
             ParameterizedType genericType = (ParameterizedType) field.getGenericType();
-            Class<?> argumentType = (Class<?>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?
+            Class<?> argumentType = (Class<?>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?; list of lists?
             Object listValue = context.getCurrentCellValue(argumentType);
             values.add(listValue);
         }

@@ -31,10 +31,6 @@ public class WritableCellStyle {
         wrapText = builder.wrapText;
     }
 
-    public static WritableCellStyle withDataFormat(String dataFormat) {
-        return new CellStyleBuilder().format(dataFormat).build();
-    }
-
     public String getFormat() {
         return format;
     }

@@ -18,8 +18,4 @@ public interface AnnotatedFieldNode {
     List<? extends AnnotatedFieldNode> getChildren();
 
     List<TypedValue> getLeafValues(Object target);
-
-    default boolean hasChildren() {
-        return !getChildren().isEmpty();
-    }
 }

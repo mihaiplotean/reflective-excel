@@ -15,25 +15,6 @@ public class RootFieldNode {
     }
 
     private List<AnnotatedFieldNode> getChildFields() {
-//        FieldAnalyzer fieldAnalyzer = new FieldAnalyzer(type);
-//
-//        List<AnnotatedFieldNodeInterface> childFields = new ArrayList<>();
-//
-//        childFields.addAll(fieldAnalyzer.getFixedColumnFields().stream()
-//                .map(field -> new FixedFieldNode(field.getField(), field.getColumnName()))
-//                .toList());
-//
-//        childFields.addAll(fieldAnalyzer.getDynamicColumnFields().stream()
-//                .map(dynamicColumnField -> new DynamicFieldNode(dynamicColumnField.getField(), target))
-//                .toList());
-//
-//        childFields.addAll(fieldAnalyzer.getCellGroupFields().stream()
-//                .map(field -> new GroupedFieldNode(field.getField(), ReflectionUtilities.readField(field.getField(), target), field.getGroupName()))
-//                .toList());
-//
-//        List<Field> orderedFields = ReflectionUtilities.getAllFields(type);
-//        childFields.sort(Comparator.comparingInt(o -> orderedFields.indexOf(o.getField())));
-
         return new AnnotatedFieldNodeCreator(type, target).getChildFields();
     }
 

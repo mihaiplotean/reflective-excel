@@ -10,6 +10,9 @@ public class PizzaSize {
     @ExcelColumn(name = "large")
     private String large;
 
+    public PizzaSize() {
+    }
+
     public PizzaSize(String small, String large) {
         this.small = small;
         this.large = large;

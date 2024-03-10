@@ -1,6 +1,5 @@
 package com.mihai.writer;
 
-import com.mihai.writer.style.WritableCellStyle;
 import org.apache.poi.ss.formula.BaseFormulaEvaluator;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -24,12 +23,10 @@ public class WritableSheet {
     public Workbook getWorkbook() {
         return sheet.getWorkbook();
     }
-//
-//    public Row createNextRow() {
-//        Row row = sheet.createRow(currentRow);
-//        currentRow++;
-//        return row;
-//    }
+
+    public CellStyleCreator getCellStyleCreator() {
+        return cellStyleCreator;
+    }
 
     public Row getRow(int rowNumber) {
         Row row = sheet.getRow(rowNumber);

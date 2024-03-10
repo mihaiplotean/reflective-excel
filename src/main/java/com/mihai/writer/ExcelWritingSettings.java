@@ -1,20 +1,20 @@
 package com.mihai.writer;
 
+import com.mihai.writer.locator.DefaultTableStartCellLocator;
+import com.mihai.writer.locator.TableStartCellLocator;
+
 public class ExcelWritingSettings {
 
     public static final ExcelWritingSettings DEFAULT = new ExcelWritingSettingsBuilder().create();
 
     private final String sheetName;
     private final ExcelFileFormat fileFormat;
-
-    public ExcelWritingSettings(String sheetName, ExcelFileFormat fileFormat) {
-        this.sheetName = sheetName;
-        this.fileFormat = fileFormat;
-    }
+    private final TableStartCellLocator tableStartCellLocator;
 
     private ExcelWritingSettings(ExcelWritingSettingsBuilder builder) {
-        sheetName = builder.sheetName;
-        fileFormat = builder.fileFormat;
+        this.sheetName = builder.sheetName;
+        this.fileFormat = builder.fileFormat;
+        this.tableStartCellLocator = builder.tableStartCellLocator;
     }
 
     public String getSheetName() {
@@ -25,6 +25,10 @@ public class ExcelWritingSettings {
         return fileFormat;
     }
 
+    public TableStartCellLocator getTableStartCellLocator() {
+        return tableStartCellLocator;
+    }
+
     public static ExcelWritingSettingsBuilder with() {
         return new ExcelWritingSettingsBuilder();
     }
@@ -33,6 +37,7 @@ public class ExcelWritingSettings {
 
         private String sheetName = "Sheet1";
         private ExcelFileFormat fileFormat = ExcelFileFormat.XLSX;
+        private TableStartCellLocator tableStartCellLocator = new DefaultTableStartCellLocator();
 
         public ExcelWritingSettingsBuilder sheetName(String sheetName) {
             this.sheetName = sheetName;
@@ -41,6 +46,11 @@ public class ExcelWritingSettings {
 
         public ExcelWritingSettingsBuilder fileFormat(ExcelFileFormat fileFormat) {
             this.fileFormat = fileFormat;
+            return this;
+        }
+
+        public ExcelWritingSettingsBuilder tableStartCellLocator(TableStartCellLocator tableStartCellLocator) {
+            this.tableStartCellLocator = tableStartCellLocator;
             return this;
         }
 
