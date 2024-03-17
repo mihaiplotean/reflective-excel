@@ -9,15 +9,14 @@ public class CellLocation {
     private final int row;
     private final int column;
 
-    public CellLocation(String cellReference) {
-        CellReference reference = new CellReference(cellReference);
-        this.row = reference.getRow();
-        this.column = reference.getCol();
-    }
-
     public CellLocation(int row, int column) {
         this.row = row;
         this.column = column;
+    }
+
+    public static CellLocation fromReference(String cellReference) {
+        CellReference reference = new CellReference(cellReference);
+        return new CellLocation(reference.getRow(), reference.getCol());
     }
 
     public int getRow() {

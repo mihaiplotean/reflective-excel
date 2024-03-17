@@ -2,6 +2,8 @@ package com.mihai.writer;
 
 import com.mihai.writer.serializer.SerializationContext;
 import com.mihai.writer.style.CellStyleContext;
+import com.mihai.writer.table.CellWritingContext;
+import com.mihai.writer.table.TableWritingContext;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.util.List;
@@ -23,7 +25,10 @@ public class SheetWriter {
     }
 
     public <T> void writeRows(List<T> rows, Class<T> clazz) {
-        TableWriter tableWriter = new TableWriter(sheet, serializationContext, cellStyleContext, settings);
+        TableWritingContext tableContext = new TableWritingContext();
+        CellWritingContext cellWritingContext = new CellWritingContext();
+        WritingContext writingContext = new WritingContext(tableContext, cellWritingContext);
+        TableWriter tableWriter = new TableWriter(sheet, serializationContext, cellStyleContext, settings, tableContext, writingContext, cellWritingContext);
         tableWriter.writeTable(rows, clazz, "");
 
         sheet.evaluateAllFormulas();

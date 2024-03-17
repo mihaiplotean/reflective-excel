@@ -1,5 +1,6 @@
 package com.mihai.writer;
 
+import com.mihai.writer.locator.CellLocation;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.util.CellRangeAddress;
 
@@ -80,5 +81,9 @@ public class WritableCell {
 
     public int getEndColumn() {
         return endColumn;
+    }
+
+    public CellLocation getLocation() {
+        return new CellLocation(startRow, startColumn);
     }
 }

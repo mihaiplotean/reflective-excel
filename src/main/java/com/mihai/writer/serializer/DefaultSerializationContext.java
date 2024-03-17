@@ -1,5 +1,7 @@
 package com.mihai.writer.serializer;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class DefaultSerializationContext implements SerializationContext {
@@ -18,6 +20,8 @@ public class DefaultSerializationContext implements SerializationContext {
         registerSerializer(Float.class, CellSerializers.identity());
         registerSerializer(Boolean.class, CellSerializers.identity());
         registerSerializer(Date.class, CellSerializers.identity());
+        registerSerializer(LocalDateTime.class, CellSerializers.identity());
+        registerSerializer(LocalDate.class, CellSerializers.identity());
         registerSerializer(Currency.class, CellSerializers.forCurrency());
     }
 

@@ -7,7 +7,7 @@ public class DefaultTableStartCellLocator implements TableStartCellLocator {
 
     @Override
     public CellLocation getStartingCell(WritingContext context, String tableId) {
-        WrittenTable table = context.getLastTable();
+        WrittenTable table = context.getLastWrittenTable();
         if (table == null) {  // first table being written
             return new CellLocation(0, 0);
         }

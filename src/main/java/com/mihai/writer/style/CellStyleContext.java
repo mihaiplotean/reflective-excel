@@ -16,9 +16,9 @@ public interface CellStyleContext {
 
     WritableCellStyle getColumnStyle(WritingContext context, Object columnName);
 
-    void registerTypeStyleProvider(Class<?> clazz, WritableCellStyle style);
+    void registerTypeStyleProvider(Class<?> clazz, StyleProvider style);
 
-    <T> WritableCellStyle getTypeStyle(WritingContext context, Class<T> clazz);
+    WritableCellStyle getTypeStyle(WritingContext context, Object cellValue);
 
     void setCellStyleProvider(StyleProvider style);
 

@@ -2,25 +2,27 @@ package com.mihai.writer.style;
 
 import com.mihai.writer.WritingContext;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultStyleContext implements CellStyleContext {
 
-    private final Map<Class<?>, WritableCellStyle> typeStyleProviderMap = new HashMap<>();
+    private final Map<Class<?>, StyleProvider> typeStyleProviderMap = new HashMap<>();
 
     private StyleProvider headerStyleProvider = StyleProviders.noStyle();
     private StyleProvider rowStyleProvider = StyleProviders.noStyle();
     private StyleProvider columnStyleProvider = StyleProviders.noStyle();
-    private StyleProvider celltyleProvider = StyleProviders.noStyle();
+    private StyleProvider cellStyleProvider = StyleProviders.noStyle();
 
     public DefaultStyleContext() {
         registerStyleProviders();
     }
 
     protected void registerStyleProviders() {
-        registerTypeStyleProvider(Date.class, WritableCellStyles.forDate());
+        registerTypeStyleProvider(Date.class, StyleProviders.of(WritableCellStyles.forDate()));
+        registerTypeStyleProvider(LocalDate.class, StyleProviders.of(WritableCellStyles.forDate()));
     }
 
     @Override
@@ -34,13 +36,13 @@ public class DefaultStyleContext implements CellStyleContext {
     }
 
     @Override
-    public void registerTypeStyleProvider(Class<?> clazz, WritableCellStyle style) {
+    public void registerTypeStyleProvider(Class<?> clazz, StyleProvider style) {
         typeStyleProviderMap.put(clazz, style);
     }
 
     @Override
-    public <T> WritableCellStyle getTypeStyle(WritingContext context, Class<T> clazz) {
-        return typeStyleProviderMap.getOrDefault(clazz, WritableCellStyles.noStyle());
+    public WritableCellStyle getTypeStyle(WritingContext context, Object cellValue) {
+        return typeStyleProviderMap.getOrDefault(cellValue.getClass(), StyleProviders.noStyle()).getStyle(context, cellValue);
     }
 
     @Override
@@ -65,11 +67,11 @@ public class DefaultStyleContext implements CellStyleContext {
 
     @Override
     public void setCellStyleProvider(StyleProvider style) {
-        this.celltyleProvider = style;
+        this.cellStyleProvider = style;
     }
 
     @Override
     public WritableCellStyle getCellStyle(WritingContext context, Object cellValue) {
-        return celltyleProvider.getStyle(context, context);
+        return cellStyleProvider.getStyle(context, context);
     }
 }

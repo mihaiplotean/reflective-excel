@@ -47,12 +47,17 @@ public class ReflectiveExcelWriter {
         this.cellStyleContext = cellStyleContext;
     }
 
-    public void registerTypeStyleProvider(Class<?> clazz, WritableCellStyle style) {
+    public void registerTypeStyleProvider(Class<?> clazz, StyleProvider style) {
         this.cellStyleContext.registerTypeStyleProvider(clazz, style);
     }
 
+    // todo: move these options to ExcelWritingSettings?
     public void setHeaderStyleProvider(StyleProvider style) {
         this.cellStyleContext.setHeaderStyleProvider(style);
+    }
+
+    public void setCellStyleProvider(StyleProvider style) {
+        this.cellStyleContext.setCellStyleProvider(style);
     }
 
     public void setRowStyleProvider(StyleProvider style) {

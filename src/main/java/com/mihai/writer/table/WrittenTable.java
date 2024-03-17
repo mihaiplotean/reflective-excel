@@ -6,15 +6,25 @@ import com.mihai.writer.locator.CellLocation;
 public class WrittenTable {
 
     private final String id;
+    private final WrittenTableHeaders headers;
     private final Bounds bounds;
 
-    public WrittenTable(String id, Bounds bounds) {
+    public WrittenTable(String id, WrittenTableHeaders headers, Bounds bounds) {
         this.id = id;
+        this.headers = headers;
         this.bounds = bounds;
     }
 
     public String getId() {
         return id;
+    }
+
+    public int getHeadersRow() {
+        return headers.getRow();
+    }
+
+    public int getColumnIndex(String headerName) {
+        return headers.getColumnIndex(headerName);
     }
 
     public Bounds getBounds() {

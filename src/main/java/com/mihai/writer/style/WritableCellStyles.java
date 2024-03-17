@@ -39,8 +39,18 @@ public final class WritableCellStyles {
     }
 
     public static WritableCellStyle backgroundColor(int red, int green, int blue) {
+        return backgroundColor(new CellColor(red, green, blue));
+    }
+
+    public static WritableCellStyle backgroundColor(CellColor color) {
         return WritableCellStyle.builder()
-                .backgroundColor(new CellColor((byte) red, (byte) green, (byte) blue))
+                .backgroundColor(color)
+                .build();
+    }
+
+    public static WritableCellStyle format(String format) {
+        return WritableCellStyle.builder()
+                .format(format)
                 .build();
     }
 }

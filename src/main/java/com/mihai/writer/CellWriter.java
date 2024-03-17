@@ -1,5 +1,6 @@
 package com.mihai.writer;
 
+import com.mihai.writer.locator.CellLocation;
 import com.mihai.writer.style.WritableCellStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -30,15 +31,15 @@ public class CellWriter {
         return offsetColumns;
     }
 
-    public void writeCell(WritableCell cellReference) {
-        writeCell(cellReference, List.of());
+    public CellLocation writeCell(WritableCell cellReference) {
+        return writeCell(cellReference, List.of());
     }
 
-    public void writeCell(WritableCell cellReference, WritableCellStyle style) {
-        writeCell(cellReference, List.of(style));
+    public CellLocation writeCell(WritableCell cellReference, WritableCellStyle style) {
+        return writeCell(cellReference, List.of(style));
     }
 
-    public void writeCell(WritableCell cellReference, List<WritableCellStyle> styles) {
+    public CellLocation writeCell(WritableCell cellReference, List<WritableCellStyle> styles) {
         WritableCell writableCell = applyOffset(cellReference);
         Cell cell = sheet.writeCell(writableCell);
 
@@ -46,7 +47,11 @@ public class CellWriter {
                 .reduce(WritableCellStyle::combineWith)
                 .ifPresent(cellStyle -> applyCellStyle(cellStyle, cell, writableCell));
 
-        sheet.mergeCellBounds(cell, writableCell);
+        if(cellReference.spansMultipleCells()) {
+            sheet.mergeCellBounds(cell, writableCell);
+        }
+
+        return writableCell.getLocation();
     }
 
     private WritableCell applyOffset(WritableCell cell) {

@@ -1,25 +1,50 @@
 package com.mihai.writer;
 
+import com.mihai.writer.table.CellWritingContext;
+import com.mihai.writer.table.TableWritingContext;
 import com.mihai.writer.table.WrittenTable;
-import com.mihai.writer.table.WrittenTables;
 
 public class WritingContext {
 
-    private final WrittenTables tables;
+    private final TableWritingContext tableContext;
+    private final CellWritingContext cellContext;
 
-    public WritingContext(WrittenTables tables) {
-        this.tables = tables;
+    public WritingContext(TableWritingContext tableContext, CellWritingContext cellContext) {
+        this.tableContext = tableContext;
+        this.cellContext = cellContext;
     }
 
-    /**
-     * @param tableId id of the table
-     * @return the table bounds of a table which has already been written.
-     */
     public WrittenTable getTable(String tableId) {
-        return tables.getTable(tableId);
+        return tableContext.getTable(tableId);
     }
 
-    public WrittenTable getLastTable() {
-        return tables.getLastTable();
+    public WrittenTable getLastWrittenTable() {
+        return tableContext.getLastWrittenTable();
+    }
+
+    public int getCurrentRow() {
+        if(tableContext.isWritingTable()) {
+            return tableContext.getCurrentRow();
+        }
+        return cellContext.getCurrentRow();
+    }
+
+    public int getCurrentColumn() {
+        if(tableContext.isWritingTable()) {
+            return tableContext.getCurrentColumn();
+        }
+        return cellContext.getCurrentColumn();
+    }
+
+    public String getCurrentColumnName() {
+        return tableContext.getCurrentColumnName();
+    }
+
+    public int getCurrentTableRow() {
+        return tableContext.getCurrentTableRow();
+    }
+
+    public int getCurrentTableColumn() {
+        return tableContext.getCurrentTableColumn();
     }
 }

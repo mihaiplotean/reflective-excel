@@ -99,7 +99,7 @@ public class WritableCellStyleExtractor {
     private static CellColor asColor(Color color) {
         if (color instanceof HSSFColor xlsColor) {
             short[] rgbValues = xlsColor.getTriplet();
-            return new CellColor((byte) rgbValues[0], (byte) rgbValues[1], (byte) rgbValues[2]);
+            return new CellColor(rgbValues[0], rgbValues[1], rgbValues[2]);
         }
         if (color instanceof XSSFColor xlsxColor) {
             byte[] rgbValues = xlsxColor.getRGB();
