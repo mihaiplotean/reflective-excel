@@ -13,7 +13,7 @@ public class CellBorder {
     private final BorderStyle bottomBorderStyle;
     private final BorderStyle leftBorderStyle;
 
-    private final CellColor color;  // how to make this a custom color? Possible idea: creationHelper.createExtendedColor().getIndex()
+    private final CellColor color;
 
     public CellBorder(BorderStyle borderStyle) {
         topBorderStyle = borderStyle;

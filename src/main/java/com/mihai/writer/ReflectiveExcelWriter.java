@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 public class ReflectiveExcelWriter {
 
@@ -48,7 +47,7 @@ public class ReflectiveExcelWriter {
     }
 
     public void registerTypeStyleProvider(Class<?> clazz, StyleProvider style) {
-        this.cellStyleContext.registerTypeStyleProvider(clazz, style);
+        this.cellStyleContext.setTypeStyleProvider(clazz, style);
     }
 
     // todo: move these options to ExcelWritingSettings?

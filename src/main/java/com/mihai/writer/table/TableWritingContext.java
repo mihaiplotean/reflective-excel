@@ -81,7 +81,10 @@ public class TableWritingContext {
     }
 
     public WrittenTableHeaders getCurrentTableHeaders() {
-        return currentTableHeaders;
+        if(isWritingTable) {
+            return currentTableHeaders;
+        }
+        return null;
     }
 
     public void setCurrentTableHeaders(WrittenTableHeaders currentTableHeaders) {

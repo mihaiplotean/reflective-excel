@@ -27,6 +27,10 @@ public class WrittenTable {
         return headers.getColumnIndex(headerName);
     }
 
+    public String getColumnName(int columnIndex) {
+        return headers.getColumnName(columnIndex);
+    }
+
     public Bounds getBounds() {
         return bounds;
     }

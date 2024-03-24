@@ -13,8 +13,17 @@ public class DefaultSerializationContext implements SerializationContext {
     }
 
     protected void registerSerializers() {
+        registerSerializer(int.class, CellSerializers.identity());
+        registerSerializer(byte.class, CellSerializers.identity());
+        registerSerializer(short.class, CellSerializers.identity());
+        registerSerializer(long.class, CellSerializers.identity());
+        registerSerializer(double.class, CellSerializers.identity());
+        registerSerializer(float.class, CellSerializers.identity());
+        registerSerializer(boolean.class, CellSerializers.identity());
         registerSerializer(String.class, CellSerializers.identity());
         registerSerializer(Integer.class, CellSerializers.identity());
+        registerSerializer(Byte.class, CellSerializers.identity());
+        registerSerializer(Short.class, CellSerializers.identity());
         registerSerializer(Long.class, CellSerializers.identity());
         registerSerializer(Double.class, CellSerializers.identity());
         registerSerializer(Float.class, CellSerializers.identity());

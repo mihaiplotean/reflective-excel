@@ -1,0 +1,36 @@
+package com.mihai.writer.style;
+
+import com.mihai.writer.style.border.CellBorders;
+import com.mihai.writer.style.color.CellColor;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class WritableCellStylesTest {
+
+    @Test
+    public void dateStyleFormatIsNotEmpty() {
+        // locale dependant, thus simply checking that some value is set
+        assertFalse(WritableCellStyles.forDate().getFormat().isEmpty());
+    }
+
+    @Test
+    public void boldTextStyleHasBoldFont() {
+        assertFalse(WritableCellStyles.boldText().getFont().isBold());
+    }
+
+    @Test
+    public void allSideBorderStyleHasThinBorder() {
+        assertEquals(CellBorders.allSidesThin(), WritableCellStyles.allSideBorder().getBorder());
+    }
+
+    @Test
+    public void backgroundColorStyleHasColorValues() {
+        assertEquals(new CellColor(1, 2, 3), WritableCellStyles.backgroundColor(1, 2, 3).getBackgroundColor());
+    }
+
+    @Test
+    public void styleCreatedWithFormatSavesValue() {
+        assertEquals("abc", WritableCellStyles.format("abc").getFormat());
+    }
+}

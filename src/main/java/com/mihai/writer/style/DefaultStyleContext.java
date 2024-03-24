@@ -21,8 +21,8 @@ public class DefaultStyleContext implements CellStyleContext {
     }
 
     protected void registerStyleProviders() {
-        registerTypeStyleProvider(Date.class, StyleProviders.of(WritableCellStyles.forDate()));
-        registerTypeStyleProvider(LocalDate.class, StyleProviders.of(WritableCellStyles.forDate()));
+        setTypeStyleProvider(Date.class, StyleProviders.of(WritableCellStyles.forDate()));
+        setTypeStyleProvider(LocalDate.class, StyleProviders.of(WritableCellStyles.forDate()));
     }
 
     @Override
@@ -36,7 +36,7 @@ public class DefaultStyleContext implements CellStyleContext {
     }
 
     @Override
-    public void registerTypeStyleProvider(Class<?> clazz, StyleProvider style) {
+    public void setTypeStyleProvider(Class<?> clazz, StyleProvider style) {
         typeStyleProviderMap.put(clazz, style);
     }
 

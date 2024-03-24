@@ -1,6 +1,5 @@
 package com.mihai.writer.style.border;
 
-import com.mihai.writer.style.font.CellFont;
 import org.apache.poi.ss.usermodel.BorderStyle;
 
 public class CellBorders {

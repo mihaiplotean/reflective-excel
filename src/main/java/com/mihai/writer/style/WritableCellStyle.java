@@ -67,6 +67,7 @@ public class WritableCellStyle {
                 .border(combinedBorder(other.border))
                 .backgroundColor(backgroundColor != null ? backgroundColor : other.backgroundColor)
                 .font(combinedFont(other.font))
+                .wrapText(wrapText || other.wrapText)
                 .build();
     }
 

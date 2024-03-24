@@ -10,13 +10,21 @@ public class CellLocation {
     private final int column;
 
     public CellLocation(int row, int column) {
+        if(row < 0 || column < 0) {
+            throw new IllegalArgumentException("The row or column of a cell cannot be negative");
+        }
         this.row = row;
         this.column = column;
     }
 
     public static CellLocation fromReference(String cellReference) {
         CellReference reference = new CellReference(cellReference);
-        return new CellLocation(reference.getRow(), reference.getCol());
+        int row = reference.getRow();
+        int column = reference.getCol();
+        if(row < 0 || column < 0) {
+            throw new IllegalArgumentException("Invalid cell reference: %s".formatted(cellReference));
+        }
+        return new CellLocation(row, column);
     }
 
     public int getRow() {
@@ -45,6 +53,10 @@ public class CellLocation {
 
     public CellLocation getOffsetBy(int rows, int columns) {
         return new CellLocation(row + rows, column + columns);
+    }
+
+    public String getReference() {
+        return new CellReference(row, column).formatAsString();
     }
 
     @Override
