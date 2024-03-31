@@ -88,4 +88,14 @@ public class Bounds {
     public int hashCode() {
         return Objects.hash(startRow, startColumn, endRow, endColumn);
     }
+
+    @Override
+    public String toString() {
+        return "Bounds{" +
+                "startRow=" + startRow +
+                ", startColumn=" + startColumn +
+                ", endRow=" + endRow +
+                ", endColumn=" + endColumn +
+                '}';
+    }
 }

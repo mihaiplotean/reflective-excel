@@ -60,4 +60,9 @@ public class GroupedFieldNode implements AnnotatedFieldNode {
                 .flatMap(Collection::stream)
                 .toList();
     }
+
+    @Override
+    public boolean isLeafValue() {
+        return false;
+    }
 }

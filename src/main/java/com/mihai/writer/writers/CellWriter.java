@@ -1,5 +1,7 @@
-package com.mihai.writer;
+package com.mihai.writer.writers;
 
+import com.mihai.writer.WritableCell;
+import com.mihai.writer.WritableSheet;
 import com.mihai.writer.locator.CellLocation;
 import com.mihai.writer.style.WritableCellStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -29,14 +31,6 @@ public class CellWriter {
 
     public int getOffsetColumns() {
         return offsetColumns;
-    }
-
-    public CellLocation writeCell(WritableCell cellReference) {
-        return writeCell(cellReference, List.of());
-    }
-
-    public CellLocation writeCell(WritableCell cellReference, WritableCellStyle style) {
-        return writeCell(cellReference, List.of(style));
     }
 
     public CellLocation writeCell(WritableCell cellReference, List<WritableCellStyle> styles) {

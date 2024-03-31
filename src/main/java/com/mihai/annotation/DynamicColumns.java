@@ -1,5 +1,6 @@
 package com.mihai.annotation;
 
+import com.mihai.reader.detector.AllColumnsDynamicDetector;
 import com.mihai.reader.detector.ColumnDetector;
 
 import java.lang.annotation.ElementType;
@@ -11,5 +12,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface DynamicColumns {
 
-    Class<? extends ColumnDetector> detector();
+    Class<? extends ColumnDetector> detector() default AllColumnsDynamicDetector.class;
 }

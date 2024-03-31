@@ -6,9 +6,9 @@ public class TableWritingContext {
 
     private WrittenTableHeaders currentTableHeaders;
 
-    private int currentRow;
+//    private int currentRow;
     private int currentTableRow;
-    private int currentColumn;
+//    private int currentColumn;
     private int currentTableColumn;
 
     private boolean isWritingTable;
@@ -28,17 +28,17 @@ public class TableWritingContext {
     public WrittenTable getTable(String tableId) {
         return writtenTables.getTable(tableId);
     }
-
-    public int getCurrentRow() {
-        if(isWritingTable) {
-            return currentRow;
-        }
-        return -1;
-    }
-
-    public void setCurrentRow(int currentRow) {
-        this.currentRow = currentRow;
-    }
+//
+//    public int getCurrentRow() {
+//        if(isWritingTable) {
+//            return currentRow;
+//        }
+//        return -1;
+//    }
+//
+//    public void setCurrentRow(int currentRow) {
+//        this.currentRow = currentRow;
+//    }
 
     public int getCurrentTableRow() {
         if(isWritingTable) {
@@ -51,29 +51,22 @@ public class TableWritingContext {
         this.currentTableRow = currentTableRow;
     }
 
-    public int getCurrentColumn() {
-        if(isWritingTable) {
-            return currentColumn;
-        }
-        return -1;
-    }
+//    public int getCurrentColumn() {
+//        if(isWritingTable) {
+//            return currentColumn;
+//        }
+//        return -1;
+//    }
 
-    public void setCurrentColumn(int currentColumn) {
-        this.currentColumn = currentColumn;
-    }
+//    public void setCurrentColumn(int currentColumn) {
+//        this.currentColumn = currentColumn;
+//    }
 
     public int getCurrentTableColumn() {
         if(isWritingTable) {
             return currentTableColumn;
         }
         return -1;
-    }
-
-    public String getCurrentColumnName() {
-        if(isWritingTable) {
-            return currentTableHeaders.getColumnName(currentColumn);
-        }
-        return "";
     }
 
     public void setCurrentTableColumn(int currentTableColumn) {

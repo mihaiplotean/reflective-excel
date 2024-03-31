@@ -50,4 +50,9 @@ public class FixedFieldNode implements AnnotatedFieldNode {
     public List<TypedValue> getLeafValues(Object target) {
         return Collections.singletonList(new TypedValue(field.getType(), ReflectionUtilities.readField(field, target)));
     }
+
+    @Override
+    public boolean isLeafValue() {
+        return true;
+    }
 }

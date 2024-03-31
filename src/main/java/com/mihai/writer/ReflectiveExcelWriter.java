@@ -4,6 +4,7 @@ import com.mihai.writer.serializer.CellSerializer;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.serializer.SerializationContext;
 import com.mihai.writer.style.*;
+import com.mihai.writer.writers.SheetWriter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;

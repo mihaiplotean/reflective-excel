@@ -64,4 +64,9 @@ public class DynamicFieldNode implements AnnotatedFieldNode {
                 .map(key -> new TypedValue(valueType, columnToValueMap.get(key)))
                 .toList();
     }
+
+    @Override
+    public boolean isLeafValue() {
+        return false;
+    }
 }

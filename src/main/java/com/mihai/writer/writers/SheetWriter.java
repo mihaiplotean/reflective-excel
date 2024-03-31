@@ -1,9 +1,12 @@
-package com.mihai.writer;
+package com.mihai.writer.writers;
 
+import com.mihai.writer.ExcelWritingSettings;
+import com.mihai.writer.SheetContext;
+import com.mihai.writer.WritableSheet;
 import com.mihai.writer.serializer.SerializationContext;
 import com.mihai.writer.style.CellStyleContext;
-import com.mihai.writer.table.CellWritingContext;
-import com.mihai.writer.table.TableWritingContext;
+import com.mihai.writer.writers.ObjectWriter;
+import com.mihai.writer.writers.TableWriter;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.util.List;
@@ -25,10 +28,8 @@ public class SheetWriter {
     }
 
     public <T> void writeRows(List<T> rows, Class<T> clazz) {
-        TableWritingContext tableContext = new TableWritingContext();
-        CellWritingContext cellWritingContext = new CellWritingContext();
-        WritingContext writingContext = new WritingContext(tableContext, cellWritingContext);
-        TableWriter tableWriter = new TableWriter(sheet, serializationContext, cellStyleContext, settings, tableContext, writingContext, cellWritingContext);
+        SheetContext sheetContext = new SheetContext(serializationContext, cellStyleContext);
+        TableWriter tableWriter = new TableWriter(sheet, sheetContext, settings);
         tableWriter.writeTable(rows, clazz, "");
 
         sheet.evaluateAllFormulas();
@@ -36,7 +37,8 @@ public class SheetWriter {
     }
 
     public void write(Object object) {
-        new ObjectWriter(sheet, cellStyleContext, serializationContext, settings).write(object);
+        SheetContext sheetContext = new SheetContext(serializationContext, cellStyleContext);
+        new ObjectWriter(sheet, sheetContext, settings).write(object);
 
         sheet.evaluateAllFormulas();
         sheet.autoResizeAllColumns();

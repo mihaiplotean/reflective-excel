@@ -33,10 +33,6 @@ public class WritableCell {
         return value;
     }
 
-//    public WritableCellStyle getStyle() {
-//        return style;
-//    }
-
     public void writeTo(Cell cell) {
         if (value instanceof Number) {
             cell.setCellValue(((Number) value).doubleValue());

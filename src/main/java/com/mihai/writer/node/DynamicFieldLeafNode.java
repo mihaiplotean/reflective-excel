@@ -48,4 +48,9 @@ public class DynamicFieldLeafNode implements AnnotatedFieldNode {
     public List<TypedValue> getLeafValues(Object target) {
         return Collections.emptyList();
     }
+
+    @Override
+    public boolean isLeafValue() {
+        return true;
+    }
 }

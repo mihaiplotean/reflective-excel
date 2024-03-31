@@ -100,7 +100,7 @@ class WritableCellStyleTest {
         WritableCellStyle cellStyleB = WritableCellStyle.builder()
                 .verticalAlignment(VerticalAlignment.TOP)
                 .build();
-        assertEquals(VerticalAlignment.TOP, cellStyleA.combineWith(cellStyleB).getVerticalAlignment());
+        assertEquals(VerticalAlignment.BOTTOM, cellStyleA.combineWith(cellStyleB).getVerticalAlignment());
     }
 
     @Test

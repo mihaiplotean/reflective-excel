@@ -25,10 +25,11 @@ public class RootFieldNode {
     }
 
     public int getHeight() {
-        return children.stream()
+        int height = children.stream()
                 .mapToInt(AnnotatedFieldNode::getHeight)
                 .max()
                 .orElse(0);
+        return height == 0 ? 1 : height;
     }
 
     public List<AnnotatedFieldNode> getChildren() {

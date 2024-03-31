@@ -3,6 +3,7 @@ package com.mihai.writer;
 import com.mihai.writer.table.CellWritingContext;
 import com.mihai.writer.table.TableWritingContext;
 import com.mihai.writer.table.WrittenTable;
+import com.mihai.writer.table.WrittenTableHeaders;
 
 public class WritingContext {
 
@@ -23,21 +24,19 @@ public class WritingContext {
     }
 
     public int getCurrentRow() {
-        if(tableContext.isWritingTable()) {
-            return tableContext.getCurrentRow();
-        }
         return cellContext.getCurrentRow();
     }
 
     public int getCurrentColumn() {
-        if(tableContext.isWritingTable()) {
-            return tableContext.getCurrentColumn();
-        }
         return cellContext.getCurrentColumn();
     }
 
     public String getCurrentColumnName() {
-        return tableContext.getCurrentColumnName();
+        WrittenTableHeaders headers = tableContext.getCurrentTableHeaders();
+        if(headers == null) {
+            return "";
+        }
+        return headers.getColumnName(cellContext.getCurrentColumn());
     }
 
     public int getCurrentTableRow() {

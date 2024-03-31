@@ -1,15 +1,15 @@
-package com.mihai.writer;
+package com.mihai.writer.writers;
 
 import com.mihai.FieldAnalyzer;
 import com.mihai.ReflectionUtilities;
 import com.mihai.reader.field.CellValueField;
 import com.mihai.reader.field.KeyValueField;
 import com.mihai.reader.field.RowsField;
-import com.mihai.writer.serializer.SerializationContext;
-import com.mihai.writer.style.CellStyleContext;
+import com.mihai.writer.ExcelWritingSettings;
+import com.mihai.writer.SheetContext;
+import com.mihai.writer.WritableCell;
+import com.mihai.writer.WritableSheet;
 import com.mihai.writer.style.WritableCellStyle;
-import com.mihai.writer.table.CellWritingContext;
-import com.mihai.writer.table.TableWritingContext;
 import com.mihai.writer.table.WrittenTable;
 
 import java.lang.reflect.Field;
@@ -19,22 +19,13 @@ import java.util.List;
 public class ObjectWriter {
 
     private final WritableSheet sheet;
-    private final CellStyleContext cellStyleContext;
-    private final SerializationContext serializationContext;
+    private final SheetContext sheetContext;
     private final ExcelWritingSettings settings;
 
-    private final TableWritingContext tableContext;
-    private final CellWritingContext cellWritingContext;
-    private final WritingContext writingContext;
-
-    public ObjectWriter(WritableSheet sheet, CellStyleContext cellStyleContext, SerializationContext serializationContext, ExcelWritingSettings settings) {
+    public ObjectWriter(WritableSheet sheet, SheetContext sheetContext, ExcelWritingSettings settings) {
         this.sheet = sheet;
-        this.cellStyleContext = cellStyleContext;
-        this.serializationContext = serializationContext;
+        this.sheetContext = sheetContext;
         this.settings = settings;
-        this.cellWritingContext = new CellWritingContext();
-        this.tableContext = new TableWritingContext();
-        this.writingContext = new WritingContext(tableContext, cellWritingContext);
     }
 
     public void write(Object object) {
@@ -49,7 +40,7 @@ public class ObjectWriter {
             writePropertyValuePairs(cellWriter, propertyField, object);
         }
 
-        TableWriter tableWriter = new TableWriter(sheet, serializationContext, cellStyleContext, settings, tableContext, writingContext, cellWritingContext);
+        TableWriter tableWriter = new TableWriter(sheet, sheetContext, settings);
         for (RowsField rowsField : fieldAnalyzer.getExcelRowsFields()) {
             writeTable(tableWriter, rowsField, object);
         }
@@ -61,11 +52,11 @@ public class ObjectWriter {
         Class<Object> type = (Class<Object>) field.getType();
         Object value = ReflectionUtilities.readField(field, object);
 
-        cellWritingContext.setCurrentRow(valueField.getRow());
-        cellWritingContext.setCurrentColumn(valueField.getColumn());
+        sheetContext.setCurrentRow(valueField.getRow());
+        sheetContext.setCurrentColumn(valueField.getColumn());
 
-        WritableCellStyle style = cellStyleContext.getCellStyle(writingContext, value);
-        WritableCellStyle typeStyle = cellStyleContext.getTypeStyle(writingContext, type);
+        WritableCellStyle style = sheetContext.getCellStyle(value);
+        WritableCellStyle typeStyle = sheetContext.getTypeStyle(type);
 
         cellWriter.writeCell(
                 new WritableCell(
@@ -73,7 +64,7 @@ public class ObjectWriter {
                         valueField.getRow(),
                         valueField.getColumn()
                 ), List.of(style, typeStyle));
-        cellWritingContext.reset();
+        sheetContext.resetCellPointer();
     }
 
     @SuppressWarnings("unchecked")
@@ -82,11 +73,11 @@ public class ObjectWriter {
         Class<Object> type = (Class<Object>) field.getType();
         Object value = ReflectionUtilities.readField(field, object);
 
-        cellWritingContext.setCurrentRow(propertyField.getValueRow());
-        cellWritingContext.setCurrentColumn(propertyField.getValueColumn());
+        sheetContext.setCurrentRow(propertyField.getValueRow());
+        sheetContext.setCurrentColumn(propertyField.getValueColumn());
 
-        WritableCellStyle valueTypeStyle = cellStyleContext.getTypeStyle(writingContext, type);
-        WritableCellStyle valueCellStyle = cellStyleContext.getCellStyle(writingContext, value);
+        WritableCellStyle valueTypeStyle = sheetContext.getTypeStyle(type);
+        WritableCellStyle valueCellStyle = sheetContext.getCellStyle(value);
 
         cellWriter.writeCell(
                 new WritableCell(
@@ -95,11 +86,11 @@ public class ObjectWriter {
                         propertyField.getValueColumn()
                 ), List.of(valueCellStyle, valueTypeStyle));
 
-        cellWritingContext.setCurrentRow(propertyField.getPropertyRow());
-        cellWritingContext.setCurrentColumn(propertyField.getPropertyColumn());
+        sheetContext.setCurrentRow(propertyField.getPropertyRow());
+        sheetContext.setCurrentColumn(propertyField.getPropertyColumn());
 
-        WritableCellStyle propertyTypeStyle = cellStyleContext.getTypeStyle(writingContext, String.class);
-        WritableCellStyle propertyCellStyle = cellStyleContext.getCellStyle(writingContext, propertyField.getPropertyName());
+        WritableCellStyle propertyTypeStyle = sheetContext.getTypeStyle(String.class);
+        WritableCellStyle propertyCellStyle = sheetContext.getCellStyle(propertyField.getPropertyName());
 
         cellWriter.writeCell(
                 new WritableCell(
@@ -107,7 +98,7 @@ public class ObjectWriter {
                         propertyField.getPropertyRow(),
                         propertyField.getPropertyColumn()
                 ), List.of(propertyCellStyle, propertyTypeStyle));
-        cellWritingContext.reset();
+        sheetContext.resetCellPointer();
     }
 
     @SuppressWarnings("unchecked")
@@ -120,7 +111,7 @@ public class ObjectWriter {
 
             WrittenTable table = tableWriter.writeTable(rows, argumentType, field.getName());
 
-            tableContext.appendTable(table);
+            sheetContext.appendTable(table);
         } else {
             throw new IllegalStateException("Only lists allowed");
         }
