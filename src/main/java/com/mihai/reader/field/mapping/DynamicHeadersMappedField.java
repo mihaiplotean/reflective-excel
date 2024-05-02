@@ -1,8 +1,10 @@
-package com.mihai.reader.field.value;
+package com.mihai.reader.field.mapping;
 
-import com.mihai.reader.ReadingContext;
-import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.ReflectionUtilities;
+import com.mihai.reader.ReadingContext;
+import com.mihai.reader.TableHeader;
+import com.mihai.reader.field.DynamicColumnField;
+import com.mihai.reader.workbook.sheet.ReadableCell;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -11,33 +13,39 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DynamicColumnFieldValue implements AnnotatedFieldValue {
+public class DynamicHeadersMappedField implements HeaderMappedField {
 
-    private final Field field;
+    private final DynamicColumnField field;
 
     private Object fieldValue;
 
-    public DynamicColumnFieldValue(Field field) {
+    public DynamicHeadersMappedField(DynamicColumnField field) {
         this.field = field;
     }
 
     @Override
-    public void writeTo(Object targetObject) {
-        ReflectionUtilities.writeField(field, targetObject, fieldValue);
+    public DynamicColumnField getField() {
+        return field;
+    }
+
+    @Override
+    public boolean canMapTo(ReadingContext context, TableHeader header) {
+        return field.getColumnDetector().test(context, header.getCell());
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void readValue(ReadingContext context) {
+    public void storeCurrentValue(ReadingContext readingContext) {
         if (fieldValue == null) {
             fieldValue = getInitialFieldValue();
         }
+        Field field = this.field.getField();
         Class<?> type = field.getType();
         if (type == List.class) {
             List<Object> values = (List<Object>) fieldValue;
             ParameterizedType genericType = (ParameterizedType) field.getGenericType();
             Class<?> argumentType = (Class<?>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?; list of lists?
-            Object listValue = context.getCurrentCellValue(argumentType);
+            Object listValue = readingContext.getCurrentCellValue(argumentType);
             values.add(listValue);
         }
         if (type == Map.class) {
@@ -46,16 +54,16 @@ public class DynamicColumnFieldValue implements AnnotatedFieldValue {
             Class<?> keyArgumentType = (Class<?>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?
             Class<?> valueArgumentType = (Class<?>) genericType.getActualTypeArguments()[1];  // todo: unsafe cast?
 
-            ReadableCell headerCell = context.getCurrentTableHeaders().getHeader(context.getCurrentColumnNumber());
-            Object mapKey = context.getCellValue(headerCell.getCellReference(), keyArgumentType);
-            Object mapValue = context.getCurrentCellValue(valueArgumentType);
+            ReadableCell headerCell = readingContext.getCurrentTableHeaders().getHeader(readingContext.getCurrentColumnNumber());
+            Object mapKey = readingContext.getCellValue(headerCell.getCellReference(), keyArgumentType);
+            Object mapValue = readingContext.getCurrentCellValue(valueArgumentType);
 
             values.put(mapKey, mapValue);
         }
     }
 
     private Object getInitialFieldValue() {
-        Class<?> type = field.getType();
+        Class<?> type = field.getFieldType();
         if (type == List.class) {
             return new ArrayList<>();
         }
@@ -63,5 +71,15 @@ public class DynamicColumnFieldValue implements AnnotatedFieldValue {
             return new LinkedHashMap<>();
         }
         throw new IllegalStateException(String.format("Unsupported field type %s", type.getSimpleName()));
+    }
+
+    @Override
+    public void writeTo(Object targetObject) {
+        ReflectionUtilities.writeField(field.getField(), targetObject, fieldValue);
+    }
+
+    @Override
+    public void resetValue() {
+        fieldValue = null;
     }
 }
