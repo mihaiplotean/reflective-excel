@@ -43,7 +43,7 @@ public class ReflectionUtilities {
     public static List<Field> getAllFields(Class<?> clazz) {
         List<Field> fields = new ArrayList<>();
         if (clazz.getSuperclass() != null) {
-            fields.addAll(getAllFieldsList(clazz.getSuperclass()));
+            fields.addAll(getAllFields(clazz.getSuperclass()));
         }
         fields.addAll(List.of(clazz.getDeclaredFields()));
         return fields;

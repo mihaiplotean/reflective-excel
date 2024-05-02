@@ -1,7 +1,6 @@
 package com.mihai;
 
 import com.mihai.annotation.*;
-import com.mihai.reader.RowReader;
 import com.mihai.reader.detector.ColumnDetector;
 import com.mihai.reader.field.*;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -10,11 +9,6 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public class FieldAnalyzer {
-
-    private static final Set<Class<?>> SUPPORTED_DYNAMIC_FIELD_TYPES = Set.of(
-            List.class,
-            Map.class
-    );
 
     private final Class<?> clazz;
 
@@ -35,45 +29,24 @@ public class FieldAnalyzer {
         for (Field field : fields) {
             ExcelColumn annotation = field.getAnnotation(ExcelColumn.class);
             String columnName = annotation.name();
-            if(usedColumnNames.contains(columnName)) {
+            if(usedColumnNames.contains(columnName.toLowerCase())) {
                 throw new IllegalStateException(String.format(
                         "Duplicate column name \"%s\". Column names must be unique.", columnName
                 ));
             }
-            usedColumnNames.add(columnName);
+            usedColumnNames.add(columnName.toLowerCase());
         }
     }
 
     public List<DynamicColumnField> getDynamicColumnFields() {
         List<Field> fields = FieldUtils.getFieldsListWithAnnotation(clazz, DynamicColumns.class);
-        fields.forEach(this::validateDynamicFieldType);
-//        fields.forEach();  // validate empty constructor existence?
         return fields.stream()
                 .map(field -> {
                     Class<? extends ColumnDetector> detectorClazz = field.getAnnotation(DynamicColumns.class).detector();
                     ColumnDetector detector = ReflectionUtilities.newObject(detectorClazz);
-                    return new DynamicColumnField(detector, field);
+                    return new DynamicColumnField(field, detector);
                 })
                 .toList();
-    }
-
-    private void validateDynamicFieldType(Field field) {
-        Class<?> type = field.getType();  // todo: move these validation checks to the constructors of the annotated-fields
-        if (isSupportedDynamicField(type)) {
-            return;
-        }
-        throw new IllegalStateException(String.format(
-                "Unsupported type %s annotated as dynamic column. Only <%s> can be annotated.", type, SUPPORTED_DYNAMIC_FIELD_TYPES
-        ));
-    }
-
-    private boolean isSupportedDynamicField(Class<?> clazz) {
-        return SUPPORTED_DYNAMIC_FIELD_TYPES.stream()
-                .anyMatch(clazz::equals);
-    }
-
-    private void validateDynamicFieldHasEmptyConstructor(Field field) {
-        Class<? extends ColumnDetector> detector = field.getAnnotation(DynamicColumns.class).detector();
     }
 
     public List<CellValueField> getExcelCellValueFields() {
@@ -91,17 +64,11 @@ public class FieldAnalyzer {
                 .toList();
     }
 
-    public List<RowsField> getExcelRowsFields() {
-        return getExcelRowsFields(null);
-    }
-
-    public List<RowsField> getExcelRowsFields(RowReader rowReader) {
-        return FieldUtils.getFieldsListWithAnnotation(clazz, ExcelRows.class).stream()
+    public List<TableIdField> getTableIdFields() {
+        return FieldUtils.getFieldsListWithAnnotation(clazz, TableId.class).stream()
                 .map(field -> {
-                    ExcelRows annotation = field.getAnnotation(ExcelRows.class);
-                    return new RowsField(rowReader, field, annotation.lastRowDetector(),
-                            annotation.headerRowDetector(), annotation.skipRowDetector(),
-                            annotation.headerStartColumnDetector(), annotation.headerEndColumnDetector());
+                    TableId annotation = field.getAnnotation(TableId.class);
+                    return new TableIdField(field, annotation.value());
                 })
                 .toList();
     }

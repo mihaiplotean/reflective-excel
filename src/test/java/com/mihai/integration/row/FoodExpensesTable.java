@@ -1,7 +1,6 @@
 package com.mihai.integration.row;
 
 import com.mihai.annotation.ExcelProperty;
-import com.mihai.annotation.ExcelRows;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ public class FoodExpensesTable {
     @ExcelProperty(name = "Year", nameReference = "B3", valueReference = "C3")
     private int year;
 
-    @ExcelRows
     private List<FoodExpenseRow> foodExpenses;
 
     public int getMonth() {

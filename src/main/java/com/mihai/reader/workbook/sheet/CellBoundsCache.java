@@ -1,39 +1,38 @@
 package com.mihai.reader.workbook.sheet;
 
+import com.mihai.writer.locator.CellLocation;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.util.*;
 
-public class MergedRegionValues {
+public class CellBoundsCache {
 
     private final Sheet sheet;
-    private final List<CellRangeAddress> mergedRegions;
-    private final Map<CellCoordinates, CellBounds> cellBoundsMap = new HashMap<>();
+    private final Map<CellLocation, CellBounds> cellLocationToBoundsMap = new HashMap<>();
 
-    public MergedRegionValues(Sheet sheet) {
+    public CellBoundsCache(Sheet sheet) {
         this.sheet = sheet;
-        this.mergedRegions = sheet.getMergedRegions();
     }
 
     public CellBounds getCellBounds(Cell cell) {
-        CellCoordinates cellReference = new CellCoordinates(cell.getRowIndex(), cell.getColumnIndex());
-        CellBounds cellBounds = cellBoundsMap.get(cellReference);
+        CellLocation cellReference = new CellLocation(cell.getRowIndex(), cell.getColumnIndex());
+        CellBounds cellBounds = cellLocationToBoundsMap.get(cellReference);
         if (cellBounds != null) {
             return cellBounds;
         }
         CellRangeAddress region = getRegion(cell);
         if (region == null) {
             cellBounds = new CellBounds(cell);
-            cellBoundsMap.put(cellReference, cellBounds);
+            cellLocationToBoundsMap.put(cellReference, cellBounds);
             return cellBounds;
         }
         return getBoundsOfRegion(region);
     }
 
     private CellRangeAddress getRegion(Cell cell) {
-        for (CellRangeAddress mergedRegion : mergedRegions) {
+        for (CellRangeAddress mergedRegion : sheet.getMergedRegions()) {
             if (mergedRegion.isInRange(cell.getRowIndex(), cell.getColumnIndex())) {
                 return mergedRegion;
             }
@@ -47,7 +46,7 @@ public class MergedRegionValues {
                 region.getFirstRow(), region.getFirstColumn(), region.getLastRow(), region.getLastColumn());
         for (int row = region.getFirstRow(); row <= region.getLastRow(); row++) {
             for (int column = region.getFirstColumn(); column <= region.getLastColumn(); column++) {
-                cellBoundsMap.put(new CellCoordinates(row, column), cellBounds);
+                cellLocationToBoundsMap.put(new CellLocation(row, column), cellBounds);
             }
         }
         return cellBounds;
@@ -57,9 +56,5 @@ public class MergedRegionValues {
         return Optional.ofNullable(sheet.getRow(rowIndex))
                 .map(row -> row.getCell(columnIndex))
                 .orElse(null);
-    }
-
-    private record CellCoordinates(int row, int column) {
-
     }
 }

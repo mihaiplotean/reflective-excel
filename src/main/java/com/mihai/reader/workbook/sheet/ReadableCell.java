@@ -1,5 +1,6 @@
 package com.mihai.reader.workbook.sheet;
 
+import com.mihai.writer.locator.CellLocation;
 import org.apache.poi.ss.usermodel.Cell;
 
 import java.time.LocalDateTime;
@@ -66,5 +67,9 @@ public class ReadableCell {
 
     public int getBoundEndColumn() {
         return cellBounds.endColumn();
+    }
+
+    public CellLocation getLocation() {
+        return new CellLocation(getRowNumber(), getColumnNumber());
     }
 }

@@ -1,7 +1,5 @@
 package com.mihai.reader.field;
 
-import com.mihai.reader.field.value.AnnotatedFieldValue;
-import com.mihai.reader.field.value.CellValueFieldValue;
 import org.apache.poi.ss.util.CellReference;
 
 import java.lang.reflect.Field;
@@ -16,9 +14,18 @@ public class CellValueField implements AnnotatedField {
         this.field = field;
     }
 
+    public String getCellValueReference() {
+        return cellValueReference;
+    }
+
     @Override
     public Field getField() {
         return field;
+    }
+
+    @Override
+    public AnnotatedFieldType getType() {
+        return AnnotatedFieldType.CELL_VALUE;
     }
 
     public int getRow() {
@@ -27,10 +34,5 @@ public class CellValueField implements AnnotatedField {
 
     public int getColumn() {
         return new CellReference(cellValueReference).getCol();
-    }
-
-    @Override
-    public AnnotatedFieldValue newFieldValue() {
-        return new CellValueFieldValue(cellValueReference, field);
     }
 }

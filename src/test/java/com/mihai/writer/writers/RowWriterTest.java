@@ -2,13 +2,11 @@ package com.mihai.writer.writers;
 
 import com.mihai.annotation.DynamicColumns;
 import com.mihai.annotation.ExcelColumn;
-import com.mihai.writer.SheetContext;
+import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
 import com.mihai.writer.node.RootFieldNode;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.style.DefaultStyleContext;
-import com.mihai.writer.writers.CellWriter;
-import com.mihai.writer.writers.RowWriter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.AfterEach;
@@ -70,7 +68,7 @@ class RowWriterTest {
     private RowWriter createWriter(Object firstRow) {
         RootFieldNode node = new RootFieldNode(firstRow.getClass(), firstRow);
 
-        return new RowWriter(new SheetContext(new DefaultSerializationContext(), new DefaultStyleContext()), node,
+        return new RowWriter(new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()), node,
                 new CellWriter(new WritableSheet(actualSheet)));
     }
 

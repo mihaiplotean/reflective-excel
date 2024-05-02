@@ -1,30 +1,21 @@
 package com.mihai.integration.multipletables;
 
-import com.mihai.annotation.ExcelRows;
+import com.mihai.annotation.TableId;
 import com.mihai.integration.multipletables.destination.DestinationRow;
-import com.mihai.integration.multipletables.shipping.ShippingCostHeaderRowDetector;
 import com.mihai.integration.multipletables.shipping.ShippingCostRow;
-import com.mihai.integration.multipletables.supplier.SupplierHeaderColumnDetector;
-import com.mihai.integration.multipletables.supplier.SupplierHeaderRowDetector;
 import com.mihai.integration.multipletables.supplier.SupplierRow;
-import com.mihai.integration.multipletables.destination.DestinationHeaderColumnDetector;
-import com.mihai.integration.multipletables.destination.DestinationHeaderRowDetector;
-import com.mihai.integration.multipletables.shipping.ShippingCostHeaderColumnDetector;
 
 import java.util.List;
 
 public class ShippingSheet {
 
-    @ExcelRows(headerRowDetector = ShippingCostHeaderRowDetector.class,
-            headerStartColumnDetector = ShippingCostHeaderColumnDetector.class)
+    @TableId("Shipping Rows")
     private List<ShippingCostRow> shippingCostRows;
 
-    @ExcelRows(headerRowDetector = SupplierHeaderRowDetector.class,
-            headerStartColumnDetector = SupplierHeaderColumnDetector.class)
+    @TableId("Supplier Rows")
     private List<SupplierRow> supplierRows;
 
-    @ExcelRows(headerRowDetector = DestinationHeaderRowDetector.class,
-            headerStartColumnDetector = DestinationHeaderColumnDetector.class)
+    @TableId("Destination Rows")
     private List<DestinationRow> destinationRows;
 
     public ShippingSheet() {

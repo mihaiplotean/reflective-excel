@@ -2,7 +2,7 @@ package com.mihai.writer.writers;
 
 import com.mihai.reader.workbook.sheet.Bounds;
 import com.mihai.writer.ExcelWritingSettings;
-import com.mihai.writer.SheetContext;
+import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
 import com.mihai.writer.locator.CellLocation;
 import com.mihai.writer.node.RootFieldNode;
@@ -14,10 +14,10 @@ import java.util.List;
 public class TableWriter {
 
     private final WritableSheet sheet;
-    private final SheetContext sheetContext;
+    private final WritableSheetContext sheetContext;
     private final ExcelWritingSettings settings;
 
-    public TableWriter(WritableSheet sheet, SheetContext sheetContext, ExcelWritingSettings settings) {
+    public TableWriter(WritableSheet sheet, WritableSheetContext sheetContext, ExcelWritingSettings settings) {
         this.sheet = sheet;
         this.sheetContext = sheetContext;
         this.settings = settings;

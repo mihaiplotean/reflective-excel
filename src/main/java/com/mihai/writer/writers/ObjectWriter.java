@@ -4,9 +4,9 @@ import com.mihai.FieldAnalyzer;
 import com.mihai.ReflectionUtilities;
 import com.mihai.reader.field.CellValueField;
 import com.mihai.reader.field.KeyValueField;
-import com.mihai.reader.field.RowsField;
+import com.mihai.reader.field.TableIdField;
 import com.mihai.writer.ExcelWritingSettings;
-import com.mihai.writer.SheetContext;
+import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableCell;
 import com.mihai.writer.WritableSheet;
 import com.mihai.writer.style.WritableCellStyle;
@@ -19,10 +19,10 @@ import java.util.List;
 public class ObjectWriter {
 
     private final WritableSheet sheet;
-    private final SheetContext sheetContext;
+    private final WritableSheetContext sheetContext;
     private final ExcelWritingSettings settings;
 
-    public ObjectWriter(WritableSheet sheet, SheetContext sheetContext, ExcelWritingSettings settings) {
+    public ObjectWriter(WritableSheet sheet, WritableSheetContext sheetContext, ExcelWritingSettings settings) {
         this.sheet = sheet;
         this.sheetContext = sheetContext;
         this.settings = settings;
@@ -41,8 +41,8 @@ public class ObjectWriter {
         }
 
         TableWriter tableWriter = new TableWriter(sheet, sheetContext, settings);
-        for (RowsField rowsField : fieldAnalyzer.getExcelRowsFields()) {
-            writeTable(tableWriter, rowsField, object);
+        for (TableIdField tableIdField : fieldAnalyzer.getTableIdFields()) {
+            writeTable(tableWriter, tableIdField, object);
         }
     }
 
@@ -102,14 +102,14 @@ public class ObjectWriter {
     }
 
     @SuppressWarnings("unchecked")
-    private void writeTable(TableWriter tableWriter, RowsField rowsField, Object object) {
-        Field field = rowsField.getField();
+    private void writeTable(TableWriter tableWriter, TableIdField tableIdField, Object object) {
+        Field field = tableIdField.getField();
         if (field.getType() == List.class) {
             List<Object> rows = (List<Object>) ReflectionUtilities.readField(field, object);
             ParameterizedType genericType = (ParameterizedType) field.getGenericType();
             Class<Object> argumentType = (Class<Object>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?
 
-            WrittenTable table = tableWriter.writeTable(rows, argumentType, field.getName());
+            WrittenTable table = tableWriter.writeTable(rows, argumentType, tableIdField.getTableId());
 
             sheetContext.appendTable(table);
         } else {

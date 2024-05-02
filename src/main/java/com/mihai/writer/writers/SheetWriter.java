@@ -1,12 +1,10 @@
 package com.mihai.writer.writers;
 
 import com.mihai.writer.ExcelWritingSettings;
-import com.mihai.writer.SheetContext;
+import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
 import com.mihai.writer.serializer.SerializationContext;
 import com.mihai.writer.style.CellStyleContext;
-import com.mihai.writer.writers.ObjectWriter;
-import com.mihai.writer.writers.TableWriter;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.util.List;
@@ -28,7 +26,7 @@ public class SheetWriter {
     }
 
     public <T> void writeRows(List<T> rows, Class<T> clazz) {
-        SheetContext sheetContext = new SheetContext(serializationContext, cellStyleContext);
+        WritableSheetContext sheetContext = new WritableSheetContext(serializationContext, cellStyleContext);
         TableWriter tableWriter = new TableWriter(sheet, sheetContext, settings);
         tableWriter.writeTable(rows, clazz, "");
 
@@ -37,7 +35,7 @@ public class SheetWriter {
     }
 
     public void write(Object object) {
-        SheetContext sheetContext = new SheetContext(serializationContext, cellStyleContext);
+        WritableSheetContext sheetContext = new WritableSheetContext(serializationContext, cellStyleContext);
         new ObjectWriter(sheet, sheetContext, settings).write(object);
 
         sheet.evaluateAllFormulas();

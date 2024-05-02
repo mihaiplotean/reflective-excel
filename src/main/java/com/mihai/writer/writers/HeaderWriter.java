@@ -1,6 +1,6 @@
 package com.mihai.writer.writers;
 
-import com.mihai.writer.SheetContext;
+import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableCell;
 import com.mihai.writer.locator.CellLocation;
 import com.mihai.writer.node.AnnotatedFieldNode;
@@ -15,9 +15,9 @@ import java.util.List;
 public class HeaderWriter {
 
     private final CellWriter cellWriter;
-    private final SheetContext sheetContext;
+    private final WritableSheetContext sheetContext;
 
-    public HeaderWriter(CellWriter cellWriter, SheetContext sheetContext) {
+    public HeaderWriter(CellWriter cellWriter, WritableSheetContext sheetContext) {
         this.cellWriter = cellWriter;
         this.sheetContext = sheetContext;
     }

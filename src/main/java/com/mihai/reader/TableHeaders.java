@@ -34,6 +34,14 @@ public class TableHeaders implements Iterable<TableHeader> {
                 .orElse(null);
     }
 
+    public boolean isValid() {
+        return !headers.isEmpty();
+    }
+
+    public List<TableHeader> asList() {
+        return List.copyOf(headers);
+    }
+
     @Override
     public Iterator<TableHeader> iterator() {  // todo: exposes mutable object!
         return headers.iterator();

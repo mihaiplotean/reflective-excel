@@ -1,5 +1,6 @@
 package com.mihai.reader.deserializer;
 
+import com.mihai.CollectionUtilities;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.exception.BadInputException;
 import com.mihai.reader.workbook.sheet.ReadableCell;
@@ -15,7 +16,7 @@ public class CurrencyDeserializer implements CellDeserializer<Currency> {
     private static Set<String> getKnownCurrencyCodes() {
         return Currency.getAvailableCurrencies().stream()
                 .map(Currency::getCurrencyCode)
-                .collect(Collectors.toUnmodifiableSet());
+                .collect(CollectionUtilities.toCaseInsensitiveSetCollector());
     }
 
     @Override

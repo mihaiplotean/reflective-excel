@@ -1,11 +1,13 @@
 package com.mihai.writer.table;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class WrittenTables {
+public class WrittenTables implements Iterable<WrittenTable> {
 
-    private final Map<String, WrittenTable> tablePerId = new HashMap<>();
+    private final Map<String, WrittenTable> tablePerId = new LinkedHashMap<>();
 
     private WrittenTable lastTable;
 
@@ -20,5 +22,10 @@ public class WrittenTables {
 
     public WrittenTable getLastTable() {
         return lastTable;
+    }
+
+    @Override
+    public Iterator<WrittenTable> iterator() {
+        return tablePerId.values().iterator();
     }
 }

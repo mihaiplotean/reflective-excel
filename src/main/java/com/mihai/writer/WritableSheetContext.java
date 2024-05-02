@@ -8,7 +8,7 @@ import com.mihai.writer.table.TableWritingContext;
 import com.mihai.writer.table.WrittenTable;
 import com.mihai.writer.table.WrittenTableHeaders;
 
-public class SheetContext {
+public class WritableSheetContext {
 
     private final SerializationContext serializationContext;
     private final CellStyleContext cellStyleContext;
@@ -17,7 +17,7 @@ public class SheetContext {
     private final TableWritingContext tableWritingContext;
     private final CellWritingContext cellWritingContext;
 
-    public SheetContext(SerializationContext serializationContext, CellStyleContext cellStyleContext) {
+    public WritableSheetContext(SerializationContext serializationContext, CellStyleContext cellStyleContext) {
         this.serializationContext = serializationContext;
         this.cellStyleContext = cellStyleContext;
         this.tableWritingContext = new TableWritingContext();

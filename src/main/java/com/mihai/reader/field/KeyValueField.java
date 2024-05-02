@@ -1,7 +1,5 @@
 package com.mihai.reader.field;
 
-import com.mihai.reader.field.value.AnnotatedFieldValue;
-import com.mihai.reader.field.value.KeyValueFieldValue;
 import org.apache.poi.ss.util.CellReference;
 
 import java.lang.reflect.Field;
@@ -26,6 +24,19 @@ public class KeyValueField implements AnnotatedField {
         return field;
     }
 
+    @Override
+    public AnnotatedFieldType getType() {
+        return AnnotatedFieldType.KEY_VALUE;
+    }
+
+    public String getNameReference() {
+        return nameReference;
+    }
+
+    public String getValueReference() {
+        return valueReference;
+    }
+
     public String getPropertyName() {
         return propertyName;
     }
@@ -44,10 +55,5 @@ public class KeyValueField implements AnnotatedField {
 
     public int getValueColumn() {
         return new CellReference(valueReference).getCol();
-    }
-
-    @Override
-    public AnnotatedFieldValue newFieldValue() {
-        return new KeyValueFieldValue(propertyName, nameReference, valueReference, field);
     }
 }

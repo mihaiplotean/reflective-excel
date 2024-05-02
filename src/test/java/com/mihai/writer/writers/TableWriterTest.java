@@ -3,11 +3,9 @@ package com.mihai.writer.writers;
 import com.mihai.annotation.ExcelColumn;
 import com.mihai.reader.workbook.sheet.Bounds;
 import com.mihai.writer.ExcelWritingSettings;
-import com.mihai.writer.SheetContext;
+import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
-import com.mihai.writer.WritingContext;
 import com.mihai.writer.locator.CellLocation;
-import com.mihai.writer.locator.TableStartCellLocator;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.table.WrittenTable;
@@ -41,7 +39,7 @@ class TableWriterTest {
     @Test
     public void tableFixedHeadersAndRowsAreWritten() {
         TableWriter writer = new TableWriter(new WritableSheet(actualSheet),
-                new SheetContext(new DefaultSerializationContext(), new DefaultStyleContext()), ExcelWritingSettings.DEFAULT);
+                new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()), ExcelWritingSettings.DEFAULT);
 
         List<FixedColumnsRow> rows = List.of(
                 new FixedColumnsRow("row 1 value A", "row 1 value B"),
@@ -66,7 +64,7 @@ class TableWriterTest {
     @Test
     public void onlyFixedHeadersWrittenWhenNoRowsToWrite() {
         TableWriter writer = new TableWriter(new WritableSheet(actualSheet),
-                new SheetContext(new DefaultSerializationContext(), new DefaultStyleContext()), ExcelWritingSettings.DEFAULT);
+                new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()), ExcelWritingSettings.DEFAULT);
 
         WrittenTable table = writer.writeTable(List.of(), FixedColumnsRow.class, "");
 
@@ -79,7 +77,7 @@ class TableWriterTest {
     @Test
     public void tableOffsetIsApplied() {
         TableWriter writer = new TableWriter(new WritableSheet(actualSheet),
-                new SheetContext(new DefaultSerializationContext(), new DefaultStyleContext()),
+                new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()),
                 ExcelWritingSettings.with().tableStartCellLocator((context, tableId) -> new CellLocation(3, 3)).create());
 
         List<FixedColumnsRow> rows = List.of(

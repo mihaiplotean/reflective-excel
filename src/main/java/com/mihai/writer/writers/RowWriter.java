@@ -1,6 +1,6 @@
 package com.mihai.writer.writers;
 
-import com.mihai.writer.SheetContext;
+import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableCell;
 import com.mihai.writer.node.AnnotatedFieldNode;
 import com.mihai.writer.node.RootFieldNode;
@@ -11,14 +11,14 @@ import java.util.List;
 
 public class RowWriter {
 
-    private final SheetContext sheetContext;
+    private final WritableSheetContext sheetContext;
     private final RootFieldNode rootNode;
     private final CellWriter cellWriter;
 
     private int currentRow;
     private int currentColumn;
 
-    public RowWriter(SheetContext sheetContext, RootFieldNode rootNode, CellWriter cellWriter) {
+    public RowWriter(WritableSheetContext sheetContext, RootFieldNode rootNode, CellWriter cellWriter) {
         this.sheetContext = sheetContext;
         this.rootNode = rootNode;
         this.cellWriter = cellWriter;

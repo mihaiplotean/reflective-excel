@@ -6,14 +6,12 @@ import com.mihai.annotation.ExcelColumn;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.detector.ColumnDetector;
 import com.mihai.reader.workbook.sheet.ReadableCell;
-import com.mihai.writer.SheetContext;
+import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
 import com.mihai.writer.node.RootFieldNode;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.table.WrittenTableHeaders;
-import com.mihai.writer.writers.CellWriter;
-import com.mihai.writer.writers.HeaderWriter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.AfterEach;
@@ -37,7 +35,7 @@ class HeaderWriterTest {
         workbook = new XSSFWorkbook();
         actualSheet = workbook.createSheet();
         headerWriter = new HeaderWriter(new CellWriter(new WritableSheet(actualSheet)),
-                new SheetContext(new DefaultSerializationContext(), new DefaultStyleContext()));
+                new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()));
     }
 
     @AfterEach

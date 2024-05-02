@@ -11,12 +11,12 @@ import java.util.*;
 public class ReadableSheet implements Iterable<ReadableRow> {
 
     private final Sheet sheet;
-    private final MergedRegionValues mergedRegionValues;
+    private final CellBoundsCache cellBoundsCache;
     private final CellValueFormatter cellValueFormatter;
 
     public ReadableSheet(Sheet sheet) {
         this.sheet = sheet;
-        this.mergedRegionValues = new MergedRegionValues(sheet);
+        this.cellBoundsCache = new CellBoundsCache(sheet);
         this.cellValueFormatter = new CellValueFormatter(sheet.getWorkbook());  // todo: make overridable
     }
 
@@ -52,7 +52,7 @@ public class ReadableSheet implements Iterable<ReadableRow> {
     }
 
     public CellBounds getCellBounds(Cell cell) {
-        return mergedRegionValues.getCellBounds(cell);
+        return cellBoundsCache.getCellBounds(cell);
     }
 
     public ReadableCell asPropertyCell(Cell cell) {
@@ -63,14 +63,12 @@ public class ReadableSheet implements Iterable<ReadableRow> {
     @Override
     public Iterator<ReadableRow> iterator() {
         Iterator<Row> iterator = sheet.iterator();
-
         return new Iterator<>() {
 
             @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
-
 
             @Override
             public ReadableRow next() {

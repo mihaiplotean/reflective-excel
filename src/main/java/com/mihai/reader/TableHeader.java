@@ -1,6 +1,7 @@
 package com.mihai.reader;
 
 import com.mihai.reader.workbook.sheet.ReadableCell;
+import com.mihai.writer.locator.CellLocation;
 
 import java.util.*;
 
@@ -13,6 +14,10 @@ public class TableHeader {
 
     public TableHeader(ReadableCell cell) {
         this.cell = cell;
+    }
+
+    public CellLocation getLocation() {
+        return cell.getLocation();
     }
 
     public TableHeader copyWithoutParentReference() {
