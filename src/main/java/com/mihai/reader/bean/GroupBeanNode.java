@@ -1,16 +1,17 @@
 package com.mihai.reader.bean;
 
+import com.mihai.reader.field.AnnotatedField;
 import com.mihai.reader.field.AnnotatedFieldType;
 import com.mihai.reader.field.GroupedColumnsField;
 
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GroupBeanNode implements ChildBeanNode {
 
     private final GroupedColumnsField field;
-    private final List<? extends ChildBeanNode> children;
+    private final List<ChildBeanNode> children;
 
     public GroupBeanNode(GroupedColumnsField field) {
         this.field = field;
@@ -18,8 +19,8 @@ public class GroupBeanNode implements ChildBeanNode {
     }
 
     @Override
-    public Field getField() {
-        return field.getField();
+    public AnnotatedField getAnnotatedField() {
+        return field;
     }
 
     @Override
@@ -42,16 +43,16 @@ public class GroupBeanNode implements ChildBeanNode {
     }
 
     @Override
-    public List<? extends ChildBeanNode> getChildren() {
+    public List<ChildBeanNode> getChildren() {
         return children;
     }
 
     @Override
-    public List<? extends ChildBeanNode> getLeaves() {
+    public List<ChildBeanNode> getLeaves() {
         return children.stream()
                 .map(ChildBeanNode::getLeaves)
                 .flatMap(Collection::stream)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override

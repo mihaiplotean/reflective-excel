@@ -3,8 +3,8 @@ package com.mihai.reader.field.mapping;
 import com.mihai.ReflectionUtilities;
 import com.mihai.reader.ColumnFieldMapping;
 import com.mihai.reader.ReadingContext;
-import com.mihai.reader.TableHeader;
-import com.mihai.reader.TableHeaders;
+import com.mihai.reader.table.TableHeader;
+import com.mihai.reader.table.TableHeaders;
 import com.mihai.reader.bean.ChildBeanNode;
 import com.mihai.reader.field.GroupedColumnsField;
 
@@ -15,9 +15,9 @@ import java.util.List;
 public class GroupedHeadersMappedField implements HeaderMappedField {
 
     private final GroupedColumnsField field;
+    private final List<HeaderMappedField> groupFieldValues = new ArrayList<>();
 
     private ColumnFieldMapping columnFieldMapping;
-    private List<HeaderMappedField> groupFieldValues;
 
     public GroupedHeadersMappedField(GroupedColumnsField field) {
         this.field = field;
@@ -30,16 +30,25 @@ public class GroupedHeadersMappedField implements HeaderMappedField {
 
     @Override
     public boolean canMapTo(ReadingContext context, TableHeader header) {
-        ChildBeanNode beanNode = context.getCurrentTableBean().getChildren().stream()
-                .filter(node -> node.getField() == field.getField())
+        ChildBeanNode beanNode = getAllBeans(context.getCurrentTableBean().getChildren()).stream()
+                .filter(node -> field.getField().equals(node.getField()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Field to be mapped not present in bean!"));
-        boolean fieldCanBeMappedToHeader = headerNamesMatchNodeNames(header.getRoot(), beanNode);
+        TableHeader headerRoot = header.getRoot();
+        boolean fieldCanBeMappedToHeader = headerNamesMatchNodeNames(headerRoot, beanNode);
         if (fieldCanBeMappedToHeader) {
             columnFieldMapping = new ColumnFieldMapping(context, getField().getFieldType());
-            columnFieldMapping.create(subHeaders(header));
+            columnFieldMapping.create(subHeaders(headerRoot));
         }
         return fieldCanBeMappedToHeader;
+    }
+
+    private static List<ChildBeanNode> getAllBeans(List<ChildBeanNode> nodes) {
+        List<ChildBeanNode> allNodes = new ArrayList<>(nodes);
+        for (ChildBeanNode node : nodes) {
+            allNodes.addAll(getAllBeans(node.getChildren()));
+        }
+        return allNodes;
     }
 
     private boolean headerNamesMatchNodeNames(TableHeader header, ChildBeanNode childBeanNode) {
@@ -83,6 +92,6 @@ public class GroupedHeadersMappedField implements HeaderMappedField {
 
     @Override
     public void resetValue() {
-        groupFieldValues = null;
+        groupFieldValues.clear();
     }
 }

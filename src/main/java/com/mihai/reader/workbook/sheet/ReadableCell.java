@@ -10,13 +10,13 @@ import java.util.Objects;
 public class ReadableCell {
 
     private final Cell cell;
-    private final CellBounds cellBounds;
+    private final BoundedCell boundedCell;
     private final String cellValue;
     private final String cellReference;
 
-    public ReadableCell(Cell cell, CellBounds cellBounds, String cellValue) {
+    public ReadableCell(Cell cell, BoundedCell boundedCell, String cellValue) {
         this.cell = cell;
-        this.cellBounds = cellBounds;
+        this.boundedCell = boundedCell;
         this.cellValue = cellValue;
         this.cellReference = cell.getAddress().formatAsString();
     }
@@ -34,11 +34,11 @@ public class ReadableCell {
     }
 
     public Date getDateValue() {
-        return cellBounds.valueCell().getDateCellValue();
+        return boundedCell.valueCell().getDateCellValue();
     }
 
     public LocalDateTime getLocalDateTimeValue() {
-        return cellBounds.valueCell().getLocalDateTimeCellValue();
+        return boundedCell.valueCell().getLocalDateTimeCellValue();
     }
 
     public String getCellReference() {
@@ -50,23 +50,23 @@ public class ReadableCell {
     }
 
     public boolean equalBounds(ReadableCell other) {
-        return Objects.equals(cellBounds, other.cellBounds);
+        return Objects.equals(boundedCell, other.boundedCell);
     }
 
     public int getBoundStartRow() {
-        return cellBounds.startRow();
+        return boundedCell.startRow();
     }
 
     public int getBoundEndRow() {
-        return cellBounds.endRow();
+        return boundedCell.endRow();
     }
 
     public int getBoundStartColumn() {
-        return cellBounds.startColumn();
+        return boundedCell.startColumn();
     }
 
     public int getBoundEndColumn() {
-        return cellBounds.endColumn();
+        return boundedCell.endColumn();
     }
 
     public CellLocation getLocation() {

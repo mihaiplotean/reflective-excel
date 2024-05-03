@@ -1,6 +1,9 @@
-package com.mihai.reader;
+package com.mihai.reader.readers;
 
+import com.mihai.reader.*;
 import com.mihai.reader.bean.RootTableBeanNode;
+import com.mihai.reader.table.ReadTable;
+import com.mihai.reader.table.TableHeaders;
 import com.mihai.reader.workbook.sheet.Bounds;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 import com.mihai.writer.locator.CellLocation;
@@ -24,7 +27,7 @@ public class TableReader {
         sheetContext.setCurrentTableBean(rootBeanNode);
         sheetContext.setReadingTable(true);
 
-        TableHeaders tableHeaders = new TableHeaderReader(sheetContext, settings.getRowColumnDetector2()).readHeaders();
+        TableHeaders tableHeaders = new TableHeaderReader(sheetContext, settings.getRowColumnDetector()).readHeaders();
         if (!tableHeaders.isValid()) {
             sheetContext.setReadingTable(false);
             return List.of();
@@ -45,18 +48,17 @@ public class TableReader {
 
     private <T> List<T> readRows(TableHeaders tableHeaders, Class<T> clazz) {
         RowReader rowReader = new RowReader(sheetContext, createColumnFieldMapping(clazz, tableHeaders));
+        Iterator<ReadableRow> rowIterator = sheetContext.createTableRowIterator();
         List<T> rows = new ArrayList<>();
-        Iterator<ReadableRow> rowIterator = sheetContext.createRowIterator();
-
         while (rowIterator.hasNext()) {
             ReadableRow row = rowIterator.next();
 
-            if (settings.getRowColumnDetector2().isLastRow(sheetContext.getReadingContext(), row)) {
+            if (settings.getRowColumnDetector().isLastRow(sheetContext.getReadingContext(), row)) {
                 rows.add(rowReader.readRow(row, clazz));
                 break;
             }
 
-            if (settings.getRowColumnDetector2().shouldSkipRow(sheetContext.getReadingContext(), row)) {
+            if (settings.getRowColumnDetector().shouldSkipRow(sheetContext.getReadingContext(), row)) {
                 continue;
             }
 

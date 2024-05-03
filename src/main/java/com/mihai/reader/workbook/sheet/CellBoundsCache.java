@@ -10,23 +10,23 @@ import java.util.*;
 public class CellBoundsCache {
 
     private final Sheet sheet;
-    private final Map<CellLocation, CellBounds> cellLocationToBoundsMap = new HashMap<>();
+    private final Map<CellLocation, BoundedCell> cellLocationToBoundsMap = new HashMap<>();
 
     public CellBoundsCache(Sheet sheet) {
         this.sheet = sheet;
     }
 
-    public CellBounds getCellBounds(Cell cell) {
+    public BoundedCell getCellBounds(Cell cell) {
         CellLocation cellReference = new CellLocation(cell.getRowIndex(), cell.getColumnIndex());
-        CellBounds cellBounds = cellLocationToBoundsMap.get(cellReference);
-        if (cellBounds != null) {
-            return cellBounds;
+        BoundedCell boundedCell = cellLocationToBoundsMap.get(cellReference);
+        if (boundedCell != null) {
+            return boundedCell;
         }
         CellRangeAddress region = getRegion(cell);
         if (region == null) {
-            cellBounds = new CellBounds(cell);
-            cellLocationToBoundsMap.put(cellReference, cellBounds);
-            return cellBounds;
+            boundedCell = new BoundedCell(cell);
+            cellLocationToBoundsMap.put(cellReference, boundedCell);
+            return boundedCell;
         }
         return getBoundsOfRegion(region);
     }
@@ -40,16 +40,16 @@ public class CellBoundsCache {
         return null;
     }
 
-    private CellBounds getBoundsOfRegion(CellRangeAddress region) {
+    private BoundedCell getBoundsOfRegion(CellRangeAddress region) {
         Cell firstCellOfRegion = getCell(region.getFirstRow(), region.getFirstColumn());
-        CellBounds cellBounds = new CellBounds(firstCellOfRegion,
+        BoundedCell boundedCell = new BoundedCell(firstCellOfRegion,
                 region.getFirstRow(), region.getFirstColumn(), region.getLastRow(), region.getLastColumn());
         for (int row = region.getFirstRow(); row <= region.getLastRow(); row++) {
             for (int column = region.getFirstColumn(); column <= region.getLastColumn(); column++) {
-                cellLocationToBoundsMap.put(new CellLocation(row, column), cellBounds);
+                cellLocationToBoundsMap.put(new CellLocation(row, column), boundedCell);
             }
         }
-        return cellBounds;
+        return boundedCell;
     }
 
     private Cell getCell(int rowIndex, int columnIndex) {

@@ -1,9 +1,6 @@
 package com.mihai.integration.multipletables;
 
 import com.mihai.annotation.TableId;
-import com.mihai.integration.multipletables.destination.DestinationRow;
-import com.mihai.integration.multipletables.shipping.ShippingCostRow;
-import com.mihai.integration.multipletables.supplier.SupplierRow;
 
 import java.util.List;
 
@@ -25,5 +22,17 @@ public class ShippingSheet {
         this.shippingCostRows = shippingCostRows;
         this.supplierRows = supplierRows;
         this.destinationRows = destinationRows;
+    }
+
+    public List<ShippingCostRow> getShippingCostRows() {
+        return shippingCostRows;
+    }
+
+    public List<SupplierRow> getSupplierRows() {
+        return supplierRows;
+    }
+
+    public List<DestinationRow> getDestinationRows() {
+        return destinationRows;
     }
 }

@@ -2,7 +2,7 @@ package com.mihai.reader.field.mapping;
 
 import com.mihai.ReflectionUtilities;
 import com.mihai.reader.ReadingContext;
-import com.mihai.reader.TableHeader;
+import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.field.DynamicColumnField;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 

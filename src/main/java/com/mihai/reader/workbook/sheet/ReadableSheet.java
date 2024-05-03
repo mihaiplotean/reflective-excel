@@ -44,20 +44,20 @@ public class ReadableSheet implements Iterable<ReadableRow> {
                 .orElse(null);
     }
 
-    public CellBounds getCellBounds(int rowIndex, int columnIndex) {
+    public BoundedCell getCellBounds(int rowIndex, int columnIndex) {
         return Optional.ofNullable(sheet.getRow(rowIndex))
                 .map(row -> row.getCell(columnIndex))
                 .map(this::getCellBounds)
                 .orElse(null);
     }
 
-    public CellBounds getCellBounds(Cell cell) {
+    public BoundedCell getCellBounds(Cell cell) {
         return cellBoundsCache.getCellBounds(cell);
     }
 
     public ReadableCell asPropertyCell(Cell cell) {
-        CellBounds cellBounds = getCellBounds(cell);
-        return new ReadableCell(cell, cellBounds, cellValueFormatter.toString(cellBounds.valueCell()));
+        BoundedCell boundedCell = getCellBounds(cell);
+        return new ReadableCell(cell, boundedCell, cellValueFormatter.toString(boundedCell.valueCell()));
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.mihai.reader.field;
 
-import com.mihai.reader.ReadingContext;
 import com.mihai.reader.detector.ColumnDetector;
-import com.mihai.reader.TableHeader;
 
 import java.lang.reflect.Field;
 import java.util.List;

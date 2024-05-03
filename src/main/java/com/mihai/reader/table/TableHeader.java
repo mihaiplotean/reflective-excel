@@ -1,4 +1,4 @@
-package com.mihai.reader;
+package com.mihai.reader.table;
 
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.writer.locator.CellLocation;

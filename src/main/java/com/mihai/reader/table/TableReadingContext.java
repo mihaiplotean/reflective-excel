@@ -1,4 +1,4 @@
-package com.mihai.reader;
+package com.mihai.reader.table;
 
 import com.mihai.reader.bean.RootTableBeanNode;
 import com.mihai.reader.workbook.sheet.ReadableCell;

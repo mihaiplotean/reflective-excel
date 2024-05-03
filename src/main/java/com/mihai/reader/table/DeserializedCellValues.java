@@ -1,4 +1,4 @@
-package com.mihai.reader;
+package com.mihai.reader.table;
 
 import java.util.HashMap;
 import java.util.Map;

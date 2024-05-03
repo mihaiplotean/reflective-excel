@@ -1,9 +1,9 @@
 package com.mihai.reader.bean;
 
+import com.mihai.reader.field.AnnotatedField;
 import com.mihai.reader.field.AnnotatedFieldType;
 import com.mihai.reader.field.DynamicColumnField;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public class DynamicFieldBeanNode implements ChildBeanNode {
@@ -15,8 +15,8 @@ public class DynamicFieldBeanNode implements ChildBeanNode {
     }
 
     @Override
-    public Field getField() {
-        return field.getField();
+    public AnnotatedField getAnnotatedField() {
+        return field;
     }
 
     @Override
@@ -35,13 +35,13 @@ public class DynamicFieldBeanNode implements ChildBeanNode {
     }
 
     @Override
-    public List<? extends ChildBeanNode> getChildren() {
+    public List<ChildBeanNode> getChildren() {
         return List.of();
     }
 
     @Override
-    public List<? extends ChildBeanNode> getLeaves() {
-        return List.of();
+    public List<ChildBeanNode> getLeaves() {
+        return List.of(this);
     }
 
     @Override

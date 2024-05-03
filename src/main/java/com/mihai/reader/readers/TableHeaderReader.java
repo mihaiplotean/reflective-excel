@@ -1,7 +1,10 @@
-package com.mihai.reader;
+package com.mihai.reader.readers;
 
-import com.mihai.reader.detector.RowColumnDetector2;
-import com.mihai.reader.workbook.sheet.CellBounds;
+import com.mihai.reader.ReadableSheetContext;
+import com.mihai.reader.table.TableHeader;
+import com.mihai.reader.table.TableHeaders;
+import com.mihai.reader.detector.RowColumnDetector;
+import com.mihai.reader.workbook.sheet.BoundedCell;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 
@@ -10,10 +13,10 @@ import java.util.*;
 public class TableHeaderReader {
 
     private final ReadableSheetContext sheetContext;
-    private final RowColumnDetector2 rowColumnDetector;
-    private final Map<CellBounds, TableHeader> headerPerBounds = new HashMap<>();
+    private final RowColumnDetector rowColumnDetector;
+    private final Map<BoundedCell, TableHeader> headerPerBounds = new HashMap<>();
 
-    public TableHeaderReader(ReadableSheetContext sheetContext, RowColumnDetector2 rowColumnDetector) {
+    public TableHeaderReader(ReadableSheetContext sheetContext, RowColumnDetector rowColumnDetector) {
         this.sheetContext = sheetContext;
         this.rowColumnDetector = rowColumnDetector;
     }
@@ -57,7 +60,7 @@ public class TableHeaderReader {
     }
 
     private void moveToRow(int endRow) {
-        sheetContext.setCurrentTableRow(endRow);
+        sheetContext.setCurrentRow(endRow);
     }
 
     private int getStartColumn(ReadableRow row) {
@@ -75,7 +78,7 @@ public class TableHeaderReader {
         Iterator<ReadableCell> cellIterator = sheetContext.createCellIterator(row);
         while (cellIterator.hasNext()) {
             ReadableCell cell = cellIterator.next();
-            if(cell.getColumnNumber() >= startColumn) {
+            if(cell.getColumnNumber() < startColumn) {
                 continue;
             }
             if(rowColumnDetector.isHeaderLastColumn(sheetContext.getReadingContext(), cell)) {
@@ -108,12 +111,12 @@ public class TableHeaderReader {
 
     private TableHeader buildHeader(int startRow, ReadableCell headerCell) {
         int boundStartRow = headerCell.getBoundStartRow();
-        CellBounds cellBounds = getCellBounds(headerCell);
-        TableHeader tableHeader = headerPerBounds.get(cellBounds);
+        BoundedCell boundedCell = getCellBounds(headerCell);
+        TableHeader tableHeader = headerPerBounds.get(boundedCell);
         if (boundStartRow <= startRow) {
             if(tableHeader == null) {
                 tableHeader = new TableHeader(headerCell);
-                headerPerBounds.put(cellBounds, tableHeader);
+                headerPerBounds.put(boundedCell, tableHeader);
             }
             return tableHeader;
         }
@@ -123,12 +126,12 @@ public class TableHeaderReader {
             tableHeader = new TableHeader(headerCell);
             tableHeader.setParent(parent);
             parent.addChildHeader(tableHeader);
-            headerPerBounds.put(cellBounds, tableHeader);
+            headerPerBounds.put(boundedCell, tableHeader);
         }
         return tableHeader;
     }
 
-    private CellBounds getCellBounds(ReadableCell cell) {
+    private BoundedCell getCellBounds(ReadableCell cell) {
         return sheetContext.getSheet().getCellBounds(cell.getRowNumber(), cell.getColumnNumber());
     }
 

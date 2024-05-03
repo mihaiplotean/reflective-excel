@@ -1,8 +1,6 @@
 package com.mihai.integration.multipletables;
 
-import com.mihai.integration.multipletables.destination.DestinationRow;
-import com.mihai.integration.multipletables.shipping.ShippingCostRow;
-import com.mihai.integration.multipletables.supplier.SupplierRow;
+import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReflectiveExcelReader;
 import com.mihai.writer.ReflectiveExcelWriter;
 import com.mihai.writer.style.StyleProviders;
@@ -14,15 +12,34 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class MultiTableTest {
+
+    private static final List<ShippingCostRow> SHIPPING_COST_ROWS = List.of(
+            new ShippingCostRow("Moldova", "USA", 1000),
+            new ShippingCostRow("Macedonia", "Netherlands", 420)
+    );
+    private static final List<SupplierRow> SUPPLIER_ROWS = List.of(
+            new SupplierRow("Moldova", 10000)
+    );
+    private static final List<DestinationRow> DESTINATION_ROWS = List.of(
+            new DestinationRow("USA", 720, 100),
+            new DestinationRow("Russia", 20, 15)
+    );
 
     @Test
     public void testMultipleTablesInOneSheet() {
         InputStream inputStream = getClass().getResourceAsStream("/test-multi-table.xlsx");
+        ExcelReadingSettings settings = ExcelReadingSettings.with()
+                .autoRowColumnDetector()
+                .create();
         ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream);
-        ShippingSheet table = reader.read(ShippingSheet.class);
+        ShippingSheet table = reader.read(ShippingSheet.class, settings);
 
-        System.out.println("test");
+        assertEquals(SHIPPING_COST_ROWS, table.getShippingCostRows());
+        assertEquals(SUPPLIER_ROWS, table.getSupplierRows());
+        assertEquals(DESTINATION_ROWS, table.getDestinationRows());
     }
 
     @Test

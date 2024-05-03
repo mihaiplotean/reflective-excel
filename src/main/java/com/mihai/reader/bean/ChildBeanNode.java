@@ -8,21 +8,25 @@ import java.util.List;
 
 public interface ChildBeanNode {
 
-    Field getField();
+    AnnotatedField getAnnotatedField();
 
     String getName();
 
+    default Field getField() {
+        return getAnnotatedField().getField();
+    }
+
     default Class<?> getType() {
-        return getField().getType();
+        return getAnnotatedField().getFieldType();
     }
 
     int getLength();
 
     int getHeight();
 
-    List<? extends ChildBeanNode> getChildren();
+    List<ChildBeanNode> getChildren();
 
-    List<? extends ChildBeanNode> getLeaves();
+    List<ChildBeanNode> getLeaves();
 
     AnnotatedFieldType getAnnotatedFieldType();
 }

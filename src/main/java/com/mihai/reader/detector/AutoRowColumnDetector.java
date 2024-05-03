@@ -9,10 +9,8 @@ import com.mihai.reader.workbook.sheet.ReadableRow;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
-public class AutoRowColumnDetector implements RowColumnDetector2 {
+public class AutoRowColumnDetector implements RowColumnDetector {
 
     @Override
     public boolean isLastRow(ReadingContext context, ReadableRow row) {
@@ -20,7 +18,7 @@ public class AutoRowColumnDetector implements RowColumnDetector2 {
     }
 
     private static boolean isNextRowEmpty(ReadingContext context, ReadableRow row) {
-        return context.getRow(row.getRowNumber() + 1).isEmpty();
+        return context.getCurrentTableRow(row.getRowNumber() + 1).isEmpty();
     }
 
     @Override
@@ -57,17 +55,26 @@ public class AutoRowColumnDetector implements RowColumnDetector2 {
     }
 
     private static boolean columnsInRowHaveAllDefinedHeaders(ReadingContext context, ReadableCell cell) {
-        RootTableBeanNode currentTableBean = context.getCurrentTableBean();
-        Set<String> cellValues = context.getRow(cell.getRowNumber()).getCells().stream()
+        List<ReadableCell> nextCellsInRow = context.getRow(cell.getRowNumber()).getCells().stream()
                 .filter(currentCell -> currentCell.getColumnNumber() >= cell.getColumnNumber())
+                .toList();
+        List<ReadableCell> headerCells = CollectionUtilities.takeUntil(nextCellsInRow,
+                rowCell -> !isNextColumnEmpty(context, rowCell));
+        Set<String> cellValues = headerCells.stream()
                 .map(ReadableCell::getValue)
                 .collect(CollectionUtilities.toCaseInsensitiveSetCollector());
-        return cellValues.containsAll(getDefinedColumnsInBean(currentTableBean));
+        return cellValues.containsAll(getDefinedColumnsInBean(context.getCurrentTableBean()));
     }
 
     @Override
     public boolean isHeaderLastColumn(ReadingContext context, ReadableCell cell) {
         return isNextColumnEmpty(context, cell);
+    }
+
+    private static boolean isColumnEmpty(ReadingContext context, ReadableCell cell) {
+        int rowNumber = cell.getRowNumber();
+        int columnNumber = cell.getColumnNumber();
+        return StringUtils.isEmpty(context.getCellValue(rowNumber, columnNumber + 1));
     }
 
     private static boolean isNextColumnEmpty(ReadingContext context, ReadableCell cell) {

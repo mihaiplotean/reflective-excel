@@ -2,10 +2,6 @@ package com.mihai.reader.bean;
 
 import com.mihai.FieldAnalyzer;
 import com.mihai.ReflectionUtilities;
-import com.mihai.writer.node.AnnotatedFieldNode;
-import com.mihai.writer.node.DynamicFieldNode;
-import com.mihai.writer.node.FixedFieldNode;
-import com.mihai.writer.node.GroupedFieldNode;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -34,7 +30,7 @@ public class ChildBeanNodeCreator {
                 .toList());
 
         childFields.addAll(fieldAnalyzer.getCellGroupFields().stream()
-                .map(field -> new GroupBeanNode(field))
+                .map(GroupBeanNode::new)
                 .toList());
 
         List<Field> orderedFields = ReflectionUtilities.getAllFields(type);

@@ -2,11 +2,11 @@ package com.mihai.reader;
 
 import com.mihai.FieldAnalyzer;
 import com.mihai.ReflectionUtilities;
-import com.mihai.reader.bean.RootTableBeanNode;
 import com.mihai.reader.exception.BadInputException;
 import com.mihai.reader.field.CellValueField;
 import com.mihai.reader.field.KeyValueField;
 import com.mihai.reader.field.TableIdField;
+import com.mihai.reader.readers.TableReader;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

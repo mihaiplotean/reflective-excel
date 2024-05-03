@@ -3,6 +3,9 @@ package com.mihai.reader;
 import com.mihai.reader.bean.RootTableBeanNode;
 import com.mihai.reader.deserializer.DeserializationContext;
 import com.mihai.reader.exception.BadInputExceptionConsumer;
+import com.mihai.reader.table.ReadTable;
+import com.mihai.reader.table.TableHeaders;
+import com.mihai.reader.table.TableReadingContext;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 import com.mihai.reader.workbook.sheet.ReadableSheet;
@@ -55,6 +58,35 @@ public class ReadableSheetContext {
         };
     }
 
+    public Iterator<ReadableRow> createTableRowIterator() {
+        int firstTableRow = tableReadingContext.getCurrentTableHeaders().asList().stream()
+                .mapToInt(header -> header.getCell().getBoundEndRow())
+                .max()
+                .orElse(0) + 1;
+        Iterator<ReadableRow> rowIterator = createRowIterator(firstTableRow);
+        return new Iterator<>() {
+            @Override
+            public boolean hasNext() {
+                return rowIterator.hasNext();
+            }
+
+            @Override
+            public ReadableRow next() {
+                return tableReadingContext.boundToCurrentTable(rowIterator.next());
+            }
+        };
+    }
+
+    private Iterator<ReadableRow> createRowIterator(int startingRow) {
+        Iterator<ReadableRow> rowIterator = createRowIterator();
+        int currentRowNumber = 0;
+        while (rowIterator.hasNext() && currentRowNumber < startingRow) {
+            ReadableRow row = rowIterator.next();
+            currentRowNumber = row.getRowNumber() + 1;
+        }
+        return rowIterator;
+    }
+
     public Iterator<ReadableCell> createCellIterator(ReadableRow row) {
         Iterator<ReadableCell> cellIterator = row.iterator();
         return new Iterator<>() {
@@ -103,14 +135,6 @@ public class ReadableSheetContext {
 
     public void setCurrentColumn(int column) {
         cellReadingContext.setCurrentColumn(column);
-    }
-
-    public void setCurrentTableRow(int row) {
-        tableReadingContext.setCurrentTableRow(row);
-    }
-
-    public void setCurrentTableColumn(int column) {
-        tableReadingContext.setCurrentTableColumn(column);
     }
 
     public void resetCellPointer() {

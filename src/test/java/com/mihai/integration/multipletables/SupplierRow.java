@@ -1,6 +1,8 @@
-package com.mihai.integration.multipletables.supplier;
+package com.mihai.integration.multipletables;
 
 import com.mihai.annotation.ExcelColumn;
+
+import java.util.Objects;
 
 public class SupplierRow {
 
@@ -24,5 +26,19 @@ public class SupplierRow {
 
     public int getCapacity() {
         return capacity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SupplierRow that = (SupplierRow) o;
+        return capacity == that.capacity
+                && Objects.equals(supplier, that.supplier);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(supplier, capacity);
     }
 }

@@ -2,19 +2,15 @@ package com.mihai.reader;
 
 import com.mihai.reader.bean.ChildBeanNode;
 import com.mihai.reader.bean.RootTableBeanNode;
-import com.mihai.reader.field.AnnotatedFieldType;
-import com.mihai.reader.field.DynamicColumnField;
-import com.mihai.reader.field.FixedColumnField;
-import com.mihai.reader.field.GroupedColumnsField;
+import com.mihai.reader.field.*;
 import com.mihai.reader.field.mapping.DynamicHeadersMappedField;
 import com.mihai.reader.field.mapping.FixedHeaderMappedField;
 import com.mihai.reader.field.mapping.GroupedHeadersMappedField;
 import com.mihai.reader.field.mapping.HeaderMappedField;
+import com.mihai.reader.table.TableHeader;
+import com.mihai.reader.table.TableHeaders;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.mihai.reader.field.AnnotatedFieldType.*;
 
@@ -27,22 +23,18 @@ public class ColumnFieldMapping {
     );
 
     private final ReadingContext context;
-    private final Map<Integer, HeaderMappedField> columnIndexToFieldMap = new HashMap<>();
-//    private final FieldAnalyzer fieldAnalyzer;
     private final RootTableBeanNode tableBean;
+
+    private final Map<AnnotatedField, HeaderMappedField> annotatedToMappingField = new HashMap<>();
+    private final Map<Integer, HeaderMappedField> columnIndexToFieldMap = new HashMap<>();
 
     public ColumnFieldMapping(ReadingContext context, Class<?> clazz) {
         this.context = context;
-//        this.fieldAnalyzer = new FieldAnalyzer(clazz);
         this.tableBean = new RootTableBeanNode(clazz);
     }
 
     public void create(TableHeaders headers) {
-//        List<FixedColumnField2> fixedColumnFields = fieldAnalyzer.getFixedColumnFields();
-//        List<DynamicColumnField> dynamicColumnFields = fieldAnalyzer.getDynamicColumnFields();
-//        List<GroupedColumnsField> cellGroupFields = fieldAnalyzer.getCellGroupFields();
-//        RootTableBeanNode tableBean = context.getCurrentTableBean();
-        List<ChildBeanNode> childBeanNodes = tableBean.getLeaves().stream()
+        List<ChildBeanNode> childBeanNodes = tableBean.getChildren().stream()
                 .sorted(Comparator.comparing(node -> FIELD_MAPPING_ORDER.indexOf(node.getAnnotatedFieldType())))
                 .toList();
 
@@ -54,18 +46,23 @@ public class ColumnFieldMapping {
 
     private HeaderMappedField findMatchingField(List<ChildBeanNode> fields, TableHeader header) {
         return fields.stream()
-                .map(this::getMappingField)
+                .map(ChildBeanNode::getAnnotatedField)
+                .map(this::getOrCreateMappingField)
                 .filter(field -> field.canMapTo(context, header))
                 .findFirst()
                 .orElse(null);
     }
 
-    private HeaderMappedField getMappingField(ChildBeanNode node) {
-        return switch (node.getAnnotatedFieldType()) {
-            case FIXED -> new FixedHeaderMappedField((FixedColumnField) node);
-            case DYNAMIC -> new DynamicHeadersMappedField((DynamicColumnField) node);
-            case GROUPED -> new GroupedHeadersMappedField((GroupedColumnsField) node);
-            default -> throw new IllegalArgumentException("Cannot map node %s to a column".formatted(node.getType()));
+    private HeaderMappedField getOrCreateMappingField(AnnotatedField annotatedField) {
+        return annotatedToMappingField.computeIfAbsent(annotatedField, this::createMappingField);
+    }
+
+    private HeaderMappedField createMappingField(AnnotatedField annotatedField) {
+        return switch (annotatedField.getType()) {
+            case FIXED -> new FixedHeaderMappedField((FixedColumnField) annotatedField);
+            case DYNAMIC -> new DynamicHeadersMappedField((DynamicColumnField) annotatedField);
+            case GROUPED -> new GroupedHeadersMappedField((GroupedColumnsField) annotatedField);
+            default -> throw new IllegalArgumentException("Cannot map node %s to a column".formatted(annotatedField.getType()));
         };
     }
 
@@ -74,6 +71,8 @@ public class ColumnFieldMapping {
     }
 
     public List<HeaderMappedField> getAllFields() {
-        return List.copyOf(columnIndexToFieldMap.values());
+        return columnIndexToFieldMap.values().stream()
+                .filter(Objects::nonNull)
+                .toList();
     }
 }

@@ -2,7 +2,6 @@ package com.mihai.reader;
 
 import com.mihai.reader.detector.*;
 import com.mihai.reader.exception.BadInputExceptionConsumer;
-import org.apache.poi.ss.util.CellReference;
 
 public class ExcelReadingSettings {
 
@@ -11,7 +10,7 @@ public class ExcelReadingSettings {
     private final String sheetName;
     private final int sheetIndex;
 
-    private final RowColumnDetector2 rowColumnDetector2;
+    private final RowColumnDetector rowColumnDetector;
 
     private final BadInputExceptionConsumer exceptionConsumer;
 
@@ -19,7 +18,7 @@ public class ExcelReadingSettings {
         sheetName = builder.sheetName;
         sheetIndex = builder.sheetIndex;
 
-        rowColumnDetector2 = builder.rowColumnDetector2;
+        rowColumnDetector = builder.rowColumnDetector;
 
         exceptionConsumer = builder.exceptionConsumer;
     }
@@ -32,8 +31,8 @@ public class ExcelReadingSettings {
         return sheetIndex;
     }
 
-    public RowColumnDetector2 getRowColumnDetector2() {
-        return rowColumnDetector2;
+    public RowColumnDetector getRowColumnDetector() {
+        return rowColumnDetector;
     }
 
     public BadInputExceptionConsumer getExceptionConsumer() {
@@ -49,7 +48,7 @@ public class ExcelReadingSettings {
         private String sheetName;
         private int sheetIndex;
 
-        private RowColumnDetector2 rowColumnDetector2 = new SimpleRowColumnDetector("A1");
+        private RowColumnDetector rowColumnDetector = new SimpleRowColumnDetector("A1");
 
         private BadInputExceptionConsumer exceptionConsumer = (row, exception) -> {
             throw exception;
@@ -66,11 +65,15 @@ public class ExcelReadingSettings {
         }
 
         public ExcelReadingSettingsBuilder headerStartCellReference(String cellReference) {
-            return rowColumnDetector2(new SimpleRowColumnDetector(cellReference));
+            return rowColumnDetector(new SimpleRowColumnDetector(cellReference));
         }
 
-        public ExcelReadingSettingsBuilder rowColumnDetector2(RowColumnDetector2 rowColumnDetector2) {
-            this.rowColumnDetector2 = rowColumnDetector2;
+        public ExcelReadingSettingsBuilder autoRowColumnDetector() {
+            return rowColumnDetector(new AutoRowColumnDetector());
+        }
+
+        public ExcelReadingSettingsBuilder rowColumnDetector(RowColumnDetector rowColumnDetector) {
+            this.rowColumnDetector = rowColumnDetector;
             return this;
         }
 

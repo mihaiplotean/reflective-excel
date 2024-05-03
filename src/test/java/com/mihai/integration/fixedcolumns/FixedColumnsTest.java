@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FixedColumnsTest {
 
-    public static final List<TodoRow> EXCEL_ROWS = List.of(
+    private static final List<TodoRow> EXCEL_ROWS = List.of(
             new TodoRow("buy milk", createDate(12, 12, 2023), TodoPriority.HIGH),
             new TodoRow("go to school", createDate(13, 12, 2023), TodoPriority.MEDIUM),
             new TodoRow("write this library", createDate(14, 3, 2024), TodoPriority.LOW)
