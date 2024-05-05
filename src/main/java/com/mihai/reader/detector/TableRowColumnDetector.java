@@ -4,7 +4,7 @@ import com.mihai.reader.ReadingContext;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 
-public interface RowColumnDetector {
+public interface TableRowColumnDetector {
 
     boolean isHeaderRow(ReadingContext context, ReadableRow row);
 

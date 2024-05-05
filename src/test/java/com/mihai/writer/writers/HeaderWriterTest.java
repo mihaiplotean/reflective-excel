@@ -109,13 +109,13 @@ class HeaderWriterTest {
 
     private static class OneFixedColumn {
 
-        @ExcelColumn(name = "test column A")
+        @ExcelColumn(value = "test column A")
         private String column;
     }
 
     private static class InheritColumns extends OneFixedColumn {
 
-        @ExcelColumn(name = "test column B")
+        @ExcelColumn(value = "test column B")
         private String column;
     }
 
@@ -148,10 +148,10 @@ class HeaderWriterTest {
 
         private static class InnerGroup {
 
-            @ExcelColumn(name = "Column A")
+            @ExcelColumn(value = "Column A")
             private String columnA;
 
-            @ExcelColumn(name = "Column B")
+            @ExcelColumn(value = "Column B")
             private String columnB;
         }
     }
@@ -163,7 +163,7 @@ class HeaderWriterTest {
 
         private static class OuterGroup {
 
-            @ExcelColumn(name = "Outer group column")
+            @ExcelColumn(value = "Outer group column")
             private String value;
 
             @ExcelCellGroup(name = "Sub-group")
@@ -171,10 +171,10 @@ class HeaderWriterTest {
 
             private static class InnerGroup {
 
-                @ExcelColumn(name = "Inner group column A")
+                @ExcelColumn(value = "Inner group column A")
                 private String value;
 
-                @ExcelColumn(name = "Inner group column B")
+                @ExcelColumn(value = "Inner group column B")
                 private String columnB;
             }
         }

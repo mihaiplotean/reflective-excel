@@ -74,10 +74,10 @@ class RowWriterTest {
 
     private static class FixedColumnsRow {
 
-        @ExcelColumn(name = "test column A")
+        @ExcelColumn(value = "test column A")
         private String columnA;
 
-        @ExcelColumn(name = "test column B")
+        @ExcelColumn(value = "test column B")
         private String columnB;
 
         private FixedColumnsRow(String columnA, String columnB) {

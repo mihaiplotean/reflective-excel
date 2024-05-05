@@ -8,7 +8,7 @@ public class PizzaGroup {
     @ExcelCellGroup(name = "size")
     private PizzaSize size;
 
-    @ExcelColumn(name = "name")
+    @ExcelColumn("name")
     private String pizzaName;
 
     public PizzaGroup() {

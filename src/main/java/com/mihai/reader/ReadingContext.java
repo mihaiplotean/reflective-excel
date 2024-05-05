@@ -58,6 +58,8 @@ public class ReadingContext {
         return tableReadingContext.boundToCurrentTable(getCurrentRow());
     }
 
+    // todo: different than the equivalent method of the writing context?
+    // could simply rename this to getRowBoundedToCurrentTable?
     public ReadableRow getCurrentTableRow(int rowNumber) {
         return tableReadingContext.boundToCurrentTable(sheet.getRow(rowNumber));
     }
@@ -123,12 +125,21 @@ public class ReadingContext {
             return cachedValue;
         }
 
+        int currentRow = cellReadingContext.getCurrentRow();
+        int currentColumn = cellReadingContext.getCurrentColumn();
+
+        cellReadingContext.setCurrentRow(row);
+        cellReadingContext.setCurrentColumn(column);
         try {
             T value = deserializationContext.deserialize(this, clazz, cell);
             cellValues.putValue(row, column, clazz, value);
             return value;
         } catch (BadInputException exception) {
             exceptionConsumer.accept(this, exception);
+        }
+        finally {
+            cellReadingContext.setCurrentRow(currentRow);
+            cellReadingContext.setCurrentColumn(currentColumn);
         }
         return null;
     }

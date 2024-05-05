@@ -4,10 +4,10 @@ import com.mihai.common.annotation.ExcelColumn;
 
 public class PizzaSize {
 
-    @ExcelColumn(name = "small")
+    @ExcelColumn("small")
     private String small;
 
-    @ExcelColumn(name = "large")
+    @ExcelColumn("large")
     private String large;
 
     public PizzaSize() {

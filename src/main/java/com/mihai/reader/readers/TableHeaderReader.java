@@ -3,7 +3,7 @@ package com.mihai.reader.readers;
 import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
-import com.mihai.reader.detector.RowColumnDetector;
+import com.mihai.reader.detector.TableRowColumnDetector;
 import com.mihai.reader.workbook.sheet.BoundedCell;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
@@ -13,10 +13,10 @@ import java.util.*;
 public class TableHeaderReader {
 
     private final ReadableSheetContext sheetContext;
-    private final RowColumnDetector rowColumnDetector;
+    private final TableRowColumnDetector rowColumnDetector;
     private final Map<BoundedCell, TableHeader> headerPerBounds = new HashMap<>();
 
-    public TableHeaderReader(ReadableSheetContext sheetContext, RowColumnDetector rowColumnDetector) {
+    public TableHeaderReader(ReadableSheetContext sheetContext, TableRowColumnDetector rowColumnDetector) {
         this.sheetContext = sheetContext;
         this.rowColumnDetector = rowColumnDetector;
     }

@@ -10,7 +10,7 @@ public class ExcelReadingSettings {
     private final String sheetName;
     private final int sheetIndex;
 
-    private final RowColumnDetector rowColumnDetector;
+    private final TableRowColumnDetector rowColumnDetector;
 
     private final BadInputExceptionConsumer exceptionConsumer;
 
@@ -31,7 +31,7 @@ public class ExcelReadingSettings {
         return sheetIndex;
     }
 
-    public RowColumnDetector getRowColumnDetector() {
+    public TableRowColumnDetector getRowColumnDetector() {
         return rowColumnDetector;
     }
 
@@ -48,7 +48,7 @@ public class ExcelReadingSettings {
         private String sheetName;
         private int sheetIndex;
 
-        private RowColumnDetector rowColumnDetector = new SimpleRowColumnDetector("A1");
+        private TableRowColumnDetector rowColumnDetector = new SimpleRowColumnDetector("A1");
 
         private BadInputExceptionConsumer exceptionConsumer = (row, exception) -> {
             throw exception;
@@ -72,7 +72,7 @@ public class ExcelReadingSettings {
             return rowColumnDetector(new AutoRowColumnDetector());
         }
 
-        public ExcelReadingSettingsBuilder rowColumnDetector(RowColumnDetector rowColumnDetector) {
+        public ExcelReadingSettingsBuilder rowColumnDetector(TableRowColumnDetector rowColumnDetector) {
             this.rowColumnDetector = rowColumnDetector;
             return this;
         }

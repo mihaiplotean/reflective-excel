@@ -4,10 +4,10 @@ import com.mihai.common.annotation.ExcelColumn;
 
 public class Address {
 
-    @ExcelColumn(name = "home")
+    @ExcelColumn("home")
     private String home;
 
-    @ExcelColumn(name = "work")
+    @ExcelColumn("work")
     private String work;
 
     public Address() {

@@ -6,13 +6,13 @@ import java.util.Objects;
 
 public class ShippingCostRow {
 
-    @ExcelColumn(name = "Supplier")
+    @ExcelColumn("Supplier")
     private String supplier;
 
-    @ExcelColumn(name = "Destination")
+    @ExcelColumn("Destination")
     private String destination;
 
-    @ExcelColumn(name = "Units Shipped")
+    @ExcelColumn("Units Shipped")
     private int unitsShipped;
 
     public ShippingCostRow() {

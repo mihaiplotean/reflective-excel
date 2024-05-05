@@ -8,12 +8,11 @@ import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class AutoRowColumnDetector implements RowColumnDetector {
+public class AutoRowColumnDetector implements TableRowColumnDetector {
 
     @Override
     public boolean isHeaderRow(ReadingContext context, ReadableRow row) {
@@ -30,9 +29,7 @@ public class AutoRowColumnDetector implements RowColumnDetector {
     }
 
     private static List<String> getDefinedColumnsInBean(RootTableBeanNode currentTableBean) {
-        return currentTableBean.getChildren().stream()
-                .map(ChildBeanNode::getLeaves)
-                .flatMap(Collection::stream)
+        return currentTableBean.getLeaves().stream()
                 .map(ChildBeanNode::getName)
                 .filter(Objects::nonNull)
                 .toList();
@@ -47,8 +44,7 @@ public class AutoRowColumnDetector implements RowColumnDetector {
         List<ReadableCell> nextCellsInRow = context.getRow(cell.getRowNumber()).getCells().stream()
                 .filter(currentCell -> currentCell.getColumnNumber() >= cell.getColumnNumber())
                 .toList();
-        List<ReadableCell> headerCells = CollectionUtilities.takeUntil(nextCellsInRow,
-                rowCell -> !isNextColumnEmpty(context, rowCell));
+        List<ReadableCell> headerCells = CollectionUtilities.takeUntil(nextCellsInRow, rowCell -> isNextColumnEmpty(context, rowCell));
         Set<String> cellValues = headerCells.stream()
                 .map(ReadableCell::getValue)
                 .collect(CollectionUtilities.toCaseInsensitiveSetCollector());

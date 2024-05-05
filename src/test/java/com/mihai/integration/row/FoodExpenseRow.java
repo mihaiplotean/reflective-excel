@@ -4,10 +4,10 @@ import com.mihai.common.annotation.ExcelColumn;
 
 public class FoodExpenseRow {
 
-    @ExcelColumn(name = "Food")
+    @ExcelColumn("Food")
     private String name;
 
-    @ExcelColumn(name = "Price")
+    @ExcelColumn("Price")
     private double price;
 
     public String getName() {

@@ -6,13 +6,13 @@ import java.time.LocalDate;
 
 public class FancyFoodExpensesTableRow {
 
-    @ExcelColumn(name = "name")
+    @ExcelColumn("name")
     private String name;
 
-    @ExcelColumn(name = "date")
+    @ExcelColumn("date")
     private LocalDate date;
 
-    @ExcelColumn(name = "spent")
+    @ExcelColumn("spent")
     private Money amount;
 
     public FancyFoodExpensesTableRow() {

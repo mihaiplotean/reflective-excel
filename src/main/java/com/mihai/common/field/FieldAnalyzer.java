@@ -22,7 +22,7 @@ public class FieldAnalyzer {
         List<Field> fields = FieldUtils.getFieldsListWithAnnotation(clazz, ExcelColumn.class);
         validateNonRepeatingColumnName(fields);
         return fields.stream()
-                .map(field -> new FixedColumnField(field.getAnnotation(ExcelColumn.class).name(), field))
+                .map(field -> new FixedColumnField(field.getAnnotation(ExcelColumn.class).value(), field))
                 .toList();
     }
 
@@ -30,7 +30,7 @@ public class FieldAnalyzer {
         Set<String> usedColumnNames = new HashSet<>();
         for (Field field : fields) {
             ExcelColumn annotation = field.getAnnotation(ExcelColumn.class);
-            String columnName = annotation.name();
+            String columnName = annotation.value();
             if(usedColumnNames.contains(columnName.toLowerCase())) {
                 throw new IllegalStateException(String.format(
                         "Duplicate column name \"%s\". Column names must be unique.", columnName

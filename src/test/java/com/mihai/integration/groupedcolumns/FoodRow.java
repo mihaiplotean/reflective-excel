@@ -8,7 +8,7 @@ public class FoodRow {
     @ExcelCellGroup(name = "pizza")
     private PizzaGroup group;
 
-    @ExcelColumn(name = "id")
+    @ExcelColumn("id")
     private Integer id;
 
     public FoodRow() {

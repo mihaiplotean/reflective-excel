@@ -5,7 +5,7 @@ import com.mihai.common.annotation.ExcelColumn;
 
 public class AddressesRow {
 
-    @ExcelColumn(name = "Id")
+    @ExcelColumn("Id")
     private Integer id;
 
     @ExcelCellGroup(name = "Address A")

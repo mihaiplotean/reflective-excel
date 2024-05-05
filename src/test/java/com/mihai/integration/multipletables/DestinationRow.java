@@ -6,13 +6,13 @@ import java.util.Objects;
 
 public class DestinationRow {
 
-    @ExcelColumn(name = "Destination")
+    @ExcelColumn("Destination")
     private String destination;
 
-    @ExcelColumn(name = "required")
+    @ExcelColumn("required")
     private int requiredNum;
 
-    @ExcelColumn(name = "delivered")
+    @ExcelColumn("delivered")
     private int deliveredNum;
 
     public DestinationRow() {

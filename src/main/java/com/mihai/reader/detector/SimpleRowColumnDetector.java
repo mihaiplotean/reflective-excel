@@ -6,7 +6,7 @@ import com.mihai.reader.workbook.sheet.ReadableRow;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.util.CellReference;
 
-public class SimpleRowColumnDetector implements RowColumnDetector {
+public class SimpleRowColumnDetector implements TableRowColumnDetector {
 
     private final String headerStartCellReference;
 

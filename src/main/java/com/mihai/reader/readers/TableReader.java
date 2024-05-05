@@ -2,7 +2,7 @@ package com.mihai.reader.readers;
 
 import com.mihai.reader.*;
 import com.mihai.reader.bean.RootTableBeanNode;
-import com.mihai.reader.detector.RowColumnDetector;
+import com.mihai.reader.detector.TableRowColumnDetector;
 import com.mihai.reader.table.ReadTable;
 import com.mihai.reader.table.TableHeaders;
 import com.mihai.reader.workbook.sheet.Bounds;
@@ -50,7 +50,7 @@ public class TableReader {
     private <T> List<T> readRows(TableHeaders tableHeaders, Class<T> clazz) {
         RowReader rowReader = new RowReader(sheetContext, createColumnFieldMapping(clazz, tableHeaders));
         Iterator<ReadableRow> rowIterator = sheetContext.createTableRowIterator();
-        RowColumnDetector rowColumnDetector = settings.getRowColumnDetector();
+        TableRowColumnDetector rowColumnDetector = settings.getRowColumnDetector();
         List<T> rows = new ArrayList<>();
         while (rowIterator.hasNext()) {
             ReadableRow row = rowIterator.next();

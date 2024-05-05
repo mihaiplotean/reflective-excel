@@ -6,10 +6,10 @@ import java.util.Objects;
 
 public class SupplierRow {
 
-    @ExcelColumn(name = "Supplier")
+    @ExcelColumn("Supplier")
     private String supplier;
 
-    @ExcelColumn(name = "Capacity")
+    @ExcelColumn("Capacity")
     private int capacity;
 
     public SupplierRow() {

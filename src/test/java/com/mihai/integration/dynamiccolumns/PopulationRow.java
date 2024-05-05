@@ -7,10 +7,10 @@ import java.util.Map;
 
 public class PopulationRow {
 
-    @ExcelColumn(name = "Id")
+    @ExcelColumn("Id")
     private Integer id;
 
-    @ExcelColumn(name = "Country")
+    @ExcelColumn("Country")
     private String country;
 
     @DynamicColumns(detector = PopulationRowDynamicColumnDetector.class)

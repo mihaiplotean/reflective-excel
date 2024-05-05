@@ -14,11 +14,11 @@ public final class CollectionUtilities {
         throw new IllegalStateException("Utility class");
     }
 
-    public static <T> List<T> takeUntil(List<T> list, Predicate<T> predicate) {
+    public static <T> List<T> takeUntil(List<T> list, Predicate<T> stopCondition) {
         int lastIndex = IntStream.range(0, list.size())
-                .filter(index -> !predicate.test(list.get(index)))
+                .filter(index -> stopCondition.test(list.get(index)))
                 .findFirst()
-                .orElse(-1);
+                .orElse(list.size() - 1);
         return list.subList(0, lastIndex + 1);
     }
 
