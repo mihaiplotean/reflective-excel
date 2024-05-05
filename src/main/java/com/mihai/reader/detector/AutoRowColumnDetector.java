@@ -1,6 +1,6 @@
 package com.mihai.reader.detector;
 
-import com.mihai.CollectionUtilities;
+import com.mihai.common.utils.CollectionUtilities;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.bean.ChildBeanNode;
 import com.mihai.reader.bean.RootTableBeanNode;
@@ -8,18 +8,12 @@ import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 public class AutoRowColumnDetector implements RowColumnDetector {
-
-    @Override
-    public boolean isLastRow(ReadingContext context, ReadableRow row) {
-        return isNextRowEmpty(context, row);
-    }
-
-    private static boolean isNextRowEmpty(ReadingContext context, ReadableRow row) {
-        return context.getCurrentTableRow(row.getRowNumber() + 1).isEmpty();
-    }
 
     @Override
     public boolean isHeaderRow(ReadingContext context, ReadableRow row) {
@@ -45,11 +39,6 @@ public class AutoRowColumnDetector implements RowColumnDetector {
     }
 
     @Override
-    public boolean shouldSkipRow(ReadingContext context, ReadableRow row) {
-        return false;
-    }
-
-    @Override
     public boolean isHeaderStartColumn(ReadingContext context, ReadableCell cell) {
         return columnsInRowHaveAllDefinedHeaders(context, cell);
     }
@@ -71,15 +60,23 @@ public class AutoRowColumnDetector implements RowColumnDetector {
         return isNextColumnEmpty(context, cell);
     }
 
-    private static boolean isColumnEmpty(ReadingContext context, ReadableCell cell) {
+    private static boolean isNextColumnEmpty(ReadingContext context, ReadableCell cell) {
         int rowNumber = cell.getRowNumber();
         int columnNumber = cell.getColumnNumber();
         return StringUtils.isEmpty(context.getCellValue(rowNumber, columnNumber + 1));
     }
 
-    private static boolean isNextColumnEmpty(ReadingContext context, ReadableCell cell) {
-        int rowNumber = cell.getRowNumber();
-        int columnNumber = cell.getColumnNumber();
-        return StringUtils.isEmpty(context.getCellValue(rowNumber, columnNumber + 1));
+    @Override
+    public boolean isLastRow(ReadingContext context, ReadableRow row) {
+        return isNextRowEmpty(context, row);
+    }
+
+    private static boolean isNextRowEmpty(ReadingContext context, ReadableRow row) {
+        return context.getCurrentTableRow(row.getRowNumber() + 1).isEmpty();
+    }
+
+    @Override
+    public boolean shouldSkipRow(ReadingContext context, ReadableRow row) {
+        return false;
     }
 }

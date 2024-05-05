@@ -1,9 +1,9 @@
 package com.mihai.reader.readers;
 
-import com.mihai.ReflectionUtilities;
+import com.mihai.common.utils.ReflectionUtilities;
 import com.mihai.reader.ColumnFieldMapping;
 import com.mihai.reader.ReadableSheetContext;
-import com.mihai.reader.field.mapping.HeaderMappedField;
+import com.mihai.reader.mapping.HeaderMappedField;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 

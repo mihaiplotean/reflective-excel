@@ -1,4 +1,4 @@
-package com.mihai;
+package com.mihai.common.utils;
 
 import java.util.List;
 import java.util.Set;

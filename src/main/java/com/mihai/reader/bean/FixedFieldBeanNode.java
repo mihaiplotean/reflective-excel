@@ -1,8 +1,8 @@
 package com.mihai.reader.bean;
 
-import com.mihai.reader.field.AnnotatedField;
-import com.mihai.reader.field.AnnotatedFieldType;
-import com.mihai.reader.field.FixedColumnField;
+import com.mihai.common.field.AnnotatedField;
+import com.mihai.common.field.AnnotatedFieldType;
+import com.mihai.common.field.FixedColumnField;
 
 import java.util.List;
 
@@ -22,16 +22,6 @@ public class FixedFieldBeanNode implements ChildBeanNode {
     @Override
     public String getName() {
         return field.getColumnName();
-    }
-
-    @Override
-    public int getLength() {
-        return 1;
-    }
-
-    @Override
-    public int getHeight() {
-        return 1;
     }
 
     @Override

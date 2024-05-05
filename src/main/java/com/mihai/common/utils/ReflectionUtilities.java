@@ -1,4 +1,4 @@
-package com.mihai;
+package com.mihai.common.utils;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 

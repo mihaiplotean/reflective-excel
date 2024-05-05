@@ -1,12 +1,14 @@
-package com.mihai;
+package com.mihai.common.field;
 
-import com.mihai.annotation.*;
+import com.mihai.common.annotation.*;
+import com.mihai.common.utils.ReflectionUtilities;
 import com.mihai.reader.detector.ColumnDetector;
-import com.mihai.reader.field.*;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class FieldAnalyzer {
 

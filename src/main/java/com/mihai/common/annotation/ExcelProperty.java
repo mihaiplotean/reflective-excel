@@ -1,4 +1,5 @@
-package com.mihai.annotation;
+package com.mihai.common.annotation;
+
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +8,11 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface ExcelCellValue {
+public @interface ExcelProperty {
 
-    String cellReference();
+    String name();
+
+    String nameReference();
+
+    String valueReference();
 }

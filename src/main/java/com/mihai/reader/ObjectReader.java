@@ -1,11 +1,11 @@
 package com.mihai.reader;
 
-import com.mihai.FieldAnalyzer;
-import com.mihai.ReflectionUtilities;
+import com.mihai.common.field.FieldAnalyzer;
+import com.mihai.common.utils.ReflectionUtilities;
 import com.mihai.reader.exception.BadInputException;
-import com.mihai.reader.field.CellValueField;
-import com.mihai.reader.field.KeyValueField;
-import com.mihai.reader.field.TableIdField;
+import com.mihai.common.field.CellValueField;
+import com.mihai.common.field.KeyValueField;
+import com.mihai.common.field.TableIdField;
 import com.mihai.reader.readers.TableReader;
 
 import java.lang.reflect.Field;

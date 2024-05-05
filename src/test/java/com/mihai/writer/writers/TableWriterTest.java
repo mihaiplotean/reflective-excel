@@ -1,6 +1,6 @@
 package com.mihai.writer.writers;
 
-import com.mihai.annotation.ExcelColumn;
+import com.mihai.common.annotation.ExcelColumn;
 import com.mihai.reader.workbook.sheet.Bounds;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.WritableSheetContext;

@@ -1,8 +1,8 @@
 package com.mihai.writer.writers;
 
-import com.mihai.annotation.DynamicColumns;
-import com.mihai.annotation.ExcelCellGroup;
-import com.mihai.annotation.ExcelColumn;
+import com.mihai.common.annotation.DynamicColumns;
+import com.mihai.common.annotation.ExcelCellGroup;
+import com.mihai.common.annotation.ExcelColumn;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.detector.ColumnDetector;
 import com.mihai.reader.workbook.sheet.ReadableCell;

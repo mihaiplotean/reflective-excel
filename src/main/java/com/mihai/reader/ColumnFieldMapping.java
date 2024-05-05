@@ -1,18 +1,18 @@
 package com.mihai.reader;
 
+import com.mihai.common.field.*;
 import com.mihai.reader.bean.ChildBeanNode;
 import com.mihai.reader.bean.RootTableBeanNode;
-import com.mihai.reader.field.*;
-import com.mihai.reader.field.mapping.DynamicHeadersMappedField;
-import com.mihai.reader.field.mapping.FixedHeaderMappedField;
-import com.mihai.reader.field.mapping.GroupedHeadersMappedField;
-import com.mihai.reader.field.mapping.HeaderMappedField;
+import com.mihai.reader.mapping.DynamicHeadersMappedField;
+import com.mihai.reader.mapping.FixedHeaderMappedField;
+import com.mihai.reader.mapping.GroupedHeadersMappedField;
+import com.mihai.reader.mapping.HeaderMappedField;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
 
 import java.util.*;
 
-import static com.mihai.reader.field.AnnotatedFieldType.*;
+import static com.mihai.common.field.AnnotatedFieldType.*;
 
 public class ColumnFieldMapping {
 

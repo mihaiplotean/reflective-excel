@@ -1,6 +1,6 @@
 package com.mihai.reader.bean;
 
-import com.mihai.annotation.TableId;
+import com.mihai.common.annotation.TableId;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,19 +25,6 @@ public class RootTableBeanNode {
 
     private List<ChildBeanNode> getChildFields() {
         return new ChildBeanNodeCreator(type).getChildFields();
-    }
-
-    public int getLength() {
-        return children.stream()
-                .mapToInt(ChildBeanNode::getLength)
-                .sum();
-    }
-
-    public int getHeight() {
-        return children.stream()
-                .mapToInt(ChildBeanNode::getHeight)
-                .max()
-                .orElse(0);
     }
 
     public List<ChildBeanNode> getChildren() {

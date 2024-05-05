@@ -1,4 +1,4 @@
-package com.mihai.reader.field;
+package com.mihai.common.field;
 
 public enum AnnotatedFieldType {
     FIXED,

@@ -1,8 +1,8 @@
 package com.mihai.reader.bean;
 
-import com.mihai.reader.field.AnnotatedField;
-import com.mihai.reader.field.AnnotatedFieldType;
-import com.mihai.reader.field.DynamicColumnField;
+import com.mihai.common.field.AnnotatedField;
+import com.mihai.common.field.AnnotatedFieldType;
+import com.mihai.common.field.DynamicColumnField;
 
 import java.util.List;
 
@@ -22,16 +22,6 @@ public class DynamicFieldBeanNode implements ChildBeanNode {
     @Override
     public String getName() {
         return null;
-    }
-
-    @Override
-    public int getLength() {
-        return 0;
-    }
-
-    @Override
-    public int getHeight() {
-        return 0;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.mihai.reader.bean;
 
-import com.mihai.reader.field.AnnotatedField;
-import com.mihai.reader.field.AnnotatedFieldType;
+import com.mihai.common.field.AnnotatedField;
+import com.mihai.common.field.AnnotatedFieldType;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -19,10 +19,6 @@ public interface ChildBeanNode {
     default Class<?> getType() {
         return getAnnotatedField().getFieldType();
     }
-
-    int getLength();
-
-    int getHeight();
 
     List<ChildBeanNode> getChildren();
 

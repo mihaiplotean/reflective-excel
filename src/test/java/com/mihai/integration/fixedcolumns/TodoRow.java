@@ -1,6 +1,6 @@
 package com.mihai.integration.fixedcolumns;
 
-import com.mihai.annotation.ExcelColumn;
+import com.mihai.common.annotation.ExcelColumn;
 
 import java.util.Date;
 import java.util.Objects;

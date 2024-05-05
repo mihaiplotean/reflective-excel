@@ -6,7 +6,6 @@ import com.mihai.writer.locator.CellLocation;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.WritableCellStyles;
 import com.mihai.writer.style.color.CellColor;
-import com.mihai.writer.writers.CellWriter;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;

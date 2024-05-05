@@ -6,13 +6,13 @@ import com.mihai.reader.workbook.sheet.ReadableRow;
 
 public interface RowColumnDetector {
 
-    boolean isLastRow(ReadingContext context, ReadableRow row);
-
     boolean isHeaderRow(ReadingContext context, ReadableRow row);
-
-    boolean shouldSkipRow(ReadingContext context, ReadableRow row);
 
     boolean isHeaderStartColumn(ReadingContext context, ReadableCell cell);
 
     boolean isHeaderLastColumn(ReadingContext context, ReadableCell cell);
+
+    boolean isLastRow(ReadingContext context, ReadableRow row);
+
+    boolean shouldSkipRow(ReadingContext context, ReadableRow row);
 }

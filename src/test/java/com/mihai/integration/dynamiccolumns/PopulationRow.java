@@ -1,7 +1,7 @@
 package com.mihai.integration.dynamiccolumns;
 
-import com.mihai.annotation.DynamicColumns;
-import com.mihai.annotation.ExcelColumn;
+import com.mihai.common.annotation.DynamicColumns;
+import com.mihai.common.annotation.ExcelColumn;
 
 import java.util.Map;
 

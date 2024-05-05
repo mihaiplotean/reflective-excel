@@ -1,4 +1,4 @@
-package com.mihai.annotation;
+package com.mihai.common.annotation;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;

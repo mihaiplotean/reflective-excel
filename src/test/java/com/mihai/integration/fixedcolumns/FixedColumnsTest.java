@@ -4,6 +4,7 @@ import com.mihai.assertion.ExcelAssert;
 import com.mihai.reader.ReflectiveExcelReader;
 import com.mihai.reader.deserializer.CellDeserializers;
 import com.mihai.writer.ReflectiveExcelWriter;
+import com.mihai.writer.style.DateFormatUtils;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyles;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static com.mihai.writer.style.DateFormatUtils.createDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FixedColumnsTest {
@@ -42,21 +44,6 @@ public class FixedColumnsTest {
             List<T> actualRows = reader.readRows(clazz);
             assertEquals(expectedRows, actualRows);
         }
-    }
-
-    private static Date createDate(int day, int month, int year) {
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month - 1);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        return calendar.getTime();
     }
 
     @Test

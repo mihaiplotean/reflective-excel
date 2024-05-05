@@ -1,7 +1,7 @@
 package com.mihai.integration.row;
 
-import com.mihai.annotation.ExcelProperty;
-import com.mihai.annotation.TableId;
+import com.mihai.common.annotation.ExcelProperty;
+import com.mihai.common.annotation.TableId;
 
 import java.util.List;
 

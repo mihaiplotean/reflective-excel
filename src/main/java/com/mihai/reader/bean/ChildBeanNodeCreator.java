@@ -1,7 +1,7 @@
 package com.mihai.reader.bean;
 
-import com.mihai.FieldAnalyzer;
-import com.mihai.ReflectionUtilities;
+import com.mihai.common.field.FieldAnalyzer;
+import com.mihai.common.utils.ReflectionUtilities;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

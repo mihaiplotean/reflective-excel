@@ -1,6 +1,6 @@
 package com.mihai.integration.writer;
 
-import com.mihai.annotation.ExcelColumn;
+import com.mihai.common.annotation.ExcelColumn;
 
 import java.time.LocalDate;
 

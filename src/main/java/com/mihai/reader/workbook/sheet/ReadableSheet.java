@@ -17,7 +17,7 @@ public class ReadableSheet implements Iterable<ReadableRow> {
     public ReadableSheet(Sheet sheet) {
         this.sheet = sheet;
         this.cellBoundsCache = new CellBoundsCache(sheet);
-        this.cellValueFormatter = new CellValueFormatter(sheet.getWorkbook());  // todo: make overridable
+        this.cellValueFormatter = new CellValueFormatter(sheet.getWorkbook());
     }
 
     public ReadableRow getRow(int rowNumber) {

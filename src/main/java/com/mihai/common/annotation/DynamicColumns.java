@@ -1,4 +1,4 @@
-package com.mihai.annotation;
+package com.mihai.common.annotation;
 
 import com.mihai.reader.detector.AlwaysTrueColumnDetector;
 import com.mihai.reader.detector.ColumnDetector;

@@ -1,4 +1,4 @@
-package com.mihai.reader.field;
+package com.mihai.common.field;
 
 import com.mihai.reader.detector.ColumnDetector;
 

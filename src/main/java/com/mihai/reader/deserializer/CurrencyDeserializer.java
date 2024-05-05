@@ -1,13 +1,12 @@
 package com.mihai.reader.deserializer;
 
-import com.mihai.CollectionUtilities;
+import com.mihai.common.utils.CollectionUtilities;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.exception.BadInputException;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 
 import java.util.Currency;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class CurrencyDeserializer implements CellDeserializer<Currency> {
 
