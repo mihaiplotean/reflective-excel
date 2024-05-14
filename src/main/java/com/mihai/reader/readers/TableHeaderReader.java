@@ -4,7 +4,6 @@ import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
 import com.mihai.reader.detector.TableRowColumnDetector;
-import com.mihai.reader.workbook.sheet.BoundedCell;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 
@@ -14,7 +13,7 @@ public class TableHeaderReader {
 
     private final ReadableSheetContext sheetContext;
     private final TableRowColumnDetector rowColumnDetector;
-    private final Map<BoundedCell, TableHeader> headerPerBounds = new HashMap<>();
+    private final Map<ReadableCell, TableHeader> headerPerBounds = new HashMap<>();
 
     public TableHeaderReader(ReadableSheetContext sheetContext, TableRowColumnDetector rowColumnDetector) {
         this.sheetContext = sheetContext;
@@ -39,7 +38,7 @@ public class TableHeaderReader {
         }
 
         int endRow = headerCells.stream()
-                .map(ReadableCell::getBoundEndRow)
+                .map(ReadableCell::getEndRow)
                 .max(Integer::compare)
                 .orElse(0);
 
@@ -91,7 +90,7 @@ public class TableHeaderReader {
     private TableHeaders read(List<ReadableCell> headerCells) {
         ReadableRow lastHeaderRow = sheetContext.getCurrentRow();
         int startRow = headerCells.stream()
-                .map(ReadableCell::getBoundStartRow)
+                .map(ReadableCell::getStartRow)
                 .min(Integer::compare)
                 .orElse(0);
 
@@ -105,18 +104,16 @@ public class TableHeaderReader {
 
     private boolean withinColumnBound(ReadableCell cell, List<ReadableCell> cells) {
         return cells.stream()
-                .anyMatch(headerCell -> headerCell.getBoundStartColumn() <= cell.getBoundStartColumn()
-                        && cell.getBoundEndColumn() <= headerCell.getBoundEndColumn());
+                .anyMatch(headerCell -> headerCell.isWithinColumnBounds(cell.getColumnNumber()));
     }
 
     private TableHeader buildHeader(int startRow, ReadableCell headerCell) {
-        int boundStartRow = headerCell.getBoundStartRow();
-        BoundedCell boundedCell = getCellBounds(headerCell);
-        TableHeader tableHeader = headerPerBounds.get(boundedCell);
+        int boundStartRow = headerCell.getStartRow();
+        TableHeader tableHeader = headerPerBounds.get(headerCell);
         if (boundStartRow <= startRow) {
             if(tableHeader == null) {
                 tableHeader = new TableHeader(headerCell);
-                headerPerBounds.put(boundedCell, tableHeader);
+                headerPerBounds.put(headerCell, tableHeader);
             }
             return tableHeader;
         }
@@ -126,17 +123,13 @@ public class TableHeaderReader {
             tableHeader = new TableHeader(headerCell);
             tableHeader.setParent(parent);
             parent.addChildHeader(tableHeader);
-            headerPerBounds.put(boundedCell, tableHeader);
+            headerPerBounds.put(headerCell, tableHeader);
         }
         return tableHeader;
     }
 
-    private BoundedCell getCellBounds(ReadableCell cell) {
-        return sheetContext.getSheet().getCellBounds(cell.getRowNumber(), cell.getColumnNumber());
-    }
-
     private ReadableCell getCellAbove(ReadableCell cell) {
-        int boundStartRow = cell.getBoundStartRow();
+        int boundStartRow = cell.getStartRow();
         return sheetContext.getSheet().getCell(boundStartRow - 1, cell.getColumnNumber());
     }
 }

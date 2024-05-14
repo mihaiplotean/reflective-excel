@@ -1,7 +1,7 @@
 package com.mihai.reader.readers;
 
 import com.mihai.common.utils.ReflectionUtilities;
-import com.mihai.reader.ColumnFieldMapping;
+import com.mihai.reader.mapping.ColumnFieldMapping;
 import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.mapping.HeaderMappedField;
 import com.mihai.reader.workbook.sheet.ReadableCell;
@@ -19,13 +19,16 @@ public class RowReader {
         this.columnFieldMapping = columnFieldMapping;
     }
 
-    public ReadableSheetContext getSheetContext() {
-        return sheetContext;
-    }
-
     public <T> T readRow(ReadableRow row, Class<T> clazz) {
         T object = ReflectionUtilities.newObject(clazz);
 
+        readFieldValues(row);
+        writeFieldValues(object);
+
+        return object;
+    }
+
+    private void readFieldValues(ReadableRow row) {
         Iterator<ReadableCell> cellIterator = sheetContext.createCellIterator(row);
         while (cellIterator.hasNext()) {
             ReadableCell cell = cellIterator.next();
@@ -35,9 +38,6 @@ public class RowReader {
                 field.storeCurrentValue(sheetContext.getReadingContext());
             }
         }
-        writeFieldValues(object);
-
-        return object;
     }
 
     private <T> void writeFieldValues(T object) {
@@ -45,18 +45,4 @@ public class RowReader {
         fields.forEach(fieldWithValue -> fieldWithValue.writeTo(object));
         fields.forEach(HeaderMappedField::resetValue);
     }
-
-//    public AnnotatedFieldValueReader createFieldValueReader(AnnotatedField field) {
-//        return createFieldValueReader(field, columnFieldMapping);
-//    }
-
-//    public AnnotatedFieldValueReader createFieldValueReader(AnnotatedField field, ColumnFieldMapping columnFieldMapping) {
-//        AnnotatedFieldType type = field.getType();
-//        return switch (type) {
-//            case FIXED -> new FixedColumnFieldValueReader((FixedColumnField2) field);
-//            case DYNAMIC -> new DynamicColumnFieldValueReader((DynamicColumnField) field);
-//            case GROUPED -> new GroupedColumnsFieldValueReader((GroupedColumnsField) field, columnFieldMapping);
-//            default -> throw new IllegalArgumentException();
-//        };
-//    }
 }

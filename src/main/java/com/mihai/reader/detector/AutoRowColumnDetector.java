@@ -44,7 +44,7 @@ public class AutoRowColumnDetector implements TableRowColumnDetector {
         List<ReadableCell> nextCellsInRow = context.getRow(cell.getRowNumber()).getCells().stream()
                 .filter(currentCell -> currentCell.getColumnNumber() >= cell.getColumnNumber())
                 .toList();
-        List<ReadableCell> headerCells = CollectionUtilities.takeUntil(nextCellsInRow, rowCell -> isNextColumnEmpty(context, rowCell));
+        List<ReadableCell> headerCells = CollectionUtilities.takeUntil(nextCellsInRow, rowCell -> isColumnAfterCellEndEmpty(context, rowCell));
         Set<String> cellValues = headerCells.stream()
                 .map(ReadableCell::getValue)
                 .collect(CollectionUtilities.toCaseInsensitiveSetCollector());
@@ -53,13 +53,12 @@ public class AutoRowColumnDetector implements TableRowColumnDetector {
 
     @Override
     public boolean isHeaderLastColumn(ReadingContext context, ReadableCell cell) {
-        return isNextColumnEmpty(context, cell);
+        return isColumnAfterCellEndEmpty(context, cell);
     }
 
-    private static boolean isNextColumnEmpty(ReadingContext context, ReadableCell cell) {
+    private static boolean isColumnAfterCellEndEmpty(ReadingContext context, ReadableCell cell) {
         int rowNumber = cell.getRowNumber();
-        int columnNumber = cell.getColumnNumber();
-        return StringUtils.isEmpty(context.getCellValue(rowNumber, columnNumber + 1));
+        return StringUtils.isEmpty(context.getCellValue(rowNumber, cell.getEndColumn() + 1));
     }
 
     @Override

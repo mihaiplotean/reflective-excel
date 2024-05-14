@@ -50,11 +50,11 @@ public class Bounds {
     }
 
     public int getHeight() {
-        return endRow - startRow;
+        return endRow - startRow + 1;
     }
 
     public int getLength() {
-        return endColumn - startColumn;
+        return endColumn - startColumn + 1;
     }
 
     public int getStartRow() {

@@ -7,29 +7,62 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellReference;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ReadableSheet implements Iterable<ReadableRow> {
 
     private final Sheet sheet;
-    private final CellBoundsCache cellBoundsCache;
+    private final MergedCellsFinder mergedCellsFinder;
     private final CellValueFormatter cellValueFormatter;
+    private final Map<Integer, ReadableRow> rowNumberToRowMap = new HashMap<>();
 
     public ReadableSheet(Sheet sheet) {
         this.sheet = sheet;
-        this.cellBoundsCache = new CellBoundsCache(sheet);
         this.cellValueFormatter = new CellValueFormatter(sheet.getWorkbook());
+        this.mergedCellsFinder = new MergedCellsFinder(sheet, cellValueFormatter);
     }
 
     public ReadableRow getRow(int rowNumber) {
+        return rowNumberToRowMap.computeIfAbsent(rowNumber, this::createRow);
+    }
+
+    private ReadableRow createRow(int rowNumber) {
         Row actualRow = sheet.getRow(rowNumber);
-        if(actualRow == null) {
-            return new ReadableRow(rowNumber, Collections.emptyList());
+        List<MergedCell> regionsIntersectingRow = mergedCellsFinder.getMergedCellsIntersectingRow(rowNumber);
+        if (actualRow == null) {
+            return new ReadableRow(rowNumber, sortedByColumn(regionsIntersectingRow));
         }
-        List<ReadableCell> cells = new ArrayList<>();
+        List<SimpleCell> cells = getSimpleCells(actualRow);
+        List<SimpleCell> nonIntersectingCells = removeIntersectingCells(cells, regionsIntersectingRow);
+        List<ReadableCell> allCells = new ArrayList<>(nonIntersectingCells);
+        allCells.addAll(regionsIntersectingRow);
+        return new ReadableRow(rowNumber, sortedByColumn(allCells));
+    }
+
+    private List<SimpleCell> getSimpleCells(Row actualRow) {
+        List<SimpleCell> cells = new ArrayList<>();
         for (Cell cell : actualRow) {
-            cells.add(asPropertyCell(cell));
+            cells.add(new SimpleCell(cell, cellValueFormatter.toString(cell)));
         }
-        return new ReadableRow(rowNumber, cells);
+        return cells;
+    }
+
+    public List<SimpleCell> removeIntersectingCells(List<SimpleCell> cells, List<MergedCell> prioritizedCells) {
+        List<SimpleCell> uniqueCells = new ArrayList<>();
+        for (SimpleCell cell : cells) {
+            boolean cellDoesNotIntersectAnyMergeRegion = prioritizedCells.stream()
+                    .noneMatch(mergedCell -> mergedCell.isWithinBounds(cell.getRowNumber(), cell.getColumnNumber()));
+            if(cellDoesNotIntersectAnyMergeRegion) {
+                uniqueCells.add(cell);
+            }
+        }
+        return uniqueCells;
+    }
+
+    private static List<ReadableCell> sortedByColumn(List<? extends ReadableCell> cells) {
+        return cells.stream()
+                .sorted(Comparator.comparingInt(ReadableCell::getColumnNumber))
+                .collect(Collectors.toList());
     }
 
     public ReadableCell getCell(String cellReference) {
@@ -38,26 +71,8 @@ public class ReadableSheet implements Iterable<ReadableRow> {
     }
 
     public ReadableCell getCell(int rowIndex, int columnIndex) {
-        return Optional.ofNullable(sheet.getRow(rowIndex))
-                .map(row -> row.getCell(columnIndex))
-                .map(this::asPropertyCell)
-                .orElse(null);
-    }
-
-    public BoundedCell getCellBounds(int rowIndex, int columnIndex) {
-        return Optional.ofNullable(sheet.getRow(rowIndex))
-                .map(row -> row.getCell(columnIndex))
-                .map(this::getCellBounds)
-                .orElse(null);
-    }
-
-    public BoundedCell getCellBounds(Cell cell) {
-        return cellBoundsCache.getCellBounds(cell);
-    }
-
-    public ReadableCell asPropertyCell(Cell cell) {
-        BoundedCell boundedCell = getCellBounds(cell);
-        return new ReadableCell(cell, boundedCell, cellValueFormatter.toString(boundedCell.valueCell()));
+        ReadableRow row = getRow(rowIndex);
+        return row.getCell(columnIndex);
     }
 
     @Override
@@ -73,11 +88,7 @@ public class ReadableSheet implements Iterable<ReadableRow> {
             @Override
             public ReadableRow next() {
                 Row row = iterator.next();
-                List<ReadableCell> cells = new ArrayList<>();
-                for (Cell cell : row) {
-                    cells.add(asPropertyCell(cell));
-                }
-                return new ReadableRow(row.getRowNum(), cells);
+                return getRow(row.getRowNum());
             }
         };
     }

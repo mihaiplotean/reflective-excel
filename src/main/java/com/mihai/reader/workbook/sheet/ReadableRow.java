@@ -22,7 +22,7 @@ public class ReadableRow implements Iterable<ReadableCell> {
 
     public ReadableCell getCell(int columnIndex) {
         return cells.stream()
-                .filter(cell -> cell.getColumnNumber() == columnIndex)
+                .filter(cell -> cell.isWithinColumnBounds(columnIndex))
                 .findFirst()
                 .orElse(null);
     }

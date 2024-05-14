@@ -40,12 +40,11 @@ public class SimpleRowColumnDetector implements TableRowColumnDetector {
 
     @Override
     public boolean isHeaderLastColumn(ReadingContext context, ReadableCell cell) {
-        return isNextColumnEmpty(context, cell);
+        return isColumnAfterHeaderEmpty(context, cell);
     }
 
-    private static boolean isNextColumnEmpty(ReadingContext context, ReadableCell cell) {
+    private static boolean isColumnAfterHeaderEmpty(ReadingContext context, ReadableCell cell) {
         int rowNumber = cell.getRowNumber();
-        int columnNumber = cell.getColumnNumber();
-        return StringUtils.isEmpty(context.getCellValue(rowNumber, columnNumber + 1));
+        return StringUtils.isEmpty(context.getCellValue(rowNumber, cell.getEndColumn() + 1));
     }
 }

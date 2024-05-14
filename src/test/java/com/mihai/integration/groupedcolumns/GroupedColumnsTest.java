@@ -1,5 +1,6 @@
 package com.mihai.integration.groupedcolumns;
 
+import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReflectiveExcelReader;
 import com.mihai.writer.ReflectiveExcelWriter;
 import org.junit.jupiter.api.Test;

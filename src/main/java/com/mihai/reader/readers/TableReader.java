@@ -3,6 +3,8 @@ package com.mihai.reader.readers;
 import com.mihai.reader.*;
 import com.mihai.reader.bean.RootTableBeanNode;
 import com.mihai.reader.detector.TableRowColumnDetector;
+import com.mihai.reader.mapping.ColumnFieldMapping;
+import com.mihai.reader.mapping.DefaultColumnFieldMapping;
 import com.mihai.reader.table.ReadTable;
 import com.mihai.reader.table.TableHeaders;
 import com.mihai.reader.workbook.sheet.Bounds;
@@ -70,7 +72,7 @@ public class TableReader {
     }
 
     private ColumnFieldMapping createColumnFieldMapping(Class<?> clazz, TableHeaders tableHeaders) {
-        ColumnFieldMapping mapping = new ColumnFieldMapping(sheetContext.getReadingContext(), clazz);
+        ColumnFieldMapping mapping = new DefaultColumnFieldMapping(sheetContext.getReadingContext(), clazz);
         mapping.create(tableHeaders);
         return mapping;
     }

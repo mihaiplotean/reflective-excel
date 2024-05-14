@@ -60,7 +60,7 @@ public class ReadableSheetContext {
 
     public Iterator<ReadableRow> createTableRowIterator() {
         int firstTableRow = tableReadingContext.getCurrentTableHeaders().asList().stream()
-                .mapToInt(header -> header.getCell().getBoundEndRow())
+                .mapToInt(header -> header.getCell().getEndRow())
                 .max()
                 .orElse(0) + 1;
         Iterator<ReadableRow> rowIterator = createRowIterator(firstTableRow);

@@ -1,0 +1,39 @@
+package com.mihai.reader.workbook.sheet;
+
+import com.mihai.reader.CellValueFormatter;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
+
+import java.util.*;
+
+public class MergedCellsFinder {
+
+    private final Sheet sheet;
+    private final CellValueFormatter cellValueFormatter;
+    private final Map<Integer, List<MergedCell>> rowToBoundedCellsCache = new HashMap<>();
+
+    public MergedCellsFinder(Sheet sheet, CellValueFormatter cellValueFormatter) {
+        this.sheet = sheet;
+        this.cellValueFormatter = cellValueFormatter;
+    }
+
+    public List<MergedCell> getMergedCellsIntersectingRow(int row) {
+        return sheet.getMergedRegions().stream()
+                .filter(mergedRegion -> mergedRegion.containsRow(row))
+                .map(this::createMergedCell)
+                .toList();
+    }
+
+    private MergedCell createMergedCell(CellRangeAddress region) {
+        Cell firstCellOfRegion = getCell(region.getFirstRow(), region.getFirstColumn());
+        return new MergedCell(firstCellOfRegion, cellValueFormatter.toString(firstCellOfRegion),
+                new Bounds(region.getFirstRow(), region.getFirstColumn(), region.getLastRow(), region.getLastColumn()));
+    }
+
+    private Cell getCell(int rowIndex, int columnIndex) {
+        return Optional.ofNullable(sheet.getRow(rowIndex))
+                .map(row -> row.getCell(columnIndex))
+                .orElse(null);
+    }
+}

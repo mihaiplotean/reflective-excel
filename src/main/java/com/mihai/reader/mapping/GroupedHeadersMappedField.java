@@ -1,7 +1,6 @@
 package com.mihai.reader.mapping;
 
 import com.mihai.common.utils.ReflectionUtilities;
-import com.mihai.reader.ColumnFieldMapping;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
@@ -37,7 +36,7 @@ public class GroupedHeadersMappedField implements HeaderMappedField {
         TableHeader headerRoot = header.getRoot();
         boolean fieldCanBeMappedToHeader = headerNamesMatchNodeNames(headerRoot, beanNode);
         if (fieldCanBeMappedToHeader) {
-            columnFieldMapping = new ColumnFieldMapping(context, getField().getFieldType());
+            columnFieldMapping = new DefaultColumnFieldMapping(context, getField().getFieldType());
             columnFieldMapping.create(subHeaders(headerRoot));
         }
         return fieldCanBeMappedToHeader;
