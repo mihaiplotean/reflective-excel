@@ -1,5 +1,6 @@
 package com.mihai.reader;
 
+import com.mihai.common.ReflectiveExcelException;
 import com.mihai.reader.readers.SheetReader;
 import com.mihai.reader.workbook.creation.WorkbookCreator;
 import com.mihai.reader.workbook.creation.WorkbookFromFileCreator;
@@ -55,7 +56,7 @@ public class ReflectiveExcelReader {
             Sheet sheet = getSheet(workbook, settings);
             return new SheetReader(sheet, deserializationContext, settings).readRows(clazz);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ReflectiveExcelException("Could not read excel file!", e);
         }
     }
 
@@ -85,7 +86,7 @@ public class ReflectiveExcelReader {
             Sheet sheet = getSheet(workbook, settings);
             return new SheetReader(sheet, deserializationContext, settings).read(clazz);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ReflectiveExcelException("Could not read excel file!", e);
         }
     }
 }

@@ -77,7 +77,7 @@ public class FieldAnalyzer {
 
     public List<GroupedColumnsField> getCellGroupFields() {
         return FieldUtils.getFieldsListWithAnnotation(clazz, ExcelCellGroup.class).stream()
-                .map(field -> new GroupedColumnsField(field.getAnnotation(ExcelCellGroup.class).name(), field))
+                .map(field -> new GroupedColumnsField(field.getAnnotation(ExcelCellGroup.class).value(), field))
                 .toList();
     }
 }

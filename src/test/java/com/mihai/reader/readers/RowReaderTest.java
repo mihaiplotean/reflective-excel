@@ -41,25 +41,25 @@ class RowReaderTest {
         row.createCell(2).setCellValue(42);
 
         ColumnFieldTestMapping columnFieldMapping = new ColumnFieldTestMapping(Map.of(
-                1, new HeaderMappedTestField(TestRow.class.getDeclaredField("stringValue")),
-                2, new HeaderMappedTestField(TestRow.class.getDeclaredField("intValue"))
+                1, new HeaderMappedTestField(TestDummyRow.class.getDeclaredField("stringValue")),
+                2, new HeaderMappedTestField(TestDummyRow.class.getDeclaredField("intValue"))
         ));
 
         ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
         sheetContext.setCurrentRow(0);
         RowReader rowReader = new RowReader(sheetContext, columnFieldMapping);
-        TestRow readRow = rowReader.readRow(sheetContext.getCurrentRow(), TestRow.class);
+        TestDummyRow readRow = rowReader.readRow(sheetContext.getCurrentRow(), TestDummyRow.class);
 
         assertEquals("test", readRow.stringValue);
         assertEquals(42, readRow.intValue);
     }
 
-    public static class TestRow {
+    public static class TestDummyRow {
 
         private String stringValue;
         private int intValue;
 
-        public TestRow() {
+        public TestDummyRow() {
         }
     }
 }

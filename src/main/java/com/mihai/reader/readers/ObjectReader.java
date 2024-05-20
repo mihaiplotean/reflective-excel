@@ -1,12 +1,13 @@
-package com.mihai.reader;
+package com.mihai.reader.readers;
 
-import com.mihai.common.field.FieldAnalyzer;
-import com.mihai.common.utils.ReflectionUtilities;
-import com.mihai.reader.exception.BadInputException;
 import com.mihai.common.field.CellValueField;
+import com.mihai.common.field.FieldAnalyzer;
 import com.mihai.common.field.KeyValueField;
 import com.mihai.common.field.TableIdField;
-import com.mihai.reader.readers.TableReader;
+import com.mihai.common.utils.ReflectionUtilities;
+import com.mihai.reader.ExcelReadingSettings;
+import com.mihai.reader.ReadableSheetContext;
+import com.mihai.reader.exception.BadInputException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -81,7 +82,7 @@ public class ObjectReader {
         ParameterizedType genericType = (ParameterizedType) field.getGenericType();
         Class<?> argumentType = (Class<?>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?
 
-        List<?> rows = tableReader.readRows(argumentType);
+        List<?> rows = tableReader.readRows(argumentType, tableIdField.getTableId());
         ReflectionUtilities.writeField(tableIdField.getField(), object, rows);
     }
 }

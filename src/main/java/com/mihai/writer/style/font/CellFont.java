@@ -82,6 +82,18 @@ public class CellFont {
         return Objects.hash(name, size, bold, italic, underLine);
     }
 
+    @Override
+    public String toString() {
+        return "CellFont{" +
+                "name='" + name + '\'' +
+                ", size=" + size +
+                ", color=" + color +
+                ", bold=" + bold +
+                ", italic=" + italic +
+                ", underLine=" + underLine +
+                '}';
+    }
+
     public static final class CellFontBuilder {
 
         private String name;

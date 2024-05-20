@@ -1,5 +1,6 @@
-package com.mihai.reader;
+package com.mihai.reader.detector;
 
+import com.mihai.reader.ReadingContext;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 

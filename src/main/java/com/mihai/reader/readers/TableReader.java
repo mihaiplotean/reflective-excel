@@ -27,6 +27,15 @@ public class TableReader {
 
     public <T> List<T> readRows(Class<T> clazz) {
         RootTableBeanNode rootBeanNode = new RootTableBeanNode(clazz);
+        return readRows(clazz, rootBeanNode);
+    }
+
+    public <T> List<T> readRows(Class<T> clazz, String tableId) {
+        RootTableBeanNode rootBeanNode = new RootTableBeanNode(clazz, tableId);
+        return readRows(clazz, rootBeanNode);
+    }
+
+    private <T> List<T> readRows(Class<T> clazz, RootTableBeanNode rootBeanNode) {
         sheetContext.setCurrentTableBean(rootBeanNode);
         sheetContext.setReadingTable(true);
 
@@ -39,7 +48,6 @@ public class TableReader {
         List<T> rows = readRows(tableHeaders, clazz);
 
         CellLocation topRightTableLocation = tableHeaders.asList().get(0).getRoot().getLocation();
-
         sheetContext.appendTable(new ReadTable(rootBeanNode.getTableId(), tableHeaders, new Bounds(
                 topRightTableLocation.getRow(), topRightTableLocation.getColumn(),
                 sheetContext.getCurrentRowNumber(), sheetContext.getCurrentColumnNumber()

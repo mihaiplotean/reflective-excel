@@ -5,7 +5,7 @@ import com.mihai.common.annotation.ExcelColumn;
 
 public class FoodRow {
 
-    @ExcelCellGroup(name = "pizza")
+    @ExcelCellGroup(value = "pizza")
     private PizzaGroup group;
 
     @ExcelColumn("id")

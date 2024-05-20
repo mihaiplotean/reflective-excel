@@ -5,7 +5,7 @@ import com.mihai.common.annotation.ExcelColumn;
 
 public class PizzaGroup {
 
-    @ExcelCellGroup(name = "size")
+    @ExcelCellGroup(value = "size")
     private PizzaSize size;
 
     @ExcelColumn("name")

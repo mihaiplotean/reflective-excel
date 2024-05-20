@@ -8,10 +8,10 @@ public class AddressesRow {
     @ExcelColumn("Id")
     private Integer id;
 
-    @ExcelCellGroup(name = "Address A")
+    @ExcelCellGroup(value = "Address A")
     private Address addressA;
 
-    @ExcelCellGroup(name = "Address B")
+    @ExcelCellGroup(value = "Address B")
     private Address addressB;
 
     public AddressesRow() {

@@ -58,11 +58,9 @@ class TableHeaderReaderTest {
         Row secondRow = actualSheet.createRow(1);
 
         firstRow.createCell(0).setCellValue("parent header");
-//        firstRow.createCell(1).setCellValue("");
         firstRow.createCell(2).setCellValue("header 2");
         secondRow.createCell(0).setCellValue("sub-header A");
         secondRow.createCell(1).setCellValue("sub-header B");
-//        secondRow.createCell(2).setCellValue("");
         actualSheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
         actualSheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
 

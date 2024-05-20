@@ -1,5 +1,6 @@
 package com.mihai.writer;
 
+import com.mihai.common.ReflectiveExcelException;
 import com.mihai.writer.serializer.CellSerializer;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.serializer.SerializationContext;
@@ -75,7 +76,7 @@ public class ReflectiveExcelWriter {
             new SheetWriter(sheet, serializationContext, cellStyleContext, settings).writeRows(rows, clazz);
             workbook.write(outputStream);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ReflectiveExcelException("Could not write excel file!", e);
         }
     }
 
@@ -86,19 +87,14 @@ public class ReflectiveExcelWriter {
             new SheetWriter(sheet, serializationContext, cellStyleContext, settings).write(object);
             workbook.write(outputStream);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ReflectiveExcelException("Could not write excel file!", e);
         }
     }
 
     private Workbook createWorkbook() {
-        switch (settings.getFileFormat()) {
-            case XLSX -> {
-                return new XSSFWorkbook();
-            }
-            case XLS -> {
-                return new HSSFWorkbook();
-            }
-        }
-        throw new IllegalArgumentException("Unsupported file format!");
+        return switch (settings.getFileFormat()) {
+            case XLSX -> new XSSFWorkbook();
+            case XLS -> new HSSFWorkbook();
+        };
     }
 }

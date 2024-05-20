@@ -2,6 +2,7 @@ package com.mihai.reader;
 
 import com.mihai.reader.bean.RootTableBeanNode;
 import com.mihai.reader.table.DeserializedCellValues;
+import com.mihai.reader.table.ReadTable;
 import com.mihai.reader.table.TableHeaders;
 import com.mihai.reader.table.TableReadingContext;
 import com.mihai.reader.workbook.sheet.ReadableCell;
@@ -40,6 +41,14 @@ public class ReadingContext {
 
     public RootTableBeanNode getCurrentTableBean() {
         return tableReadingContext.getCurrentBeanNode();  // todo: implement
+    }
+
+    public ReadTable getLastReadTable() {
+        return tableReadingContext.getLastReadTable();
+    }
+
+    public ReadTable getTable(String tableId) {
+        return tableReadingContext.getTable(tableId);
     }
 
     public TableHeaders getCurrentTableHeaders() {

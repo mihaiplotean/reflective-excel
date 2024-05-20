@@ -1,6 +1,8 @@
 package com.mihai.reader.exception;
 
-public class BadInputException extends RuntimeException {
+import com.mihai.common.ReflectiveExcelException;
+
+public class BadInputException extends ReflectiveExcelException {
 
     private static final String NO_DESERIALIZER_CLASS_X_MESSAGE = "A deserializer for class \"%s\" has not been registered";
 

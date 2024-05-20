@@ -44,10 +44,11 @@ class RowWriterTest {
         writer.writeRow(row1);
         writer.writeRow(row2);
 
-        assertEquals("value A", actualSheet.getRow(0).getCell(0).getStringCellValue());
-        assertEquals("value B", actualSheet.getRow(0).getCell(1).getStringCellValue());
-        assertEquals("value C", actualSheet.getRow(1).getCell(0).getStringCellValue());
-        assertEquals("value D", actualSheet.getRow(1).getCell(1).getStringCellValue());
+        // row 0 is reserved for the header, so the first written row has index 1
+        assertEquals("value A", actualSheet.getRow(1).getCell(0).getStringCellValue());
+        assertEquals("value B", actualSheet.getRow(1).getCell(1).getStringCellValue());
+        assertEquals("value C", actualSheet.getRow(2).getCell(0).getStringCellValue());
+        assertEquals("value D", actualSheet.getRow(2).getCell(1).getStringCellValue());
     }
 
     @Test
@@ -59,10 +60,10 @@ class RowWriterTest {
         writer.writeRow(row1);
         writer.writeRow(row2);
 
-        assertEquals("a", actualSheet.getRow(0).getCell(0).getStringCellValue());
-        assertNull(actualSheet.getRow(0).getCell(1));
-        assertEquals("b", actualSheet.getRow(1).getCell(0).getStringCellValue());
+        assertEquals("a", actualSheet.getRow(1).getCell(0).getStringCellValue());
         assertNull(actualSheet.getRow(1).getCell(1));
+        assertEquals("b", actualSheet.getRow(2).getCell(0).getStringCellValue());
+        assertNull(actualSheet.getRow(2).getCell(1));
     }
 
     private RowWriter createWriter(Object firstRow) {

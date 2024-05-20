@@ -28,14 +28,14 @@ public class ReadableSheet implements Iterable<ReadableRow> {
 
     private ReadableRow createRow(int rowNumber) {
         Row actualRow = sheet.getRow(rowNumber);
-        List<MergedCell> regionsIntersectingRow = mergedCellsFinder.getMergedCellsIntersectingRow(rowNumber);
+        List<MergedCell> cellsIntersectingRow = mergedCellsFinder.getMergedCellsIntersectingRow(rowNumber);
         if (actualRow == null) {
-            return new ReadableRow(rowNumber, sortedByColumn(regionsIntersectingRow));
+            return new ReadableRow(rowNumber, sortedByColumn(cellsIntersectingRow));
         }
         List<SimpleCell> cells = getSimpleCells(actualRow);
-        List<SimpleCell> nonIntersectingCells = removeIntersectingCells(cells, regionsIntersectingRow);
+        List<SimpleCell> nonIntersectingCells = removeIntersectingCells(cells, cellsIntersectingRow);
         List<ReadableCell> allCells = new ArrayList<>(nonIntersectingCells);
-        allCells.addAll(regionsIntersectingRow);
+        allCells.addAll(cellsIntersectingRow);
         return new ReadableRow(rowNumber, sortedByColumn(allCells));
     }
 
@@ -47,7 +47,7 @@ public class ReadableSheet implements Iterable<ReadableRow> {
         return cells;
     }
 
-    public List<SimpleCell> removeIntersectingCells(List<SimpleCell> cells, List<MergedCell> prioritizedCells) {
+    private List<SimpleCell> removeIntersectingCells(List<SimpleCell> cells, List<MergedCell> prioritizedCells) {
         List<SimpleCell> uniqueCells = new ArrayList<>();
         for (SimpleCell cell : cells) {
             boolean cellDoesNotIntersectAnyMergeRegion = prioritizedCells.stream()

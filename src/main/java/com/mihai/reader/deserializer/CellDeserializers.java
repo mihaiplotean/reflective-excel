@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Date;
 
-public class CellDeserializers {
+public class CellDeserializers {  // todo: List/generics deserializer!
 
     private CellDeserializers() {
         throw new IllegalStateException("Utility class");

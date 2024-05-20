@@ -34,7 +34,7 @@ public class TableReadingContext {
         readTables.append(table);
     }
 
-    public ReadTable getLastWrittenTable() {
+    public ReadTable getLastReadTable() {
         return readTables.getLastTable();
     }
 

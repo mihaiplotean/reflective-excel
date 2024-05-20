@@ -1,5 +1,7 @@
 package com.mihai.writer.style;
 
+import org.apache.poi.util.LocaleUtil;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,7 +25,7 @@ public class DateFormatUtils {
     }
 
     public static DateFormat getLocalizedDateFormat() {
-        return DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+        return DateFormat.getDateInstance(DateFormat.SHORT, LocaleUtil.getUserLocale());
     }
 
     public static Date createDate(int day, int month, int year) {

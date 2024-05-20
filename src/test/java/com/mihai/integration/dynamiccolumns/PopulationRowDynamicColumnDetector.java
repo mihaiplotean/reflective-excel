@@ -3,7 +3,7 @@ package com.mihai.integration.dynamiccolumns;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.detector.ColumnDetector;
-import com.mihai.reader.MaybeDynamicColumn;
+import com.mihai.reader.detector.MaybeDynamicColumn;
 
 public class PopulationRowDynamicColumnDetector implements ColumnDetector {
 

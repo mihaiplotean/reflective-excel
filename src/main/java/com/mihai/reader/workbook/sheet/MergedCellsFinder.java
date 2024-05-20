@@ -2,6 +2,7 @@ package com.mihai.reader.workbook.sheet;
 
 import com.mihai.reader.CellValueFormatter;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 
@@ -11,7 +12,6 @@ public class MergedCellsFinder {
 
     private final Sheet sheet;
     private final CellValueFormatter cellValueFormatter;
-    private final Map<Integer, List<MergedCell>> rowToBoundedCellsCache = new HashMap<>();
 
     public MergedCellsFinder(Sheet sheet, CellValueFormatter cellValueFormatter) {
         this.sheet = sheet;
@@ -27,13 +27,16 @@ public class MergedCellsFinder {
 
     private MergedCell createMergedCell(CellRangeAddress region) {
         Cell firstCellOfRegion = getCell(region.getFirstRow(), region.getFirstColumn());
+        Objects.requireNonNull(firstCellOfRegion, "Top left cell of a merged region cannot be null!");
         return new MergedCell(firstCellOfRegion, cellValueFormatter.toString(firstCellOfRegion),
                 new Bounds(region.getFirstRow(), region.getFirstColumn(), region.getLastRow(), region.getLastColumn()));
     }
 
     private Cell getCell(int rowIndex, int columnIndex) {
-        return Optional.ofNullable(sheet.getRow(rowIndex))
-                .map(row -> row.getCell(columnIndex))
-                .orElse(null);
+        Row row = sheet.getRow(rowIndex);
+        if (row == null) {
+            return null;
+        }
+        return row.getCell(columnIndex);
     }
 }

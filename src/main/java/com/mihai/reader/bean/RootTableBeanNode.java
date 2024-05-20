@@ -19,6 +19,12 @@ public class RootTableBeanNode {
         this.children = getChildFields();
     }
 
+    public RootTableBeanNode(Class<?> type, String tableId) {
+        this.type = type;
+        this.tableId = tableId;
+        this.children = getChildFields();
+    }
+
     public String getTableId() {
         return tableId;
     }

@@ -16,7 +16,7 @@ class WritableCellStylesTest {
 
     @Test
     public void boldTextStyleHasBoldFont() {
-        assertFalse(WritableCellStyles.boldText().getFont().isBold());
+        assertTrue(WritableCellStyles.boldText().getFont().isBold());
     }
 
     @Test

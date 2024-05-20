@@ -131,7 +131,7 @@ class WritableCellStyleTest {
                 .font(CellFonts.bold())
                 .build();
         WritableCellStyle cellStyleB = WritableCellStyle.builder()
-                .font(CellFonts.italic())
+                .font(CellFont.builder().bold(false).build())
                 .build();
         assertEquals(CellFonts.bold(), cellStyleA.combineWith(cellStyleB).getFont());
     }

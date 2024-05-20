@@ -143,7 +143,7 @@ class HeaderWriterTest {
 
     private static class GroupedColumns {
 
-        @ExcelCellGroup(name = "Test group")
+        @ExcelCellGroup(value = "Test group")
         private InnerGroup group = new InnerGroup();
 
         private static class InnerGroup {
@@ -158,7 +158,7 @@ class HeaderWriterTest {
 
     private static class NestedGroupedColumns {
 
-        @ExcelCellGroup(name = "Group")
+        @ExcelCellGroup(value = "Group")
         private OuterGroup group = new OuterGroup();
 
         private static class OuterGroup {
@@ -166,7 +166,7 @@ class HeaderWriterTest {
             @ExcelColumn(value = "Outer group column")
             private String value;
 
-            @ExcelCellGroup(name = "Sub-group")
+            @ExcelCellGroup(value = "Sub-group")
             private InnerGroup group = new InnerGroup();
 
             private static class InnerGroup {
