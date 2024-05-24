@@ -8,7 +8,7 @@ import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.deserializer.DefaultDeserializationContext;
 import com.mihai.reader.table.ReadTable;
 import com.mihai.reader.table.TableHeaders;
-import com.mihai.reader.workbook.sheet.Bounds;
+import com.mihai.common.workbook.Bounds;
 import com.mihai.reader.workbook.sheet.ReadableSheet;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;

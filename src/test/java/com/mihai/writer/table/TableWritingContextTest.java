@@ -1,6 +1,6 @@
 package com.mihai.writer.table;
 
-import com.mihai.reader.workbook.sheet.Bounds;
+import com.mihai.common.workbook.Bounds;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

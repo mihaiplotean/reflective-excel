@@ -1,7 +1,7 @@
 package com.mihai.writer.table;
 
-import com.mihai.reader.workbook.sheet.Bounds;
-import com.mihai.writer.locator.CellLocation;
+import com.mihai.common.workbook.Bounds;
+import com.mihai.common.workbook.CellLocation;
 
 public class WrittenTable {
 

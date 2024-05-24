@@ -1,5 +1,6 @@
 package com.mihai.reader.workbook.sheet;
 
+import com.mihai.common.workbook.Bounds;
 import com.mihai.reader.CellValueFormatter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

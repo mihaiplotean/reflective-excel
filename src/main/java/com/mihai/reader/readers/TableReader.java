@@ -7,9 +7,9 @@ import com.mihai.reader.mapping.ColumnFieldMapping;
 import com.mihai.reader.mapping.DefaultColumnFieldMapping;
 import com.mihai.reader.table.ReadTable;
 import com.mihai.reader.table.TableHeaders;
-import com.mihai.reader.workbook.sheet.Bounds;
+import com.mihai.common.workbook.Bounds;
 import com.mihai.reader.workbook.sheet.ReadableRow;
-import com.mihai.writer.locator.CellLocation;
+import com.mihai.common.workbook.CellLocation;
 
 import java.util.ArrayList;
 import java.util.Iterator;

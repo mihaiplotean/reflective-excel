@@ -2,7 +2,7 @@ package com.mihai.writer.writers;
 
 import com.mihai.writer.WritableCell;
 import com.mihai.writer.WritableSheet;
-import com.mihai.writer.locator.CellLocation;
+import com.mihai.common.workbook.CellLocation;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.WritableCellStyles;
 import com.mihai.writer.style.color.StyleColor;

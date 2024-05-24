@@ -1,6 +1,6 @@
 package com.mihai.assertion;
 
-import com.mihai.writer.style.DateFormatUtils;
+import com.mihai.common.utils.DateFormatUtils;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
 import com.mihai.writer.style.color.StyleColor;

@@ -1,6 +1,6 @@
 package com.mihai.reader.workbook.sheet;
 
-import com.mihai.writer.locator.CellLocation;
+import com.mihai.common.workbook.CellLocation;
 
 import java.time.LocalDateTime;
 import java.util.Date;

@@ -1,7 +1,7 @@
 package com.mihai.reader.table;
 
 import com.mihai.reader.workbook.sheet.ReadableCell;
-import com.mihai.writer.locator.CellLocation;
+import com.mihai.common.workbook.CellLocation;
 
 import java.util.*;
 

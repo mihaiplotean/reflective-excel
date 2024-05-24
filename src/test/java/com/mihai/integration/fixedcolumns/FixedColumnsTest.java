@@ -4,7 +4,6 @@ import com.mihai.assertion.ExcelAssert;
 import com.mihai.reader.ReflectiveExcelReader;
 import com.mihai.reader.deserializer.CellDeserializers;
 import com.mihai.writer.ReflectiveExcelWriter;
-import com.mihai.writer.style.DateFormatUtils;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyles;
 import org.junit.jupiter.api.Test;
@@ -12,12 +11,10 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.mihai.writer.style.DateFormatUtils.createDate;
+import static com.mihai.common.utils.DateFormatUtils.createDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FixedColumnsTest {

@@ -1,5 +1,6 @@
 package com.mihai.reader.workbook.sheet;
 
+import com.mihai.common.workbook.Bounds;
 import org.apache.poi.ss.usermodel.Cell;
 
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package com.mihai.writer.locator;
+package com.mihai.common.workbook;
 
 import org.apache.poi.ss.util.CellReference;
 

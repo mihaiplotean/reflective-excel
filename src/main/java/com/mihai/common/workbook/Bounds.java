@@ -1,6 +1,4 @@
-package com.mihai.reader.workbook.sheet;
-
-import com.mihai.writer.locator.CellLocation;
+package com.mihai.common.workbook;
 
 import java.util.Objects;
 

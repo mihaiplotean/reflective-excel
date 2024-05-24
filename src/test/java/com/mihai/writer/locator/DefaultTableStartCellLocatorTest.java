@@ -1,7 +1,8 @@
 package com.mihai.writer.locator;
 
 import com.mihai.common.CellPointer;
-import com.mihai.reader.workbook.sheet.Bounds;
+import com.mihai.common.workbook.CellLocation;
+import com.mihai.common.workbook.Bounds;
 import com.mihai.writer.WritingContext;
 import com.mihai.writer.table.TableWritingContext;
 import com.mihai.writer.table.WrittenTable;

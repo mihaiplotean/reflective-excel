@@ -2,7 +2,7 @@ package com.mihai.writer.writers;
 
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableCell;
-import com.mihai.writer.locator.CellLocation;
+import com.mihai.common.workbook.CellLocation;
 import com.mihai.writer.node.ChildBeanWriteNode;
 import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.style.WritableCellStyle;

@@ -1,5 +1,6 @@
 package com.mihai.writer.locator;
 
+import com.mihai.common.workbook.CellLocation;
 import com.mihai.writer.WritingContext;
 
 public interface TableStartCellLocator {

@@ -1,4 +1,4 @@
-package com.mihai.writer.style;
+package com.mihai.common.utils;
 
 import org.apache.poi.util.LocaleUtil;
 

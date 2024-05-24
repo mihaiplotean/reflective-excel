@@ -1,10 +1,10 @@
 package com.mihai.writer.writers;
 
-import com.mihai.reader.workbook.sheet.Bounds;
+import com.mihai.common.workbook.Bounds;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
-import com.mihai.writer.locator.CellLocation;
+import com.mihai.common.workbook.CellLocation;
 import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.table.WrittenTable;
 import com.mihai.writer.table.WrittenTableHeaders;
