@@ -1,8 +1,10 @@
 package com.mihai.integration.fixedcolumns;
 
 import com.mihai.assertion.ExcelAssert;
+import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReflectiveExcelReader;
 import com.mihai.reader.deserializer.CellDeserializers;
+import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.ReflectiveExcelWriter;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyles;
@@ -12,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static com.mihai.common.utils.DateFormatUtils.createDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,37 +28,25 @@ public class FixedColumnsTest {
 
     @Test
     public void simpleReadTest() throws IOException {
-        runReadTest("/test-todos.xlsx",
-                reader -> reader.registerDeserializer(TodoPriority.class, CellDeserializers.forEnum(TodoPriority.class)),
-                EXCEL_ROWS,
-                TodoRow.class);
-    }
-
-    private <T> void runReadTest(String fileName, Consumer<ReflectiveExcelReader> customizer, List<T> expectedRows, Class<T> clazz)
-            throws IOException {
-        try (InputStream inputStream = getClass().getResourceAsStream(fileName)) {
-            ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream);
-            customizer.accept(reader);
-            List<T> actualRows = reader.readRows(clazz);
-            assertEquals(expectedRows, actualRows);
+        try (InputStream inputStream = getClass().getResourceAsStream("/test-todos.xlsx")) {
+            ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream, ExcelReadingSettings.builder()
+                    .registerDeserializer(TodoPriority.class, CellDeserializers.forEnum(TodoPriority.class))
+                    .build());
+            List<TodoRow> actualRows = reader.readRows(TodoRow.class);
+            assertEquals(EXCEL_ROWS, actualRows);
         }
     }
 
     @Test
     public void simpleWriteTest() throws IOException {
-        runWriteTest("test-todos.xlsx", writer -> {
-            writer.setHeaderStyleProvider(StyleProviders.of(WritableCellStyles.boldText()));
-            writer.writeRows(EXCEL_ROWS, TodoRow.class);
-        });
-    }
+        File actualFile = File.createTempFile("reflective-excel-writer", "test-todos.xlsx");
 
-    private void runWriteTest(String fileName, Consumer<ReflectiveExcelWriter> customizer) throws IOException {
-        File actualFile = File.createTempFile("reflective-excel-writer", fileName);
+        ReflectiveExcelWriter writer = new ReflectiveExcelWriter(actualFile, ExcelWritingSettings.builder()
+                .headerStyleProvider(StyleProviders.of(WritableCellStyles.boldText()))
+                .build());
+        writer.writeRows(EXCEL_ROWS, TodoRow.class);
 
-        ReflectiveExcelWriter writer = new ReflectiveExcelWriter(actualFile);
-        customizer.accept(writer);
-
-        try (InputStream expectedInputStream = getClass().getResourceAsStream("/" + fileName)) {
+        try (InputStream expectedInputStream = getClass().getResourceAsStream("/" + "test-todos.xlsx")) {
             ExcelAssert.assertThat(actualFile)
                     .isEqualTo(expectedInputStream);
             actualFile.delete();

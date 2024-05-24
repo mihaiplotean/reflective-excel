@@ -78,7 +78,7 @@ class TableWriterTest {
     public void tableOffsetIsApplied() {
         TableWriter writer = new TableWriter(new WritableSheet(actualSheet),
                 new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()),
-                ExcelWritingSettings.with().tableStartCellLocator((context, tableId) -> new CellLocation(3, 3)).create());
+                ExcelWritingSettings.builder().tableStartCellLocator((context, tableId) -> new CellLocation(3, 3)).build());
 
         List<FixedColumnsRow> rows = List.of(
                 new FixedColumnsRow("", ""),

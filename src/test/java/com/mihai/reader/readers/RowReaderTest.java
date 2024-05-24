@@ -1,5 +1,6 @@
 package com.mihai.reader.readers;
 
+import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.deserializer.DefaultDeserializationContext;
 import com.mihai.reader.workbook.sheet.ReadableSheet;
@@ -45,7 +46,7 @@ class RowReaderTest {
                 2, new HeaderMappedTestField(TestDummyRow.class.getDeclaredField("intValue"))
         ));
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         sheetContext.setCurrentRow(0);
         RowReader rowReader = new RowReader(sheetContext, columnFieldMapping);
         TestDummyRow readRow = rowReader.readRow(sheetContext.getCurrentRow(), TestDummyRow.class);

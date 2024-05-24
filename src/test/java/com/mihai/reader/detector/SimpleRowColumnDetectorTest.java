@@ -1,5 +1,6 @@
 package com.mihai.reader.detector;
 
+import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.deserializer.DefaultDeserializationContext;
@@ -38,7 +39,7 @@ class SimpleRowColumnDetectorTest {
         actualSheet.createRow(0).createCell(0).setCellValue("header");
         actualSheet.createRow(1).createCell(0).setCellValue("header 2");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         ReadingContext readingContext = sheetContext.getReadingContext();
 
         SimpleRowColumnDetector rowColumnDetector = new SimpleRowColumnDetector("C2");
@@ -51,7 +52,7 @@ class SimpleRowColumnDetectorTest {
         actualSheet.createRow(0).createCell(0).setCellValue("header");
         actualSheet.getRow(0).createCell(1).setCellValue("header 2");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         ReadingContext readingContext = sheetContext.getReadingContext();
 
         SimpleRowColumnDetector rowColumnDetector = new SimpleRowColumnDetector("B2");
@@ -64,7 +65,7 @@ class SimpleRowColumnDetectorTest {
         actualSheet.createRow(0).createCell(0).setCellValue("header");
         actualSheet.getRow(0).createCell(1).setCellValue("non-header");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         ReadingContext readingContext = sheetContext.getReadingContext();
 
         assertTrue(new SimpleRowColumnDetector("C2").isHeaderLastColumn(readingContext, readingContext.getRow(0).getCell(1)));
@@ -77,7 +78,7 @@ class SimpleRowColumnDetectorTest {
         actualSheet.createRow(2).createCell(0).setCellValue("row 2");
         actualSheet.createRow(3).createCell(0).setCellValue("");  // no value in row 3
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         ReadingContext readingContext = sheetContext.getReadingContext();
 
         SimpleRowColumnDetector rowColumnDetector = new SimpleRowColumnDetector("C2");

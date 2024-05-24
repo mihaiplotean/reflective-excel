@@ -2,6 +2,7 @@ package com.mihai.integration.multipletables;
 
 import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReflectiveExcelReader;
+import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.ReflectiveExcelWriter;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyles;
@@ -31,11 +32,11 @@ public class MultiTableTest {
     @Test
     public void testMultipleTablesInOneSheet() {
         InputStream inputStream = getClass().getResourceAsStream("/test-multi-table.xlsx");
-        ExcelReadingSettings settings = ExcelReadingSettings.with()
+        ExcelReadingSettings settings = ExcelReadingSettings.builder()
                 .autoRowColumnDetector()
-                .create();
-        ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream);
-        ShippingSheet table = reader.read(ShippingSheet.class, settings);
+                .build();
+        ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream, settings);
+        ShippingSheet table = reader.read(ShippingSheet.class);
 
         assertEquals(SHIPPING_COST_ROWS, table.getShippingCostRows());
         assertEquals(SUPPLIER_ROWS, table.getSupplierRows());
@@ -62,8 +63,9 @@ public class MultiTableTest {
 
         ShippingSheet sheet = new ShippingSheet(shippingCostRows, supplierRows, destinationRows);
 
-        ReflectiveExcelWriter writer = new ReflectiveExcelWriter(tempFile);
-        writer.setHeaderStyleProvider(StyleProviders.of(WritableCellStyles.boldText()));
+        ReflectiveExcelWriter writer = new ReflectiveExcelWriter(tempFile, ExcelWritingSettings.builder()
+                .headerStyleProvider(StyleProviders.of(WritableCellStyles.boldText()))
+                .build());
         writer.write(sheet);
 
         System.out.println("test done");

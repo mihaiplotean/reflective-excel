@@ -26,13 +26,12 @@ public class ReadingContext {
     public ReadingContext(ReadableSheet sheet,
                           TableReadingContext tableReadingContext,
                           CellPointer cellPointer,
-                          DeserializationContext deserializationContext,
-                          BadInputExceptionConsumer exceptionConsumer) {
+                          ExcelReadingSettings settings) {
         this.sheet = sheet;
         this.tableReadingContext = tableReadingContext;
         this.cellPointer = cellPointer;
-        this.deserializationContext = deserializationContext;
-        this.exceptionConsumer = exceptionConsumer;
+        this.deserializationContext = settings.getDeserializationContext();
+        this.exceptionConsumer = settings.getExceptionConsumer();
         this.cellValues = new DeserializedCellValues();
     }
 

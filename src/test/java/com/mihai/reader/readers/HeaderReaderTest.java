@@ -1,5 +1,6 @@
 package com.mihai.reader.readers;
 
+import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.deserializer.DefaultDeserializationContext;
 import com.mihai.reader.detector.SimpleRowColumnDetector;
@@ -42,7 +43,7 @@ class HeaderReaderTest {
         row.createCell(1).setCellValue("header B");
         row.createCell(2).setCellValue("header C");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
 
         HeaderReader headerReader = new HeaderReader(sheetContext, new SimpleRowColumnDetector("A1"));
         TableHeaders readHeaders = headerReader.readHeaders();
@@ -64,7 +65,7 @@ class HeaderReaderTest {
         actualSheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
         actualSheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         HeaderReader headerReader = new HeaderReader(sheetContext, new SimpleRowColumnDetector("A1"));
         TableHeaders readHeaders = headerReader.readHeaders();
 

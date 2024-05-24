@@ -45,7 +45,7 @@ class ObjectReaderTest {
         actualSheet.createRow(0).createCell(0).setCellValue("test value");
         actualSheet.createRow(1).createCell(1).setCellValue(42);
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         ObjectReader reader = new ObjectReader(sheetContext, ExcelReadingSettings.DEFAULT);
 
         TestCellValues cellValues = reader.read(TestCellValues.class);
@@ -59,7 +59,7 @@ class ObjectReaderTest {
         row.createCell(0).setCellValue("key");
         row.createCell(1).setCellValue("test value");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         ObjectReader reader = new ObjectReader(sheetContext, ExcelReadingSettings.DEFAULT);
 
         TestCellPropertyValues cellValues = reader.read(TestCellPropertyValues.class);
@@ -72,7 +72,7 @@ class ObjectReaderTest {
         row.createCell(0).setCellValue("not key");
         row.createCell(1).setCellValue("test value");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         ObjectReader reader = new ObjectReader(sheetContext, ExcelReadingSettings.DEFAULT);
 
         assertThrows(BadInputException.class, () -> reader.read(TestCellPropertyValues.class));
@@ -87,7 +87,7 @@ class ObjectReaderTest {
         row2.createCell(0).setCellValue("value A");
         row2.createCell(1).setCellValue("value B");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         ObjectReader reader = new ObjectReader(sheetContext, ExcelReadingSettings.DEFAULT);
 
         TestTableRowValues rowValues = reader.read(TestTableRowValues.class);

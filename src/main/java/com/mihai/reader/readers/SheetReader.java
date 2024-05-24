@@ -13,10 +13,10 @@ public class SheetReader {
     private final ExcelReadingSettings settings;
     private final ReadableSheetContext sheetContext;
 
-    public SheetReader(Sheet sheet, DeserializationContext deserializationContext, ExcelReadingSettings settings) {
+    public SheetReader(Sheet sheet, ExcelReadingSettings settings) {
         this.settings = settings;
         ReadableSheet readableSheet = new ReadableSheet(sheet);
-        this.sheetContext = new ReadableSheetContext(readableSheet, deserializationContext, settings.getExceptionConsumer());
+        this.sheetContext = new ReadableSheetContext(readableSheet, settings);
     }
 
     public <T> List<T> readRows(Class<T> clazz) {

@@ -71,4 +71,12 @@ public class CellLocation {
     public int hashCode() {
         return Objects.hash(row, column);
     }
+
+    @Override
+    public String toString() {
+        return "CellLocation{" +
+                "row=" + row +
+                ", column=" + column +
+                '}';
+    }
 }

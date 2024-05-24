@@ -10,6 +10,7 @@ import com.mihai.reader.table.TableReadingContext;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 import com.mihai.reader.workbook.sheet.ReadableSheet;
+import com.mihai.writer.ExcelWritingSettings;
 
 import java.util.Iterator;
 
@@ -20,13 +21,11 @@ public class ReadableSheetContext {
     private final CellPointer cellPointer;
     private final ReadingContext readingContext;
 
-    public ReadableSheetContext(ReadableSheet sheet, DeserializationContext deserializationContext,
-                                BadInputExceptionConsumer exceptionConsumer) {
+    public ReadableSheetContext(ReadableSheet sheet, ExcelReadingSettings settings) {
         this.sheet = sheet;
         this.tableReadingContext = new TableReadingContext();
         this.cellPointer = new CellPointer();
-        this.readingContext = new ReadingContext(sheet, tableReadingContext, cellPointer, deserializationContext,
-                exceptionConsumer);
+        this.readingContext = new ReadingContext(sheet, tableReadingContext, cellPointer, settings);
     }
 
     public ReadableSheet getSheet() {

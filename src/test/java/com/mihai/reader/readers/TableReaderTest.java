@@ -52,7 +52,7 @@ class TableReaderTest {
         actualSheet.createRow(0).createCell(0).setCellValue("A");
         actualSheet.createRow(1).createCell(0).setCellValue("B");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         TableReader tableReader = new TableReader(sheetContext, ExcelReadingSettings.DEFAULT);
 
         assertThrows(IllegalStateException.class, () -> tableReader.readRows(InvalidDynamicColumnType.class));
@@ -70,7 +70,7 @@ class TableReaderTest {
         row3.createCell(0).setCellValue("value C");
         row3.createCell(1).setCellValue("value D");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         TableReader tableReader = new TableReader(sheetContext, ExcelReadingSettings.DEFAULT);
         List<TestRow> testRows = tableReader.readRows(TestRow.class);
 

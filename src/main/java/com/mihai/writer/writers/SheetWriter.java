@@ -17,11 +17,10 @@ public class SheetWriter {
     private final CellStyleContext cellStyleContext;
     private final ExcelWritingSettings settings;
 
-    public SheetWriter(Sheet sheet, SerializationContext serializationContext, CellStyleContext cellStyleContext,
-                       ExcelWritingSettings settings) {
+    public SheetWriter(Sheet sheet, ExcelWritingSettings settings) {
         this.sheet = new WritableSheet(sheet);
-        this.serializationContext = serializationContext;
-        this.cellStyleContext = cellStyleContext;
+        this.serializationContext = settings.getSerializationContext();
+        this.cellStyleContext = settings.getCellStyleContext();
         this.settings = settings;
     }
 

@@ -15,13 +15,13 @@ public class PropertiesWithRowsTest {
     public void testPropertiesWithRows() {
         InputStream inputStream = getClass().getResourceAsStream("/test-month-expenses.xlsx");
 
-        ExcelReadingSettings settings = ExcelReadingSettings.with()
+        ExcelReadingSettings settings = ExcelReadingSettings.builder()
                 .headerStartCellReference("B5")
-                .create();
+                .build();
 
-        ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream);
+        ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream, settings);
 
-        FoodExpensesTable table = reader.read(FoodExpensesTable.class, settings);
+        FoodExpensesTable table = reader.read(FoodExpensesTable.class);
         assertEquals(7, table.getMonth());
         assertEquals(2021, table.getYear());
 

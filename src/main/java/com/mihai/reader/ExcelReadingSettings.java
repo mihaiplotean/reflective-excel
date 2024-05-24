@@ -1,26 +1,29 @@
 package com.mihai.reader;
 
+import com.mihai.reader.deserializer.CellDeserializer;
+import com.mihai.reader.deserializer.DefaultDeserializationContext;
+import com.mihai.reader.deserializer.DeserializationContext;
 import com.mihai.reader.detector.*;
 import com.mihai.reader.exception.BadInputExceptionConsumer;
 
 public class ExcelReadingSettings {
 
-    public static final ExcelReadingSettings DEFAULT = new ExcelReadingSettingsBuilder().create();
+    public static final ExcelReadingSettings DEFAULT = new ExcelReadingSettingsBuilder().build();
 
     private final String sheetName;
     private final int sheetIndex;
 
     private final TableRowColumnDetector rowColumnDetector;
-
     private final BadInputExceptionConsumer exceptionConsumer;
+    private final DeserializationContext deserializationContext;
 
     private ExcelReadingSettings(ExcelReadingSettingsBuilder builder) {
         sheetName = builder.sheetName;
         sheetIndex = builder.sheetIndex;
 
         rowColumnDetector = builder.rowColumnDetector;
-
         exceptionConsumer = builder.exceptionConsumer;
+        deserializationContext = builder.deserializationContext;
     }
 
     public String getSheetName() {
@@ -39,7 +42,11 @@ public class ExcelReadingSettings {
         return exceptionConsumer;
     }
 
-    public static ExcelReadingSettingsBuilder with() {
+    public DeserializationContext getDeserializationContext() {
+        return deserializationContext;
+    }
+
+    public static ExcelReadingSettingsBuilder builder() {
         return new ExcelReadingSettingsBuilder();
     }
 
@@ -53,6 +60,8 @@ public class ExcelReadingSettings {
         private BadInputExceptionConsumer exceptionConsumer = (row, exception) -> {
             throw exception;
         };
+
+        private DeserializationContext deserializationContext = new DefaultDeserializationContext();
 
         public ExcelReadingSettingsBuilder sheetName(String sheetName) {
             this.sheetName = sheetName;
@@ -82,7 +91,17 @@ public class ExcelReadingSettings {
             return this;
         }
 
-        public ExcelReadingSettings create() {
+        public ExcelReadingSettingsBuilder setDeserializationContext(DeserializationContext deserializationContext) {
+            this.deserializationContext = deserializationContext;
+            return this;
+        }
+
+        public <T> ExcelReadingSettingsBuilder registerDeserializer(Class<T> clazz, CellDeserializer<T> deserializer) {
+            deserializationContext.registerDeserializer(clazz, deserializer);
+            return this;
+        }
+
+        public ExcelReadingSettings build() {
             return new ExcelReadingSettings(this);
         }
     }

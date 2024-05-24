@@ -32,27 +32,27 @@ public class FancyTableTest {
 
         File actualFile = File.createTempFile("reflective-excel-writer", "fancy-table-test.xlsx");
 
-        ExcelWritingSettings settings = ExcelWritingSettings.with()
+        ExcelWritingSettings settings = ExcelWritingSettings.builder()
                 .tableStartCellLocator((context, tableId) -> CellLocation.fromReference("C3"))
-                .create();
+                .headerStyleProvider(StyleProviders.of(WritableCellStyles.boldText()))
+                .cellStyleProvider(StyleProviders.of(WritableCellStyles.allSideBorder()))
+                .rowStyleProvider(StyleProviders.stripedRows(new StyleColor(240, 248, 255), null))
+                .registerSerializer(Money.class, Money::getAmount)
+                .registerTypeStyleProvider(Money.class, new StyleProvider() {
+
+                    private static final String CURRENCY_FORMAT = "_(%s* #,##_);_(%<s * -#,##_);_(%<s* \"\"-\"\"??_);_(@_)";
+
+                    @Override
+                    public WritableCellStyle getStyle(WritingContext context, Object target) {
+                        Money money = (Money) target;
+                        return WritableCellStyle.builder()
+                                .format(CURRENCY_FORMAT.formatted(money.getCurrencySymbol(Locale.US)))
+                                .build();
+                    }
+                })
+                .build();
 
         ReflectiveExcelWriter writer = new ReflectiveExcelWriter(actualFile, settings);
-        writer.setHeaderStyleProvider(StyleProviders.of(WritableCellStyles.boldText()));
-        writer.setCellStyleProvider(StyleProviders.of(WritableCellStyles.allSideBorder()));
-        writer.setRowStyleProvider(StyleProviders.stripedRows(new StyleColor(240, 248, 255), null));
-        writer.registerSerializer(Money.class, Money::getAmount);
-        writer.registerTypeStyleProvider(Money.class, new StyleProvider() {
-
-            private static final String CURRENCY_FORMAT = "_(%s* #,##_);_(%<s * -#,##_);_(%<s* \"\"-\"\"??_);_(@_)";
-
-            @Override
-            public WritableCellStyle getStyle(WritingContext context, Object target) {
-                Money money = (Money) target;
-                return WritableCellStyle.builder()
-                        .format(CURRENCY_FORMAT.formatted(money.getCurrencySymbol(Locale.US)))
-                        .build();
-            }
-        });
 
         writer.writeRows(rows, FancyFoodExpensesTableRow.class);
     }
