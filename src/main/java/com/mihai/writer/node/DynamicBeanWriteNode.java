@@ -7,21 +7,22 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Map;
 
-public class DynamicFieldNode implements AnnotatedFieldNode {
+public class DynamicBeanWriteNode implements ChildBeanWriteNode {
 
     private final Field field;
     private final Map<Object, Object> columnToValueMap;
     private final Class<?> valueType;
 
-    public DynamicFieldNode(Field field, Object target) {
+    public DynamicBeanWriteNode(Field field, Object target) {
         this.field = field;
         if (field.getType() == Map.class) {
             columnToValueMap = (Map<Object, Object>) ReflectionUtilities.readField(field, target);
             ParameterizedType genericType = (ParameterizedType) field.getGenericType();
-            valueType = (Class<?>) genericType.getActualTypeArguments()[1];  // todo: unsafe cast?
+            // safe cast bellow, as DynamicBeanWriteNode is created from a DynamicColumnField, which validates this
+            valueType = (Class<?>) genericType.getActualTypeArguments()[1];
         }
         else {
-            throw new IllegalArgumentException("Field type not allowed");
+            throw new IllegalArgumentException("Only Map.class fields can be annotated as dynamic writable fields!");
         }
     }
 
@@ -51,9 +52,9 @@ public class DynamicFieldNode implements AnnotatedFieldNode {
     }
 
     @Override
-    public List<? extends AnnotatedFieldNode> getChildren() {
+    public List<? extends ChildBeanWriteNode> getChildren() {
         return columnToValueMap.keySet().stream()
-                .map(value -> new DynamicFieldLeafNode(valueType, value))
+                .map(value -> new DynamicBeanLeafWriteNode(valueType, value))
                 .toList();
     }
 

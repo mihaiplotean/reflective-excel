@@ -2,8 +2,8 @@ package com.mihai.writer.writers;
 
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableCell;
-import com.mihai.writer.node.AnnotatedFieldNode;
-import com.mihai.writer.node.RootFieldNode;
+import com.mihai.writer.node.ChildBeanWriteNode;
+import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.node.TypedValue;
 import com.mihai.writer.style.WritableCellStyle;
 
@@ -12,13 +12,13 @@ import java.util.List;
 public class RowWriter {
 
     private final WritableSheetContext sheetContext;
-    private final RootFieldNode rootNode;
+    private final RootTableBeanWriteNode rootNode;
     private final CellWriter cellWriter;
 
     private int currentRow;
     private int currentColumn;
 
-    public RowWriter(WritableSheetContext sheetContext, RootFieldNode rootNode, CellWriter cellWriter) {
+    public RowWriter(WritableSheetContext sheetContext, RootTableBeanWriteNode rootNode, CellWriter cellWriter) {
         this.sheetContext = sheetContext;
         this.rootNode = rootNode;
         this.cellWriter = cellWriter;
@@ -28,7 +28,7 @@ public class RowWriter {
     public void writeRow(Object row) {
         WritableCellStyle rowStyle = sheetContext.getRowStyle(row);
         currentColumn = 0;
-        for (AnnotatedFieldNode tableHeader : rootNode.getChildren()) {
+        for (ChildBeanWriteNode tableHeader : rootNode.getChildren()) {
             List<TypedValue> leafValues = tableHeader.getLeafValues(row);
             for (TypedValue typedValue : leafValues) {
                 updateWritingContext();

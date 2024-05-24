@@ -1,82 +1,82 @@
 package com.mihai.writer.style.font;
 
-import com.mihai.writer.style.color.CellColor;
+import com.mihai.writer.style.color.StyleColor;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CellFontTest {
+class StyleFontTest {
 
     @Test
     public void creatingFontUsingBuilderSetsValues() {
-        CellFont font = CellFont.builder()
+        StyleFont font = StyleFont.builder()
                 .bold(true)
                 .underLine(true)
                 .size((short) 12)
                 .name("Arial")
-                .color(CellColor.BLACK)
+                .color(StyleColor.BLACK)
                 .build();
         assertTrue(font.isBold());
         assertFalse(font.isItalic());
         assertTrue(font.isUnderLine());
         assertEquals(12, font.getSize());
         assertEquals("Arial", font.getName());
-        assertEquals(CellColor.BLACK, font.getColor());
+        assertEquals(StyleColor.BLACK, font.getColor());
     }
 
     @Test
     public void combiningTwoFontsKeepsBoldProperty() {
-        CellFont nonBoldFont = CellFont.builder().bold(false).build();
-        CellFont boldFont = CellFont.builder().bold(true).build();
+        StyleFont nonBoldFont = StyleFont.builder().bold(false).build();
+        StyleFont boldFont = StyleFont.builder().bold(true).build();
         assertTrue(nonBoldFont.combineWith(boldFont).isBold());
     }
 
     @Test
     public void combiningTwoFontsKeepsItalicProperty() {
-        CellFont nonItalicFont = CellFont.builder().italic(false).build();
-        CellFont italicFont = CellFont.builder().italic(true).build();
+        StyleFont nonItalicFont = StyleFont.builder().italic(false).build();
+        StyleFont italicFont = StyleFont.builder().italic(true).build();
         assertTrue(nonItalicFont.combineWith(italicFont).isItalic());
     }
 
     @Test
     public void combiningTwoFontsKeepsUnderlineProperty() {
-        CellFont nonUnderlinedFont = CellFont.builder().underLine(false).build();
-        CellFont underlinedFont = CellFont.builder().underLine(true).build();
+        StyleFont nonUnderlinedFont = StyleFont.builder().underLine(false).build();
+        StyleFont underlinedFont = StyleFont.builder().underLine(true).build();
         assertTrue(nonUnderlinedFont.combineWith(underlinedFont).isUnderLine());
     }
 
     @Test
     public void combiningTwoFontsKeepsFirstFontSize() {
-        CellFont fontA = CellFont.builder().size((short) 12).build();
-        CellFont fontB = CellFont.builder().size((short) 14).build();
+        StyleFont fontA = StyleFont.builder().size((short) 12).build();
+        StyleFont fontB = StyleFont.builder().size((short) 14).build();
         assertEquals(12, fontA.combineWith(fontB).getSize());
     }
 
     @Test
     public void combiningTwoFontsKeepsPositiveFontSize() {
-        CellFont fontA = CellFont.builder().size((short) 0).build();
-        CellFont fontB = CellFont.builder().size((short) 14).build();
+        StyleFont fontA = StyleFont.builder().size((short) 0).build();
+        StyleFont fontB = StyleFont.builder().size((short) 14).build();
         assertEquals(14, fontA.combineWith(fontB).getSize());
     }
 
     @Test
     public void combiningTwoFontsKeepsFirstFontName() {
-        CellFont fontA = CellFont.builder().name("Arial").build();
-        CellFont fontB = CellFont.builder().name("Calibri").build();
+        StyleFont fontA = StyleFont.builder().name("Arial").build();
+        StyleFont fontB = StyleFont.builder().name("Calibri").build();
         assertEquals("Arial", fontA.combineWith(fontB).getName());
     }
 
     @Test
     public void combiningTwoFontsKeepsNonEmptyFontName() {
-        CellFont fontA = CellFont.builder().name("").build();
-        CellFont fontB = CellFont.builder().name("Calibri").build();
+        StyleFont fontA = StyleFont.builder().name("").build();
+        StyleFont fontB = StyleFont.builder().name("Calibri").build();
         assertEquals("Calibri", fontA.combineWith(fontB).getName());
     }
 
     @Test
     public void combiningTwoFontsKeepsFirstColor() {
-        CellFont fontA = CellFont.builder().color(new CellColor(1, 1, 1)).build();
-        CellFont fontB = CellFont.builder().color(new CellColor(2, 2, 2)).build();
-        assertEquals(new CellColor(1, 1, 1), fontA.combineWith(fontB).getColor());
+        StyleFont fontA = StyleFont.builder().color(new StyleColor(1, 1, 1)).build();
+        StyleFont fontB = StyleFont.builder().color(new StyleColor(2, 2, 2)).build();
+        assertEquals(new StyleColor(1, 1, 1), fontA.combineWith(fontB).getColor());
     }
 }

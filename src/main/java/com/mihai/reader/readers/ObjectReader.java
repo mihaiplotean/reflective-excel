@@ -80,7 +80,7 @@ public class ObjectReader {
         }
         Field field = tableIdField.getField();
         ParameterizedType genericType = (ParameterizedType) field.getGenericType();
-        Class<?> argumentType = (Class<?>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?
+        Class<?> argumentType = (Class<?>) genericType.getActualTypeArguments()[0];
 
         List<?> rows = tableReader.readRows(argumentType, tableIdField.getTableId());
         ReflectionUtilities.writeField(tableIdField.getField(), object, rows);

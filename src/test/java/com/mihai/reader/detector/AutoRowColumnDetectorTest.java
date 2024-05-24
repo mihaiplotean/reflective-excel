@@ -3,7 +3,7 @@ package com.mihai.reader.detector;
 import com.mihai.common.annotation.ExcelColumn;
 import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.ReadingContext;
-import com.mihai.reader.bean.RootTableBeanNode;
+import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.deserializer.DefaultDeserializationContext;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
@@ -43,7 +43,7 @@ class AutoRowColumnDetectorTest {
         actualSheet.createRow(0).createCell(0).setCellValue("header");
 
         ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
-        sheetContext.setCurrentTableBean(new RootTableBeanNode(OneColumnRow.class));
+        sheetContext.setCurrentTableBean(new RootTableBeanReadNode(OneColumnRow.class));
 
         ReadingContext readingContext = sheetContext.getReadingContext();
         assertTrue(new AutoRowColumnDetector().isHeaderRow(readingContext, readingContext.getRow(0)));
@@ -55,7 +55,7 @@ class AutoRowColumnDetectorTest {
         actualSheet.createRow(1).createCell(0).setCellValue("header");
 
         ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
-        sheetContext.setCurrentTableBean(new RootTableBeanNode(OneColumnRow.class));
+        sheetContext.setCurrentTableBean(new RootTableBeanReadNode(OneColumnRow.class));
 
         ReadingContext readingContext = sheetContext.getReadingContext();
         AutoRowColumnDetector rowColumnDetector = new AutoRowColumnDetector();
@@ -70,7 +70,7 @@ class AutoRowColumnDetectorTest {
         actualSheet.getRow(0).createCell(2).setCellValue("");  // no value in column C
 
         ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
-        sheetContext.setCurrentTableBean(new RootTableBeanNode(OneColumnRow.class));
+        sheetContext.setCurrentTableBean(new RootTableBeanReadNode(OneColumnRow.class));
 
         ReadingContext readingContext = sheetContext.getReadingContext();
         assertTrue(new AutoRowColumnDetector().isHeaderLastColumn(readingContext, readingContext.getRow(0).getCell(1)));

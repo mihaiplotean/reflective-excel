@@ -1,6 +1,6 @@
 package com.mihai.writer;
 
-import com.mihai.writer.table.CellWritingContext;
+import com.mihai.common.CellPointer;
 import com.mihai.writer.table.TableWritingContext;
 import com.mihai.writer.table.WrittenTable;
 import com.mihai.writer.table.WrittenTableHeaders;
@@ -8,11 +8,11 @@ import com.mihai.writer.table.WrittenTableHeaders;
 public class WritingContext {
 
     private final TableWritingContext tableContext;
-    private final CellWritingContext cellContext;
+    private final CellPointer cellPointer;
 
-    public WritingContext(TableWritingContext tableContext, CellWritingContext cellContext) {
+    public WritingContext(TableWritingContext tableContext, CellPointer cellPointer) {
         this.tableContext = tableContext;
-        this.cellContext = cellContext;
+        this.cellPointer = cellPointer;
     }
 
     public WrittenTable getTable(String tableId) {
@@ -24,11 +24,11 @@ public class WritingContext {
     }
 
     public int getCurrentRow() {
-        return cellContext.getCurrentRow();
+        return cellPointer.getCurrentRow();
     }
 
     public int getCurrentColumn() {
-        return cellContext.getCurrentColumn();
+        return cellPointer.getCurrentColumn();
     }
 
     public String getCurrentColumnName() {
@@ -36,7 +36,7 @@ public class WritingContext {
         if(headers == null) {
             return "";
         }
-        return headers.getColumnName(cellContext.getCurrentColumn());
+        return headers.getColumnName(cellPointer.getCurrentColumn());
     }
 
     public int getCurrentTableRow() {

@@ -6,11 +6,11 @@ import com.mihai.common.field.DynamicColumnField;
 
 import java.util.List;
 
-public class DynamicFieldBeanNode implements ChildBeanNode {
+public class DynamicBeanReadNode implements ChildBeanReadNode {
 
     private final DynamicColumnField field;
 
-    public DynamicFieldBeanNode(DynamicColumnField field) {
+    public DynamicBeanReadNode(DynamicColumnField field) {
         this.field = field;
     }
 
@@ -25,12 +25,12 @@ public class DynamicFieldBeanNode implements ChildBeanNode {
     }
 
     @Override
-    public List<ChildBeanNode> getChildren() {
+    public List<ChildBeanReadNode> getChildren() {
         return List.of();
     }
 
     @Override
-    public List<ChildBeanNode> getLeaves() {
+    public List<ChildBeanReadNode> getLeaves() {
         return List.of(this);
     }
 

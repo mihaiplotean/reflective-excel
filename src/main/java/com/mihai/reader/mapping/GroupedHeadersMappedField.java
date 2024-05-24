@@ -4,7 +4,7 @@ import com.mihai.common.utils.ReflectionUtilities;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
-import com.mihai.reader.bean.ChildBeanNode;
+import com.mihai.reader.bean.ChildBeanReadNode;
 import com.mihai.common.field.GroupedColumnsField;
 
 import java.lang.reflect.Field;
@@ -29,7 +29,7 @@ public class GroupedHeadersMappedField implements HeaderMappedField {
 
     @Override
     public boolean canMapTo(ReadingContext context, TableHeader header) {
-        ChildBeanNode beanNode = getAllBeans(context.getCurrentTableBean().getChildren()).stream()
+        ChildBeanReadNode beanNode = getAllBeans(context.getCurrentTableBean().getChildren()).stream()
                 .filter(node -> field.getField().equals(node.getField()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Field to be mapped not present in bean!"));
@@ -42,22 +42,22 @@ public class GroupedHeadersMappedField implements HeaderMappedField {
         return fieldCanBeMappedToHeader;
     }
 
-    private static List<ChildBeanNode> getAllBeans(List<ChildBeanNode> nodes) {
-        List<ChildBeanNode> allNodes = new ArrayList<>(nodes);
-        for (ChildBeanNode node : nodes) {
+    private static List<ChildBeanReadNode> getAllBeans(List<ChildBeanReadNode> nodes) {
+        List<ChildBeanReadNode> allNodes = new ArrayList<>(nodes);
+        for (ChildBeanReadNode node : nodes) {
             allNodes.addAll(getAllBeans(node.getChildren()));
         }
         return allNodes;
     }
 
-    private boolean headerNamesMatchNodeNames(TableHeader header, ChildBeanNode childBeanNode) {
+    private boolean headerNamesMatchNodeNames(TableHeader header, ChildBeanReadNode childBeanNode) {
         if (childBeanNode.getName() == null) {  // can happen for dynamic headers
             return true;  // we do not know the dynamic header name, so we assume it could be mapped
         }
         if (!header.getValue().equalsIgnoreCase(childBeanNode.getName())) {
             return false;
         }
-        for (ChildBeanNode childNode : childBeanNode.getChildren()) {
+        for (ChildBeanReadNode childNode : childBeanNode.getChildren()) {
             return header.getChildren().stream()
                     .anyMatch(childHeader -> headerNamesMatchNodeNames(childHeader, childNode));
         }

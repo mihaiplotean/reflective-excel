@@ -4,7 +4,7 @@ import com.mihai.common.annotation.DynamicColumns;
 import com.mihai.common.annotation.ExcelColumn;
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
-import com.mihai.writer.node.RootFieldNode;
+import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.style.DefaultStyleContext;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -67,7 +67,7 @@ class RowWriterTest {
     }
 
     private RowWriter createWriter(Object firstRow) {
-        RootFieldNode node = new RootFieldNode(firstRow.getClass(), firstRow);
+        RootTableBeanWriteNode node = new RootTableBeanWriteNode(firstRow.getClass(), firstRow);
 
         return new RowWriter(new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()), node,
                 new CellWriter(new WritableSheet(actualSheet)));

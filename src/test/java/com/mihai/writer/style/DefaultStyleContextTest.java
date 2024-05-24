@@ -1,6 +1,6 @@
 package com.mihai.writer.style;
 
-import com.mihai.writer.style.color.CellColor;
+import com.mihai.writer.style.color.StyleColor;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,8 +51,8 @@ class DefaultStyleContextTest {
         styleContext.setTypeStyleProvider(String.class, StyleProviders.of(WritableCellStyles.backgroundColor(1, 1, 1)));
         styleContext.setTypeStyleProvider(Integer.class, StyleProviders.of(WritableCellStyles.backgroundColor(2, 2, 2)));
 
-        assertEquals(new CellColor(1, 1, 1), styleContext.getTypeStyle(null, "test").getBackgroundColor());
-        assertEquals(new CellColor(2, 2, 2), styleContext.getTypeStyle(null, 42).getBackgroundColor());
+        assertEquals(new StyleColor(1, 1, 1), styleContext.getTypeStyle(null, "test").getBackgroundColor());
+        assertEquals(new StyleColor(2, 2, 2), styleContext.getTypeStyle(null, 42).getBackgroundColor());
     }
 
     @Test

@@ -2,8 +2,8 @@ package com.mihai.writer;
 
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
-import com.mihai.writer.style.color.CellColor;
-import com.mihai.writer.style.font.CellFont;
+import com.mihai.writer.style.color.StyleColor;
+import com.mihai.writer.style.font.StyleFont;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
@@ -64,7 +64,7 @@ class CellStyleCreatorXlsxTest {
                 .rightBorderStyle(BorderStyle.MEDIUM)
                 .bottomBorderStyle(BorderStyle.THICK)
                 .leftBorderStyle(BorderStyle.THIN)
-                .color(new CellColor(1, 2, 3))
+                .color(new StyleColor(1, 2, 3))
                 .build();
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
                 .border(border)
@@ -82,10 +82,10 @@ class CellStyleCreatorXlsxTest {
 
     @Test
     public void fontApplied() {
-        CellFont font = CellFont.builder()
+        StyleFont font = StyleFont.builder()
                 .name("Calibri")
                 .size((short) 18)
-                .color(new CellColor(1, 2, 3))
+                .color(new StyleColor(1, 2, 3))
                 .bold(true)
                 .italic(true)
                 .underLine(true)
@@ -107,7 +107,7 @@ class CellStyleCreatorXlsxTest {
     @Test
     public void backGroundColorApplied() {
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .backgroundColor(new CellColor(1, 2, 3))
+                .backgroundColor(new StyleColor(1, 2, 3))
                 .build());
         assertArrayEquals(new byte[]{1, 2, 3}, ((XSSFColor) style.getFillForegroundColorColor()).getRGB());
         assertEquals(FillPatternType.SOLID_FOREGROUND, style.getFillPattern());

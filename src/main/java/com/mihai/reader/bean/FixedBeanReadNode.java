@@ -6,11 +6,11 @@ import com.mihai.common.field.FixedColumnField;
 
 import java.util.List;
 
-public class FixedFieldBeanNode implements ChildBeanNode {
+public class FixedBeanReadNode implements ChildBeanReadNode {
 
     private final FixedColumnField field;
 
-    public FixedFieldBeanNode(FixedColumnField field) {
+    public FixedBeanReadNode(FixedColumnField field) {
         this.field = field;
     }
 
@@ -25,12 +25,12 @@ public class FixedFieldBeanNode implements ChildBeanNode {
     }
 
     @Override
-    public List<ChildBeanNode> getChildren() {
+    public List<ChildBeanReadNode> getChildren() {
         return List.of();
     }
 
     @Override
-    public List<ChildBeanNode> getLeaves() {
+    public List<ChildBeanReadNode> getLeaves() {
         return List.of(this);
     }
 

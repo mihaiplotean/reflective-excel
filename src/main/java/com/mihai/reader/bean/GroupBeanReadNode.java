@@ -8,14 +8,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GroupBeanNode implements ChildBeanNode {
+public class GroupBeanReadNode implements ChildBeanReadNode {
 
     private final GroupedColumnsField field;
-    private final List<ChildBeanNode> children;
+    private final List<ChildBeanReadNode> children;
 
-    public GroupBeanNode(GroupedColumnsField field) {
+    public GroupBeanReadNode(GroupedColumnsField field) {
         this.field = field;
-        this.children = new ChildBeanNodeCreator(field.getFieldType()).getChildFields();
+        this.children = new ChildBeanReadNodeCreator(field.getFieldType()).getChildFields();
     }
 
     @Override
@@ -29,14 +29,14 @@ public class GroupBeanNode implements ChildBeanNode {
     }
 
     @Override
-    public List<ChildBeanNode> getChildren() {
+    public List<ChildBeanReadNode> getChildren() {
         return children;
     }
 
     @Override
-    public List<ChildBeanNode> getLeaves() {
+    public List<ChildBeanReadNode> getLeaves() {
         return children.stream()
-                .map(ChildBeanNode::getLeaves)
+                .map(ChildBeanReadNode::getLeaves)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }

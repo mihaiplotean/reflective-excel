@@ -9,13 +9,13 @@ import com.mihai.reader.workbook.sheet.ReadableRow;
 
 import java.util.*;
 
-public class TableHeaderReader {
+public class HeaderReader {
 
     private final ReadableSheetContext sheetContext;
     private final TableRowColumnDetector rowColumnDetector;
     private final Map<ReadableCell, TableHeader> headerPerBounds = new HashMap<>();
 
-    public TableHeaderReader(ReadableSheetContext sheetContext, TableRowColumnDetector rowColumnDetector) {
+    public HeaderReader(ReadableSheetContext sheetContext, TableRowColumnDetector rowColumnDetector) {
         this.sheetContext = sheetContext;
         this.rowColumnDetector = rowColumnDetector;
     }

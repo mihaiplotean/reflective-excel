@@ -1,14 +1,14 @@
-package com.mihai.writer.table;
+package com.mihai.common;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CellWritingContextTest {
+class CellPointerTest {
 
     @Test
     public void settingRowSavesValue() {
-        CellWritingContext context = new CellWritingContext();
+        CellPointer context = new CellPointer();
         context.setCurrentRow(42);
 
         assertEquals(42, context.getCurrentRow());
@@ -16,7 +16,7 @@ class CellWritingContextTest {
 
     @Test
     public void settingColumnSavesValue() {
-        CellWritingContext context = new CellWritingContext();
+        CellPointer context = new CellPointer();
         context.setCurrentColumn(42);
 
         assertEquals(42, context.getCurrentColumn());
@@ -24,7 +24,7 @@ class CellWritingContextTest {
 
     @Test
     public void resettingDefaultsToNegativeRowAndColumn() {
-        CellWritingContext context = new CellWritingContext();
+        CellPointer context = new CellPointer();
         context.setCurrentRow(42);
         context.setCurrentColumn(10);
         context.reset();

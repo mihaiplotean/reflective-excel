@@ -1,7 +1,7 @@
 package com.mihai.reader.readers;
 
 import com.mihai.reader.*;
-import com.mihai.reader.bean.RootTableBeanNode;
+import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.detector.TableRowColumnDetector;
 import com.mihai.reader.mapping.ColumnFieldMapping;
 import com.mihai.reader.mapping.DefaultColumnFieldMapping;
@@ -26,20 +26,20 @@ public class TableReader {
     }
 
     public <T> List<T> readRows(Class<T> clazz) {
-        RootTableBeanNode rootBeanNode = new RootTableBeanNode(clazz);
+        RootTableBeanReadNode rootBeanNode = new RootTableBeanReadNode(clazz);
         return readRows(clazz, rootBeanNode);
     }
 
     public <T> List<T> readRows(Class<T> clazz, String tableId) {
-        RootTableBeanNode rootBeanNode = new RootTableBeanNode(clazz, tableId);
+        RootTableBeanReadNode rootBeanNode = new RootTableBeanReadNode(clazz, tableId);
         return readRows(clazz, rootBeanNode);
     }
 
-    private <T> List<T> readRows(Class<T> clazz, RootTableBeanNode rootBeanNode) {
+    private <T> List<T> readRows(Class<T> clazz, RootTableBeanReadNode rootBeanNode) {
         sheetContext.setCurrentTableBean(rootBeanNode);
         sheetContext.setReadingTable(true);
 
-        TableHeaders tableHeaders = new TableHeaderReader(sheetContext, settings.getRowColumnDetector()).readHeaders();
+        TableHeaders tableHeaders = new HeaderReader(sheetContext, settings.getRowColumnDetector()).readHeaders();
         if (!tableHeaders.isValid()) {
             sheetContext.setReadingTable(false);
             return List.of();

@@ -2,7 +2,7 @@ package com.mihai.assertion;
 
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
-import com.mihai.writer.style.font.CellFont;
+import com.mihai.writer.style.font.StyleFont;
 
 import java.util.*;
 
@@ -72,7 +72,7 @@ public class CellStyleComparison {
         return properties;
     }
 
-    private static Map<String, Object> getFontProperties(CellFont font) {
+    private static Map<String, Object> getFontProperties(StyleFont font) {
         Map<String, Object> properties = new HashMap<>();
 
         properties.put(FONT_NAME_PROPERTY, font.getName());

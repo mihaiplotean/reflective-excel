@@ -5,7 +5,7 @@ import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
 import com.mihai.writer.locator.CellLocation;
-import com.mihai.writer.node.RootFieldNode;
+import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.table.WrittenTable;
 import com.mihai.writer.table.WrittenTableHeaders;
 
@@ -26,7 +26,7 @@ public class TableWriter {
     public <T> WrittenTable writeTable(List<T> rows, Class<T> clazz, String tableId) {
         CellWriter cellWriter = createCellWriter(tableId);
 
-        RootFieldNode rootNode = new RootFieldNode(clazz, rows.isEmpty() ? null : rows.get(0));
+        RootTableBeanWriteNode rootNode = new RootTableBeanWriteNode(clazz, rows.isEmpty() ? null : rows.get(0));
 
         HeaderWriter headerWriter = new HeaderWriter(cellWriter, sheetContext);
         WrittenTableHeaders headers = headerWriter.writeHeaders(rootNode);

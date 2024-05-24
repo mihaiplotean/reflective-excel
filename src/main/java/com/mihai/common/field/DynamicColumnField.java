@@ -1,8 +1,11 @@
 package com.mihai.common.field;
 
+import com.mihai.common.utils.ReflectionUtilities;
 import com.mihai.reader.detector.ColumnDetector;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,20 +29,26 @@ public class DynamicColumnField implements AnnotatedField {
 
     private static void validateFieldType(Field field) {
         Class<?> type = field.getType();
-        if (isSupportedDynamicField(type)) {
-            return;
+        if (!isSupportedDynamicField(type)) {
+            throw new IllegalStateException(String.format(
+                    "Unsupported type %s annotated as dynamic column. Only <%s> can be annotated.", type,
+                    SUPPORTED_DYNAMIC_FIELD_TYPES.stream()
+                            .map(Class::getSimpleName)
+                            .collect(Collectors.joining(", "))
+            ));
         }
-        throw new IllegalStateException(String.format(
-                "Unsupported type %s annotated as dynamic column. Only <%s> can be annotated.", type,
-                SUPPORTED_DYNAMIC_FIELD_TYPES.stream()
-                        .map(Class::getSimpleName)
-                        .collect(Collectors.joining(", "))
-        ));
+        if(!hasValidTypeParameters(field)) {
+            throw new IllegalStateException("Generic type parameters cannot be a generic type!");
+        }
     }
 
     private static boolean isSupportedDynamicField(Class<?> clazz) {
         return SUPPORTED_DYNAMIC_FIELD_TYPES.stream()
                 .anyMatch(clazz::equals);
+    }
+
+    private static boolean hasValidTypeParameters(Field field) {
+        return ReflectionUtilities.hasClassTypeParameters(field);
     }
 
     public ColumnDetector getColumnDetector() {

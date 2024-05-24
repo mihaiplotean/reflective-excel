@@ -1,32 +1,34 @@
 package com.mihai.writer.node;
 
+import com.mihai.common.utils.ReflectionUtilities;
+
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
 
-public class DynamicFieldLeafNode implements AnnotatedFieldNode {
+public class FixedBeanWriteNode implements ChildBeanWriteNode {
 
-    private final Class<?> type;
-    private final Object name;
+    private final Field field;
+    private final String name;
 
-    public DynamicFieldLeafNode(Class<?> type, Object name) {
+    public FixedBeanWriteNode(Field field, String name) {
+        this.field = field;
         this.name = name;
-        this.type = type;
     }
 
     @Override
-    public Object getName() {
+    public String getName() {
         return name;
     }
 
     @Override
     public Field getField() {
-        return null;
+        return field;
     }
 
     @Override
     public Class<?> getType() {
-        return type;
+        return field.getType();
     }
 
     @Override
@@ -40,13 +42,13 @@ public class DynamicFieldLeafNode implements AnnotatedFieldNode {
     }
 
     @Override
-    public List<AnnotatedFieldNode> getChildren() {
+    public List<ChildBeanWriteNode> getChildren() {
         return Collections.emptyList();
     }
 
     @Override
     public List<TypedValue> getLeafValues(Object target) {
-        return Collections.emptyList();
+        return Collections.singletonList(new TypedValue(field.getType(), ReflectionUtilities.readField(field, target)));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.mihai.reader.table;
 
-import com.mihai.reader.bean.RootTableBeanNode;
+import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 
@@ -10,7 +10,7 @@ public class TableReadingContext {
 
     private final ReadTables readTables;
 
-    private RootTableBeanNode currentBeanNode;
+    private RootTableBeanReadNode currentBeanNode;
     private TableHeaders currentTableHeaders;
 
     private int currentTableRow;
@@ -22,11 +22,11 @@ public class TableReadingContext {
         this.readTables = new ReadTables();
     }
 
-    public RootTableBeanNode getCurrentBeanNode() {
+    public RootTableBeanReadNode getCurrentBeanNode() {
         return currentBeanNode;
     }
 
-    public void setCurrentBeanNode(RootTableBeanNode currentBeanNode) {
+    public void setCurrentBeanNode(RootTableBeanReadNode currentBeanNode) {
         this.currentBeanNode = currentBeanNode;
     }
 
@@ -91,6 +91,9 @@ public class TableReadingContext {
     }
 
     public ReadableRow boundToCurrentTable(ReadableRow row) {
+        if (row == null) {
+            return null;
+        }
         if(currentTableHeaders == null) {
             return row;
         }

@@ -1,6 +1,6 @@
 package com.mihai.writer.style.border;
 
-import com.mihai.writer.style.color.CellColor;
+import com.mihai.writer.style.color.StyleColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.junit.jupiter.api.Test;
 
@@ -15,13 +15,13 @@ class CellBorderTest {
                 .rightBorderStyle(BorderStyle.MEDIUM)
                 .bottomBorderStyle(BorderStyle.THICK)
                 .leftBorderStyle(BorderStyle.NONE)
-                .color(new CellColor(1, 1, 1))
+                .color(new StyleColor(1, 1, 1))
                 .build();
         assertEquals(BorderStyle.THIN, border.getTopBorderStyle());
         assertEquals(BorderStyle.MEDIUM, border.getRightBorderStyle());
         assertEquals(BorderStyle.THICK, border.getBottomBorderStyle());
         assertEquals(BorderStyle.NONE, border.getLeftBorderStyle());
-        assertEquals(new CellColor(1, 1, 1), border.getColor());
+        assertEquals(new StyleColor(1, 1, 1), border.getColor());
     }
 
     @Test
@@ -40,14 +40,14 @@ class CellBorderTest {
                 .rightBorderStyle(BorderStyle.THIN)
                 .bottomBorderStyle(BorderStyle.THIN)
                 .leftBorderStyle(BorderStyle.THIN)
-                .color(CellColor.BLACK)
+                .color(StyleColor.BLACK)
                 .build();
         CellBorder mediumBorderStyle = CellBorder.builder()
                 .topBorderStyle(BorderStyle.MEDIUM)
                 .rightBorderStyle(BorderStyle.MEDIUM)
                 .bottomBorderStyle(BorderStyle.MEDIUM)
                 .leftBorderStyle(BorderStyle.MEDIUM)
-                .color(new CellColor(1, 1, 1))
+                .color(new StyleColor(1, 1, 1))
                 .build();
         CellBorder combinedBorder = thinBorderStyle.combineWith(mediumBorderStyle);
         assertEquals(thinBorderStyle, combinedBorder);
@@ -67,14 +67,14 @@ class CellBorderTest {
                 .rightBorderStyle(BorderStyle.MEDIUM)
                 .bottomBorderStyle(BorderStyle.MEDIUM)
                 .leftBorderStyle(BorderStyle.MEDIUM)
-                .color(new CellColor(1, 1, 1))
+                .color(new StyleColor(1, 1, 1))
                 .build();
         CellBorder expectedBorder = CellBorder.builder()
                 .topBorderStyle(BorderStyle.THIN)
                 .rightBorderStyle(BorderStyle.MEDIUM)
                 .bottomBorderStyle(BorderStyle.MEDIUM)
                 .leftBorderStyle(BorderStyle.MEDIUM)
-                .color(new CellColor(1, 1, 1))
+                .color(new StyleColor(1, 1, 1))
                 .build();
         assertEquals(expectedBorder, borderA.combineWith(borderB));
     }

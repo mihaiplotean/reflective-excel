@@ -2,8 +2,8 @@ package com.mihai.writer.style;
 
 import com.mihai.writer.style.border.CellBorder;
 import com.mihai.writer.style.border.CellBorders;
-import com.mihai.writer.style.color.CellColor;
-import com.mihai.writer.style.font.CellFont;
+import com.mihai.writer.style.color.StyleColor;
+import com.mihai.writer.style.font.StyleFont;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -17,8 +17,8 @@ public class WritableCellStyle {
     private final HorizontalAlignment horizontalAlignment;
     private final VerticalAlignment verticalAlignment;
     private final CellBorder border;
-    private final CellColor backgroundColor;
-    private final CellFont font;
+    private final StyleColor backgroundColor;
+    private final StyleFont font;
     private final boolean wrapText;
 
     private WritableCellStyle(CellStyleBuilder builder) {
@@ -47,11 +47,11 @@ public class WritableCellStyle {
         return border;
     }
 
-    public CellColor getBackgroundColor() {
+    public StyleColor getBackgroundColor() {
         return backgroundColor;
     }
 
-    public CellFont getFont() {
+    public StyleFont getFont() {
         return font;
     }
 
@@ -81,7 +81,7 @@ public class WritableCellStyle {
         return border.combineWith(other);
     }
 
-    private CellFont combinedFont(CellFont other) {
+    private StyleFont combinedFont(StyleFont other) {
         if(this.font == null) {
             return other;
         }
@@ -120,8 +120,8 @@ public class WritableCellStyle {
         private HorizontalAlignment horizontalAlignment;
         private VerticalAlignment verticalAlignment;
         private CellBorder border;
-        private CellColor backgroundColor;
-        private CellFont font;
+        private StyleColor backgroundColor;
+        private StyleFont font;
         private boolean wrapText;
 
         public CellStyleBuilder format(String format) {
@@ -144,7 +144,7 @@ public class WritableCellStyle {
             return this;
         }
 
-        public CellStyleBuilder backgroundColor(CellColor backgroundColor) {
+        public CellStyleBuilder backgroundColor(StyleColor backgroundColor) {
             this.backgroundColor = backgroundColor;
             return this;
         }
@@ -159,7 +159,7 @@ public class WritableCellStyle {
             return this;
         }
 
-        public CellStyleBuilder font(CellFont font) {
+        public CellStyleBuilder font(StyleFont font) {
             this.font = font;
             return this;
         }

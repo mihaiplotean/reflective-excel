@@ -1,6 +1,7 @@
 package com.mihai.writer;
 
 import com.mihai.common.ReflectiveExcelException;
+import com.mihai.common.workbook.WorkbookFromFileCreator;
 import com.mihai.writer.serializer.CellSerializer;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.serializer.SerializationContext;
@@ -91,7 +92,11 @@ public class ReflectiveExcelWriter {
         }
     }
 
-    private Workbook createWorkbook() {
+    private Workbook createWorkbook() throws IOException {
+        File templateFile = settings.getTemplateFile();
+        if(templateFile != null) {
+            return new WorkbookFromFileCreator(templateFile).create();
+        }
         return switch (settings.getFileFormat()) {
             case XLSX -> new XSSFWorkbook();
             case XLS -> new HSSFWorkbook();

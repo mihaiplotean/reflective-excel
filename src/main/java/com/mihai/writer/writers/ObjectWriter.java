@@ -107,7 +107,7 @@ public class ObjectWriter {
         if (field.getType() == List.class) {
             List<Object> rows = (List<Object>) ReflectionUtilities.readField(field, object);
             ParameterizedType genericType = (ParameterizedType) field.getGenericType();
-            Class<Object> argumentType = (Class<Object>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?
+            Class<Object> argumentType = (Class<Object>) genericType.getActualTypeArguments()[0];
 
             WrittenTable table = tableWriter.writeTable(rows, argumentType, tableIdField.getTableId());
 

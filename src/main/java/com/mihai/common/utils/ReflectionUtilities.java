@@ -4,7 +4,9 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.apache.commons.lang3.reflect.FieldUtils.getAllFieldsList;
@@ -47,5 +49,11 @@ public class ReflectionUtilities {
         }
         fields.addAll(List.of(clazz.getDeclaredFields()));
         return fields;
+    }
+
+    public static boolean hasClassTypeParameters(Field field) {
+        ParameterizedType genericType = (ParameterizedType) field.getGenericType();
+        return Arrays.stream(genericType.getActualTypeArguments())
+                .allMatch(type -> type instanceof Class<?>);
     }
 }

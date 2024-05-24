@@ -6,20 +6,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RootTableBeanNode {
+public class RootTableBeanReadNode {
 
     private final Class<?> type;
     private final String tableId;
-    private final List<ChildBeanNode> children;
+    private final List<ChildBeanReadNode> children;
 
-    public RootTableBeanNode(Class<?> type) {
+    public RootTableBeanReadNode(Class<?> type) {
         this.type = type;
         TableId tableIdAnnotation = type.getAnnotation(TableId.class);
         this.tableId = tableIdAnnotation == null ? null : tableIdAnnotation.value();
         this.children = getChildFields();
     }
 
-    public RootTableBeanNode(Class<?> type, String tableId) {
+    public RootTableBeanReadNode(Class<?> type, String tableId) {
         this.type = type;
         this.tableId = tableId;
         this.children = getChildFields();
@@ -29,17 +29,17 @@ public class RootTableBeanNode {
         return tableId;
     }
 
-    private List<ChildBeanNode> getChildFields() {
-        return new ChildBeanNodeCreator(type).getChildFields();
+    private List<ChildBeanReadNode> getChildFields() {
+        return new ChildBeanReadNodeCreator(type).getChildFields();
     }
 
-    public List<ChildBeanNode> getChildren() {
+    public List<ChildBeanReadNode> getChildren() {
         return children;
     }
 
-    public List<ChildBeanNode> getLeaves() {
+    public List<ChildBeanReadNode> getLeaves() {
         return children.stream()
-                .map(ChildBeanNode::getLeaves)
+                .map(ChildBeanReadNode::getLeaves)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }

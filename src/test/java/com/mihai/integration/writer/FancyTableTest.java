@@ -8,7 +8,7 @@ import com.mihai.writer.style.StyleProvider;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.WritableCellStyles;
-import com.mihai.writer.style.color.CellColor;
+import com.mihai.writer.style.color.StyleColor;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -39,7 +39,7 @@ public class FancyTableTest {
         ReflectiveExcelWriter writer = new ReflectiveExcelWriter(actualFile, settings);
         writer.setHeaderStyleProvider(StyleProviders.of(WritableCellStyles.boldText()));
         writer.setCellStyleProvider(StyleProviders.of(WritableCellStyles.allSideBorder()));
-        writer.setRowStyleProvider(StyleProviders.stripedRows(new CellColor(240, 248, 255), null));
+        writer.setRowStyleProvider(StyleProviders.stripedRows(new StyleColor(240, 248, 255), null));
         writer.registerSerializer(Money.class, Money::getAmount);
         writer.registerTypeStyleProvider(Money.class, new StyleProvider() {
 

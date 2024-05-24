@@ -2,8 +2,8 @@ package com.mihai.writer;
 
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
-import com.mihai.writer.style.color.CellColor;
-import com.mihai.writer.style.font.CellFont;
+import com.mihai.writer.style.color.StyleColor;
+import com.mihai.writer.style.font.StyleFont;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -43,7 +43,7 @@ public class CellStyleCreatorXlsTest {
                 .rightBorderStyle(BorderStyle.MEDIUM)
                 .bottomBorderStyle(BorderStyle.THICK)
                 .leftBorderStyle(BorderStyle.THIN)
-                .color(new CellColor(1, 2, 3))
+                .color(new StyleColor(1, 2, 3))
                 .build();
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
                 .border(border)
@@ -62,10 +62,10 @@ public class CellStyleCreatorXlsTest {
 
     @Test
     public void fontApplied() {
-        CellFont font = CellFont.builder()
+        StyleFont font = StyleFont.builder()
                 .name("Calibri")
                 .size((short) 18)
-                .color(new CellColor(255, 255, 255))
+                .color(new StyleColor(255, 255, 255))
                 .bold(true)
                 .italic(true)
                 .underLine(true)
@@ -87,7 +87,7 @@ public class CellStyleCreatorXlsTest {
     @Test
     public void backGroundColorApplied() {
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .backgroundColor(new CellColor(0, 0, 0))
+                .backgroundColor(new StyleColor(0, 0, 0))
                 .build());
         assertArrayEquals(new short[]{0, 0, 0}, ((HSSFCellStyle)style).getFillForegroundColorColor().getTriplet());
         assertEquals(FillPatternType.SOLID_FOREGROUND, style.getFillPattern());

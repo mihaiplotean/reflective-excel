@@ -2,37 +2,37 @@ package com.mihai.writer.node;
 
 import java.util.List;
 
-public class RootFieldNode {
+public class RootTableBeanWriteNode {
 
     private final Class<?> type;
     private final Object target;
-    private final List<AnnotatedFieldNode> children;
+    private final List<ChildBeanWriteNode> children;
 
-    public RootFieldNode(Class<?> type, Object target) {
+    public RootTableBeanWriteNode(Class<?> type, Object target) {
         this.type = type;
         this.target = target;
         this.children = getChildFields();
     }
 
-    private List<AnnotatedFieldNode> getChildFields() {
-        return new AnnotatedFieldNodeCreator(type, target).getChildFields();
+    private List<ChildBeanWriteNode> getChildFields() {
+        return new ChildBeanWriteNodeCreator(type, target).getChildFields();
     }
 
     public int getLength() {
         return children.stream()
-                .mapToInt(AnnotatedFieldNode::getLength)
+                .mapToInt(ChildBeanWriteNode::getLength)
                 .sum();
     }
 
     public int getHeight() {
         int height = children.stream()
-                .mapToInt(AnnotatedFieldNode::getHeight)
+                .mapToInt(ChildBeanWriteNode::getHeight)
                 .max()
                 .orElse(0);
         return height == 0 ? 1 : height;
     }
 
-    public List<AnnotatedFieldNode> getChildren() {
+    public List<ChildBeanWriteNode> getChildren() {
         return children;
     }
 }

@@ -8,7 +8,7 @@ import com.mihai.reader.detector.ColumnDetector;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
-import com.mihai.writer.node.RootFieldNode;
+import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.table.WrittenTableHeaders;
@@ -45,7 +45,7 @@ class HeaderWriterTest {
 
     @Test
     public void fixedColumnHeaderIsWritten() {
-        RootFieldNode node = new RootFieldNode(OneFixedColumn.class, new OneFixedColumn());
+        RootTableBeanWriteNode node = new RootTableBeanWriteNode(OneFixedColumn.class, new OneFixedColumn());
         WrittenTableHeaders headers = headerWriter.writeHeaders(node);
 
         assertEquals("test column A", headers.getColumnName(0));
@@ -54,7 +54,7 @@ class HeaderWriterTest {
 
     @Test
     public void inheritedFixedColumnIsWritten() {
-        RootFieldNode node = new RootFieldNode(InheritColumns.class, new InheritColumns());
+        RootTableBeanWriteNode node = new RootTableBeanWriteNode(InheritColumns.class, new InheritColumns());
         WrittenTableHeaders headers = headerWriter.writeHeaders(node);
 
         assertEquals("test column A", headers.getColumnName(0));
@@ -66,7 +66,7 @@ class HeaderWriterTest {
 
     @Test
     public void dynamicColumnsAreWritten() {
-        RootFieldNode node = new RootFieldNode(DynamicColumnSet.class, new DynamicColumnSet());
+        RootTableBeanWriteNode node = new RootTableBeanWriteNode(DynamicColumnSet.class, new DynamicColumnSet());
         WrittenTableHeaders headers = headerWriter.writeHeaders(node);
 
         assertEquals("1", headers.getColumnName(0));
@@ -78,7 +78,7 @@ class HeaderWriterTest {
 
     @Test
     public void groupedColumnsAreWritten() {
-        RootFieldNode node = new RootFieldNode(GroupedColumns.class, new GroupedColumns());
+        RootTableBeanWriteNode node = new RootTableBeanWriteNode(GroupedColumns.class, new GroupedColumns());
         WrittenTableHeaders headers = headerWriter.writeHeaders(node);
 
         assertEquals("Column A", headers.getColumnName(0));
@@ -91,7 +91,7 @@ class HeaderWriterTest {
 
     @Test
     public void nestedGroupedColumnsAreWritten() {
-        RootFieldNode node = new RootFieldNode(NestedGroupedColumns.class, new NestedGroupedColumns());
+        RootTableBeanWriteNode node = new RootTableBeanWriteNode(NestedGroupedColumns.class, new NestedGroupedColumns());
         WrittenTableHeaders headers = headerWriter.writeHeaders(node);
 
         assertEquals("Outer group column", headers.getColumnName(0));

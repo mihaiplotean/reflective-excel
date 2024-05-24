@@ -1,7 +1,7 @@
 package com.mihai.writer.style;
 
 import com.mihai.writer.style.border.CellBorders;
-import com.mihai.writer.style.color.CellColor;
+import com.mihai.writer.style.color.StyleColor;
 import com.mihai.writer.style.font.CellFonts;
 
 public final class WritableCellStyles {
@@ -39,10 +39,10 @@ public final class WritableCellStyles {
     }
 
     public static WritableCellStyle backgroundColor(int red, int green, int blue) {
-        return backgroundColor(new CellColor(red, green, blue));
+        return backgroundColor(new StyleColor(red, green, blue));
     }
 
-    public static WritableCellStyle backgroundColor(CellColor color) {
+    public static WritableCellStyle backgroundColor(StyleColor color) {
         return WritableCellStyle.builder()
                 .backgroundColor(color)
                 .build();

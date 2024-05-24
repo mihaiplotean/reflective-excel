@@ -3,8 +3,8 @@ package com.mihai.writer.writers;
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableCell;
 import com.mihai.writer.locator.CellLocation;
-import com.mihai.writer.node.AnnotatedFieldNode;
-import com.mihai.writer.node.RootFieldNode;
+import com.mihai.writer.node.ChildBeanWriteNode;
+import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.table.WrittenTableHeader;
 import com.mihai.writer.table.WrittenTableHeaders;
@@ -22,10 +22,10 @@ public class HeaderWriter {
         this.sheetContext = sheetContext;
     }
 
-    public WrittenTableHeaders writeHeaders(RootFieldNode rootNode) {
+    public WrittenTableHeaders writeHeaders(RootTableBeanWriteNode rootNode) {
         int currentColumn = 0;
         List<WrittenTableHeader> leafHeaders = new ArrayList<>();
-        for (AnnotatedFieldNode child : rootNode.getChildren()) {
+        for (ChildBeanWriteNode child : rootNode.getChildren()) {
             List<WrittenTableHeader> headers = writeHeader(child, rootNode.getHeight() + 1, 0, currentColumn);
             currentColumn += child.getLength();
             leafHeaders.addAll(headers);
@@ -34,13 +34,13 @@ public class HeaderWriter {
         return new WrittenTableHeaders(rootNode.getHeight() - 1, leafHeaders);
     }
 
-    private List<WrittenTableHeader> writeHeader(AnnotatedFieldNode node, int headerHeight, int currentRow, int currentColumn) {
+    private List<WrittenTableHeader> writeHeader(ChildBeanWriteNode node, int headerHeight, int currentRow, int currentColumn) {
         List<WrittenTableHeader> headers = new ArrayList<>();
         writeHeader(node, headerHeight, currentRow, currentColumn, headers);
         return headers;
     }
 
-    private void writeHeader(AnnotatedFieldNode node, int headerHeight, int currentRow, int currentColumn,
+    private void writeHeader(ChildBeanWriteNode node, int headerHeight, int currentRow, int currentColumn,
                              List<WrittenTableHeader> leafHeaders) {
         if (node.getHeight() > 0 && node.getLength() > 0) {
             Object valueToWrite = sheetContext.serialize(node.getName().getClass(), node.getName());
@@ -64,7 +64,7 @@ public class HeaderWriter {
                 leafHeaders.add(new WrittenTableHeader(String.valueOf(valueToWrite), cellLocation.getColumn()));
             }
         }
-        for (AnnotatedFieldNode child : node.getChildren()) {
+        for (ChildBeanWriteNode child : node.getChildren()) {
             writeHeader(child, node.getHeight() > 0 ? headerHeight - 1 : headerHeight, currentRow, currentColumn, leafHeaders);
             currentColumn += child.getLength();
         }

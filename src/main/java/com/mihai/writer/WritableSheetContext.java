@@ -1,9 +1,9 @@
 package com.mihai.writer;
 
+import com.mihai.common.CellPointer;
 import com.mihai.writer.serializer.SerializationContext;
 import com.mihai.writer.style.CellStyleContext;
 import com.mihai.writer.style.WritableCellStyle;
-import com.mihai.writer.table.CellWritingContext;
 import com.mihai.writer.table.TableWritingContext;
 import com.mihai.writer.table.WrittenTable;
 import com.mihai.writer.table.WrittenTableHeaders;
@@ -15,14 +15,14 @@ public class WritableSheetContext {
 
     private final WritingContext writingContext;
     private final TableWritingContext tableWritingContext;
-    private final CellWritingContext cellWritingContext;
+    private final CellPointer cellPointer;
 
     public WritableSheetContext(SerializationContext serializationContext, CellStyleContext cellStyleContext) {
         this.serializationContext = serializationContext;
         this.cellStyleContext = cellStyleContext;
         this.tableWritingContext = new TableWritingContext();
-        this.cellWritingContext = new CellWritingContext();
-        this.writingContext = new WritingContext(tableWritingContext, cellWritingContext);
+        this.cellPointer = new CellPointer();
+        this.writingContext = new WritingContext(tableWritingContext, cellPointer);
     }
 
     public WritingContext getWritingContext() {
@@ -67,11 +67,11 @@ public class WritableSheetContext {
     }
 
     public void setCurrentRow(int row) {
-        cellWritingContext.setCurrentRow(row);
+        cellPointer.setCurrentRow(row);
     }
 
     public void setCurrentColumn(int column) {
-        cellWritingContext.setCurrentColumn(column);
+        cellPointer.setCurrentColumn(column);
     }
 
     public void setCurrentTableRow(int row) {
@@ -83,6 +83,6 @@ public class WritableSheetContext {
     }
 
     public void resetCellPointer() {
-        cellWritingContext.reset();
+        cellPointer.reset();
     }
 }

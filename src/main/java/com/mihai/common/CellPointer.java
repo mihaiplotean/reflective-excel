@@ -1,7 +1,6 @@
-package com.mihai.reader;
+package com.mihai.common;
 
-// todo: this will be a copy of CellWritingContext?
-public class CellReadingContext {
+public class CellPointer {
 
     private int currentRow = -1;
     private int currentColumn = -1;

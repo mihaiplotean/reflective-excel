@@ -2,12 +2,12 @@ package com.mihai.reader;
 
 import com.mihai.common.ReflectiveExcelException;
 import com.mihai.reader.readers.SheetReader;
-import com.mihai.reader.workbook.creation.WorkbookCreator;
-import com.mihai.reader.workbook.creation.WorkbookFromFileCreator;
+import com.mihai.common.workbook.WorkbookCreator;
+import com.mihai.common.workbook.WorkbookFromFileCreator;
 import com.mihai.reader.deserializer.CellDeserializer;
 import com.mihai.reader.deserializer.DefaultDeserializationContext;
 import com.mihai.reader.deserializer.DeserializationContext;
-import com.mihai.reader.workbook.creation.WorkbookFromInputStreamCreator;
+import com.mihai.common.workbook.WorkbookFromInputStreamCreator;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 

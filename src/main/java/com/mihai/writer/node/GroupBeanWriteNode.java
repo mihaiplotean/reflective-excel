@@ -4,18 +4,18 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 
-public class GroupedFieldNode implements AnnotatedFieldNode {
+public class GroupBeanWriteNode implements ChildBeanWriteNode {
 
     private final Field field;
     private final Object target;
     private final String name;
-    private final List<AnnotatedFieldNode> children;
+    private final List<ChildBeanWriteNode> children;
 
-    public GroupedFieldNode(Field field, Object target, String name) {
+    public GroupBeanWriteNode(Field field, Object target, String name) {
         this.field = field;
         this.target = target;
         this.name = name;
-        this.children = new AnnotatedFieldNodeCreator(field.getType(), target).getChildFields();
+        this.children = new ChildBeanWriteNodeCreator(field.getType(), target).getChildFields();
     }
 
     @Override
@@ -36,20 +36,20 @@ public class GroupedFieldNode implements AnnotatedFieldNode {
     @Override
     public int getLength() {
         return children.stream()
-                .mapToInt(AnnotatedFieldNode::getLength)
+                .mapToInt(ChildBeanWriteNode::getLength)
                 .sum();
     }
 
     @Override
     public int getHeight() {
         return 1 + children.stream()
-                .mapToInt(AnnotatedFieldNode::getHeight)
+                .mapToInt(ChildBeanWriteNode::getHeight)
                 .max()
                 .orElse(0);
     }
 
     @Override
-    public List<AnnotatedFieldNode> getChildren() {
+    public List<ChildBeanWriteNode> getChildren() {
         return children;
     }
 

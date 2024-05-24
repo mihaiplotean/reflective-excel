@@ -3,7 +3,7 @@ package com.mihai.writer.node;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public interface AnnotatedFieldNode {
+public interface ChildBeanWriteNode {
 
     Object getName();
 
@@ -15,7 +15,7 @@ public interface AnnotatedFieldNode {
 
     int getHeight();
 
-    List<? extends AnnotatedFieldNode> getChildren();
+    List<? extends ChildBeanWriteNode> getChildren();
 
     List<TypedValue> getLeafValues(Object target);
 

@@ -2,8 +2,8 @@ package com.mihai.reader.detector;
 
 import com.mihai.common.utils.CollectionUtilities;
 import com.mihai.reader.ReadingContext;
-import com.mihai.reader.bean.ChildBeanNode;
-import com.mihai.reader.bean.RootTableBeanNode;
+import com.mihai.reader.bean.ChildBeanReadNode;
+import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +20,7 @@ public class AutoRowColumnDetector implements TableRowColumnDetector {
     }
 
     private static boolean currentRowHasAllDefinedHeaders(ReadingContext context, ReadableRow row) {
-        RootTableBeanNode currentTableBean = context.getCurrentTableBean();
+        RootTableBeanReadNode currentTableBean = context.getCurrentTableBean();
         List<String> beanDefinedColumnNames = getDefinedColumnsInBean(currentTableBean);
         Set<String> rowValues = row.stream()
                 .map(ReadableCell::getValue)
@@ -28,9 +28,9 @@ public class AutoRowColumnDetector implements TableRowColumnDetector {
         return rowValues.containsAll(beanDefinedColumnNames);
     }
 
-    private static List<String> getDefinedColumnsInBean(RootTableBeanNode currentTableBean) {
+    private static List<String> getDefinedColumnsInBean(RootTableBeanReadNode currentTableBean) {
         return currentTableBean.getLeaves().stream()
-                .map(ChildBeanNode::getName)
+                .map(ChildBeanReadNode::getName)
                 .filter(Objects::nonNull)
                 .toList();
     }

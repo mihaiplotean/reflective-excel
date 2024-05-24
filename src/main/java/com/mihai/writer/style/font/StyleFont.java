@@ -1,22 +1,21 @@
 package com.mihai.writer.style.font;
 
-import com.mihai.writer.style.color.CellColor;
+import com.mihai.writer.style.color.StyleColor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.IndexedColors;
 
 import java.util.Objects;
 
-public class CellFont {
+public class StyleFont {
 
     private final String name;
-    private final short size;  // Font#setFontHeightInPoints
-    private final CellColor color;
+    private final short size;
+    private final StyleColor color;
 
     private final boolean bold;
     private final boolean italic;
     private final boolean underLine;
 
-    private CellFont(CellFontBuilder cellFontBuilder) {
+    private StyleFont(CellFontBuilder cellFontBuilder) {
         name = cellFontBuilder.name;
         size = cellFontBuilder.size;
         color = cellFontBuilder.color;
@@ -33,7 +32,7 @@ public class CellFont {
         return size;
     }
 
-    public CellColor getColor() {
+    public StyleColor getColor() {
         return color;
     }
 
@@ -49,7 +48,7 @@ public class CellFont {
         return underLine;
     }
 
-    public CellFont combineWith(CellFont other) {
+    public StyleFont combineWith(StyleFont other) {
         return new CellFontBuilder()
                 .name(!StringUtils.isEmpty(name) ? name : other.name)
                 .size(size > 0 ? size : other.size)
@@ -68,13 +67,13 @@ public class CellFont {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CellFont cellFont = (CellFont) o;
-        return Objects.equals(name, cellFont.name)
-                && size == cellFont.size
-                && bold == cellFont.bold
-                && Objects.equals(color, cellFont.color)
-                && italic == cellFont.italic
-                && underLine == cellFont.underLine;
+        StyleFont styleFont = (StyleFont) o;
+        return Objects.equals(name, styleFont.name)
+                && size == styleFont.size
+                && bold == styleFont.bold
+                && Objects.equals(color, styleFont.color)
+                && italic == styleFont.italic
+                && underLine == styleFont.underLine;
     }
 
     @Override
@@ -98,7 +97,7 @@ public class CellFont {
 
         private String name;
         private short size;
-        private CellColor color;
+        private StyleColor color;
 
         private boolean bold;
         private boolean italic;
@@ -114,7 +113,7 @@ public class CellFont {
             return this;
         }
 
-        public CellFontBuilder color(CellColor color) {
+        public CellFontBuilder color(StyleColor color) {
             this.color = color;
             return this;
         }
@@ -134,8 +133,8 @@ public class CellFont {
             return this;
         }
 
-        public CellFont build() {
-            return new CellFont(this);
+        public StyleFont build() {
+            return new StyleFont(this);
         }
     }
 }

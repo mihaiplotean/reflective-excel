@@ -1,5 +1,6 @@
 package com.mihai.reader.readers;
 
+import com.mihai.common.annotation.DynamicColumns;
 import com.mihai.common.annotation.ExcelColumn;
 import com.mihai.common.annotation.TableId;
 import com.mihai.reader.ExcelReadingSettings;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TableReaderTest {
 
@@ -43,6 +45,17 @@ class TableReaderTest {
     @AfterEach
     public void tearDown() throws IOException {
         workbook.close();
+    }
+
+    @Test
+    public void invalidTypeParameterInDynamicColumnThrowsException() {
+        actualSheet.createRow(0).createCell(0).setCellValue("A");
+        actualSheet.createRow(1).createCell(0).setCellValue("B");
+
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
+        TableReader tableReader = new TableReader(sheetContext, ExcelReadingSettings.DEFAULT);
+
+        assertThrows(IllegalStateException.class, () -> tableReader.readRows(InvalidDynamicColumnType.class));
     }
 
     @Test
@@ -107,5 +120,17 @@ class TableReaderTest {
                     ", valueB='" + valueB + '\'' +
                     '}';
         }
+    }
+
+    public static class GenericDynamicColumnType {
+
+        @DynamicColumns
+        private List<List<String>> value;
+    }
+
+    public static class InvalidDynamicColumnType {
+
+        @DynamicColumns
+        private Integer value;
     }
 }

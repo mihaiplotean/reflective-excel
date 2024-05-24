@@ -3,8 +3,8 @@ package com.mihai.writer;
 import com.mihai.writer.style.ColorStyleUtils;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
-import com.mihai.writer.style.color.CellColor;
-import com.mihai.writer.style.font.CellFont;
+import com.mihai.writer.style.color.StyleColor;
+import com.mihai.writer.style.font.StyleFont;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 
@@ -18,8 +18,8 @@ public class CellStyleCreator {
 
     private final Map<WritableCellStyle, CellStyle> styleCache = new HashMap<>();
     private final Map<String, Short> formatToIndexMap = new HashMap<>();
-    private final Map<CellColor, Color> colorMap = new HashMap<>();
-    private final Map<CellFont, Font> fontMap = new HashMap<>();
+    private final Map<StyleColor, Color> colorMap = new HashMap<>();
+    private final Map<StyleFont, Font> fontMap = new HashMap<>();
 
     public CellStyleCreator(Workbook workbook) {
         this.workbook = workbook;
@@ -74,7 +74,7 @@ public class CellStyleCreator {
     }
 
     private void setBackgroundColor(WritableCellStyle style, CellStyle cellStyle) {
-        CellColor backgroundColor = style.getBackgroundColor();
+        StyleColor backgroundColor = style.getBackgroundColor();
         if (backgroundColor != null) {
             Color color = colorMap.computeIfAbsent(backgroundColor, this::createColor);
             cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -82,12 +82,12 @@ public class CellStyleCreator {
         }
     }
 
-    private Color createColor(CellColor cellColor) {
+    private Color createColor(StyleColor cellColor) {
         return ColorStyleUtils.createColor(workbook, cellColor.getRed(), cellColor.getGreen(), cellColor.getBlue());
     }
 
     private void setFont(WritableCellStyle style, CellStyle cellStyle) {
-        CellFont font = style.getFont();
+        StyleFont font = style.getFont();
         if (font != null) {
             applyFont(cellStyle, font);
         }
@@ -117,19 +117,19 @@ public class CellStyleCreator {
         if (leftBorderStyle != null) {
             cellStyle.setBorderLeft(leftBorderStyle);
         }
-        CellColor borderColor = border.getColor();
+        StyleColor borderColor = border.getColor();
         if (borderColor != null) {
             Color color = colorMap.computeIfAbsent(borderColor, this::createColor);
             ColorStyleUtils.setBorderColor(cellStyle, color);
         }
     }
 
-    private void applyFont(CellStyle cellStyle, CellFont fontReference) {
+    private void applyFont(CellStyle cellStyle, StyleFont fontReference) {
         Font font = fontMap.computeIfAbsent(fontReference, this::createFont);
         cellStyle.setFont(font);
     }
 
-    private Font createFont(CellFont fontReference) {
+    private Font createFont(StyleFont fontReference) {
         Font font = workbook.createFont();
 
         String fontName = fontReference.getName();
@@ -140,7 +140,7 @@ public class CellStyleCreator {
         if(fontSize > 0) {
             font.setFontHeightInPoints(fontSize);
         }
-        CellColor fontColor = fontReference.getColor();
+        StyleColor fontColor = fontReference.getColor();
         if(fontColor != null) {
             Color color = colorMap.computeIfAbsent(fontColor, this::createColor);
             ColorStyleUtils.setFontColor(font, color);

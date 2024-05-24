@@ -1,6 +1,6 @@
 package com.mihai.writer.style;
 
-import com.mihai.writer.style.color.CellColor;
+import com.mihai.writer.style.color.StyleColor;
 
 public class StyleProviders {
 
@@ -18,7 +18,7 @@ public class StyleProviders {
         return (context, target) -> style;
     }
 
-    public static StyleProvider stripedRows(CellColor colorA, CellColor colorB) {
+    public static StyleProvider stripedRows(StyleColor colorA, StyleColor colorB) {
         return (context, target) -> {
             if (context.getCurrentTableRow() % 2 == 0) {
                 return WritableCellStyles.backgroundColor(colorA);

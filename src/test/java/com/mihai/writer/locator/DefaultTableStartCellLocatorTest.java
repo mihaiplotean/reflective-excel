@@ -1,8 +1,8 @@
 package com.mihai.writer.locator;
 
+import com.mihai.common.CellPointer;
 import com.mihai.reader.workbook.sheet.Bounds;
 import com.mihai.writer.WritingContext;
-import com.mihai.writer.table.CellWritingContext;
 import com.mihai.writer.table.TableWritingContext;
 import com.mihai.writer.table.WrittenTable;
 import com.mihai.writer.table.WrittenTableHeaders;
@@ -10,13 +10,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultTableStartCellLocatorTest {
 
     @Test
     public void firstTableIsLocatedAtCellA1() {
-        WritingContext writingContext = new WritingContext(new TableWritingContext(), new CellWritingContext());
+        WritingContext writingContext = new WritingContext(new TableWritingContext(), new CellPointer());
         DefaultTableStartCellLocator startCellLocator = new DefaultTableStartCellLocator();
 
         CellLocation tableStartCell = startCellLocator.getStartingCell(writingContext, "");
@@ -26,7 +26,7 @@ class DefaultTableStartCellLocatorTest {
     @Test
     public void eachNextTableIsLocatedTwoRowsBellow() {
         TableWritingContext tableContext = new TableWritingContext();
-        WritingContext writingContext = new WritingContext(tableContext, new CellWritingContext());
+        WritingContext writingContext = new WritingContext(tableContext, new CellPointer());
         DefaultTableStartCellLocator startCellLocator = new DefaultTableStartCellLocator();
 
         tableContext.appendTable(new WrittenTable("table 1", dummyHeaders(), new Bounds(0, 0, 10, 10)));

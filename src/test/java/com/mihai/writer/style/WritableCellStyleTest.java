@@ -2,8 +2,8 @@ package com.mihai.writer.style;
 
 import com.mihai.writer.style.border.CellBorder;
 import com.mihai.writer.style.border.CellBorders;
-import com.mihai.writer.style.color.CellColor;
-import com.mihai.writer.style.font.CellFont;
+import com.mihai.writer.style.color.StyleColor;
+import com.mihai.writer.style.font.StyleFont;
 import com.mihai.writer.style.font.CellFonts;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -49,9 +49,9 @@ class WritableCellStyleTest {
     @Test
     public void backgroundColorIsSet() {
         WritableCellStyle cellStyle = WritableCellStyle.builder()
-                .backgroundColor(CellColor.BLACK)
+                .backgroundColor(StyleColor.BLACK)
                 .build();
-        assertEquals(CellColor.BLACK, cellStyle.getBackgroundColor());
+        assertEquals(StyleColor.BLACK, cellStyle.getBackgroundColor());
     }
 
     @Test
@@ -117,12 +117,12 @@ class WritableCellStyleTest {
     @Test
     public void combiningBackgroundColorsKeepsFirst() {
         WritableCellStyle cellStyleA = WritableCellStyle.builder()
-                .backgroundColor(new CellColor(1, 1, 1))
+                .backgroundColor(new StyleColor(1, 1, 1))
                 .build();
         WritableCellStyle cellStyleB = WritableCellStyle.builder()
-                .backgroundColor(new CellColor(2, 2, 2))
+                .backgroundColor(new StyleColor(2, 2, 2))
                 .build();
-        assertEquals(new CellColor(1, 1, 1), cellStyleA.combineWith(cellStyleB).getBackgroundColor());
+        assertEquals(new StyleColor(1, 1, 1), cellStyleA.combineWith(cellStyleB).getBackgroundColor());
     }
 
     @Test
@@ -131,7 +131,7 @@ class WritableCellStyleTest {
                 .font(CellFonts.bold())
                 .build();
         WritableCellStyle cellStyleB = WritableCellStyle.builder()
-                .font(CellFont.builder().bold(false).build())
+                .font(StyleFont.builder().bold(false).build())
                 .build();
         assertEquals(CellFonts.bold(), cellStyleA.combineWith(cellStyleB).getFont());
     }

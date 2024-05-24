@@ -3,6 +3,8 @@ package com.mihai.writer;
 import com.mihai.writer.locator.DefaultTableStartCellLocator;
 import com.mihai.writer.locator.TableStartCellLocator;
 
+import java.io.File;
+
 public class ExcelWritingSettings {
 
     public static final ExcelWritingSettings DEFAULT = new ExcelWritingSettingsBuilder().create();
@@ -10,11 +12,13 @@ public class ExcelWritingSettings {
     private final String sheetName;
     private final ExcelFileFormat fileFormat;
     private final TableStartCellLocator tableStartCellLocator;
+    private final File templateFile;
 
     private ExcelWritingSettings(ExcelWritingSettingsBuilder builder) {
         this.sheetName = builder.sheetName;
         this.fileFormat = builder.fileFormat;
         this.tableStartCellLocator = builder.tableStartCellLocator;
+        this.templateFile = builder.templateFile;
     }
 
     public String getSheetName() {
@@ -29,6 +33,10 @@ public class ExcelWritingSettings {
         return tableStartCellLocator;
     }
 
+    public File getTemplateFile() {
+        return templateFile;
+    }
+
     public static ExcelWritingSettingsBuilder with() {
         return new ExcelWritingSettingsBuilder();
     }
@@ -38,6 +46,7 @@ public class ExcelWritingSettings {
         private String sheetName = "Sheet1";
         private ExcelFileFormat fileFormat = ExcelFileFormat.XLSX;
         private TableStartCellLocator tableStartCellLocator = new DefaultTableStartCellLocator();
+        private File templateFile;
 
         public ExcelWritingSettingsBuilder sheetName(String sheetName) {
             this.sheetName = sheetName;
@@ -51,6 +60,11 @@ public class ExcelWritingSettings {
 
         public ExcelWritingSettingsBuilder tableStartCellLocator(TableStartCellLocator tableStartCellLocator) {
             this.tableStartCellLocator = tableStartCellLocator;
+            return this;
+        }
+
+        public ExcelWritingSettingsBuilder templateFile(File templateFile) {
+            this.templateFile = templateFile;
             return this;
         }
 

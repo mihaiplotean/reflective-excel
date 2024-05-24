@@ -8,31 +8,31 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class AnnotatedFieldNodeCreator {
+public class ChildBeanWriteNodeCreator {
 
     private final Class<?> type;
     private final Object target;
 
-    public AnnotatedFieldNodeCreator(Class<?> type, Object target) {
+    public ChildBeanWriteNodeCreator(Class<?> type, Object target) {
         this.type = type;
         this.target = target;
     }
 
-    public List<AnnotatedFieldNode> getChildFields() {
+    public List<ChildBeanWriteNode> getChildFields() {
         FieldAnalyzer fieldAnalyzer = new FieldAnalyzer(type);
 
-        List<AnnotatedFieldNode> childFields = new ArrayList<>();
+        List<ChildBeanWriteNode> childFields = new ArrayList<>();
 
         childFields.addAll(fieldAnalyzer.getFixedColumnFields().stream()
-                .map(field -> new FixedFieldNode(field.getField(), field.getColumnName()))
+                .map(field -> new FixedBeanWriteNode(field.getField(), field.getColumnName()))
                 .toList());
 
         childFields.addAll(fieldAnalyzer.getDynamicColumnFields().stream()
-                .map(dynamicColumnField -> new DynamicFieldNode(dynamicColumnField.getField(), target))
+                .map(dynamicColumnField -> new DynamicBeanWriteNode(dynamicColumnField.getField(), target))
                 .toList());
 
         childFields.addAll(fieldAnalyzer.getCellGroupFields().stream()
-                .map(field -> new GroupedFieldNode(field.getField(), ReflectionUtilities.readField(field.getField(), target), field.getGroupName()))
+                .map(field -> new GroupBeanWriteNode(field.getField(), ReflectionUtilities.readField(field.getField(), target), field.getGroupName()))
                 .toList());
 
         List<Field> orderedFields = ReflectionUtilities.getAllFields(type);

@@ -3,8 +3,8 @@ package com.mihai.assertion;
 import com.mihai.writer.style.DateFormatUtils;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
-import com.mihai.writer.style.color.CellColor;
-import com.mihai.writer.style.font.CellFont;
+import com.mihai.writer.style.color.StyleColor;
+import com.mihai.writer.style.font.StyleFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -52,8 +52,8 @@ public class WritableCellStyleExtractor {
                 .build();
     }
 
-    private CellFont getFont(Font font) {
-        return CellFont.builder()
+    private StyleFont getFont(Font font) {
+        return StyleFont.builder()
                 .name(font.getFontName())
                 .size(font.getFontHeightInPoints())
                 .color(getFontColor(workbook, font))
@@ -63,7 +63,7 @@ public class WritableCellStyleExtractor {
                 .build();
     }
 
-    private static CellColor getBorderColor(Workbook workbook, CellStyle style) {
+    private static StyleColor getBorderColor(Workbook workbook, CellStyle style) {
         boolean colorsEqual = Stream.of(
                         style.getTopBorderColor(),
                         style.getRightBorderColor(),
@@ -85,7 +85,7 @@ public class WritableCellStyleExtractor {
         return null;
     }
 
-    private static CellColor getFontColor(Workbook workbook, Font font) {
+    private static StyleColor getFontColor(Workbook workbook, Font font) {
         if (workbook instanceof HSSFWorkbook xlsWorkbook) {
             HSSFColor color = xlsWorkbook.getCustomPalette().getColor(font.getColor());
             return asColor(color);
@@ -96,15 +96,15 @@ public class WritableCellStyleExtractor {
         return null;
     }
 
-    private static CellColor asColor(Color color) {
+    private static StyleColor asColor(Color color) {
         if (color instanceof HSSFColor xlsColor) {
             short[] rgbValues = xlsColor.getTriplet();
-            return new CellColor(rgbValues[0], rgbValues[1], rgbValues[2]);
+            return new StyleColor(rgbValues[0], rgbValues[1], rgbValues[2]);
         }
         if (color instanceof XSSFColor xlsxColor) {
             byte[] rgbValues = xlsxColor.getRGB();
-            return new CellColor(rgbValues[0], rgbValues[1], rgbValues[2]);
+            return new StyleColor(rgbValues[0], rgbValues[1], rgbValues[2]);
         }
-        return CellColor.BLACK;
+        return StyleColor.BLACK;
     }
 }

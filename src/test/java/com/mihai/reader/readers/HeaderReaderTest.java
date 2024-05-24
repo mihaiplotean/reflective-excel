@@ -17,7 +17,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TableHeaderReaderTest {
+class HeaderReaderTest {
 
     private XSSFWorkbook workbook;
     private XSSFSheet actualSheet;
@@ -44,7 +44,7 @@ class TableHeaderReaderTest {
 
         ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
 
-        TableHeaderReader headerReader = new TableHeaderReader(sheetContext, new SimpleRowColumnDetector("A1"));
+        HeaderReader headerReader = new HeaderReader(sheetContext, new SimpleRowColumnDetector("A1"));
         TableHeaders readHeaders = headerReader.readHeaders();
 
         assertEquals("header A", readHeaders.getHeader(0).getValue());
@@ -65,7 +65,7 @@ class TableHeaderReaderTest {
         actualSheet.addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
 
         ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, new DefaultDeserializationContext(), null);
-        TableHeaderReader headerReader = new TableHeaderReader(sheetContext, new SimpleRowColumnDetector("A1"));
+        HeaderReader headerReader = new HeaderReader(sheetContext, new SimpleRowColumnDetector("A1"));
         TableHeaders readHeaders = headerReader.readHeaders();
 
         assertEquals("sub-header A", readHeaders.getHeader(0).getValue());

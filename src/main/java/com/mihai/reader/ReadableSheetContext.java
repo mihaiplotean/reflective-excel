@@ -1,6 +1,7 @@
 package com.mihai.reader;
 
-import com.mihai.reader.bean.RootTableBeanNode;
+import com.mihai.common.CellPointer;
+import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.deserializer.DeserializationContext;
 import com.mihai.reader.exception.BadInputExceptionConsumer;
 import com.mihai.reader.table.ReadTable;
@@ -16,15 +17,15 @@ public class ReadableSheetContext {
 
     private final ReadableSheet sheet;
     private final TableReadingContext tableReadingContext;
-    private final CellReadingContext cellReadingContext;
+    private final CellPointer cellPointer;
     private final ReadingContext readingContext;
 
     public ReadableSheetContext(ReadableSheet sheet, DeserializationContext deserializationContext,
                                 BadInputExceptionConsumer exceptionConsumer) {
         this.sheet = sheet;
         this.tableReadingContext = new TableReadingContext();
-        this.cellReadingContext = new CellReadingContext();
-        this.readingContext = new ReadingContext(sheet, tableReadingContext, cellReadingContext, deserializationContext,
+        this.cellPointer = new CellPointer();
+        this.readingContext = new ReadingContext(sheet, tableReadingContext, cellPointer, deserializationContext,
                 exceptionConsumer);
     }
 
@@ -36,7 +37,7 @@ public class ReadableSheetContext {
         return readingContext;
     }
 
-    public void setCurrentTableBean(RootTableBeanNode currentTableBean) {
+    public void setCurrentTableBean(RootTableBeanReadNode currentTableBean) {
         tableReadingContext.setCurrentBeanNode(currentTableBean);
     }
 
@@ -52,7 +53,7 @@ public class ReadableSheetContext {
             @Override
             public ReadableRow next() {
                 ReadableRow row = rowIterator.next();
-                cellReadingContext.setCurrentRow(row.getRowNumber());
+                cellPointer.setCurrentRow(row.getRowNumber());
                 return row;
             }
         };
@@ -99,7 +100,7 @@ public class ReadableSheetContext {
             @Override
             public ReadableCell next() {
                 ReadableCell cell = cellIterator.next();
-                cellReadingContext.setCurrentColumn(cell.getColumnNumber());
+                cellPointer.setCurrentColumn(cell.getColumnNumber());
                 return cell;
             }
         };
@@ -130,15 +131,15 @@ public class ReadableSheetContext {
     }
 
     public void setCurrentRow(int row) {
-        cellReadingContext.setCurrentRow(row);
+        cellPointer.setCurrentRow(row);
     }
 
     public void setCurrentColumn(int column) {
-        cellReadingContext.setCurrentColumn(column);
+        cellPointer.setCurrentColumn(column);
     }
 
     public void resetCellPointer() {
-        cellReadingContext.reset();
+        cellPointer.reset();
     }
 
     public <T> T getCellValue(String cellValueReference, Class<T> fieldType) {

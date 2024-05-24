@@ -1,7 +1,7 @@
 package com.mihai.writer.style;
 
 import com.mihai.writer.style.border.CellBorders;
-import com.mihai.writer.style.color.CellColor;
+import com.mihai.writer.style.color.StyleColor;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +26,7 @@ class WritableCellStylesTest {
 
     @Test
     public void backgroundColorStyleHasColorValues() {
-        assertEquals(new CellColor(1, 2, 3), WritableCellStyles.backgroundColor(1, 2, 3).getBackgroundColor());
+        assertEquals(new StyleColor(1, 2, 3), WritableCellStyles.backgroundColor(1, 2, 3).getBackgroundColor());
     }
 
     @Test

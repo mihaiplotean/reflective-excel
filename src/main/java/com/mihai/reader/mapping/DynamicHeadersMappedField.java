@@ -44,15 +44,15 @@ public class DynamicHeadersMappedField implements HeaderMappedField {
         if (type == List.class) {
             List<Object> values = (List<Object>) fieldValue;
             ParameterizedType genericType = (ParameterizedType) field.getGenericType();
-            Class<?> argumentType = (Class<?>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?; list of lists?
+            Class<?> argumentType = (Class<?>) genericType.getActualTypeArguments()[0];
             Object listValue = readingContext.getCurrentCellValue(argumentType);
             values.add(listValue);
         }
         if (type == Map.class) {
             Map<Object, Object> values = (Map<Object, Object>) fieldValue;
             ParameterizedType genericType = (ParameterizedType) field.getGenericType();
-            Class<?> keyArgumentType = (Class<?>) genericType.getActualTypeArguments()[0];  // todo: unsafe cast?
-            Class<?> valueArgumentType = (Class<?>) genericType.getActualTypeArguments()[1];  // todo: unsafe cast?
+            Class<?> keyArgumentType = (Class<?>) genericType.getActualTypeArguments()[0];
+            Class<?> valueArgumentType = (Class<?>) genericType.getActualTypeArguments()[1];
 
             ReadableCell headerCell = readingContext.getCurrentTableHeaders().getHeader(readingContext.getCurrentColumnNumber());
             Object mapKey = readingContext.getCellValue(headerCell.getCellReference(), keyArgumentType);

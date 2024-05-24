@@ -2,8 +2,8 @@ package com.mihai.reader.mapping;
 
 import com.mihai.common.field.*;
 import com.mihai.reader.ReadingContext;
-import com.mihai.reader.bean.ChildBeanNode;
-import com.mihai.reader.bean.RootTableBeanNode;
+import com.mihai.reader.bean.ChildBeanReadNode;
+import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
 
@@ -20,19 +20,19 @@ public class DefaultColumnFieldMapping implements ColumnFieldMapping {
     );
 
     private final ReadingContext context;
-    private final RootTableBeanNode tableBean;
+    private final RootTableBeanReadNode tableBean;
 
     private final Map<AnnotatedField, HeaderMappedField> annotatedToMappingField = new HashMap<>();
     private final Map<Integer, HeaderMappedField> columnIndexToFieldMap = new HashMap<>();
 
     public DefaultColumnFieldMapping(ReadingContext context, Class<?> clazz) {
         this.context = context;
-        this.tableBean = new RootTableBeanNode(clazz);
+        this.tableBean = new RootTableBeanReadNode(clazz);
     }
 
     @Override
     public void create(TableHeaders headers) {
-        List<ChildBeanNode> childBeanNodes = tableBean.getChildren().stream()
+        List<ChildBeanReadNode> childBeanNodes = tableBean.getChildren().stream()
                 .sorted(Comparator.comparing(node -> FIELD_MAPPING_ORDER.indexOf(node.getAnnotatedFieldType())))
                 .toList();
 
@@ -42,9 +42,9 @@ public class DefaultColumnFieldMapping implements ColumnFieldMapping {
         }
     }
 
-    private HeaderMappedField findMatchingField(List<ChildBeanNode> fields, TableHeader header) {
+    private HeaderMappedField findMatchingField(List<ChildBeanReadNode> fields, TableHeader header) {
         return fields.stream()
-                .map(ChildBeanNode::getAnnotatedField)
+                .map(ChildBeanReadNode::getAnnotatedField)
                 .map(this::getOrCreateMappingField)
                 .filter(field -> field.canMapTo(context, header))
                 .findFirst()

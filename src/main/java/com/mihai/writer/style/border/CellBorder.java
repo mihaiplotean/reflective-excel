@@ -1,8 +1,7 @@
 package com.mihai.writer.style.border;
 
-import com.mihai.writer.style.color.CellColor;
+import com.mihai.writer.style.color.StyleColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.IndexedColors;
 
 import java.util.Objects;
 
@@ -13,7 +12,7 @@ public class CellBorder {
     private final BorderStyle bottomBorderStyle;
     private final BorderStyle leftBorderStyle;
 
-    private final CellColor color;
+    private final StyleColor color;
 
     public CellBorder(BorderStyle borderStyle) {
         topBorderStyle = borderStyle;
@@ -47,7 +46,7 @@ public class CellBorder {
         return leftBorderStyle;
     }
 
-    public CellColor getColor() {
+    public StyleColor getColor() {
         return color;
     }
 
@@ -89,7 +88,7 @@ public class CellBorder {
         private BorderStyle bottomBorderStyle;
         private BorderStyle leftBorderStyle;
 
-        private CellColor color;
+        private StyleColor color;
 
         public CellBorderBuilder topBorderStyle(BorderStyle topBorderStyle) {
             this.topBorderStyle = topBorderStyle;
@@ -111,7 +110,7 @@ public class CellBorder {
             return this;
         }
 
-        public CellBorderBuilder color(CellColor color) {
+        public CellBorderBuilder color(StyleColor color) {
             this.color = color;
             return this;
         }

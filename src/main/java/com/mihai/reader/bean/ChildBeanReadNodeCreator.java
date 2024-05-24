@@ -8,29 +8,29 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class ChildBeanNodeCreator {
+public class ChildBeanReadNodeCreator {
 
     private final Class<?> type;
 
-    public ChildBeanNodeCreator(Class<?> type) {
+    public ChildBeanReadNodeCreator(Class<?> type) {
         this.type = type;
     }
 
-    public List<ChildBeanNode> getChildFields() {
+    public List<ChildBeanReadNode> getChildFields() {
         FieldAnalyzer fieldAnalyzer = new FieldAnalyzer(type);
 
-        List<ChildBeanNode> childFields = new ArrayList<>();
+        List<ChildBeanReadNode> childFields = new ArrayList<>();
 
         childFields.addAll(fieldAnalyzer.getFixedColumnFields().stream()
-                .map(FixedFieldBeanNode::new)
+                .map(FixedBeanReadNode::new)
                 .toList());
 
         childFields.addAll(fieldAnalyzer.getDynamicColumnFields().stream()
-                .map(DynamicFieldBeanNode::new)
+                .map(DynamicBeanReadNode::new)
                 .toList());
 
         childFields.addAll(fieldAnalyzer.getCellGroupFields().stream()
-                .map(GroupBeanNode::new)
+                .map(GroupBeanReadNode::new)
                 .toList());
 
         List<Field> orderedFields = ReflectionUtilities.getAllFields(type);

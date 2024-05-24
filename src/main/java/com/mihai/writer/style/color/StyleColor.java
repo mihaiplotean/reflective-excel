@@ -2,16 +2,16 @@ package com.mihai.writer.style.color;
 
 import java.util.Objects;
 
-public class CellColor {  // todo: rename?
+public class StyleColor {
 
-    public static final CellColor BLACK = new CellColor(0, 0, 0);
+    public static final StyleColor BLACK = new StyleColor(0, 0, 0);
 
     private final byte red;
     private final byte green;
     private final byte blue;
 
-    public CellColor(int red, int green, int blue) {
-        testColorValueRange(red, green, blue);
+    public StyleColor(int red, int green, int blue) {
+        validateColorValueRange(red, green, blue);
         this.red = (byte) red;
         this.green = (byte) green;
         this.blue = (byte) blue;
@@ -33,7 +33,7 @@ public class CellColor {  // todo: rename?
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CellColor cellColor = (CellColor) o;
+        StyleColor cellColor = (StyleColor) o;
         return red == cellColor.red && green == cellColor.green && blue == cellColor.blue;
     }
 
@@ -51,7 +51,7 @@ public class CellColor {  // todo: rename?
                 '}';
     }
 
-    private static void testColorValueRange(int r, int g, int b) {
+    private static void validateColorValueRange(int r, int g, int b) {
         boolean rangeError = false;
         String badComponentString = "";
 

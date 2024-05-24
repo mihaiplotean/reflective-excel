@@ -6,7 +6,7 @@ import com.mihai.common.field.AnnotatedFieldType;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public interface ChildBeanNode {
+public interface ChildBeanReadNode {
 
     AnnotatedField getAnnotatedField();
 
@@ -20,9 +20,9 @@ public interface ChildBeanNode {
         return getAnnotatedField().getFieldType();
     }
 
-    List<ChildBeanNode> getChildren();
+    List<ChildBeanReadNode> getChildren();
 
-    List<ChildBeanNode> getLeaves();
+    List<ChildBeanReadNode> getLeaves();
 
     AnnotatedFieldType getAnnotatedFieldType();
 }

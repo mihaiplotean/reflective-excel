@@ -1,6 +1,7 @@
 package com.mihai.reader;
 
-import com.mihai.reader.bean.RootTableBeanNode;
+import com.mihai.common.CellPointer;
+import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.table.DeserializedCellValues;
 import com.mihai.reader.table.ReadTable;
 import com.mihai.reader.table.TableHeaders;
@@ -15,7 +16,7 @@ import com.mihai.reader.workbook.sheet.ReadableRow;
 public class ReadingContext {
 
     private final TableReadingContext tableReadingContext;
-    private final CellReadingContext cellReadingContext;
+    private final CellPointer cellPointer;
 
     private final ReadableSheet sheet;
     private final DeserializationContext deserializationContext;
@@ -24,12 +25,12 @@ public class ReadingContext {
 
     public ReadingContext(ReadableSheet sheet,
                           TableReadingContext tableReadingContext,
-                          CellReadingContext cellReadingContext,
+                          CellPointer cellPointer,
                           DeserializationContext deserializationContext,
                           BadInputExceptionConsumer exceptionConsumer) {
         this.sheet = sheet;
         this.tableReadingContext = tableReadingContext;
-        this.cellReadingContext = cellReadingContext;
+        this.cellPointer = cellPointer;
         this.deserializationContext = deserializationContext;
         this.exceptionConsumer = exceptionConsumer;
         this.cellValues = new DeserializedCellValues();
@@ -39,8 +40,8 @@ public class ReadingContext {
         return tableReadingContext.getCurrentTableId();
     }
 
-    public RootTableBeanNode getCurrentTableBean() {
-        return tableReadingContext.getCurrentBeanNode();  // todo: implement
+    public RootTableBeanReadNode getCurrentTableBean() {
+        return tableReadingContext.getCurrentBeanNode();
     }
 
     public ReadTable getLastReadTable() {
@@ -56,7 +57,7 @@ public class ReadingContext {
     }
 
     public ReadableRow getCurrentRow() {
-        return sheet.getRow(cellReadingContext.getCurrentRow());
+        return sheet.getRow(cellPointer.getCurrentRow());
     }
 
     public ReadableRow getRow(int rowNumber) {
@@ -67,22 +68,20 @@ public class ReadingContext {
         return tableReadingContext.boundToCurrentTable(getCurrentRow());
     }
 
-    // todo: different than the equivalent method of the writing context?
-    // could simply rename this to getRowBoundedToCurrentTable?
     public ReadableRow getCurrentTableRow(int rowNumber) {
         return tableReadingContext.boundToCurrentTable(sheet.getRow(rowNumber));
     }
 
     public ReadableCell getCurrentCell() {
-        return sheet.getCell(cellReadingContext.getCurrentRow(), cellReadingContext.getCurrentColumn());
+        return sheet.getCell(cellPointer.getCurrentRow(), cellPointer.getCurrentColumn());
     }
 
     public int getCurrentRowNumber() {
-        return cellReadingContext.getCurrentRow();
+        return cellPointer.getCurrentRow();
     }
 
     public int getCurrentColumnNumber() {
-        return cellReadingContext.getCurrentColumn();
+        return cellPointer.getCurrentColumn();
     }
 
     public String getCurrentCellValue() {
@@ -125,7 +124,7 @@ public class ReadingContext {
         return deserialize(cell, clazz);
     }
 
-    private <T> T deserialize(ReadableCell cell, Class<T> clazz) {  // todo: move into ReadableSheet?
+    private <T> T deserialize(ReadableCell cell, Class<T> clazz) {
         int row = cell.getRowNumber();
         int column = cell.getColumnNumber();
 
@@ -134,11 +133,11 @@ public class ReadingContext {
             return cachedValue;
         }
 
-        int currentRow = cellReadingContext.getCurrentRow();
-        int currentColumn = cellReadingContext.getCurrentColumn();
+        int currentRow = cellPointer.getCurrentRow();
+        int currentColumn = cellPointer.getCurrentColumn();
 
-        cellReadingContext.setCurrentRow(row);
-        cellReadingContext.setCurrentColumn(column);
+        cellPointer.setCurrentRow(row);
+        cellPointer.setCurrentColumn(column);
         try {
             T value = deserializationContext.deserialize(this, clazz, cell);
             cellValues.putValue(row, column, clazz, value);
@@ -147,8 +146,8 @@ public class ReadingContext {
             exceptionConsumer.accept(this, exception);
         }
         finally {
-            cellReadingContext.setCurrentRow(currentRow);
-            cellReadingContext.setCurrentColumn(currentColumn);
+            cellPointer.setCurrentRow(currentRow);
+            cellPointer.setCurrentColumn(currentColumn);
         }
         return null;
     }
