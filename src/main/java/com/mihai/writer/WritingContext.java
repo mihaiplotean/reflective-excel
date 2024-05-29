@@ -1,6 +1,6 @@
 package com.mihai.writer;
 
-import com.mihai.common.CellPointer;
+import com.mihai.core.CellPointer;
 import com.mihai.writer.table.TableWritingContext;
 import com.mihai.writer.table.WrittenTable;
 import com.mihai.writer.table.WrittenTableHeaders;

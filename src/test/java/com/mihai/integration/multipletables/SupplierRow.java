@@ -1,6 +1,6 @@
 package com.mihai.integration.multipletables;
 
-import com.mihai.common.annotation.ExcelColumn;
+import com.mihai.core.annotation.ExcelColumn;
 
 import java.util.Objects;
 

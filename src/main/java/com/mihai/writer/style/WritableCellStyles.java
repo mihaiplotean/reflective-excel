@@ -1,6 +1,6 @@
 package com.mihai.writer.style;
 
-import com.mihai.common.utils.DateFormatUtils;
+import com.mihai.core.utils.DateFormatUtils;
 import com.mihai.writer.style.border.CellBorders;
 import com.mihai.writer.style.color.StyleColor;
 import com.mihai.writer.style.font.CellFonts;
@@ -27,7 +27,7 @@ public final class WritableCellStyles {
 
     public static WritableCellStyle forDate() {
         return WritableCellStyle.builder()
-                .format(DateFormatUtils.getLocalizedDatePattern("dd/MM/yyyy"))
+                .format(DateFormatUtils.getLocalizedDatePattern())
                 .build();
     }
 

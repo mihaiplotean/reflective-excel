@@ -1,8 +1,8 @@
 package com.mihai.writer.locator;
 
-import com.mihai.common.CellPointer;
-import com.mihai.common.workbook.CellLocation;
-import com.mihai.common.workbook.Bounds;
+import com.mihai.core.CellPointer;
+import com.mihai.core.workbook.CellLocation;
+import com.mihai.core.workbook.Bounds;
 import com.mihai.writer.WritingContext;
 import com.mihai.writer.table.TableWritingContext;
 import com.mihai.writer.table.WrittenTable;
@@ -31,10 +31,10 @@ class DefaultTableStartCellLocatorTest {
         DefaultTableStartCellLocator startCellLocator = new DefaultTableStartCellLocator();
 
         tableContext.appendTable(new WrittenTable("table 1", dummyHeaders(), new Bounds(0, 0, 10, 10)));
-        assertEquals(12, startCellLocator.getStartingCell(writingContext, "table 2").getRow());
+        assertEquals(12, startCellLocator.getStartingCell(writingContext, "table 2").row());
 
         tableContext.appendTable(new WrittenTable("table 2", dummyHeaders(), new Bounds(12, 0, 20, 0)));
-        assertEquals(22, startCellLocator.getStartingCell(writingContext, "table 3").getRow());
+        assertEquals(22, startCellLocator.getStartingCell(writingContext, "table 3").row());
     }
 
     private static WrittenTableHeaders dummyHeaders() {

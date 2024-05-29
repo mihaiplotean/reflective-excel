@@ -1,6 +1,6 @@
 package com.mihai.reader.workbook.sheet;
 
-import com.mihai.common.workbook.Bounds;
+import com.mihai.core.workbook.Bounds;
 import org.apache.poi.ss.usermodel.Cell;
 
 import java.time.LocalDateTime;
@@ -53,22 +53,22 @@ public final class MergedCell implements ReadableCell {
 
     @Override
     public int getStartRow() {
-        return bounds.getStartRow();
+        return bounds.startRow();
     }
 
     @Override
     public int getEndRow() {
-        return bounds.getEndRow();
+        return bounds.endRow();
     }
 
     @Override
     public int getStartColumn() {
-        return bounds.getStartColumn();
+        return bounds.startColumn();
     }
 
     @Override
     public int getEndColumn() {
-        return bounds.getEndColumn();
+        return bounds.endColumn();
     }
 
     @Override

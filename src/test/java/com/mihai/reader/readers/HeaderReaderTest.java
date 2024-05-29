@@ -2,9 +2,11 @@ package com.mihai.reader.readers;
 
 import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReadableSheetContext;
+import com.mihai.reader.ReadingContext;
 import com.mihai.reader.deserializer.DefaultDeserializationContext;
 import com.mihai.reader.detector.SimpleRowColumnDetector;
 import com.mihai.reader.table.TableHeaders;
+import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableSheet;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HeaderReaderTest {
 
@@ -72,5 +75,47 @@ class HeaderReaderTest {
         assertEquals("sub-header A", readHeaders.getHeader(0).getValue());
         assertEquals("sub-header B", readHeaders.getHeader(1).getValue());
         assertEquals("header 2", readHeaders.getHeader(2).getValue());
+    }
+
+    @Test
+    public void headerStartNotFoundReturnsEmptyHeader() {
+        Row headerRow = actualSheet.createRow(0);
+        headerRow.createCell(0).setCellValue("A");
+        headerRow.createCell(1).setCellValue("B");
+
+        SimpleRowColumnDetector rowColumnDetector = new SimpleRowColumnDetector("A1") {
+            @Override
+            public boolean isHeaderStartColumn(ReadingContext context, ReadableCell cell) {
+                return false;
+            }
+        };
+        ExcelReadingSettings settings = ExcelReadingSettings.builder()
+                .rowColumnDetector(rowColumnDetector)
+                .build();
+        HeaderReader headerReader = new HeaderReader(new ReadableSheetContext(sheet, settings), rowColumnDetector);
+        TableHeaders readHeaders = headerReader.readHeaders();
+
+        assertTrue(readHeaders.getCells().isEmpty());
+    }
+
+    @Test
+    public void headerEndNotFoundReturnsEmptyHeader() {
+        Row headerRow = actualSheet.createRow(0);
+        headerRow.createCell(0).setCellValue("A");
+        headerRow.createCell(1).setCellValue("B");
+
+        SimpleRowColumnDetector rowColumnDetector = new SimpleRowColumnDetector("A1") {
+            @Override
+            public boolean isHeaderLastColumn(ReadingContext context, ReadableCell cell) {
+                return false;
+            }
+        };
+        ExcelReadingSettings settings = ExcelReadingSettings.builder()
+                .rowColumnDetector(rowColumnDetector)
+                .build();
+        HeaderReader headerReader = new HeaderReader(new ReadableSheetContext(sheet, settings), rowColumnDetector);
+        TableHeaders readHeaders = headerReader.readHeaders();
+
+        assertTrue(readHeaders.getCells().isEmpty());
     }
 }

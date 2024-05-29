@@ -1,14 +1,15 @@
 package com.mihai.reader.readers;
 
-import com.mihai.common.annotation.DynamicColumns;
-import com.mihai.common.annotation.ExcelColumn;
-import com.mihai.common.annotation.TableId;
+import com.mihai.core.annotation.ExcelColumn;
+import com.mihai.core.annotation.TableId;
+import com.mihai.core.workbook.Bounds;
 import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReadableSheetContext;
-import com.mihai.reader.deserializer.DefaultDeserializationContext;
+import com.mihai.reader.ReadingContext;
+import com.mihai.reader.detector.SimpleRowColumnDetector;
 import com.mihai.reader.table.ReadTable;
 import com.mihai.reader.table.TableHeaders;
-import com.mihai.common.workbook.Bounds;
+import com.mihai.reader.workbook.sheet.ReadableRow;
 import com.mihai.reader.workbook.sheet.ReadableSheet;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -22,7 +23,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TableReaderTest {
 
@@ -31,7 +31,7 @@ class TableReaderTest {
             new TestRow("value C", "value D")
     );
 
-    private XSSFWorkbook workbook;
+    private XSSFWorkbook workbook;  // todo: make an abstract test base class
     private XSSFSheet actualSheet;
     private ReadableSheet sheet;
 
@@ -45,17 +45,6 @@ class TableReaderTest {
     @AfterEach
     public void tearDown() throws IOException {
         workbook.close();
-    }
-
-    @Test
-    public void invalidTypeParameterInDynamicColumnThrowsException() {
-        actualSheet.createRow(0).createCell(0).setCellValue("A");
-        actualSheet.createRow(1).createCell(0).setCellValue("B");
-
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
-        TableReader tableReader = new TableReader(sheetContext, ExcelReadingSettings.DEFAULT);
-
-        assertThrows(IllegalStateException.class, () -> tableReader.readRows(InvalidDynamicColumnType.class));
     }
 
     @Test
@@ -81,6 +70,55 @@ class TableReaderTest {
         assertEquals("Column A", readHeaders.getHeader(0).getValue());
         assertEquals("Column B", readHeaders.getHeader(1).getValue());
         assertEquals(new Bounds(0, 0, 2, 1), readTable.getBounds());
+    }
+
+    @Test
+    public void noRowsReadWhenAllRowsSkipped() {
+        Row row1 = actualSheet.createRow(0);
+        row1.createCell(0).setCellValue("Column A");
+        row1.createCell(1).setCellValue("Column B");
+        Row row2 = actualSheet.createRow(1);
+        row2.createCell(0).setCellValue("value A");
+        row2.createCell(1).setCellValue("value B");
+        Row row3 = actualSheet.createRow(2);
+        row3.createCell(0).setCellValue("value C");
+        row3.createCell(1).setCellValue("value D");
+
+        ExcelReadingSettings skipAllRowsSettings = ExcelReadingSettings.builder()
+                .rowColumnDetector(new SimpleRowColumnDetector("A1") {
+                    @Override
+                    public boolean shouldSkipRow(ReadingContext context, ReadableRow row) {
+                        return true;
+                    }
+                })
+                .build();
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, skipAllRowsSettings);
+        TableReader tableReader = new TableReader(sheetContext, skipAllRowsSettings);
+        List<TestRow> testRows = tableReader.readRows(TestRow.class);
+
+        assertEquals(List.of(), testRows);
+    }
+
+    @Test
+    public void emptyListReturnedWhenNoRowsToRead() {
+        Row headerRow = actualSheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Column A");
+        headerRow.createCell(1).setCellValue("Column B");
+
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
+        TableReader tableReader = new TableReader(sheetContext, ExcelReadingSettings.DEFAULT);
+        List<TestRow> testRows = tableReader.readRows(TestRow.class);
+
+        assertEquals(List.of(), testRows);
+    }
+
+    @Test
+    public void noRowsReadWhenNoHeadersFound() {
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
+        TableReader tableReader = new TableReader(sheetContext, ExcelReadingSettings.DEFAULT);
+        List<TestRow> testRows = tableReader.readRows(TestRow.class);
+
+        assertEquals(List.of(), testRows);
     }
 
     @TableId("test-table")
@@ -120,17 +158,5 @@ class TableReaderTest {
                     ", valueB='" + valueB + '\'' +
                     '}';
         }
-    }
-
-    public static class GenericDynamicColumnType {
-
-        @DynamicColumns
-        private List<List<String>> value;
-    }
-
-    public static class InvalidDynamicColumnType {
-
-        @DynamicColumns
-        private Integer value;
     }
 }

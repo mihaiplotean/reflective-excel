@@ -1,6 +1,6 @@
 package com.mihai.reader.exception;
 
-import com.mihai.common.ReflectiveExcelException;
+import com.mihai.core.ReflectiveExcelException;
 
 public class BadInputException extends ReflectiveExcelException {
 

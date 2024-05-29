@@ -94,8 +94,8 @@ public class TableReadingContext {
         if (row == null) {
             return null;
         }
-        if(currentTableHeaders == null) {
-            return row;
+        if(getCurrentTableHeaders() == null) {
+            return new ReadableRow(row.getRowNumber(), List.of());
         }
         List<ReadableCell> tableRowCells = row.stream()
                 .filter(cell -> currentTableHeaders.getHeader(cell.getColumnNumber()) != null)

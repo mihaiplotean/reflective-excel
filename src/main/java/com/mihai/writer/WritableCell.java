@@ -1,6 +1,6 @@
 package com.mihai.writer;
 
-import com.mihai.common.workbook.CellLocation;
+import com.mihai.core.workbook.CellLocation;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.util.CellRangeAddress;
 

@@ -1,9 +1,9 @@
 package com.mihai.reader.mapping;
 
-import com.mihai.common.utils.ReflectionUtilities;
+import com.mihai.core.utils.ReflectionUtilities;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.table.TableHeader;
-import com.mihai.common.field.DynamicColumnField;
+import com.mihai.core.field.DynamicColumnField;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 
 import java.lang.reflect.Field;

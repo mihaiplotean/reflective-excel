@@ -1,6 +1,6 @@
 package com.mihai.integration.row;
 
-import com.mihai.common.annotation.ExcelColumn;
+import com.mihai.core.annotation.ExcelColumn;
 
 public class FoodExpenseRow {
 

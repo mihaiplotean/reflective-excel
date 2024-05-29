@@ -1,11 +1,11 @@
 package com.mihai.reader.mapping;
 
-import com.mihai.common.utils.ReflectionUtilities;
+import com.mihai.core.utils.ReflectionUtilities;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
 import com.mihai.reader.bean.ChildBeanReadNode;
-import com.mihai.common.field.GroupedColumnsField;
+import com.mihai.core.field.GroupedColumnsField;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.mihai.writer.writers;
 
-import com.mihai.common.annotation.DynamicColumns;
-import com.mihai.common.annotation.ExcelColumn;
+import com.mihai.core.annotation.DynamicColumns;
+import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
 import com.mihai.writer.node.RootTableBeanWriteNode;

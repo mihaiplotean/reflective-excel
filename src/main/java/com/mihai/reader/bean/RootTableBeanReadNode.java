@@ -1,6 +1,6 @@
 package com.mihai.reader.bean;
 
-import com.mihai.common.annotation.TableId;
+import com.mihai.core.annotation.TableId;
 
 import java.util.Collection;
 import java.util.List;

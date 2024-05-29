@@ -1,10 +1,10 @@
 package com.mihai.writer.writers;
 
-import com.mihai.common.workbook.Bounds;
+import com.mihai.core.workbook.Bounds;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
-import com.mihai.common.workbook.CellLocation;
+import com.mihai.core.workbook.CellLocation;
 import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.table.WrittenTable;
 import com.mihai.writer.table.WrittenTableHeaders;
@@ -51,7 +51,7 @@ public class TableWriter {
         CellWriter cellWriter = new CellWriter(sheet);
 
         CellLocation startingCell = settings.getTableStartCellLocator().getStartingCell(sheetContext.getWritingContext(), tableId);
-        cellWriter.setOffSet(startingCell.getRow(), startingCell.getColumn());
+        cellWriter.setOffSet(startingCell.row(), startingCell.column());
 
         return cellWriter;
     }

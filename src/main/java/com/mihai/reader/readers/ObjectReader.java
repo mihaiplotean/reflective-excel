@@ -1,10 +1,10 @@
 package com.mihai.reader.readers;
 
-import com.mihai.common.field.CellValueField;
-import com.mihai.common.field.FieldAnalyzer;
-import com.mihai.common.field.KeyValueField;
-import com.mihai.common.field.TableIdField;
-import com.mihai.common.utils.ReflectionUtilities;
+import com.mihai.core.field.CellValueField;
+import com.mihai.core.field.FieldAnalyzer;
+import com.mihai.core.field.KeyValueField;
+import com.mihai.core.field.TableIdField;
+import com.mihai.core.utils.ReflectionUtilities;
 import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.exception.BadInputException;
@@ -75,9 +75,6 @@ public class ObjectReader {
     }
 
     private <T> void readTable(TableReader tableReader, TableIdField tableIdField, T object) {
-        if (tableIdField.getFieldType() != List.class) {
-            throw new IllegalStateException("Only List.class can be annotated as row value");
-        }
         Field field = tableIdField.getField();
         ParameterizedType genericType = (ParameterizedType) field.getGenericType();
         Class<?> argumentType = (Class<?>) genericType.getActualTypeArguments()[0];

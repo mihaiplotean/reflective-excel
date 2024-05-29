@@ -1,8 +1,8 @@
 package com.mihai.reader.bean;
 
-import com.mihai.common.field.AnnotatedField;
-import com.mihai.common.field.AnnotatedFieldType;
-import com.mihai.common.field.FixedColumnField;
+import com.mihai.core.field.AnnotatedField;
+import com.mihai.core.field.AnnotatedFieldType;
+import com.mihai.core.field.FixedColumnField;
 
 import java.util.List;
 

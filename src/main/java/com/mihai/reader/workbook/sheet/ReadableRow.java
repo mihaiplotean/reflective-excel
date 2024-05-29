@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class ReadableRow implements Iterable<ReadableCell> {
@@ -44,5 +45,18 @@ public class ReadableRow implements Iterable<ReadableCell> {
 
     public Stream<ReadableCell> stream() {
         return cells.stream();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        ReadableRow other = (ReadableRow) object;
+        return row == other.row && Objects.equals(cells, other.cells);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, cells);
     }
 }

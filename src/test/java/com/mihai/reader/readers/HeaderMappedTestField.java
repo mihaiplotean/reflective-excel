@@ -1,7 +1,7 @@
 package com.mihai.reader.readers;
 
-import com.mihai.common.field.AnnotatedField;
-import com.mihai.common.utils.ReflectionUtilities;
+import com.mihai.core.field.AnnotatedField;
+import com.mihai.core.utils.ReflectionUtilities;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.mapping.HeaderMappedField;
 import com.mihai.reader.table.TableHeader;

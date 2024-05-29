@@ -1,6 +1,6 @@
 package com.mihai.reader;
 
-import com.mihai.common.CellPointer;
+import com.mihai.core.CellPointer;
 import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.table.DeserializedCellValues;
 import com.mihai.reader.table.ReadTable;

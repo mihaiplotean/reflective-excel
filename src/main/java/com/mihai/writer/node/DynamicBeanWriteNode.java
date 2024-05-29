@@ -1,6 +1,6 @@
 package com.mihai.writer.node;
 
-import com.mihai.common.utils.ReflectionUtilities;
+import com.mihai.core.utils.ReflectionUtilities;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

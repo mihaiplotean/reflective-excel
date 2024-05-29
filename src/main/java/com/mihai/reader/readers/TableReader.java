@@ -7,9 +7,9 @@ import com.mihai.reader.mapping.ColumnFieldMapping;
 import com.mihai.reader.mapping.DefaultColumnFieldMapping;
 import com.mihai.reader.table.ReadTable;
 import com.mihai.reader.table.TableHeaders;
-import com.mihai.common.workbook.Bounds;
+import com.mihai.core.workbook.Bounds;
 import com.mihai.reader.workbook.sheet.ReadableRow;
-import com.mihai.common.workbook.CellLocation;
+import com.mihai.core.workbook.CellLocation;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,7 +49,7 @@ public class TableReader {
 
         CellLocation topRightTableLocation = tableHeaders.asList().get(0).getRoot().getLocation();
         sheetContext.appendTable(new ReadTable(rootBeanNode.getTableId(), tableHeaders, new Bounds(
-                topRightTableLocation.getRow(), topRightTableLocation.getColumn(),
+                topRightTableLocation.row(), topRightTableLocation.column(),
                 sheetContext.getCurrentRowNumber(), sheetContext.getCurrentColumnNumber()
         )));
         sheetContext.setReadingTable(false);
@@ -65,12 +65,16 @@ public class TableReader {
         while (rowIterator.hasNext()) {
             ReadableRow row = rowIterator.next();
 
+            boolean shouldSkipRow = rowColumnDetector.shouldSkipRow(sheetContext.getReadingContext(), row);
+
             if (rowColumnDetector.isLastRow(sheetContext.getReadingContext(), row)) {
-                rows.add(rowReader.readRow(row, clazz));
+                if(!shouldSkipRow) {
+                    rows.add(rowReader.readRow(row, clazz));
+                }
                 break;
             }
 
-            if (rowColumnDetector.shouldSkipRow(sheetContext.getReadingContext(), row)) {
+            if (shouldSkipRow) {
                 continue;
             }
 

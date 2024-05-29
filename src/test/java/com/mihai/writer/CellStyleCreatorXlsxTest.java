@@ -121,6 +121,21 @@ class CellStyleCreatorXlsxTest {
         assertTrue(style.getWrapText());
     }
 
+    @Test
+    public void cellStyleIsReused() {
+        CellStyle styleA = styleCreator.getCellStyle(WritableCellStyle.builder()
+                .backgroundColor(new StyleColor(1, 2, 3))
+                .thinAllSideBorder()
+                .wrapText(true)
+                .build());
+        CellStyle styleB = styleCreator.getCellStyle(WritableCellStyle.builder()
+                .backgroundColor(new StyleColor(1, 2, 3))
+                .thinAllSideBorder()
+                .wrapText(true)
+                .build());
+        assertSame(styleA, styleB);
+    }
+
     private XSSFFont getFontAtIndex(int index) {
         return workbook.getStylesSource().getFontAt(index);
     }

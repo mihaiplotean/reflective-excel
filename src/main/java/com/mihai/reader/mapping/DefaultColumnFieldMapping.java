@@ -1,6 +1,6 @@
 package com.mihai.reader.mapping;
 
-import com.mihai.common.field.*;
+import com.mihai.core.field.*;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.bean.ChildBeanReadNode;
 import com.mihai.reader.bean.RootTableBeanReadNode;
@@ -9,7 +9,7 @@ import com.mihai.reader.table.TableHeaders;
 
 import java.util.*;
 
-import static com.mihai.common.field.AnnotatedFieldType.*;
+import static com.mihai.core.field.AnnotatedFieldType.*;
 
 public class DefaultColumnFieldMapping implements ColumnFieldMapping {
 

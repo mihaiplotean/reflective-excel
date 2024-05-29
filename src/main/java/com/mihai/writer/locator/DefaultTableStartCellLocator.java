@@ -1,6 +1,6 @@
 package com.mihai.writer.locator;
 
-import com.mihai.common.workbook.CellLocation;
+import com.mihai.core.workbook.CellLocation;
 import com.mihai.writer.WritingContext;
 import com.mihai.writer.table.WrittenTable;
 

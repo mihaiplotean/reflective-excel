@@ -1,6 +1,6 @@
 package com.mihai.writer.style;
 
-import com.mihai.common.CellPointer;
+import com.mihai.core.CellPointer;
 import com.mihai.writer.WritingContext;
 import com.mihai.writer.style.color.StyleColor;
 import com.mihai.writer.table.TableWritingContext;

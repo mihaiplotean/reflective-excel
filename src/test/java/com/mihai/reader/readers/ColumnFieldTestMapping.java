@@ -4,6 +4,7 @@ import com.mihai.reader.mapping.ColumnFieldMapping;
 import com.mihai.reader.mapping.HeaderMappedField;
 import com.mihai.reader.table.TableHeaders;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,6 @@ public class ColumnFieldTestMapping implements ColumnFieldMapping {
 
     @Override
     public List<HeaderMappedField> getAllFields() {
-        return List.copyOf(columnToFieldMap.values());
+        return new ArrayList<>(columnToFieldMap.values());
     }
 }

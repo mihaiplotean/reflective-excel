@@ -1,6 +1,6 @@
 package com.mihai.integration.multipletables;
 
-import com.mihai.common.annotation.TableId;
+import com.mihai.core.annotation.TableId;
 
 import java.util.List;
 

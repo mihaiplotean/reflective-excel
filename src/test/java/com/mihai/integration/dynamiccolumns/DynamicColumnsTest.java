@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DynamicColumnsTest {
 
+    // todo: make integration tests use concepts instead of imaginary scenarios
     @Test
     public void testReadDynamicColumns() {
         InputStream inputStream = getClass().getResourceAsStream("/test-population.xlsx");

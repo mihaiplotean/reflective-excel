@@ -1,8 +1,8 @@
 package com.mihai.writer.writers;
 
-import com.mihai.common.annotation.DynamicColumns;
-import com.mihai.common.annotation.ExcelCellGroup;
-import com.mihai.common.annotation.ExcelColumn;
+import com.mihai.core.annotation.DynamicColumns;
+import com.mihai.core.annotation.ExcelCellGroup;
+import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.detector.ColumnDetector;
 import com.mihai.reader.workbook.sheet.ReadableCell;
@@ -122,7 +122,7 @@ class HeaderWriterTest {
     protected static class DynamicColumnSet {
 
         @DynamicColumns(detector = NeverColumnDetector.class)
-        private final Map<Integer, String> columns = new LinkedHashMap<>();
+        private Map<Integer, String> columns = new LinkedHashMap<>();
 
         public DynamicColumnSet() {
             columns.put(1, "");

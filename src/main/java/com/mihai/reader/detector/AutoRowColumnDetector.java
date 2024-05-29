@@ -1,6 +1,6 @@
 package com.mihai.reader.detector;
 
-import com.mihai.common.utils.CollectionUtilities;
+import com.mihai.core.utils.CollectionUtilities;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.bean.ChildBeanReadNode;
 import com.mihai.reader.bean.RootTableBeanReadNode;

@@ -1,7 +1,7 @@
 package com.mihai.integration.groupedcolumns;
 
-import com.mihai.common.annotation.ExcelCellGroup;
-import com.mihai.common.annotation.ExcelColumn;
+import com.mihai.core.annotation.ExcelCellGroup;
+import com.mihai.core.annotation.ExcelColumn;
 
 public class PizzaGroup {
 

@@ -1,9 +1,9 @@
 package com.mihai.reader.deserializer;
 
-import com.mihai.common.field.AnnotatedFieldType;
+import com.mihai.core.field.AnnotatedFieldType;
 import com.mihai.reader.exception.BadInputException;
 import com.mihai.reader.workbook.sheet.ReadableSheet;
-import com.mihai.common.utils.DateFormatUtils;
+import com.mihai.core.utils.DateFormatUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -64,11 +64,19 @@ class CellDeserializersTest {
     }
 
     @Test
-    public void booleanDeserializationReturnsCorrectBoolean() {
+    public void trueValueDeserializationReturnsCorrectBoolean() {
         Cell cell = actualSheet.createRow(0).createCell(0);
         cell.setCellValue(true);
         Boolean cellValue = CellDeserializers.forBoolean().deserialize(null, sheet.getCell(0, 0));
         assertEquals(true, cellValue);
+    }
+
+    @Test
+    public void falseValueDeserializationReturnsCorrectBoolean() {
+        Cell cell = actualSheet.createRow(0).createCell(0);
+        cell.setCellValue(false);
+        Boolean cellValue = CellDeserializers.forBoolean().deserialize(null, sheet.getCell(0, 0));
+        assertEquals(false, cellValue);
     }
 
     @Test

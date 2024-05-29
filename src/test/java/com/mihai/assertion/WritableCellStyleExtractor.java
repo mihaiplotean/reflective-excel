@@ -1,6 +1,6 @@
 package com.mihai.assertion;
 
-import com.mihai.common.utils.DateFormatUtils;
+import com.mihai.core.utils.DateFormatUtils;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
 import com.mihai.writer.style.color.StyleColor;
@@ -37,7 +37,7 @@ public class WritableCellStyleExtractor {
 
     private static String getDataFormat(CellStyle style) {
         if(style.getDataFormat() == DateFormatUtils.DEFAULT_DATE_FORMAT_INDEX) {
-            return DateFormatUtils.getLocalizedDatePattern(style.getDataFormatString());
+            return DateFormatUtils.getLocalizedDatePattern();
         }
         return style.getDataFormatString();
     }

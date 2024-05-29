@@ -1,11 +1,10 @@
 package com.mihai.reader.detector;
 
-import com.mihai.common.annotation.ExcelColumn;
+import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.bean.RootTableBeanReadNode;
-import com.mihai.reader.deserializer.DefaultDeserializationContext;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
 import com.mihai.reader.workbook.sheet.ReadableSheet;
@@ -45,6 +44,7 @@ class AutoRowColumnDetectorTest {
 
         ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         sheetContext.setCurrentTableBean(new RootTableBeanReadNode(OneColumnRow.class));
+        sheetContext.setReadingTable(true);
 
         ReadingContext readingContext = sheetContext.getReadingContext();
         assertTrue(new AutoRowColumnDetector().isHeaderRow(readingContext, readingContext.getRow(0)));
@@ -57,6 +57,7 @@ class AutoRowColumnDetectorTest {
 
         ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         sheetContext.setCurrentTableBean(new RootTableBeanReadNode(OneColumnRow.class));
+        sheetContext.setReadingTable(true);
 
         ReadingContext readingContext = sheetContext.getReadingContext();
         AutoRowColumnDetector rowColumnDetector = new AutoRowColumnDetector();
@@ -72,6 +73,7 @@ class AutoRowColumnDetectorTest {
 
         ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         sheetContext.setCurrentTableBean(new RootTableBeanReadNode(OneColumnRow.class));
+        sheetContext.setReadingTable(true);
 
         ReadingContext readingContext = sheetContext.getReadingContext();
         assertTrue(new AutoRowColumnDetector().isHeaderLastColumn(readingContext, readingContext.getRow(0).getCell(1)));
@@ -86,6 +88,7 @@ class AutoRowColumnDetectorTest {
 
         ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
         sheetContext.setCurrentTableHeaders(new TableHeaders(List.of(new TableHeader(sheet.getCell(0, 0)))));
+        sheetContext.setReadingTable(true);
 
         ReadingContext readingContext = sheetContext.getReadingContext();
         AutoRowColumnDetector rowColumnDetector = new AutoRowColumnDetector();

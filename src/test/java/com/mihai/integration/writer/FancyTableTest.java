@@ -3,7 +3,7 @@ package com.mihai.integration.writer;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.ReflectiveExcelWriter;
 import com.mihai.writer.WritingContext;
-import com.mihai.common.workbook.CellLocation;
+import com.mihai.core.workbook.CellLocation;
 import com.mihai.writer.style.StyleProvider;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyle;

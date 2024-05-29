@@ -2,7 +2,7 @@ package com.mihai.writer.writers;
 
 import com.mihai.writer.WritableCell;
 import com.mihai.writer.WritableSheet;
-import com.mihai.common.workbook.CellLocation;
+import com.mihai.core.workbook.CellLocation;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.WritableCellStyles;
 import com.mihai.writer.style.color.StyleColor;
@@ -94,8 +94,8 @@ class CellWriterTest {
 
         CellLocation cellLocation = cellWriter.writeCell(new WritableCell("", 1, 1), List.of());
 
-        assertEquals(3, cellLocation.getRow());
-        assertEquals(3, cellLocation.getColumn());
+        assertEquals(3, cellLocation.row());
+        assertEquals(3, cellLocation.column());
         assertNotNull(actualSheet.getRow(3).getCell(3));
     }
 }

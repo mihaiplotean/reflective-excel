@@ -1,8 +1,8 @@
 package com.mihai.reader.bean;
 
-import com.mihai.common.annotation.DynamicColumns;
-import com.mihai.common.annotation.ExcelCellGroup;
-import com.mihai.common.annotation.ExcelColumn;
+import com.mihai.core.annotation.DynamicColumns;
+import com.mihai.core.annotation.ExcelCellGroup;
+import com.mihai.core.annotation.ExcelColumn;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

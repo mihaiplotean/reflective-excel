@@ -1,10 +1,10 @@
 package com.mihai.writer.writers;
 
-import com.mihai.common.field.FieldAnalyzer;
-import com.mihai.common.utils.ReflectionUtilities;
-import com.mihai.common.field.CellValueField;
-import com.mihai.common.field.KeyValueField;
-import com.mihai.common.field.TableIdField;
+import com.mihai.core.field.FieldAnalyzer;
+import com.mihai.core.utils.ReflectionUtilities;
+import com.mihai.core.field.CellValueField;
+import com.mihai.core.field.KeyValueField;
+import com.mihai.core.field.TableIdField;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableCell;

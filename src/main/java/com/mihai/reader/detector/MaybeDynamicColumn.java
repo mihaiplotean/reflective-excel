@@ -4,7 +4,7 @@ import com.mihai.reader.ReadingContext;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 
-public class MaybeDynamicColumn {
+public class MaybeDynamicColumn {  // todo: rename to something header-related, and use in @ColumnDetector?
 
     private final ReadingContext context;
     private final ReadableCell column;
@@ -51,8 +51,6 @@ public class MaybeDynamicColumn {
     }
 
     private int indexOf(String columnName) {
-        assert context.getCurrentRowNumber() == column.getRowNumber() : "Current column must be on the same row as the currently processed row";
-
         ReadableRow currentRow = context.getCurrentRow();
         for (ReadableCell cell : currentRow) {
             if(columnName.equalsIgnoreCase(cell.getValue())) {

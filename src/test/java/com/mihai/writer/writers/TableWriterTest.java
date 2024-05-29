@@ -1,11 +1,11 @@
 package com.mihai.writer.writers;
 
-import com.mihai.common.annotation.ExcelColumn;
-import com.mihai.common.workbook.Bounds;
+import com.mihai.core.annotation.ExcelColumn;
+import com.mihai.core.workbook.Bounds;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
-import com.mihai.common.workbook.CellLocation;
+import com.mihai.core.workbook.CellLocation;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.table.WrittenTable;

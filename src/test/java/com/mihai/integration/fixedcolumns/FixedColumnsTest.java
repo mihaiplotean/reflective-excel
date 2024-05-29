@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import static com.mihai.common.utils.DateFormatUtils.createDate;
+import static com.mihai.core.utils.DateFormatUtils.createDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FixedColumnsTest {

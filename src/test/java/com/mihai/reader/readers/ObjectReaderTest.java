@@ -1,11 +1,10 @@
 package com.mihai.reader.readers;
 
-import com.mihai.common.annotation.ExcelCellValue;
-import com.mihai.common.annotation.ExcelProperty;
-import com.mihai.common.annotation.TableId;
+import com.mihai.core.annotation.ExcelCellValue;
+import com.mihai.core.annotation.ExcelProperty;
+import com.mihai.core.annotation.TableId;
 import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReadableSheetContext;
-import com.mihai.reader.deserializer.DefaultDeserializationContext;
 import com.mihai.reader.exception.BadInputException;
 import com.mihai.reader.readers.TableReaderTest.TestRow;
 import com.mihai.reader.workbook.sheet.ReadableSheet;
@@ -95,6 +94,14 @@ class ObjectReaderTest {
         assertEquals(List.of(new TestRow("value A", "value B")), rowValues.valueList);
     }
 
+    @Test
+    public void annotatingWrongFieldAsTableThrowsException() {
+        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
+        ObjectReader reader = new ObjectReader(sheetContext, ExcelReadingSettings.DEFAULT);
+
+        assertThrows(IllegalStateException.class, () -> reader.read(TestTableRowValuesIncorrectAnnotatedType.class));
+    }
+
     public static class TestCellValues {
 
         @ExcelCellValue(cellReference = "A1")
@@ -114,5 +121,11 @@ class ObjectReaderTest {
 
         @TableId("table 1")
         private List<TestRow> valueList;
+    }
+
+    public static class TestTableRowValuesIncorrectAnnotatedType {
+
+        @TableId("table 1")
+        private TestRow row;
     }
 }

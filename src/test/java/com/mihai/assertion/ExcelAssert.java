@@ -1,8 +1,8 @@
 package com.mihai.assertion;
 
-import com.mihai.common.workbook.WorkbookCreator;
-import com.mihai.common.workbook.WorkbookFromFileCreator;
-import com.mihai.common.workbook.WorkbookFromInputStreamCreator;
+import com.mihai.core.workbook.WorkbookCreator;
+import com.mihai.core.workbook.WorkbookFromFileCreator;
+import com.mihai.core.workbook.WorkbookFromInputStreamCreator;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Assertions;

@@ -1,6 +1,6 @@
 package com.mihai.reader.table;
 
-import com.mihai.common.workbook.Bounds;
+import com.mihai.core.workbook.Bounds;
 
 public class ReadTable {
 
