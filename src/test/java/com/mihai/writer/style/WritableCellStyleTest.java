@@ -4,7 +4,7 @@ import com.mihai.writer.style.border.CellBorder;
 import com.mihai.writer.style.border.CellBorders;
 import com.mihai.writer.style.color.StyleColor;
 import com.mihai.writer.style.font.StyleFont;
-import com.mihai.writer.style.font.CellFonts;
+import com.mihai.writer.style.font.StyleFonts;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
@@ -57,9 +57,9 @@ class WritableCellStyleTest {
     @Test
     public void fontIsSet() {
         WritableCellStyle cellStyle = WritableCellStyle.builder()
-                .font(CellFonts.bold())
+                .font(StyleFonts.bold())
                 .build();
-        assertEquals(CellFonts.bold(), cellStyle.getFont());
+        assertEquals(StyleFonts.bold(), cellStyle.getFont());
     }
 
     @Test
@@ -128,12 +128,12 @@ class WritableCellStyleTest {
     @Test
     public void combiningFontsKeepsFirst() {
         WritableCellStyle cellStyleA = WritableCellStyle.builder()
-                .font(CellFonts.bold())
+                .font(StyleFonts.bold())
                 .build();
         WritableCellStyle cellStyleB = WritableCellStyle.builder()
                 .font(StyleFont.builder().bold(false).build())
                 .build();
-        assertEquals(CellFonts.bold(), cellStyleA.combineWith(cellStyleB).getFont());
+        assertEquals(StyleFonts.bold(), cellStyleA.combineWith(cellStyleB).getFont());
     }
 
     @Test
@@ -145,5 +145,90 @@ class WritableCellStyleTest {
                 .wrapText(true)
                 .build();
         assertTrue(cellStyleA.combineWith(cellStyleB).isWrapText());
+    }
+
+    @Test
+    public void equalsSameObject() {
+        WritableCellStyle style = WritableCellStyle.builder().build();
+        assertEquals(style, style);
+    }
+
+    @Test
+    public void doesNotEqualNull() {
+        WritableCellStyle style = WritableCellStyle.builder().build();
+        assertNotEquals(style, null);
+    }
+
+    @Test
+    public void doesNotEqualIfFormatIsDifferent() {
+        WritableCellStyle styleA = WritableCellStyle.builder().format("ab").build();
+        WritableCellStyle styleB = WritableCellStyle.builder().format("abc").build();
+        assertNotEquals(styleA, styleB);
+    }
+
+    @Test
+    public void doesNotEqualIfHorizontalAlignmentIsDifferent() {
+        WritableCellStyle styleA = WritableCellStyle.builder()
+                .horizontalAlignment(HorizontalAlignment.LEFT)
+                .build();
+        WritableCellStyle styleB = WritableCellStyle.builder()
+                .horizontalAlignment(HorizontalAlignment.CENTER)
+                .build();
+        assertNotEquals(styleA, styleB);
+    }
+
+    @Test
+    public void doesNotEqualIfVerticalAlignmentIsDifferent() {
+        WritableCellStyle styleA = WritableCellStyle.builder()
+                .verticalAlignment(VerticalAlignment.BOTTOM)
+                .build();
+        WritableCellStyle styleB = WritableCellStyle.builder()
+                .verticalAlignment(VerticalAlignment.CENTER)
+                .build();
+        assertNotEquals(styleA, styleB);
+    }
+
+    @Test
+    public void doesNotEqualIfBorderIsDifferent() {
+        WritableCellStyle styleA = WritableCellStyle.builder()
+                .border(new CellBorder(BorderStyle.THIN))
+                .build();
+        WritableCellStyle styleB = WritableCellStyle.builder()
+                .border(new CellBorder(BorderStyle.THICK))
+                .build();
+        assertNotEquals(styleA, styleB);
+    }
+
+    @Test
+    public void doesNotEqualIfBackgroundColorIsDifferent() {
+        WritableCellStyle styleA = WritableCellStyle.builder()
+                .backgroundColor(new StyleColor(1,1,1))
+                .build();
+        WritableCellStyle styleB = WritableCellStyle.builder()
+                .backgroundColor(new StyleColor(1,0,1))
+                .build();
+        assertNotEquals(styleA, styleB);
+    }
+
+    @Test
+    public void doesNotEqualIfFontIsDifferent() {
+        WritableCellStyle styleA = WritableCellStyle.builder()
+                .font(StyleFonts.bold())
+                .build();
+        WritableCellStyle styleB = WritableCellStyle.builder()
+                .font(StyleFonts.italic())
+                .build();
+        assertNotEquals(styleA, styleB);
+    }
+
+    @Test
+    public void doesNotEqualIfTextWrapPropertyIsDifferent() {
+        WritableCellStyle styleA = WritableCellStyle.builder()
+                .wrapText(true)
+                .build();
+        WritableCellStyle styleB = WritableCellStyle.builder()
+                .wrapText(false)
+                .build();
+        assertNotEquals(styleA, styleB);
     }
 }

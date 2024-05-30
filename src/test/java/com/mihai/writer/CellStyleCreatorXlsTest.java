@@ -64,7 +64,7 @@ public class CellStyleCreatorXlsTest {
     public void fontApplied() {
         StyleFont font = StyleFont.builder()
                 .name("Calibri")
-                .size((short) 18)
+                .size(18)
                 .color(new StyleColor(255, 255, 255))
                 .bold(true)
                 .italic(true)

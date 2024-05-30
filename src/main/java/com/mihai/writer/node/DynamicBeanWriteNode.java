@@ -22,7 +22,7 @@ public class DynamicBeanWriteNode implements ChildBeanWriteNode {
             valueType = (Class<?>) genericType.getActualTypeArguments()[1];
         }
         else {
-            throw new IllegalArgumentException("Only Map.class fields can be annotated as dynamic writable fields!");
+            throw new IllegalStateException("Only Map.class fields can be annotated as dynamic writable fields!");
         }
     }
 

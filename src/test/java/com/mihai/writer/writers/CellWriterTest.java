@@ -88,7 +88,29 @@ class CellWriterTest {
     }
 
     @Test
-    public void cellOffsetIsApplied() {
+    public void cellRowOffsetIsApplied() {
+        CellWriter cellWriter = new CellWriter(sheet);
+        cellWriter.setOffSet(1, 0);
+
+        CellLocation cellLocation = cellWriter.writeCell(new WritableCell("", 1, 1), List.of());
+
+        assertEquals(2, cellLocation.row());
+        assertEquals(1, cellLocation.column());
+    }
+
+    @Test
+    public void cellColumnOffsetIsApplied() {
+        CellWriter cellWriter = new CellWriter(sheet);
+        cellWriter.setOffSet(0, 1);
+
+        CellLocation cellLocation = cellWriter.writeCell(new WritableCell("", 1, 1), List.of());
+
+        assertEquals(1, cellLocation.row());
+        assertEquals(2, cellLocation.column());
+    }
+
+    @Test
+    public void cellRowColumnOffsetIsApplied() {
         CellWriter cellWriter = new CellWriter(sheet);
         cellWriter.setOffSet(2, 2);
 

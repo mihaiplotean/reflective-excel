@@ -1,5 +1,7 @@
 package com.mihai.writer.style.color;
 
+import com.mihai.writer.style.border.CellBorder;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,5 +24,41 @@ class StyleColorTest {
     @Test
     public void colorNegativeValuesOutsideRangeThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> new StyleColor(-1, -1, -1));
+    }
+
+    @Test
+    public void equalsSameObject() {
+        StyleColor color = new StyleColor(1,1,1);
+        assertEquals(color, color);
+    }
+
+    @Test
+    public void doesNotEqualNull() {
+        StyleColor color = new StyleColor(1,1,1);
+        assertNotEquals(color, null);
+    }
+
+    @Test
+    public void doesNotEqualIfRedValueIsDifferent() {
+        StyleColor colorA = new StyleColor(1,1,1);
+        StyleColor colorB = new StyleColor(2,1,1);
+
+        assertNotEquals(colorA, colorB);
+    }
+
+    @Test
+    public void doesNotEqualIfGreenValueIsDifferent() {
+        StyleColor colorA = new StyleColor(1,1,1);
+        StyleColor colorB = new StyleColor(1,2,1);
+
+        assertNotEquals(colorA, colorB);
+    }
+
+    @Test
+    public void doesNotEqualIfBlueValueIsDifferent() {
+        StyleColor colorA = new StyleColor(1,1,1);
+        StyleColor colorB = new StyleColor(1,1,2);
+
+        assertNotEquals(colorA, colorB);
     }
 }

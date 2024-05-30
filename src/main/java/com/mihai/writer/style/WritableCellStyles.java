@@ -3,14 +3,14 @@ package com.mihai.writer.style;
 import com.mihai.core.utils.DateFormatUtils;
 import com.mihai.writer.style.border.CellBorders;
 import com.mihai.writer.style.color.StyleColor;
-import com.mihai.writer.style.font.CellFonts;
+import com.mihai.writer.style.font.StyleFonts;
 
 public final class WritableCellStyles {
 
     private static final WritableCellStyle NO_STYLE = WritableCellStyle.builder().build();
 
     private static final WritableCellStyle BOLD_TEXT = WritableCellStyle.builder()
-            .font(CellFonts.bold())
+            .font(StyleFonts.bold())
             .build();
 
     private static final WritableCellStyle ALL_SIDE_BORDER = WritableCellStyle.builder()

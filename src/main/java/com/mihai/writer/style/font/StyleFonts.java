@@ -1,6 +1,6 @@
 package com.mihai.writer.style.font;
 
-public class CellFonts {
+public class StyleFonts {
 
     private static final StyleFont BOLD = StyleFont.builder()
             .bold(true)
@@ -10,7 +10,7 @@ public class CellFonts {
             .italic(true)
             .build();
 
-    private CellFonts() {
+    private StyleFonts() {
         throw new IllegalStateException("Utility class");
     }
 

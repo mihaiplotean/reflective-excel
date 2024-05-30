@@ -113,7 +113,7 @@ public class ObjectWriter {
 
             sheetContext.appendTable(table);
         } else {
-            throw new IllegalStateException("Only lists allowed");
+            throw new IllegalStateException("Only lists can be annotated with @TableId");
         }
     }
 }

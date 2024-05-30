@@ -28,14 +28,6 @@ public class WritableSheet {
         return cellStyleCreator;
     }
 
-    public Row getRow(int rowNumber) {
-        Row row = sheet.getRow(rowNumber);
-        if (row == null) {
-            return sheet.createRow(rowNumber);
-        }
-        return row;
-    }
-
     public Cell writeCell(WritableCell writableCell) {
         WritableRow startRow = getOrCreateRow(writableCell.getStartRow());
         Cell cell = startRow.getOrCreateCell(writableCell.getStartColumn());

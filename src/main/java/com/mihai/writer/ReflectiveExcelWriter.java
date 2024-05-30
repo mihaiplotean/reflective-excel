@@ -51,7 +51,7 @@ public class ReflectiveExcelWriter {
 
     private Workbook createWorkbook() throws IOException {
         File templateFile = settings.getTemplateFile();
-        if(templateFile != null) {
+        if(templateFile != null) {  // todo: write integration test for this
             return new WorkbookFromFileCreator(templateFile).create();
         }
         return switch (settings.getFileFormat()) {

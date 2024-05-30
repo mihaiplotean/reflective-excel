@@ -108,8 +108,8 @@ public class StyleFont {
             return this;
         }
 
-        public CellFontBuilder size(short size) {
-            this.size = size;
+        public CellFontBuilder size(int size) {
+            this.size = (short) size;
             return this;
         }
 

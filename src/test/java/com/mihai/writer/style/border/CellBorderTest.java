@@ -1,10 +1,15 @@
 package com.mihai.writer.style.border;
 
+import com.mihai.core.workbook.Bounds;
+import com.mihai.reader.workbook.sheet.MergedCell;
 import com.mihai.writer.style.color.StyleColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class CellBorderTest {
 
@@ -77,5 +82,85 @@ class CellBorderTest {
                 .color(new StyleColor(1, 1, 1))
                 .build();
         assertEquals(expectedBorder, borderA.combineWith(borderB));
+    }
+
+    @Test
+    public void equalsSameObject() {
+        CellBorder border = new CellBorder(BorderStyle.THIN);
+        assertEquals(border, border);
+    }
+
+    @Test
+    public void doesNotEqualNull() {
+        CellBorder border = new CellBorder(BorderStyle.THIN);
+        assertNotEquals(border, null);
+    }
+
+    @Test
+    public void doesNotEqualIfLeftBorderIsDifferent() {
+        CellBorder borderA = CellBorder.builder()
+                .leftBorderStyle(BorderStyle.THIN)
+                .topBorderStyle(BorderStyle.THIN)
+                .rightBorderStyle(BorderStyle.THIN)
+                .bottomBorderStyle(BorderStyle.THIN)
+                .build();
+        CellBorder borderB = CellBorder.builder()
+                .leftBorderStyle(BorderStyle.MEDIUM)
+                .topBorderStyle(BorderStyle.THIN)
+                .rightBorderStyle(BorderStyle.THIN)
+                .bottomBorderStyle(BorderStyle.THIN)
+                .build();
+        assertNotEquals(borderA, borderB);
+    }
+
+    @Test
+    public void doesNotEqualIfTopBorderIsDifferent() {
+        CellBorder borderA = CellBorder.builder()
+                .leftBorderStyle(BorderStyle.THIN)
+                .topBorderStyle(BorderStyle.THIN)
+                .rightBorderStyle(BorderStyle.THIN)
+                .bottomBorderStyle(BorderStyle.THIN)
+                .build();
+        CellBorder borderB = CellBorder.builder()
+                .leftBorderStyle(BorderStyle.THIN)
+                .topBorderStyle(BorderStyle.MEDIUM)
+                .rightBorderStyle(BorderStyle.THIN)
+                .bottomBorderStyle(BorderStyle.THIN)
+                .build();
+        assertNotEquals(borderA, borderB);
+    }
+
+    @Test
+    public void doesNotEqualIfRightBorderIsDifferent() {
+        CellBorder borderA = CellBorder.builder()
+                .leftBorderStyle(BorderStyle.THIN)
+                .topBorderStyle(BorderStyle.THIN)
+                .rightBorderStyle(BorderStyle.THIN)
+                .bottomBorderStyle(BorderStyle.THIN)
+                .build();
+        CellBorder borderB = CellBorder.builder()
+                .leftBorderStyle(BorderStyle.THIN)
+                .topBorderStyle(BorderStyle.THIN)
+                .rightBorderStyle(BorderStyle.MEDIUM)
+                .bottomBorderStyle(BorderStyle.THIN)
+                .build();
+        assertNotEquals(borderA, borderB);
+    }
+
+    @Test
+    public void doesNotEqualIfBottomBorderIsDifferent() {
+        CellBorder borderA = CellBorder.builder()
+                .leftBorderStyle(BorderStyle.THIN)
+                .topBorderStyle(BorderStyle.THIN)
+                .rightBorderStyle(BorderStyle.THIN)
+                .bottomBorderStyle(BorderStyle.THIN)
+                .build();
+        CellBorder borderB = CellBorder.builder()
+                .leftBorderStyle(BorderStyle.THIN)
+                .topBorderStyle(BorderStyle.THIN)
+                .rightBorderStyle(BorderStyle.THIN)
+                .bottomBorderStyle(BorderStyle.MEDIUM)
+                .build();
+        assertNotEquals(borderA, borderB);
     }
 }

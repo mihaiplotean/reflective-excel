@@ -8,11 +8,11 @@ class StyleFontsTest {
 
     @Test
     public void boldFontHasCorrespondingProperty() {
-        assertTrue(CellFonts.bold().isBold());
+        assertTrue(StyleFonts.bold().isBold());
     }
 
     @Test
     public void italicFontHasCorrespondingProperty() {
-        assertTrue(CellFonts.italic().isItalic());
+        assertTrue(StyleFonts.italic().isItalic());
     }
 }
