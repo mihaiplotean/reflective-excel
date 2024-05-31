@@ -4,62 +4,41 @@ import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.core.annotation.TableId;
 import com.mihai.core.workbook.Bounds;
 import com.mihai.reader.ExcelReadingSettings;
+import com.mihai.reader.ExcelReadingTest;
 import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.detector.SimpleRowColumnDetector;
 import com.mihai.reader.table.ReadTable;
 import com.mihai.reader.table.TableHeaders;
 import com.mihai.reader.workbook.sheet.ReadableRow;
-import com.mihai.reader.workbook.sheet.ReadableSheet;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TableReaderTest {
+class TableReaderTest extends ExcelReadingTest {
 
     private static final List<TestRow> EXPECTED_ROWS = List.of(
             new TestRow("value A", "value B"),
             new TestRow("value C", "value D")
     );
 
-    private XSSFWorkbook workbook;  // todo: make an abstract test base class
-    private XSSFSheet actualSheet;
-    private ReadableSheet sheet;
-
-    @BeforeEach
-    public void setUp() {
-        workbook = new XSSFWorkbook();
-        actualSheet = workbook.createSheet();
-        sheet = new ReadableSheet(actualSheet);
-    }
-
-    @AfterEach
-    public void tearDown() throws IOException {
-        workbook.close();
-    }
-
     @Test
     public void readSimpleTable() {
-        Row row1 = actualSheet.createRow(0);
+        Row row1 = createRow(0);
         row1.createCell(0).setCellValue("Column A");
         row1.createCell(1).setCellValue("Column B");
-        Row row2 = actualSheet.createRow(1);
+        Row row2 = createRow(1);
         row2.createCell(0).setCellValue("value A");
         row2.createCell(1).setCellValue("value B");
-        Row row3 = actualSheet.createRow(2);
+        Row row3 = createRow(2);
         row3.createCell(0).setCellValue("value C");
         row3.createCell(1).setCellValue("value D");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
+        ReadableSheetContext sheetContext = createSheetContext();
         TableReader tableReader = new TableReader(sheetContext, ExcelReadingSettings.DEFAULT);
         List<TestRow> testRows = tableReader.readRows(TestRow.class);
 
@@ -74,13 +53,13 @@ class TableReaderTest {
 
     @Test
     public void noRowsReadWhenAllRowsSkipped() {
-        Row row1 = actualSheet.createRow(0);
+        Row row1 = createRow(0);
         row1.createCell(0).setCellValue("Column A");
         row1.createCell(1).setCellValue("Column B");
-        Row row2 = actualSheet.createRow(1);
+        Row row2 = createRow(1);
         row2.createCell(0).setCellValue("value A");
         row2.createCell(1).setCellValue("value B");
-        Row row3 = actualSheet.createRow(2);
+        Row row3 = createRow(2);
         row3.createCell(0).setCellValue("value C");
         row3.createCell(1).setCellValue("value D");
 
@@ -92,7 +71,7 @@ class TableReaderTest {
                     }
                 })
                 .build();
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, skipAllRowsSettings);
+        ReadableSheetContext sheetContext = createSheetContext();
         TableReader tableReader = new TableReader(sheetContext, skipAllRowsSettings);
         List<TestRow> testRows = tableReader.readRows(TestRow.class);
 
@@ -101,11 +80,11 @@ class TableReaderTest {
 
     @Test
     public void emptyListReturnedWhenNoRowsToRead() {
-        Row headerRow = actualSheet.createRow(0);
+        Row headerRow = createRow(0);
         headerRow.createCell(0).setCellValue("Column A");
         headerRow.createCell(1).setCellValue("Column B");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
+        ReadableSheetContext sheetContext = createSheetContext();
         TableReader tableReader = new TableReader(sheetContext, ExcelReadingSettings.DEFAULT);
         List<TestRow> testRows = tableReader.readRows(TestRow.class);
 
@@ -114,7 +93,7 @@ class TableReaderTest {
 
     @Test
     public void noRowsReadWhenNoHeadersFound() {
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
+        ReadableSheetContext sheetContext = createSheetContext();
         TableReader tableReader = new TableReader(sheetContext, ExcelReadingSettings.DEFAULT);
         List<TestRow> testRows = tableReader.readRows(TestRow.class);
 

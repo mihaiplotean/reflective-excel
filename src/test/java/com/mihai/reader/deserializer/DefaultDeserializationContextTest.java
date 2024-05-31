@@ -3,7 +3,7 @@ package com.mihai.reader.deserializer;
 import com.mihai.reader.exception.BadInputException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DefaultDeserializationContextTest {
 

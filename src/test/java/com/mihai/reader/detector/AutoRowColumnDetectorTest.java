@@ -1,48 +1,27 @@
 package com.mihai.reader.detector;
 
 import com.mihai.core.annotation.ExcelColumn;
-import com.mihai.reader.ExcelReadingSettings;
+import com.mihai.reader.ExcelReadingTest;
 import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
-import com.mihai.reader.workbook.sheet.ReadableSheet;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AutoRowColumnDetectorTest {
-
-    private XSSFWorkbook workbook;
-    private XSSFSheet actualSheet;
-    private ReadableSheet sheet;
-
-    @BeforeEach
-    public void setUp() {
-        workbook = new XSSFWorkbook();
-        actualSheet = workbook.createSheet();
-        sheet = new ReadableSheet(actualSheet);
-    }
-
-    @AfterEach
-    public void tearDown() throws IOException {
-        workbook.close();
-    }
+class AutoRowColumnDetectorTest extends ExcelReadingTest {
 
     @Test
     public void headerRowIsFoundBasedOnDefinedColumnsInBean() {
-        actualSheet.createRow(0).createCell(0).setCellValue("header");
+        createRow(0).createCell(0).setCellValue("header");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
+        ReadableSheetContext sheetContext = createSheetContext();
         sheetContext.setCurrentTableBean(new RootTableBeanReadNode(OneColumnRow.class));
         sheetContext.setReadingTable(true);
 
@@ -52,10 +31,10 @@ class AutoRowColumnDetectorTest {
 
     @Test
     public void headerStartColumnIsFoundBasedOnDefinedColumnsInBean() {
-        actualSheet.createRow(0).createCell(0).setCellValue("non-header");
-        actualSheet.createRow(1).createCell(0).setCellValue("header");
+        createRow(0).createCell(0).setCellValue("non-header");
+        createRow(1).createCell(0).setCellValue("header");
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
+        ReadableSheetContext sheetContext = createSheetContext();
         sheetContext.setCurrentTableBean(new RootTableBeanReadNode(OneColumnRow.class));
         sheetContext.setReadingTable(true);
 
@@ -67,11 +46,12 @@ class AutoRowColumnDetectorTest {
 
     @Test
     public void headerLastColumnIsBeforeEmpty() {
-        actualSheet.createRow(0).createCell(0).setCellValue("non-header");
-        actualSheet.getRow(0).createCell(1).setCellValue("header");
-        actualSheet.getRow(0).createCell(2).setCellValue("");  // no value in column C
+        Row row = createRow(0);
+        row.createCell(0).setCellValue("non-header");
+        row.createCell(1).setCellValue("header");
+        row.createCell(2).setCellValue("");  // no value in column C
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
+        ReadableSheetContext sheetContext = createSheetContext();
         sheetContext.setCurrentTableBean(new RootTableBeanReadNode(OneColumnRow.class));
         sheetContext.setReadingTable(true);
 
@@ -81,13 +61,13 @@ class AutoRowColumnDetectorTest {
 
     @Test
     public void lastRowIsBeforeEmptyRow() {
-        actualSheet.createRow(0).createCell(0).setCellValue("table header");
-        actualSheet.createRow(1).createCell(0).setCellValue("row 1");
-        actualSheet.createRow(2).createCell(0).setCellValue("row 2");
-        actualSheet.createRow(3).createCell(0).setCellValue("");  // no value in row 3
+        createRow(0).createCell(0).setCellValue("table header");
+        createRow(1).createCell(0).setCellValue("row 1");
+        createRow(2).createCell(0).setCellValue("row 2");
+        createRow(3).createCell(0).setCellValue("");  // no value in row 3
 
-        ReadableSheetContext sheetContext = new ReadableSheetContext(sheet, ExcelReadingSettings.DEFAULT);
-        sheetContext.setCurrentTableHeaders(new TableHeaders(List.of(new TableHeader(sheet.getCell(0, 0)))));
+        ReadableSheetContext sheetContext = createSheetContext();
+        sheetContext.setCurrentTableHeaders(new TableHeaders(List.of(new TableHeader(getReadableCell(0, 0)))));
         sheetContext.setReadingTable(true);
 
         ReadingContext readingContext = sheetContext.getReadingContext();

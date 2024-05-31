@@ -1,38 +1,19 @@
 package com.mihai.reader.workbook.sheet;
 
-import com.mihai.core.workbook.Bounds;
+import com.mihai.reader.ExcelReadingTest;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class ReadableRowTest {
-
-    private XSSFWorkbook workbook;
-    private XSSFSheet actualSheet;
-
-    @BeforeEach
-    public void setUp() {
-        workbook = new XSSFWorkbook();
-        actualSheet = workbook.createSheet();
-    }
-
-    @AfterEach
-    public void tearDown() throws IOException {
-        workbook.close();
-    }
+class ReadableRowTest extends ExcelReadingTest {
 
     @Test
     public void rowsAreEqualIfCellsAndRowNumberIsEqual() {
-        Cell cell = actualSheet.createRow(0).createCell(0);
+        Cell cell = createRow(0).createCell(0);
         assertEquals(new ReadableRow(1, List.of(new SimpleCell(cell, "value"))),
                 new ReadableRow(1, List.of(new SimpleCell(cell, "value"))));
     }
@@ -65,8 +46,8 @@ class ReadableRowTest {
 
     @Test
     public void doesNotEqualIfCellsAreDifferent() {
-        Cell cellA = actualSheet.createRow(0).createCell(0);
-        Cell cellB = actualSheet.createRow(1).createCell(1);
+        Cell cellA = createRow(0).createCell(0);
+        Cell cellB = createRow(1).createCell(1);
 
         ReadableRow rowA = new ReadableRow(1, List.of(new SimpleCell(cellA, "")));
         ReadableRow rowB = new ReadableRow(1, List.of(new SimpleCell(cellB, "")));

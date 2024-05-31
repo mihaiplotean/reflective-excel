@@ -6,6 +6,7 @@ import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.detector.ColumnDetector;
 import com.mihai.reader.workbook.sheet.ReadableCell;
+import com.mihai.writer.ExcelWritingTest;
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
 import com.mihai.writer.node.RootTableBeanWriteNode;
@@ -24,87 +25,70 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class HeaderWriterTest {
-
-    private XSSFWorkbook workbook;
-    private XSSFSheet actualSheet;
-    private HeaderWriter headerWriter;
-
-    @BeforeEach
-    public void setUp() {
-        workbook = new XSSFWorkbook();
-        actualSheet = workbook.createSheet();
-        headerWriter = new HeaderWriter(new CellWriter(new WritableSheet(actualSheet)),
-                new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()));
-    }
-
-    @AfterEach
-    public void tearDown() throws IOException {
-        workbook.close();
-    }
+class HeaderWriterTest extends ExcelWritingTest {
 
     @Test
     public void fixedColumnHeaderIsWritten() {
         RootTableBeanWriteNode node = new RootTableBeanWriteNode(OneFixedColumn.class, new OneFixedColumn());
-        WrittenTableHeaders headers = headerWriter.writeHeaders(node);
+        WrittenTableHeaders headers = createHeaderWriter().writeHeaders(node);
 
         assertEquals("test column A", headers.getColumnName(0));
-        assertEquals("test column A", actualSheet.getRow(0).getCell(0).getStringCellValue());
+        assertEquals("test column A", getCell(0, 0).getStringCellValue());
     }
 
     @Test
     public void inheritedFixedColumnIsWritten() {
         RootTableBeanWriteNode node = new RootTableBeanWriteNode(InheritColumns.class, new InheritColumns());
-        WrittenTableHeaders headers = headerWriter.writeHeaders(node);
+        WrittenTableHeaders headers = createHeaderWriter().writeHeaders(node);
 
         assertEquals("test column A", headers.getColumnName(0));
         assertEquals("test column B", headers.getColumnName(1));
 
-        assertEquals("test column A", actualSheet.getRow(0).getCell(0).getStringCellValue());
-        assertEquals("test column B", actualSheet.getRow(0).getCell(1).getStringCellValue());
+        assertEquals("test column A", getCell(0, 0).getStringCellValue());
+        assertEquals("test column B", getCell(0, 1).getStringCellValue());
     }
 
     @Test
     public void dynamicColumnsAreWritten() {
         RootTableBeanWriteNode node = new RootTableBeanWriteNode(DynamicColumnSet.class, new DynamicColumnSet());
-        WrittenTableHeaders headers = headerWriter.writeHeaders(node);
+        WrittenTableHeaders headers = createHeaderWriter().writeHeaders(node);
 
         assertEquals("1", headers.getColumnName(0));
         assertEquals("2", headers.getColumnName(1));
 
-        assertEquals(1, actualSheet.getRow(0).getCell(0).getNumericCellValue());
-        assertEquals(2, actualSheet.getRow(0).getCell(1).getNumericCellValue());
+        assertEquals(1, getCell(0, 0).getNumericCellValue());
+        assertEquals(2, getCell(0, 1).getNumericCellValue());
     }
 
     @Test
     public void groupedColumnsAreWritten() {
         RootTableBeanWriteNode node = new RootTableBeanWriteNode(GroupedColumns.class, new GroupedColumns());
-        WrittenTableHeaders headers = headerWriter.writeHeaders(node);
+        WrittenTableHeaders headers = createHeaderWriter().writeHeaders(node);
 
         assertEquals("Column A", headers.getColumnName(0));
         assertEquals("Column B", headers.getColumnName(1));
 
-        assertEquals("Test group", actualSheet.getRow(0).getCell(0).getStringCellValue());
-        assertEquals("Column A", actualSheet.getRow(1).getCell(0).getStringCellValue());
-        assertEquals("Column B", actualSheet.getRow(1).getCell(1).getStringCellValue());
+        assertEquals("Test group", getCell(0, 0).getStringCellValue());
+        assertEquals("Column A", getCell(1, 0).getStringCellValue());
+        assertEquals("Column B", getCell(1, 1).getStringCellValue());
     }
 
     @Test
     public void nestedGroupedColumnsAreWritten() {
         RootTableBeanWriteNode node = new RootTableBeanWriteNode(NestedGroupedColumns.class, new NestedGroupedColumns());
-        WrittenTableHeaders headers = headerWriter.writeHeaders(node);
+        WrittenTableHeaders headers = createHeaderWriter().writeHeaders(node);
 
         assertEquals("Outer group column", headers.getColumnName(0));
         assertEquals("Inner group column A", headers.getColumnName(1));
         assertEquals("Inner group column B", headers.getColumnName(2));
 
-        assertEquals("Group", actualSheet.getRow(0).getCell(0).getStringCellValue());
+        assertEquals("Group", getCell(0, 0).getStringCellValue());
 
-        assertEquals("Outer group column", actualSheet.getRow(1).getCell(0).getStringCellValue());
-        assertEquals("Sub-group", actualSheet.getRow(1).getCell(1).getStringCellValue());
+        assertEquals("Outer group column", getCell(1, 0).getStringCellValue());
+        assertEquals("Sub-group", getCell(1, 1).getStringCellValue());
 
-        assertEquals("Inner group column A", actualSheet.getRow(2).getCell(1).getStringCellValue());
-        assertEquals("Inner group column B", actualSheet.getRow(2).getCell(2).getStringCellValue());
+        assertEquals("Inner group column A", getCell(2, 1).getStringCellValue());
+        assertEquals("Inner group column B", getCell(2, 2).getStringCellValue());
     }
 
     private static class OneFixedColumn {
