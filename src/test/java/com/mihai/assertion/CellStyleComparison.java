@@ -19,7 +19,7 @@ public class CellStyleComparison {
     private static final String FONT_ITALIC_PROPERTY = "font italic";
     private static final String FONT_UNDERLINE_PROPERTY = "font underline";
 
-    private final WritableCellStyle cellStyleA;  // can it be null?
+    private final WritableCellStyle cellStyleA;
     private final WritableCellStyle cellStyleB;
 
     public CellStyleComparison(WritableCellStyle cellStyleA, WritableCellStyle cellStyleB) {
@@ -33,18 +33,20 @@ public class CellStyleComparison {
         Map<String, Object> propertiesA = getProperties(cellStyleA);
         Map<String, Object> propertiesB = getProperties(cellStyleB);
 
-        for (Map.Entry<String, Object> propertyValue : propertiesA.entrySet()) {
-            String property = propertyValue.getKey();
-            Object valueA = propertyValue.getValue();
+        for (String property : union(propertiesA.keySet(), propertiesB.keySet())) {
+            Object valueA = propertiesA.get(property);
             Object valueB = propertiesB.get(property);
             if (!Objects.equals(valueA, valueB)) {
-                differences.add(property);
+                differences.add(property + ": " + "<" + valueA + ">" + " vs " + "<" + valueB + ">");
             }
         }
         return differences;
     }
 
     private static Map<String, Object> getProperties(WritableCellStyle style) {
+        if(style == null) {
+            return Map.of();
+        }
         Map<String, Object> properties = new HashMap<>();
 
         properties.put(DATA_FORMAT, style.getFormat());
@@ -84,5 +86,11 @@ public class CellStyleComparison {
         properties.put(FONT_UNDERLINE_PROPERTY, font.isUnderLine());
 
         return properties;
+    }
+
+    private static Set<String> union(Collection<String> collectionA, Collection<String> collectionB) {
+        Set<String> unionSet = new HashSet<>(collectionA);
+        unionSet.addAll(collectionB);
+        return unionSet;
     }
 }

@@ -5,21 +5,12 @@ import com.mihai.core.annotation.ExcelCellGroup;
 import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.detector.ColumnDetector;
-import com.mihai.reader.workbook.sheet.ReadableCell;
+import com.mihai.reader.detector.MaybeDynamicColumn;
 import com.mihai.writer.ExcelWritingTest;
-import com.mihai.writer.WritableSheetContext;
-import com.mihai.writer.WritableSheet;
 import com.mihai.writer.node.RootTableBeanWriteNode;
-import com.mihai.writer.serializer.DefaultSerializationContext;
-import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.table.WrittenTableHeaders;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -119,7 +110,7 @@ class HeaderWriterTest extends ExcelWritingTest {
             }
 
             @Override
-            public boolean test(ReadingContext context, ReadableCell columnCell) {
+            public boolean test(ReadingContext context, MaybeDynamicColumn column) {
                 return false;
             }
         }

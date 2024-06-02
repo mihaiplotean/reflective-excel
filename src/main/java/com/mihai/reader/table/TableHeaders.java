@@ -43,7 +43,7 @@ public class TableHeaders implements Iterable<TableHeader> {
     }
 
     @Override
-    public Iterator<TableHeader> iterator() {  // todo: exposes mutable object!
+    public Iterator<TableHeader> iterator() {
         return headers.iterator();
     }
 }

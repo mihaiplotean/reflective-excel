@@ -30,7 +30,7 @@ public class ReflectiveExcelWriter {
     public <T> void writeRows(List<T> rows, Class<T> clazz) {
         try (Workbook workbook = createWorkbook();
              FileOutputStream outputStream = new FileOutputStream(destinationFile)) {
-            Sheet sheet = workbook.createSheet(settings.getSheetName());
+            Sheet sheet = getOrCreateSheet(workbook);
             new SheetWriter(sheet, settings).writeRows(rows, clazz);
             workbook.write(outputStream);
         } catch (IOException e) {
@@ -41,7 +41,7 @@ public class ReflectiveExcelWriter {
     public void write(Object object) {
         try (Workbook workbook = createWorkbook();
              FileOutputStream outputStream = new FileOutputStream(destinationFile)) {
-            Sheet sheet = workbook.createSheet(settings.getSheetName());
+            Sheet sheet = getOrCreateSheet(workbook);
             new SheetWriter(sheet, settings).write(object);
             workbook.write(outputStream);
         } catch (IOException e) {
@@ -51,12 +51,21 @@ public class ReflectiveExcelWriter {
 
     private Workbook createWorkbook() throws IOException {
         File templateFile = settings.getTemplateFile();
-        if(templateFile != null) {  // todo: write integration test for this
+        if(templateFile != null) {
             return new WorkbookFromFileCreator(templateFile).create();
         }
         return switch (settings.getFileFormat()) {
             case XLSX -> new XSSFWorkbook();
             case XLS -> new HSSFWorkbook();
         };
+    }
+
+    private Sheet getOrCreateSheet(Workbook workbook) {
+        String sheetName = settings.getSheetName();
+        Sheet sheet = workbook.getSheet(sheetName);
+        if(sheet == null) {
+            return workbook.createSheet(sheetName);
+        }
+        return sheet;
     }
 }

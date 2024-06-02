@@ -6,17 +6,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellReference;
 import org.junit.jupiter.api.Assertions;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class SheetAssert {
 
     private static final String CELL_VALUE_DIFFERENCE_MESSAGE = "Sheet \"%s\": Different value for cell %s - expected \"%s\", but got \"%s\"";
-    private static final String CELL_STYLE_DIFFERENCE_MESSAGE = "Sheet \"%s\": Different style properties for cell %s - \"%s\"";
+    private static final String CELL_STYLE_DIFFERENCE_MESSAGE = "Sheet \"%s\": Expected style differs from actual for properties of cell %s - \"%s\"";
 
     private final Sheet sheetA;
     private final Sheet sheetB;
@@ -40,20 +39,28 @@ public class SheetAssert {
 
     public void assertEqualSheets() {
         List<String> differenceMessages = new ArrayList<>();
-        for (Row rowA : sheetA) {
-            for (Cell cellA : rowA) {
-                Cell cellB = getCell(sheetB, cellA.getRowIndex(), cellA.getColumnIndex());
+        for (int row = 0; row < Math.max(sheetA.getLastRowNum(), sheetB.getLastRowNum()); row++) {
+            Row rowA = sheetA.getRow(row);
+            Row rowB = sheetB.getRow(row);
+            for (int column = 0; column < getMaxColumnIndex(rowA, rowB); column++) {
+                Cell cellA = rowA == null ? null : rowA.getCell(column);
+                Cell cellB = rowB == null ? null : rowB.getCell(column);
 
-                String valueA = getCellValue(cellA);
-                String valueB = getCellValue(cellB);
+                if (isNonFirstCellOfAMergedRegion(cellA)) {
+                    // these cells do not have a value and do not impact the style of the merged region
+                    continue;
+                }
+                String actualValue = getCellValue(cellA);
+                String expectedValue = getCellValue(cellB);
+                String currentCellReference = new CellReference(row, column).formatAsString();
 
-                if (areValuesDifferent(valueA, valueB)) {
-                    differenceMessages.add(String.format(CELL_VALUE_DIFFERENCE_MESSAGE, sheetA.getSheetName(), cellA.getAddress(),
-                            valueB, valueA));
+                if (areValuesDifferent(actualValue, expectedValue)) {
+                    differenceMessages.add(String.format(CELL_VALUE_DIFFERENCE_MESSAGE, sheetA.getSheetName(), currentCellReference,
+                            expectedValue, actualValue));
                 } else {
                     List<String> styleDifference = getStyleDifference(cellA, cellB);
                     if (!styleDifference.isEmpty()) {
-                        differenceMessages.add(String.format(CELL_STYLE_DIFFERENCE_MESSAGE, sheetA.getSheetName(), cellA.getAddress(),
+                        differenceMessages.add(String.format(CELL_STYLE_DIFFERENCE_MESSAGE, sheetA.getSheetName(), currentCellReference,
                                 String.join(", ", styleDifference)));
                     }
                 }
@@ -65,6 +72,34 @@ public class SheetAssert {
         if (!differenceMessages.isEmpty()) {
             assertFail(differenceMessages);
         }
+    }
+
+    private int getMaxColumnIndex(Row rowA, Row rowB) {
+        if (rowA == null && rowB == null) {
+            return 0;
+        }
+        if(rowA == null){
+            return rowB.getLastCellNum();
+        }
+        if(rowB == null) {
+            return rowA.getLastCellNum();
+        }
+        return Math.max(rowA.getLastCellNum(), rowB.getLastCellNum());
+    }
+
+    private boolean isNonFirstCellOfAMergedRegion(Cell cell) {
+        if (cell == null) {
+            return false;
+        }
+        for (CellRangeAddress mergedRegion : cell.getSheet().getMergedRegions()) {
+            int cellRow = cell.getRowIndex();
+            int cellColumn = cell.getColumnIndex();
+            if (mergedRegion.isInRange(cell)
+                    && (mergedRegion.getFirstRow() != cellRow || mergedRegion.getFirstColumn() != cellColumn)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void assertFail(List<String> differenceMessages) {
@@ -84,7 +119,6 @@ public class SheetAssert {
         if (cell == null) {
             return "";
         }
-
         return cellValueFormatterProvider.get(cell.getSheet()).toString(cell);
     }
 
@@ -99,8 +133,8 @@ public class SheetAssert {
         return StringUtils.equalsIgnoreCase(valueA, valueB);
     }
 
-    private List<String> getStyleDifference(Cell cellA, Cell cellB) {
-        return new CellStyleComparison(getCellStyle(cellA), getCellStyle(cellB)).getDifferences();
+    private List<String> getStyleDifference(Cell actualCell, Cell expectedCell) {
+        return new CellStyleComparison(getCellStyle(expectedCell), getCellStyle(actualCell)).getDifferences();
     }
 
     private WritableCellStyle getCellStyle(Cell cell) {

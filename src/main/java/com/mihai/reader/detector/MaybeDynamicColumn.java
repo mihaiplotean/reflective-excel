@@ -4,7 +4,7 @@ import com.mihai.reader.ReadingContext;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 
-public class MaybeDynamicColumn {  // todo: rename to something header-related, and use in @ColumnDetector?
+public class MaybeDynamicColumn {
 
     private final ReadingContext context;
     private final ReadableCell column;

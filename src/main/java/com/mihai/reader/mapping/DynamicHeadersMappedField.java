@@ -2,6 +2,7 @@ package com.mihai.reader.mapping;
 
 import com.mihai.core.utils.ReflectionUtilities;
 import com.mihai.reader.ReadingContext;
+import com.mihai.reader.detector.MaybeDynamicColumn;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.core.field.DynamicColumnField;
 import com.mihai.reader.workbook.sheet.ReadableCell;
@@ -30,7 +31,7 @@ public class DynamicHeadersMappedField implements HeaderMappedField {
 
     @Override
     public boolean canMapTo(ReadingContext context, TableHeader header) {
-        return field.getColumnDetector().test(context, header.getCell());
+        return field.getColumnDetector().test(context, new MaybeDynamicColumn(context, header.getCell()));
     }
 
     @SuppressWarnings("unchecked")

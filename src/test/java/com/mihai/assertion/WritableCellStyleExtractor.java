@@ -36,7 +36,7 @@ public class WritableCellStyleExtractor {
     }
 
     private static String getDataFormat(CellStyle style) {
-        if(style.getDataFormat() == DateFormatUtils.DEFAULT_DATE_FORMAT_INDEX) {
+        if (style.getDataFormat() == DateFormatUtils.DEFAULT_DATE_FORMAT_INDEX) {
             return DateFormatUtils.getLocalizedDatePattern();
         }
         return style.getDataFormatString();
@@ -82,7 +82,7 @@ public class WritableCellStyleExtractor {
             XSSFColor color = xlsxCellStyle.getTopBorderXSSFColor();
             return asColor(color);
         }
-        return null;
+        return StyleColor.BLACK;
     }
 
     private static StyleColor getFontColor(Workbook workbook, Font font) {
@@ -99,11 +99,11 @@ public class WritableCellStyleExtractor {
     private static StyleColor asColor(Color color) {
         if (color instanceof HSSFColor xlsColor) {
             short[] rgbValues = xlsColor.getTriplet();
-            return new StyleColor(rgbValues[0], rgbValues[1], rgbValues[2]);
+            return rgbValues == null ? StyleColor.BLACK : new StyleColor(rgbValues[0], rgbValues[1], rgbValues[2]);
         }
         if (color instanceof XSSFColor xlsxColor) {
             byte[] rgbValues = xlsxColor.getRGB();
-            return new StyleColor(rgbValues[0], rgbValues[1], rgbValues[2]);
+            return rgbValues == null ? StyleColor.BLACK : new StyleColor(rgbValues[0], rgbValues[1], rgbValues[2]);
         }
         return StyleColor.BLACK;
     }
