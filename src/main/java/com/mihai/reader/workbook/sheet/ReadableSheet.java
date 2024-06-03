@@ -1,13 +1,18 @@
 package com.mihai.reader.workbook.sheet;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.mihai.reader.CellValueFormatter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellReference;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class ReadableSheet implements Iterable<ReadableRow> {
 
@@ -52,7 +57,7 @@ public class ReadableSheet implements Iterable<ReadableRow> {
         for (SimpleCell cell : cells) {
             boolean cellDoesNotIntersectAnyMergeRegion = prioritizedCells.stream()
                     .noneMatch(mergedCell -> mergedCell.isWithinBounds(cell.getRowNumber(), cell.getColumnNumber()));
-            if(cellDoesNotIntersectAnyMergeRegion) {
+            if (cellDoesNotIntersectAnyMergeRegion) {
                 uniqueCells.add(cell);
             }
         }

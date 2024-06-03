@@ -1,5 +1,12 @@
 package com.mihai.integration.groupedcolumns;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
 import com.mihai.assertion.ExcelAssert;
 import com.mihai.core.annotation.ExcelCellGroup;
 import com.mihai.core.annotation.ExcelColumn;
@@ -9,13 +16,6 @@ import com.mihai.writer.ReflectiveExcelWriter;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyles;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GroupedColumnsTest {
 

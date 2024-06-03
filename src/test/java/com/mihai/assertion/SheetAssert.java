@@ -1,5 +1,10 @@
 package com.mihai.assertion;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import com.mihai.reader.CellValueFormatter;
 import com.mihai.writer.style.WritableCellStyle;
 import org.apache.commons.lang3.StringUtils;
@@ -9,8 +14,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.junit.jupiter.api.Assertions;
-
-import java.util.*;
 
 public class SheetAssert {
 
@@ -56,12 +59,12 @@ public class SheetAssert {
 
                 if (areValuesDifferent(actualValue, expectedValue)) {
                     differenceMessages.add(String.format(CELL_VALUE_DIFFERENCE_MESSAGE, sheetA.getSheetName(), currentCellReference,
-                            expectedValue, actualValue));
+                                                         expectedValue, actualValue));
                 } else {
                     List<String> styleDifference = getStyleDifference(cellA, cellB);
                     if (!styleDifference.isEmpty()) {
                         differenceMessages.add(String.format(CELL_STYLE_DIFFERENCE_MESSAGE, sheetA.getSheetName(), currentCellReference,
-                                String.join(", ", styleDifference)));
+                                                             String.join(", ", styleDifference)));
                     }
                 }
                 if (differenceMessages.size() >= settings.getDifferencesStopCount()) {
@@ -78,10 +81,10 @@ public class SheetAssert {
         if (rowA == null && rowB == null) {
             return 0;
         }
-        if(rowA == null){
+        if (rowA == null) {
             return rowB.getLastCellNum();
         }
-        if(rowB == null) {
+        if (rowB == null) {
             return rowA.getLastCellNum();
         }
         return Math.max(rowA.getLastCellNum(), rowB.getLastCellNum());

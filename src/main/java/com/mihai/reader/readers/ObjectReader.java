@@ -1,5 +1,9 @@
 package com.mihai.reader.readers;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+
 import com.mihai.core.field.CellValueField;
 import com.mihai.core.field.FieldAnalyzer;
 import com.mihai.core.field.KeyValueField;
@@ -8,10 +12,6 @@ import com.mihai.core.utils.ReflectionUtilities;
 import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.exception.BadInputException;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
 
 public class ObjectReader {
 

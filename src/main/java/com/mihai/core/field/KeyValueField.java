@@ -1,8 +1,8 @@
 package com.mihai.core.field;
 
-import org.apache.poi.ss.util.CellReference;
-
 import java.lang.reflect.Field;
+
+import org.apache.poi.ss.util.CellReference;
 
 public class KeyValueField implements AnnotatedField {
 

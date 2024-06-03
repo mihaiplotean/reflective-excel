@@ -2,7 +2,10 @@ package com.mihai.writer.serializer;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Currency;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DefaultSerializationContext implements SerializationContext {
 

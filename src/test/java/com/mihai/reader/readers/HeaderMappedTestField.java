@@ -1,12 +1,12 @@
 package com.mihai.reader.readers;
 
+import java.lang.reflect.Field;
+
 import com.mihai.core.field.AnnotatedField;
 import com.mihai.core.utils.ReflectionUtilities;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.mapping.HeaderMappedField;
 import com.mihai.reader.table.TableHeader;
-
-import java.lang.reflect.Field;
 
 public class HeaderMappedTestField implements HeaderMappedField {
 

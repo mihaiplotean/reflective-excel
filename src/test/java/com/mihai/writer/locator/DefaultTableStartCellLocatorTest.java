@@ -1,17 +1,17 @@
 package com.mihai.writer.locator;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+
 import com.mihai.core.CellPointer;
-import com.mihai.core.workbook.CellLocation;
 import com.mihai.core.workbook.Bounds;
+import com.mihai.core.workbook.CellLocation;
 import com.mihai.writer.WritingContext;
 import com.mihai.writer.table.TableWritingContext;
 import com.mihai.writer.table.WrittenTable;
 import com.mihai.writer.table.WrittenTableHeaders;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DefaultTableStartCellLocatorTest {
 

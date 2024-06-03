@@ -1,18 +1,6 @@
 package com.mihai.integration.multipletables;
 
-import com.mihai.assertion.ExcelAssert;
-import com.mihai.core.annotation.ExcelColumn;
-import com.mihai.core.annotation.TableId;
-import com.mihai.core.workbook.CellLocation;
-import com.mihai.reader.ExcelReadingSettings;
-import com.mihai.reader.ReflectiveExcelReader;
-import com.mihai.writer.ExcelWritingSettings;
-import com.mihai.writer.ReflectiveExcelWriter;
-import com.mihai.writer.WritingContext;
-import com.mihai.writer.locator.TableStartCellLocator;
-import com.mihai.writer.style.StyleProviders;
-import com.mihai.writer.style.WritableCellStyles;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,20 +8,33 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.mihai.assertion.ExcelAssert;
+import com.mihai.core.annotation.ExcelColumn;
+import com.mihai.core.annotation.TableId;
+import com.mihai.core.workbook.CellLocation;
+import com.mihai.integration.multipletables.MultiTableTest.ShippingSheet.DestinationRow;
+import com.mihai.integration.multipletables.MultiTableTest.ShippingSheet.ShippingCostRow;
+import com.mihai.integration.multipletables.MultiTableTest.ShippingSheet.SupplierRow;
+import com.mihai.reader.ExcelReadingSettings;
+import com.mihai.reader.ReflectiveExcelReader;
+import com.mihai.writer.ExcelWritingSettings;
+import com.mihai.writer.ReflectiveExcelWriter;
+import com.mihai.writer.style.StyleProviders;
+import com.mihai.writer.style.WritableCellStyles;
+import org.junit.jupiter.api.Test;
 
 public class MultiTableTest {
 
-    private static final List<ShippingSheet.ShippingCostRow> SHIPPING_COST_ROWS = List.of(
-            new ShippingSheet.ShippingCostRow("Moldova", "USA", 1000),
-            new ShippingSheet.ShippingCostRow("Macedonia", "Netherlands", 420)
+    private static final List<ShippingCostRow> SHIPPING_COST_ROWS = List.of(
+            new ShippingCostRow("Moldova", "USA", 1000),
+            new ShippingCostRow("Macedonia", "Netherlands", 420)
     );
-    private static final List<ShippingSheet.SupplierRow> SUPPLIER_ROWS = List.of(
-            new ShippingSheet.SupplierRow("Moldova", 10000)
+    private static final List<SupplierRow> SUPPLIER_ROWS = List.of(
+            new SupplierRow("Moldova", 10000)
     );
-    private static final List<ShippingSheet.DestinationRow> DESTINATION_ROWS = List.of(
-            new ShippingSheet.DestinationRow("USA", 720, 100),
-            new ShippingSheet.DestinationRow("Russia", 20, 15)
+    private static final List<DestinationRow> DESTINATION_ROWS = List.of(
+            new DestinationRow("USA", 720, 100),
+            new DestinationRow("Russia", 20, 15)
     );
 
     @Test
@@ -75,8 +76,7 @@ public class MultiTableTest {
         try (InputStream expectedInputStream = getClass().getResourceAsStream("/test-multiple-tables.xlsx")) {
             ExcelAssert.assertThat(actualFile)
                     .isEqualTo(expectedInputStream);
-        }
-        finally {
+        } finally {
             actualFile.delete();
         }
     }
@@ -147,8 +147,12 @@ public class MultiTableTest {
 
             @Override
             public boolean equals(Object o) {
-                if (this == o) return true;
-                if (o == null || getClass() != o.getClass()) return false;
+                if (this == o) {
+                    return true;
+                }
+                if (o == null || getClass() != o.getClass()) {
+                    return false;
+                }
                 ShippingCostRow that = (ShippingCostRow) o;
                 return unitsShipped == that.unitsShipped
                         && Objects.equals(supplier, that.supplier)
@@ -187,8 +191,12 @@ public class MultiTableTest {
 
             @Override
             public boolean equals(Object o) {
-                if (this == o) return true;
-                if (o == null || getClass() != o.getClass()) return false;
+                if (this == o) {
+                    return true;
+                }
+                if (o == null || getClass() != o.getClass()) {
+                    return false;
+                }
                 SupplierRow that = (SupplierRow) o;
                 return capacity == that.capacity
                         && Objects.equals(supplier, that.supplier);
@@ -234,8 +242,12 @@ public class MultiTableTest {
 
             @Override
             public boolean equals(Object o) {
-                if (this == o) return true;
-                if (o == null || getClass() != o.getClass()) return false;
+                if (this == o) {
+                    return true;
+                }
+                if (o == null || getClass() != o.getClass()) {
+                    return false;
+                }
                 DestinationRow that = (DestinationRow) o;
                 return requiredNum == that.requiredNum
                         && deliveredNum == that.deliveredNum

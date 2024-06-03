@@ -1,9 +1,10 @@
 package com.mihai.reader.table;
 
-import com.mihai.reader.workbook.sheet.ReadableCell;
-import com.mihai.core.workbook.CellLocation;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.*;
+import com.mihai.core.workbook.CellLocation;
+import com.mihai.reader.workbook.sheet.ReadableCell;
 
 public class TableHeader {
 

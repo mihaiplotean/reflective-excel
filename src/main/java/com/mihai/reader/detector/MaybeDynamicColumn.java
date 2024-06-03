@@ -24,7 +24,7 @@ public class MaybeDynamicColumn {
 
     public boolean isAfter(String otherColumn) {
         int otherColumnIndex = indexOf(otherColumn);
-        if(otherColumnIndex < 0) {
+        if (otherColumnIndex < 0) {
             return false;
         }
         return getIndex() > otherColumnIndex;
@@ -32,7 +32,7 @@ public class MaybeDynamicColumn {
 
     public boolean isBefore(String otherColumn) {
         int otherColumnIndex = indexOf(otherColumn);
-        if(otherColumnIndex < 0) {
+        if (otherColumnIndex < 0) {
             return false;
         }
         return getIndex() < indexOf(otherColumn);
@@ -53,7 +53,7 @@ public class MaybeDynamicColumn {
     private int indexOf(String columnName) {
         ReadableRow currentRow = context.getCurrentRow();
         for (ReadableCell cell : currentRow) {
-            if(columnName.equalsIgnoreCase(cell.getValue())) {
+            if (columnName.equalsIgnoreCase(cell.getValue())) {
                 return cell.getColumnNumber();
             }
         }

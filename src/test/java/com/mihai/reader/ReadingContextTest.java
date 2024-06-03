@@ -1,10 +1,10 @@
 package com.mihai.reader;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.mihai.reader.exception.BadInputException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ReadingContextTest extends ExcelReadingTest {
 
@@ -53,10 +53,10 @@ class ReadingContextTest extends ExcelReadingTest {
         Cell cell = createRow(0).createCell(0);
         cell.setCellValue("string value");
         ReadableSheetContext sheetContext = createSheetContext(ExcelReadingSettings.builder()
-                .onException((readingContext, exception) -> {
-                    // do nothing
-                })
-                .build());
+                                                                       .onException((readingContext, exception) -> {
+                                                                           // do nothing
+                                                                       })
+                                                                       .build());
         assertNull(sheetContext.getReadingContext().getCellValue(0, 0, Double.class));
     }
 }

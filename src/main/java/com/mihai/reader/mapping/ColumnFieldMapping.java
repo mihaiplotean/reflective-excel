@@ -1,8 +1,8 @@
 package com.mihai.reader.mapping;
 
-import com.mihai.reader.table.TableHeaders;
-
 import java.util.List;
+
+import com.mihai.reader.table.TableHeaders;
 
 public interface ColumnFieldMapping {
 

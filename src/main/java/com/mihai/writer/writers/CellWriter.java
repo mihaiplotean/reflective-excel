@@ -1,13 +1,13 @@
 package com.mihai.writer.writers;
 
+import java.util.List;
+
+import com.mihai.core.workbook.CellLocation;
 import com.mihai.writer.WritableCell;
 import com.mihai.writer.WritableSheet;
-import com.mihai.core.workbook.CellLocation;
 import com.mihai.writer.style.WritableCellStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-
-import java.util.List;
 
 public class CellWriter {
 
@@ -41,7 +41,7 @@ public class CellWriter {
                 .reduce(WritableCellStyle::combineWith)
                 .ifPresent(cellStyle -> applyCellStyle(cellStyle, cell, writableCell));
 
-        if(cellReference.spansMultipleCells()) {
+        if (cellReference.spansMultipleCells()) {
             sheet.mergeCellBounds(cell, writableCell);
         }
 
@@ -49,7 +49,7 @@ public class CellWriter {
     }
 
     private WritableCell applyOffset(WritableCell cell) {
-        if(offsetRows == 0 && offsetColumns == 0) {
+        if (offsetRows == 0 && offsetColumns == 0) {
             return cell;
         }
         return new WritableCell(
@@ -64,7 +64,7 @@ public class CellWriter {
     private void applyCellStyle(WritableCellStyle cellStyle, Cell cell, WritableCell cellReference) {
         CellStyle style = sheet.getCellStyleCreator().getCellStyle(cellStyle);
         cell.setCellStyle(style);
-        if(cellReference.spansMultipleCells()) {
+        if (cellReference.spansMultipleCells()) {
             sheet.applyRegionStyle(cellReference.getCellRangeAddress(), style);
         }
     }

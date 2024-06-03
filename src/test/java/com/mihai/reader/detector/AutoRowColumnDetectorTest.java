@@ -1,5 +1,10 @@
 package com.mihai.reader.detector;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
+
 import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.reader.ExcelReadingTest;
 import com.mihai.reader.ReadableSheetContext;
@@ -9,11 +14,6 @@ import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AutoRowColumnDetectorTest extends ExcelReadingTest {
 

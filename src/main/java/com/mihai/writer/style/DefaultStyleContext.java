@@ -1,11 +1,11 @@
 package com.mihai.writer.style;
 
-import com.mihai.writer.WritingContext;
-
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.mihai.writer.WritingContext;
 
 public class DefaultStyleContext implements CellStyleContext {
 

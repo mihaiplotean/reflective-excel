@@ -1,9 +1,9 @@
 package com.mihai.writer.style.font;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.mihai.writer.style.color.StyleColor;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class StyleFontTest {
 

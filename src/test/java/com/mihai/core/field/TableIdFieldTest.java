@@ -1,24 +1,24 @@
 package com.mihai.core.field;
 
-import com.mihai.core.annotation.TableId;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.mihai.core.annotation.TableId;
+import org.junit.jupiter.api.Test;
 
 class TableIdFieldTest {
 
     @Test
     public void invalidTypeParameterThrowsException() {
         assertThrows(IllegalStateException.class,
-                () -> new TableIdField(InvalidDynamicColumnType.class.getDeclaredField("value"), null));
+                     () -> new TableIdField(InvalidDynamicColumnType.class.getDeclaredField("value"), null));
     }
 
     @Test
     public void nestedGenericTypeParameterInDynamicColumnThrowsException() {
         assertThrows(IllegalStateException.class,
-                () -> new TableIdField(GenericDynamicColumnType.class.getDeclaredField("value"), null));
+                     () -> new TableIdField(GenericDynamicColumnType.class.getDeclaredField("value"), null));
     }
 
     private static class InvalidDynamicColumnType {

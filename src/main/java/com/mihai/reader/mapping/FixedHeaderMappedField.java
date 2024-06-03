@@ -1,10 +1,10 @@
 package com.mihai.reader.mapping;
 
+import com.mihai.core.field.AnnotatedField;
+import com.mihai.core.field.FixedColumnField;
 import com.mihai.core.utils.ReflectionUtilities;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.table.TableHeader;
-import com.mihai.core.field.AnnotatedField;
-import com.mihai.core.field.FixedColumnField;
 
 
 public class FixedHeaderMappedField implements HeaderMappedField {

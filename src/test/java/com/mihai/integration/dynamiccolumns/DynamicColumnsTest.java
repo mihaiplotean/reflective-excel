@@ -1,5 +1,14 @@
 package com.mihai.integration.dynamiccolumns;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.mihai.assertion.ExcelAssert;
 import com.mihai.core.annotation.DynamicColumns;
 import com.mihai.core.annotation.ExcelColumn;
@@ -9,19 +18,9 @@ import com.mihai.reader.detector.ColumnDetector;
 import com.mihai.reader.detector.MaybeDynamicColumn;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.ReflectiveExcelWriter;
-import com.mihai.writer.style.StyleProvider;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyles;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DynamicColumnsTest {
 
@@ -72,8 +71,7 @@ public class DynamicColumnsTest {
         try (InputStream expectedInputStream = getClass().getResourceAsStream("/test-dynamic-columns.xlsx")) {
             ExcelAssert.assertThat(actualFile)
                     .isEqualTo(expectedInputStream);
-        }
-        finally {
+        } finally {
             actualFile.delete();
         }
     }

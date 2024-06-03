@@ -1,15 +1,15 @@
 package com.mihai.reader.mapping;
 
-import com.mihai.core.utils.ReflectionUtilities;
-import com.mihai.reader.ReadingContext;
-import com.mihai.reader.table.TableHeader;
-import com.mihai.reader.table.TableHeaders;
-import com.mihai.reader.bean.ChildBeanReadNode;
-import com.mihai.core.field.GroupedColumnsField;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.mihai.core.field.GroupedColumnsField;
+import com.mihai.core.utils.ReflectionUtilities;
+import com.mihai.reader.ReadingContext;
+import com.mihai.reader.bean.ChildBeanReadNode;
+import com.mihai.reader.table.TableHeader;
+import com.mihai.reader.table.TableHeaders;
 
 public class GroupedHeadersMappedField implements HeaderMappedField {
 

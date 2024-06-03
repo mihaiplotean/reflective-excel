@@ -1,5 +1,8 @@
 package com.mihai.writer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.mihai.writer.style.ColorStyleUtils;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
@@ -7,9 +10,6 @@ import com.mihai.writer.style.color.StyleColor;
 import com.mihai.writer.style.font.StyleFont;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class CellStyleCreator {
 
@@ -133,15 +133,15 @@ public class CellStyleCreator {
         Font font = workbook.createFont();
 
         String fontName = fontReference.getName();
-        if(!StringUtils.isEmpty(fontName)) {
+        if (!StringUtils.isEmpty(fontName)) {
             font.setFontName(fontName);
         }
         short fontSize = fontReference.getSize();
-        if(fontSize > 0) {
+        if (fontSize > 0) {
             font.setFontHeightInPoints(fontSize);
         }
         StyleColor fontColor = fontReference.getColor();
-        if(fontColor != null) {
+        if (fontColor != null) {
             Color color = colorMap.computeIfAbsent(fontColor, this::createColor);
             ColorStyleUtils.setFontColor(font, color);
         }

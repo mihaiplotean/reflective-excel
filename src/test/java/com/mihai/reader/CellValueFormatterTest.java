@@ -1,9 +1,9 @@
 package com.mihai.reader;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CellValueFormatterTest extends ExcelReadingTest {
 

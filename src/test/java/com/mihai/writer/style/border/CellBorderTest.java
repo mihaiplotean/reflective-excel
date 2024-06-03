@@ -1,15 +1,11 @@
 package com.mihai.writer.style.border;
 
-import com.mihai.core.workbook.Bounds;
-import com.mihai.reader.workbook.sheet.MergedCell;
-import com.mihai.writer.style.color.StyleColor;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import com.mihai.writer.style.color.StyleColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.junit.jupiter.api.Test;
 
 class CellBorderTest {
 

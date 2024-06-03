@@ -1,9 +1,9 @@
 package com.mihai.writer.style.border;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CellBordersTest {
 

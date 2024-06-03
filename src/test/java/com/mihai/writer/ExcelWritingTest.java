@@ -1,5 +1,7 @@
 package com.mihai.writer;
 
+import java.io.IOException;
+
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.writers.CellWriter;
@@ -10,8 +12,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
-import java.io.IOException;
 
 public class ExcelWritingTest {
 
@@ -49,6 +49,6 @@ public class ExcelWritingTest {
 
     public HeaderWriter createHeaderWriter() {
         return new HeaderWriter(createCellWriter(),
-                new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()));
+                                new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()));
     }
 }

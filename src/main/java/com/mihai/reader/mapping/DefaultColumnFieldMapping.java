@@ -1,15 +1,23 @@
 package com.mihai.reader.mapping;
 
-import com.mihai.core.field.*;
+import static com.mihai.core.field.AnnotatedFieldType.*;
+
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import com.mihai.core.field.AnnotatedField;
+import com.mihai.core.field.AnnotatedFieldType;
+import com.mihai.core.field.DynamicColumnField;
+import com.mihai.core.field.FixedColumnField;
+import com.mihai.core.field.GroupedColumnsField;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.bean.ChildBeanReadNode;
 import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
-
-import java.util.*;
-
-import static com.mihai.core.field.AnnotatedFieldType.*;
 
 public class DefaultColumnFieldMapping implements ColumnFieldMapping {
 

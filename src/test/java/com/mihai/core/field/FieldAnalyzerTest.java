@@ -1,9 +1,9 @@
 package com.mihai.core.field;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.mihai.core.annotation.ExcelColumn;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class FieldAnalyzerTest {
 

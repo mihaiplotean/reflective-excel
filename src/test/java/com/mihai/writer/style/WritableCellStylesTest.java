@@ -1,10 +1,10 @@
 package com.mihai.writer.style;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.mihai.writer.style.border.CellBorders;
 import com.mihai.writer.style.color.StyleColor;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class WritableCellStylesTest {
 

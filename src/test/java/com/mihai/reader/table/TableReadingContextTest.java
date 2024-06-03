@@ -1,13 +1,13 @@
 package com.mihai.reader.table;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
+
 import com.mihai.core.annotation.TableId;
 import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class TableReadingContextTest {
 

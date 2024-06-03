@@ -1,9 +1,9 @@
 package com.mihai.core.field;
 
-import com.mihai.core.utils.ReflectionUtilities;
-
 import java.lang.reflect.Field;
 import java.util.List;
+
+import com.mihai.core.utils.ReflectionUtilities;
 
 public class TableIdField implements AnnotatedField {
 
@@ -23,7 +23,7 @@ public class TableIdField implements AnnotatedField {
                     "Unsupported type %s annotated as ta column. Only List.class can be annotated.", type
             ));
         }
-        if(!hasValidTypeParameters(field)) {
+        if (!hasValidTypeParameters(field)) {
             throw new IllegalStateException("Generic type parameters cannot be a generic type!");
         }
     }

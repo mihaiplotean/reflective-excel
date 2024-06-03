@@ -1,9 +1,15 @@
 package com.mihai.writer.writers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import java.io.IOException;
+import java.util.Map;
+
 import com.mihai.core.annotation.DynamicColumns;
 import com.mihai.core.annotation.ExcelColumn;
-import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.WritableSheet;
+import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.style.DefaultStyleContext;
@@ -12,12 +18,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 class RowWriterTest {
 
@@ -70,7 +70,7 @@ class RowWriterTest {
         RootTableBeanWriteNode node = new RootTableBeanWriteNode(firstRow.getClass(), firstRow);
 
         return new RowWriter(new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()), node,
-                new CellWriter(new WritableSheet(actualSheet)));
+                             new CellWriter(new WritableSheet(actualSheet)));
     }
 
     private static class FixedColumnsRow {

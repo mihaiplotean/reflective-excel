@@ -1,5 +1,7 @@
 package com.mihai.assertion;
 
+import java.util.stream.Stream;
+
 import com.mihai.core.utils.DateFormatUtils;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
@@ -7,12 +9,13 @@ import com.mihai.writer.style.color.StyleColor;
 import com.mihai.writer.style.font.StyleFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Color;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
-
-import java.util.stream.Stream;
 
 public class WritableCellStyleExtractor {
 

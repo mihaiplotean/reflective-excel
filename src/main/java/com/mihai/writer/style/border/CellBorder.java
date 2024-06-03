@@ -1,9 +1,9 @@
 package com.mihai.writer.style.border;
 
+import java.util.Objects;
+
 import com.mihai.writer.style.color.StyleColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
-
-import java.util.Objects;
 
 public class CellBorder {
 
@@ -66,8 +66,12 @@ public class CellBorder {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         CellBorder that = (CellBorder) o;
         return topBorderStyle == that.topBorderStyle
                 && rightBorderStyle == that.rightBorderStyle

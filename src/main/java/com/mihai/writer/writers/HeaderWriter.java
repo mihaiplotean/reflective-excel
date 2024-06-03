@@ -1,16 +1,16 @@
 package com.mihai.writer.writers;
 
-import com.mihai.writer.WritableSheetContext;
-import com.mihai.writer.WritableCell;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mihai.core.workbook.CellLocation;
+import com.mihai.writer.WritableCell;
+import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.node.ChildBeanWriteNode;
 import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.table.WrittenTableHeader;
 import com.mihai.writer.table.WrittenTableHeaders;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HeaderWriter {
 
@@ -53,14 +53,14 @@ public class HeaderWriter {
             WritableCellStyle typeStyle = sheetContext.getTypeStyle(node.getName());
 
             WritableCell cell = new WritableCell(valueToWrite,
-                    currentRow,
-                    currentColumn,
-                    currentRow + headerHeight - node.getHeight() - 1,
-                    currentColumn + node.getLength() - 1);
+                                                 currentRow,
+                                                 currentColumn,
+                                                 currentRow + headerHeight - node.getHeight() - 1,
+                                                 currentColumn + node.getLength() - 1);
             CellLocation cellLocation = cellWriter.writeCell(cell, List.of(style, cellStyle, typeStyle));
             currentRow += headerHeight - node.getHeight();
 
-            if(node.isLeafValue()) {
+            if (node.isLeafValue()) {
                 leafHeaders.add(new WrittenTableHeader(String.valueOf(valueToWrite), cellLocation.column()));
             }
         }

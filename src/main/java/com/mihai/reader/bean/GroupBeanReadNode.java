@@ -1,12 +1,12 @@
 package com.mihai.reader.bean;
 
-import com.mihai.core.field.AnnotatedField;
-import com.mihai.core.field.AnnotatedFieldType;
-import com.mihai.core.field.GroupedColumnsField;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.mihai.core.field.AnnotatedField;
+import com.mihai.core.field.AnnotatedFieldType;
+import com.mihai.core.field.GroupedColumnsField;
 
 public class GroupBeanReadNode implements ChildBeanReadNode {
 

@@ -1,5 +1,10 @@
 package com.mihai.writer.writers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.IOException;
+
 import com.mihai.core.annotation.ExcelCellValue;
 import com.mihai.core.annotation.ExcelProperty;
 import com.mihai.core.annotation.TableId;
@@ -13,10 +18,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ObjectWriterTest {
 

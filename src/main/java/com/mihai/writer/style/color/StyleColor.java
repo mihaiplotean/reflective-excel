@@ -31,8 +31,12 @@ public class StyleColor {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         StyleColor cellColor = (StyleColor) o;
         return red == cellColor.red && green == cellColor.green && blue == cellColor.blue;
     }

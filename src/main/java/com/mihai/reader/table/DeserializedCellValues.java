@@ -23,5 +23,6 @@ public class DeserializedCellValues {
     }
 
     private record DeserializedCellValue(int row, int column, Class<?> valueType) {
+
     }
 }

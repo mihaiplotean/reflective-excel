@@ -1,5 +1,10 @@
 package com.mihai.writer;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+
 import com.mihai.core.ReflectiveExcelException;
 import com.mihai.core.workbook.WorkbookFromFileCreator;
 import com.mihai.writer.writers.SheetWriter;
@@ -7,11 +12,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
 
 public class ReflectiveExcelWriter {
 
@@ -51,7 +51,7 @@ public class ReflectiveExcelWriter {
 
     private Workbook createWorkbook() throws IOException {
         File templateFile = settings.getTemplateFile();
-        if(templateFile != null) {
+        if (templateFile != null) {
             return new WorkbookFromFileCreator(templateFile).create();
         }
         return switch (settings.getFileFormat()) {
@@ -63,7 +63,7 @@ public class ReflectiveExcelWriter {
     private Sheet getOrCreateSheet(Workbook workbook) {
         String sheetName = settings.getSheetName();
         Sheet sheet = workbook.getSheet(sheetName);
-        if(sheet == null) {
+        if (sheet == null) {
             return workbook.createSheet(sheetName);
         }
         return sheet;

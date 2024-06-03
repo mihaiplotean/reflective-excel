@@ -1,18 +1,18 @@
 package com.mihai.reader.mapping;
 
-import com.mihai.core.utils.ReflectionUtilities;
-import com.mihai.reader.ReadingContext;
-import com.mihai.reader.detector.MaybeDynamicColumn;
-import com.mihai.reader.table.TableHeader;
-import com.mihai.core.field.DynamicColumnField;
-import com.mihai.reader.workbook.sheet.ReadableCell;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.mihai.core.field.DynamicColumnField;
+import com.mihai.core.utils.ReflectionUtilities;
+import com.mihai.reader.ReadingContext;
+import com.mihai.reader.detector.MaybeDynamicColumn;
+import com.mihai.reader.table.TableHeader;
+import com.mihai.reader.workbook.sheet.ReadableCell;
 
 public class DynamicHeadersMappedField implements HeaderMappedField {
 

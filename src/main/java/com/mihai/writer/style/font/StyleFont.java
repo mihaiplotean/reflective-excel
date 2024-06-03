@@ -1,9 +1,9 @@
 package com.mihai.writer.style.font;
 
+import java.util.Objects;
+
 import com.mihai.writer.style.color.StyleColor;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.Objects;
 
 public class StyleFont {
 
@@ -65,8 +65,12 @@ public class StyleFont {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         StyleFont styleFont = (StyleFont) o;
         return Objects.equals(name, styleFont.name)
                 && size == styleFont.size

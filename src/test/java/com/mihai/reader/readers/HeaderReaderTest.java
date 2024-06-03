@@ -1,5 +1,8 @@
 package com.mihai.reader.readers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ExcelReadingTest;
 import com.mihai.reader.ReadableSheetContext;
@@ -9,9 +12,6 @@ import com.mihai.reader.table.TableHeaders;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HeaderReaderTest extends ExcelReadingTest {
 

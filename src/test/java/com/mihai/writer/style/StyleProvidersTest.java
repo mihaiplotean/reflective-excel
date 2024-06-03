@@ -1,12 +1,12 @@
 package com.mihai.writer.style;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.mihai.core.CellPointer;
 import com.mihai.writer.WritingContext;
 import com.mihai.writer.style.color.StyleColor;
 import com.mihai.writer.table.TableWritingContext;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StyleProvidersTest {
 

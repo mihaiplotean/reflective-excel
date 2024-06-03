@@ -1,12 +1,12 @@
 package com.mihai.reader.readers;
 
-import com.mihai.reader.mapping.ColumnFieldMapping;
-import com.mihai.reader.mapping.HeaderMappedField;
-import com.mihai.reader.table.TableHeaders;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.mihai.reader.mapping.ColumnFieldMapping;
+import com.mihai.reader.mapping.HeaderMappedField;
+import com.mihai.reader.table.TableHeaders;
 
 public class ColumnFieldTestMapping implements ColumnFieldMapping {
 

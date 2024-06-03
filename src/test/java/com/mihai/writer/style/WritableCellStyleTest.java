@@ -1,5 +1,7 @@
 package com.mihai.writer.style;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.mihai.writer.style.border.CellBorder;
 import com.mihai.writer.style.border.CellBorders;
 import com.mihai.writer.style.color.StyleColor;
@@ -9,8 +11,6 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class WritableCellStyleTest {
 
@@ -202,10 +202,10 @@ class WritableCellStyleTest {
     @Test
     public void doesNotEqualIfBackgroundColorIsDifferent() {
         WritableCellStyle styleA = WritableCellStyle.builder()
-                .backgroundColor(new StyleColor(1,1,1))
+                .backgroundColor(new StyleColor(1, 1, 1))
                 .build();
         WritableCellStyle styleB = WritableCellStyle.builder()
-                .backgroundColor(new StyleColor(1,0,1))
+                .backgroundColor(new StyleColor(1, 0, 1))
                 .build();
         assertNotEquals(styleA, styleB);
     }

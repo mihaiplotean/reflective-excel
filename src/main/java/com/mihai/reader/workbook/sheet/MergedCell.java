@@ -1,11 +1,11 @@
 package com.mihai.reader.workbook.sheet;
 
-import com.mihai.core.workbook.Bounds;
-import org.apache.poi.ss.usermodel.Cell;
-
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
+
+import com.mihai.core.workbook.Bounds;
+import org.apache.poi.ss.usermodel.Cell;
 
 public final class MergedCell implements ReadableCell {
 
@@ -73,8 +73,12 @@ public final class MergedCell implements ReadableCell {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         MergedCell that = (MergedCell) o;
         return Objects.equals(cell, that.cell)
                 && Objects.equals(bounds, that.bounds);

@@ -1,9 +1,9 @@
 package com.mihai.reader.workbook.sheet;
 
-import com.mihai.core.workbook.CellLocation;
-
 import java.time.LocalDateTime;
 import java.util.Date;
+
+import com.mihai.core.workbook.CellLocation;
 
 public interface ReadableCell {
 

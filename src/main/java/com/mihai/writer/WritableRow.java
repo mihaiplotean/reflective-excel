@@ -13,7 +13,7 @@ public class WritableRow {
 
     public Cell getOrCreateCell(int columnNumber) {
         Cell cell = row.getCell(columnNumber);
-        if(cell == null) {
+        if (cell == null) {
             return row.createCell(columnNumber);
         }
         return cell;

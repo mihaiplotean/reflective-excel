@@ -1,13 +1,13 @@
 package com.mihai.core.field;
 
-import com.mihai.core.utils.ReflectionUtilities;
-import com.mihai.reader.detector.ColumnDetector;
-
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.mihai.core.utils.ReflectionUtilities;
+import com.mihai.reader.detector.ColumnDetector;
 
 public class DynamicColumnField implements AnnotatedField {
 
@@ -35,7 +35,7 @@ public class DynamicColumnField implements AnnotatedField {
                             .collect(Collectors.joining(", "))
             ));
         }
-        if(!hasValidTypeParameters(field)) {
+        if (!hasValidTypeParameters(field)) {
             throw new IllegalStateException("Generic type parameters cannot be a generic type!");
         }
     }

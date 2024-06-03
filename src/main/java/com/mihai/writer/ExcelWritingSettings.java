@@ -1,5 +1,7 @@
 package com.mihai.writer;
 
+import java.io.File;
+
 import com.mihai.writer.locator.DefaultTableStartCellLocator;
 import com.mihai.writer.locator.TableStartCellLocator;
 import com.mihai.writer.serializer.CellSerializer;
@@ -8,8 +10,6 @@ import com.mihai.writer.serializer.SerializationContext;
 import com.mihai.writer.style.CellStyleContext;
 import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.style.StyleProvider;
-
-import java.io.File;
 
 public class ExcelWritingSettings {
 

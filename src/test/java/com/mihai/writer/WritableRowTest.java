@@ -1,10 +1,10 @@
 package com.mihai.writer;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertSame;
 
 class WritableRowTest extends ExcelWritingTest {
 

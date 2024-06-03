@@ -1,10 +1,10 @@
 package com.mihai.reader.bean;
 
-import com.mihai.core.field.AnnotatedField;
-import com.mihai.core.field.AnnotatedFieldType;
-
 import java.lang.reflect.Field;
 import java.util.List;
+
+import com.mihai.core.field.AnnotatedField;
+import com.mihai.core.field.AnnotatedFieldType;
 
 public interface ChildBeanReadNode {
 

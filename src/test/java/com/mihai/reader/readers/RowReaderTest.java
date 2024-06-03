@@ -1,14 +1,14 @@
 package com.mihai.reader.readers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import java.util.Map;
+
 import com.mihai.reader.ExcelReadingTest;
 import com.mihai.reader.ReadableSheetContext;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 class RowReaderTest extends ExcelReadingTest {

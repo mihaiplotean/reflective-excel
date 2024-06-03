@@ -1,13 +1,14 @@
 package com.mihai.reader.workbook.sheet;
 
+import java.util.List;
+import java.util.Objects;
+
 import com.mihai.core.workbook.Bounds;
 import com.mihai.reader.CellValueFormatter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
-
-import java.util.*;
 
 public class MergedCellsFinder {
 
@@ -30,7 +31,7 @@ public class MergedCellsFinder {
         Cell firstCellOfRegion = getCell(region.getFirstRow(), region.getFirstColumn());
         Objects.requireNonNull(firstCellOfRegion, "Top left cell of a merged region cannot be null!");
         return new MergedCell(firstCellOfRegion, cellValueFormatter.toString(firstCellOfRegion),
-                new Bounds(region.getFirstRow(), region.getFirstColumn(), region.getLastRow(), region.getLastColumn()));
+                              new Bounds(region.getFirstRow(), region.getFirstColumn(), region.getLastRow(), region.getLastColumn()));
     }
 
     private Cell getCell(int rowIndex, int columnIndex) {

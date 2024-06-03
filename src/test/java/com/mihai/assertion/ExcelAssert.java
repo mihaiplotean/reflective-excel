@@ -1,17 +1,17 @@
 package com.mihai.assertion;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.stream.IntStream;
+
 import com.mihai.core.workbook.WorkbookCreator;
 import com.mihai.core.workbook.WorkbookFromFileCreator;
 import com.mihai.core.workbook.WorkbookFromInputStreamCreator;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Assertions;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.stream.IntStream;
 
 public final class ExcelAssert {
 
@@ -64,7 +64,7 @@ public final class ExcelAssert {
 
     private List<String> getSheetNames(Workbook workbook) {
         List<String> sheetNames = settings.getSheetNames();
-        if(sheetNames.isEmpty()) {
+        if (sheetNames.isEmpty()) {
             return IntStream.range(0, workbook.getNumberOfSheets())
                     .mapToObj(workbook::getSheetName)
                     .toList();

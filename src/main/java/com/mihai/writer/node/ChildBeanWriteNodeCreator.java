@@ -1,12 +1,12 @@
 package com.mihai.writer.node;
 
-import com.mihai.core.field.FieldAnalyzer;
-import com.mihai.core.utils.ReflectionUtilities;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import com.mihai.core.field.FieldAnalyzer;
+import com.mihai.core.utils.ReflectionUtilities;
 
 public class ChildBeanWriteNodeCreator {
 
@@ -24,16 +24,18 @@ public class ChildBeanWriteNodeCreator {
         List<ChildBeanWriteNode> childFields = new ArrayList<>();
 
         childFields.addAll(fieldAnalyzer.getFixedColumnFields().stream()
-                .map(field -> new FixedBeanWriteNode(field.getField(), field.getColumnName()))
-                .toList());
+                                   .map(field -> new FixedBeanWriteNode(field.getField(), field.getColumnName()))
+                                   .toList());
 
         childFields.addAll(fieldAnalyzer.getDynamicColumnFields().stream()
-                .map(dynamicColumnField -> new DynamicBeanWriteNode(dynamicColumnField.getField(), target))
-                .toList());
+                                   .map(dynamicColumnField -> new DynamicBeanWriteNode(dynamicColumnField.getField(), target))
+                                   .toList());
 
         childFields.addAll(fieldAnalyzer.getCellGroupFields().stream()
-                .map(field -> new GroupBeanWriteNode(field.getField(), ReflectionUtilities.readField(field.getField(), target), field.getGroupName()))
-                .toList());
+                                   .map(field -> new GroupBeanWriteNode(field.getField(),
+                                                                        ReflectionUtilities.readField(field.getField(), target),
+                                                                        field.getGroupName()))
+                                   .toList());
 
         List<Field> orderedFields = ReflectionUtilities.getAllFields(type);
         childFields.sort(Comparator.comparingInt(o -> orderedFields.indexOf(o.getField())));

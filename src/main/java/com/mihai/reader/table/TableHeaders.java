@@ -1,11 +1,11 @@
 package com.mihai.reader.table;
 
-import com.mihai.reader.workbook.sheet.ReadableCell;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.mihai.reader.workbook.sheet.ReadableCell;
 
 public class TableHeaders implements Iterable<TableHeader> {
 

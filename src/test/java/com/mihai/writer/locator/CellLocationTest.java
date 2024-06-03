@@ -1,9 +1,10 @@
 package com.mihai.writer.locator;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.mihai.core.workbook.CellLocation;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CellLocationTest {
 

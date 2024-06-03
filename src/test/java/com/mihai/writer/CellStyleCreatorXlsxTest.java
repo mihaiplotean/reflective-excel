@@ -1,10 +1,19 @@
 package com.mihai.writer;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
 import com.mihai.writer.style.color.StyleColor;
 import com.mihai.writer.style.font.StyleFont;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -12,10 +21,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CellStyleCreatorXlsxTest {
 
@@ -36,24 +41,24 @@ class CellStyleCreatorXlsxTest {
     @Test
     public void styleDataFormatApplied() {
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .format("abc")
-                .build());
+                                                            .format("abc")
+                                                            .build());
         assertEquals("abc", style.getDataFormatString());
     }
 
     @Test
     public void horizontalAlignmentApplied() {
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .horizontalAlignment(HorizontalAlignment.LEFT)
-                .build());
+                                                            .horizontalAlignment(HorizontalAlignment.LEFT)
+                                                            .build());
         assertEquals(HorizontalAlignment.LEFT, style.getAlignment());
     }
 
     @Test
     public void verticalAlignmentApplied() {
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .verticalAlignment(VerticalAlignment.BOTTOM)
-                .build());
+                                                            .verticalAlignment(VerticalAlignment.BOTTOM)
+                                                            .build());
         assertEquals(VerticalAlignment.BOTTOM, style.getVerticalAlignment());
     }
 
@@ -67,8 +72,8 @@ class CellStyleCreatorXlsxTest {
                 .color(new StyleColor(1, 2, 3))
                 .build();
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .border(border)
-                .build());
+                                                            .border(border)
+                                                            .build());
         assertEquals(BorderStyle.THIN, style.getBorderTop());
         assertEquals(BorderStyle.MEDIUM, style.getBorderRight());
         assertEquals(BorderStyle.THICK, style.getBorderBottom());
@@ -91,8 +96,8 @@ class CellStyleCreatorXlsxTest {
                 .underLine(true)
                 .build();
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .font(font)
-                .build());
+                                                            .font(font)
+                                                            .build());
 
         XSSFFont styleFont = getFontAtIndex(style.getFontIndex());
 
@@ -107,8 +112,8 @@ class CellStyleCreatorXlsxTest {
     @Test
     public void backGroundColorApplied() {
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .backgroundColor(new StyleColor(1, 2, 3))
-                .build());
+                                                            .backgroundColor(new StyleColor(1, 2, 3))
+                                                            .build());
         assertArrayEquals(new byte[]{1, 2, 3}, ((XSSFColor) style.getFillForegroundColorColor()).getRGB());
         assertEquals(FillPatternType.SOLID_FOREGROUND, style.getFillPattern());
     }
@@ -116,23 +121,23 @@ class CellStyleCreatorXlsxTest {
     @Test
     public void textWrapApplied() {
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .wrapText(true)
-                .build());
+                                                            .wrapText(true)
+                                                            .build());
         assertTrue(style.getWrapText());
     }
 
     @Test
     public void cellStyleIsReused() {
         CellStyle styleA = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .backgroundColor(new StyleColor(1, 2, 3))
-                .thinAllSideBorder()
-                .wrapText(true)
-                .build());
+                                                             .backgroundColor(new StyleColor(1, 2, 3))
+                                                             .thinAllSideBorder()
+                                                             .wrapText(true)
+                                                             .build());
         CellStyle styleB = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .backgroundColor(new StyleColor(1, 2, 3))
-                .thinAllSideBorder()
-                .wrapText(true)
-                .build());
+                                                             .backgroundColor(new StyleColor(1, 2, 3))
+                                                             .thinAllSideBorder()
+                                                             .wrapText(true)
+                                                             .build());
         assertSame(styleA, styleB);
     }
 

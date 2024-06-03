@@ -1,10 +1,10 @@
 package com.mihai.writer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WritableSheetTest extends ExcelWritingTest {
 

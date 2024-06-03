@@ -1,5 +1,9 @@
 package com.mihai.reader.detector;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
 import com.mihai.core.utils.CollectionUtilities;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.bean.ChildBeanReadNode;
@@ -7,10 +11,6 @@ import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 public class AutoRowColumnDetector implements TableRowColumnDetector {
 
@@ -44,7 +44,8 @@ public class AutoRowColumnDetector implements TableRowColumnDetector {
         List<ReadableCell> nextCellsInRow = context.getRow(cell.getRowNumber()).getCells().stream()
                 .filter(currentCell -> currentCell.getColumnNumber() >= cell.getColumnNumber())
                 .toList();
-        List<ReadableCell> headerCells = CollectionUtilities.takeUntil(nextCellsInRow, rowCell -> isColumnAfterCellEndEmpty(context, rowCell));
+        List<ReadableCell> headerCells = CollectionUtilities.takeUntil(nextCellsInRow,
+                                                                       rowCell -> isColumnAfterCellEndEmpty(context, rowCell));
         Set<String> cellValues = headerCells.stream()
                 .map(ReadableCell::getValue)
                 .collect(CollectionUtilities.toCaseInsensitiveSetCollector());

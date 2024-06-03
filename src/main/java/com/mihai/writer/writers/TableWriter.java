@@ -1,15 +1,15 @@
 package com.mihai.writer.writers;
 
+import java.util.List;
+
 import com.mihai.core.workbook.Bounds;
-import com.mihai.writer.ExcelWritingSettings;
-import com.mihai.writer.WritableSheetContext;
-import com.mihai.writer.WritableSheet;
 import com.mihai.core.workbook.CellLocation;
+import com.mihai.writer.ExcelWritingSettings;
+import com.mihai.writer.WritableSheet;
+import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.table.WrittenTable;
 import com.mihai.writer.table.WrittenTableHeaders;
-
-import java.util.List;
 
 public class TableWriter {
 
@@ -41,9 +41,9 @@ public class TableWriter {
 
         sheetContext.setWritingTable(false);
         return new WrittenTable(tableId, headers, new Bounds(cellWriter.getOffsetRows(),
-                cellWriter.getOffsetColumns(),
-                cellWriter.getOffsetRows() + rootNode.getHeight() + rows.size() - 1,
-                cellWriter.getOffsetColumns() + rootNode.getLength() - 1
+                                                             cellWriter.getOffsetColumns(),
+                                                             cellWriter.getOffsetRows() + rootNode.getHeight() + rows.size() - 1,
+                                                             cellWriter.getOffsetColumns() + rootNode.getLength() - 1
         ));
     }
 

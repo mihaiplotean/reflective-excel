@@ -1,14 +1,14 @@
 package com.mihai.writer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+
 import com.mihai.core.CellPointer;
 import com.mihai.writer.table.TableWritingContext;
 import com.mihai.writer.table.WrittenTableHeader;
 import com.mihai.writer.table.WrittenTableHeaders;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WritingContextTest {
 

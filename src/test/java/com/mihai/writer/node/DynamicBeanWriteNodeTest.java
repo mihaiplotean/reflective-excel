@@ -1,12 +1,12 @@
 package com.mihai.writer.node;
 
-import com.mihai.core.annotation.DynamicColumns;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.mihai.core.annotation.DynamicColumns;
+import org.junit.jupiter.api.Test;
 
 class DynamicBeanWriteNodeTest {
 

@@ -1,13 +1,17 @@
 package com.mihai.reader.readers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import com.mihai.reader.ReadableSheetContext;
+import com.mihai.reader.detector.TableRowColumnDetector;
 import com.mihai.reader.table.TableHeader;
 import com.mihai.reader.table.TableHeaders;
-import com.mihai.reader.detector.TableRowColumnDetector;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
-
-import java.util.*;
 
 public class HeaderReader {
 
@@ -22,7 +26,7 @@ public class HeaderReader {
 
     public TableHeaders readHeaders() {
         ReadableRow row = goToHeaderRow();
-        if(row == null) {
+        if (row == null) {
             return new TableHeaders(List.of());
         }
 
@@ -32,7 +36,7 @@ public class HeaderReader {
         List<ReadableCell> headerCells = new ArrayList<>();
         for (ReadableCell cell : row) {
             int columnNumber = cell.getColumnNumber();
-            if(startColumn <= columnNumber && columnNumber <= endColumn) {
+            if (startColumn <= columnNumber && columnNumber <= endColumn) {
                 headerCells.add(cell);
             }
         }
@@ -66,7 +70,7 @@ public class HeaderReader {
         Iterator<ReadableCell> cellIterator = sheetContext.createCellIterator(row);
         while (cellIterator.hasNext()) {
             ReadableCell cell = cellIterator.next();
-            if(rowColumnDetector.isHeaderStartColumn(sheetContext.getReadingContext(), cell)) {
+            if (rowColumnDetector.isHeaderStartColumn(sheetContext.getReadingContext(), cell)) {
                 return cell.getColumnNumber();
             }
         }
@@ -77,10 +81,10 @@ public class HeaderReader {
         Iterator<ReadableCell> cellIterator = sheetContext.createCellIterator(row);
         while (cellIterator.hasNext()) {
             ReadableCell cell = cellIterator.next();
-            if(cell.getColumnNumber() < startColumn) {
+            if (cell.getColumnNumber() < startColumn) {
                 continue;
             }
-            if(rowColumnDetector.isHeaderLastColumn(sheetContext.getReadingContext(), cell)) {
+            if (rowColumnDetector.isHeaderLastColumn(sheetContext.getReadingContext(), cell)) {
                 return cell.getColumnNumber();
             }
         }
@@ -111,14 +115,14 @@ public class HeaderReader {
         int boundStartRow = headerCell.getStartRow();
         TableHeader tableHeader = headerPerBounds.get(headerCell);
         if (boundStartRow <= startRow) {
-            if(tableHeader == null) {
+            if (tableHeader == null) {
                 tableHeader = new TableHeader(headerCell);
                 headerPerBounds.put(headerCell, tableHeader);
             }
             return tableHeader;
         }
 
-        if(tableHeader == null) {
+        if (tableHeader == null) {
             TableHeader parent = buildHeader(startRow, getCellAbove(headerCell));
             tableHeader = new TableHeader(headerCell);
             tableHeader.setParent(parent);

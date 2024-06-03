@@ -1,5 +1,7 @@
 package com.mihai.reader;
 
+import java.io.IOException;
+
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableSheet;
 import org.apache.poi.ss.usermodel.Row;
@@ -10,8 +12,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
-import java.io.IOException;
 
 public class ExcelReadingTest {
 

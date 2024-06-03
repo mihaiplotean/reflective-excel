@@ -1,14 +1,19 @@
 package com.mihai.core.field;
 
-import com.mihai.core.annotation.*;
-import com.mihai.core.utils.ReflectionUtilities;
-import com.mihai.reader.detector.ColumnDetector;
-import org.apache.commons.lang3.reflect.FieldUtils;
-
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.mihai.core.annotation.DynamicColumns;
+import com.mihai.core.annotation.ExcelCellGroup;
+import com.mihai.core.annotation.ExcelCellValue;
+import com.mihai.core.annotation.ExcelColumn;
+import com.mihai.core.annotation.ExcelProperty;
+import com.mihai.core.annotation.TableId;
+import com.mihai.core.utils.ReflectionUtilities;
+import com.mihai.reader.detector.ColumnDetector;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 public class FieldAnalyzer {
 
@@ -31,7 +36,7 @@ public class FieldAnalyzer {
         for (Field field : fields) {
             ExcelColumn annotation = field.getAnnotation(ExcelColumn.class);
             String columnName = annotation.value();
-            if(usedColumnNames.contains(columnName.toLowerCase())) {
+            if (usedColumnNames.contains(columnName.toLowerCase())) {
                 throw new IllegalStateException(String.format(
                         "Duplicate column name \"%s\". Column names must be unique.", columnName
                 ));

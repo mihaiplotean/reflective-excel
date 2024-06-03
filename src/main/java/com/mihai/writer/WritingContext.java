@@ -33,7 +33,7 @@ public class WritingContext {
 
     public String getCurrentColumnName() {
         WrittenTableHeaders headers = tableContext.getCurrentTableHeaders();
-        if(headers == null) {
+        if (headers == null) {
             return "";
         }
         return headers.getColumnName(cellPointer.getCurrentColumn());

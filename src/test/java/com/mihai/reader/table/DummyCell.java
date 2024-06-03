@@ -1,9 +1,9 @@
 package com.mihai.reader.table;
 
-import com.mihai.reader.workbook.sheet.ReadableCell;
-
 import java.time.LocalDateTime;
 import java.util.Date;
+
+import com.mihai.reader.workbook.sheet.ReadableCell;
 
 public class DummyCell implements ReadableCell {
 

@@ -1,19 +1,5 @@
 package com.mihai.integration.writer;
 
-import com.mihai.assertion.ExcelAssert;
-import com.mihai.assertion.SheetAssert;
-import com.mihai.core.annotation.ExcelColumn;
-import com.mihai.writer.ExcelWritingSettings;
-import com.mihai.writer.ReflectiveExcelWriter;
-import com.mihai.writer.WritingContext;
-import com.mihai.core.workbook.CellLocation;
-import com.mihai.writer.style.StyleProvider;
-import com.mihai.writer.style.StyleProviders;
-import com.mihai.writer.style.WritableCellStyle;
-import com.mihai.writer.style.WritableCellStyles;
-import com.mihai.writer.style.color.StyleColor;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +7,19 @@ import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
+
+import com.mihai.assertion.ExcelAssert;
+import com.mihai.core.annotation.ExcelColumn;
+import com.mihai.core.workbook.CellLocation;
+import com.mihai.writer.ExcelWritingSettings;
+import com.mihai.writer.ReflectiveExcelWriter;
+import com.mihai.writer.WritingContext;
+import com.mihai.writer.style.StyleProvider;
+import com.mihai.writer.style.StyleProviders;
+import com.mihai.writer.style.WritableCellStyle;
+import com.mihai.writer.style.WritableCellStyles;
+import com.mihai.writer.style.color.StyleColor;
+import org.junit.jupiter.api.Test;
 
 public class StyledTableTest {
 
@@ -62,8 +61,7 @@ public class StyledTableTest {
         try (InputStream expectedInputStream = getClass().getResourceAsStream("/test-styled-table.xlsx")) {
             ExcelAssert.assertThat(actualFile)
                     .isEqualTo(expectedInputStream);
-        }
-        finally {
+        } finally {
             actualFile.delete();
         }
     }

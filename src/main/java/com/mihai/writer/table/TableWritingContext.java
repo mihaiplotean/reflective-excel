@@ -28,7 +28,7 @@ public class TableWritingContext {
     }
 
     public int getCurrentTableRow() {
-        if(isWritingTable) {
+        if (isWritingTable) {
             return currentTableRow;
         }
         return -1;
@@ -39,7 +39,7 @@ public class TableWritingContext {
     }
 
     public int getCurrentTableColumn() {
-        if(isWritingTable) {
+        if (isWritingTable) {
             return currentTableColumn;
         }
         return -1;
@@ -50,7 +50,7 @@ public class TableWritingContext {
     }
 
     public WrittenTableHeaders getCurrentTableHeaders() {
-        if(isWritingTable) {
+        if (isWritingTable) {
             return currentTableHeaders;
         }
         return null;

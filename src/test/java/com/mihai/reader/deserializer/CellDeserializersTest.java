@@ -1,19 +1,19 @@
 package com.mihai.reader.deserializer;
 
-import com.mihai.core.field.AnnotatedFieldType;
-import com.mihai.core.utils.DateFormatUtils;
-import com.mihai.reader.ExcelReadingTest;
-import com.mihai.reader.exception.BadInputException;
-import org.apache.poi.ss.usermodel.Cell;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import com.mihai.core.field.AnnotatedFieldType;
+import com.mihai.core.utils.DateFormatUtils;
+import com.mihai.reader.ExcelReadingTest;
+import com.mihai.reader.exception.BadInputException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.junit.jupiter.api.Test;
 
 class CellDeserializersTest extends ExcelReadingTest {
 
@@ -84,7 +84,7 @@ class CellDeserializersTest extends ExcelReadingTest {
         Cell cell = createRow(0).createCell(0);
         cell.setCellValue("CELL_VALUE");
         assertEquals(AnnotatedFieldType.CELL_VALUE,
-                CellDeserializers.forEnum(AnnotatedFieldType.class).deserialize(null, getReadableCell(0, 0)));
+                     CellDeserializers.forEnum(AnnotatedFieldType.class).deserialize(null, getReadableCell(0, 0)));
     }
 
     @Test
@@ -92,7 +92,7 @@ class CellDeserializersTest extends ExcelReadingTest {
         Cell cell = createRow(0).createCell(0);
         cell.setCellValue("UNKNOWN_VALUE");
         assertThrows(BadInputException.class,
-                () -> CellDeserializers.forEnum(AnnotatedFieldType.class).deserialize(null, getReadableCell(0, 0)));
+                     () -> CellDeserializers.forEnum(AnnotatedFieldType.class).deserialize(null, getReadableCell(0, 0)));
     }
 
     @Test
@@ -108,7 +108,7 @@ class CellDeserializersTest extends ExcelReadingTest {
         Cell cell = createRow(0).createCell(0);
         cell.setCellValue("14-05-2024");
         assertEquals(DateFormatUtils.createDate(14, 5, 2024),
-                CellDeserializers.forDate("dd-MM-yyyy").deserialize(null, getReadableCell(0, 0)));
+                     CellDeserializers.forDate("dd-MM-yyyy").deserialize(null, getReadableCell(0, 0)));
     }
 
     @Test
@@ -116,7 +116,7 @@ class CellDeserializersTest extends ExcelReadingTest {
         Cell cell = createRow(0).createCell(0);
         cell.setCellValue("not a date");
         assertThrows(BadInputException.class,
-                () -> CellDeserializers.forDate().deserialize(null, getReadableCell(0, 0)));
+                     () -> CellDeserializers.forDate().deserialize(null, getReadableCell(0, 0)));
     }
 
     @Test
@@ -132,7 +132,7 @@ class CellDeserializersTest extends ExcelReadingTest {
         Cell cell = createRow(0).createCell(0);
         cell.setCellValue("14-05-2024");
         assertEquals(LocalDate.of(2024, 5, 14),
-                CellDeserializers.forLocalDate("dd-MM-yyyy").deserialize(null, getReadableCell(0, 0)));
+                     CellDeserializers.forLocalDate("dd-MM-yyyy").deserialize(null, getReadableCell(0, 0)));
     }
 
     @Test
@@ -148,6 +148,6 @@ class CellDeserializersTest extends ExcelReadingTest {
         Cell cell = createRow(0).createCell(0);
         cell.setCellValue("14-05-2024 08:33");
         assertEquals(LocalDateTime.of(2024, 5, 14, 8, 33),
-                CellDeserializers.forLocalDateTime("dd-MM-yyyy HH:mm").deserialize(null, getReadableCell(0, 0)));
+                     CellDeserializers.forLocalDateTime("dd-MM-yyyy HH:mm").deserialize(null, getReadableCell(0, 0)));
     }
 }

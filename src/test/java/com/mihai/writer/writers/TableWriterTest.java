@@ -1,11 +1,16 @@
 package com.mihai.writer.writers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.IOException;
+import java.util.List;
+
 import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.core.workbook.Bounds;
-import com.mihai.writer.ExcelWritingSettings;
-import com.mihai.writer.WritableSheetContext;
-import com.mihai.writer.WritableSheet;
 import com.mihai.core.workbook.CellLocation;
+import com.mihai.writer.ExcelWritingSettings;
+import com.mihai.writer.WritableSheet;
+import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.table.WrittenTable;
@@ -14,11 +19,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TableWriterTest {
 
@@ -39,7 +39,8 @@ class TableWriterTest {
     @Test
     public void tableFixedHeadersAndRowsAreWritten() {
         TableWriter writer = new TableWriter(new WritableSheet(actualSheet),
-                new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()), ExcelWritingSettings.DEFAULT);
+                                             new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()),
+                                             ExcelWritingSettings.DEFAULT);
 
         List<FixedColumnsRow> rows = List.of(
                 new FixedColumnsRow("row 1 value A", "row 1 value B"),
@@ -64,7 +65,8 @@ class TableWriterTest {
     @Test
     public void onlyFixedHeadersWrittenWhenNoRowsToWrite() {
         TableWriter writer = new TableWriter(new WritableSheet(actualSheet),
-                new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()), ExcelWritingSettings.DEFAULT);
+                                             new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()),
+                                             ExcelWritingSettings.DEFAULT);
 
         WrittenTable table = writer.writeTable(List.of(), FixedColumnsRow.class, "");
 
@@ -77,8 +79,9 @@ class TableWriterTest {
     @Test
     public void tableOffsetIsApplied() {
         TableWriter writer = new TableWriter(new WritableSheet(actualSheet),
-                new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()),
-                ExcelWritingSettings.builder().tableStartCellLocator((context, tableId) -> new CellLocation(3, 3)).build());
+                                             new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()),
+                                             ExcelWritingSettings.builder()
+                                                     .tableStartCellLocator((context, tableId) -> new CellLocation(3, 3)).build());
 
         List<FixedColumnsRow> rows = List.of(
                 new FixedColumnsRow("", ""),

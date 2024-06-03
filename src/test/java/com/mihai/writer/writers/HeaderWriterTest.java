@@ -1,5 +1,10 @@
 package com.mihai.writer.writers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.mihai.core.annotation.DynamicColumns;
 import com.mihai.core.annotation.ExcelCellGroup;
 import com.mihai.core.annotation.ExcelColumn;
@@ -10,11 +15,6 @@ import com.mihai.writer.ExcelWritingTest;
 import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.table.WrittenTableHeaders;
 import org.junit.jupiter.api.Test;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HeaderWriterTest extends ExcelWritingTest {
 

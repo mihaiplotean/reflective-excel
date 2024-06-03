@@ -1,11 +1,12 @@
 package com.mihai.writer.table;
 
-import com.mihai.core.workbook.Bounds;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.mihai.core.workbook.Bounds;
+import org.junit.jupiter.api.Test;
 
 class TableWritingContextTest {
 

@@ -1,10 +1,10 @@
 package com.mihai.reader.workbook.sheet;
 
-import org.apache.poi.ss.usermodel.Cell;
-
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
+
+import org.apache.poi.ss.usermodel.Cell;
 
 public class SimpleCell implements ReadableCell {
 
@@ -70,8 +70,12 @@ public class SimpleCell implements ReadableCell {
 
     @Override
     public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
         SimpleCell that = (SimpleCell) object;
         return Objects.equals(cell, that.cell);
     }

@@ -1,5 +1,10 @@
 package com.mihai.reader.readers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+import java.util.Objects;
+
 import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.core.annotation.TableId;
 import com.mihai.core.workbook.Bounds;
@@ -13,11 +18,6 @@ import com.mihai.reader.table.TableHeaders;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TableReaderTest extends ExcelReadingTest {
 
@@ -119,8 +119,12 @@ class TableReaderTest extends ExcelReadingTest {
 
         @Override
         public boolean equals(Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            }
+            if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
             TestRow testRow = (TestRow) object;
             return Objects.equals(valueA, testRow.valueA) && Objects.equals(valueB, testRow.valueB);
         }

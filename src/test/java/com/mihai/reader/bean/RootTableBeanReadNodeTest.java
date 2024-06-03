@@ -1,15 +1,15 @@
 package com.mihai.reader.bean;
 
-import com.mihai.core.annotation.DynamicColumns;
-import com.mihai.core.annotation.ExcelCellGroup;
-import com.mihai.core.annotation.ExcelColumn;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import com.mihai.core.annotation.DynamicColumns;
+import com.mihai.core.annotation.ExcelCellGroup;
+import com.mihai.core.annotation.ExcelColumn;
+import org.junit.jupiter.api.Test;
 
 class RootTableBeanReadNodeTest {
 

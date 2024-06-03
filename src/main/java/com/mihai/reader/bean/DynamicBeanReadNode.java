@@ -1,10 +1,10 @@
 package com.mihai.reader.bean;
 
+import java.util.List;
+
 import com.mihai.core.field.AnnotatedField;
 import com.mihai.core.field.AnnotatedFieldType;
 import com.mihai.core.field.DynamicColumnField;
-
-import java.util.List;
 
 public class DynamicBeanReadNode implements ChildBeanReadNode {
 

@@ -1,19 +1,20 @@
 package com.mihai.reader.readers;
 
-import com.mihai.reader.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.mihai.core.workbook.Bounds;
+import com.mihai.core.workbook.CellLocation;
+import com.mihai.reader.ExcelReadingSettings;
+import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.detector.TableRowColumnDetector;
 import com.mihai.reader.mapping.ColumnFieldMapping;
 import com.mihai.reader.mapping.DefaultColumnFieldMapping;
 import com.mihai.reader.table.ReadTable;
 import com.mihai.reader.table.TableHeaders;
-import com.mihai.core.workbook.Bounds;
 import com.mihai.reader.workbook.sheet.ReadableRow;
-import com.mihai.core.workbook.CellLocation;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class TableReader {
 
@@ -68,7 +69,7 @@ public class TableReader {
             boolean shouldSkipRow = rowColumnDetector.shouldSkipRow(sheetContext.getReadingContext(), row);
 
             if (rowColumnDetector.isLastRow(sheetContext.getReadingContext(), row)) {
-                if(!shouldSkipRow) {
+                if (!shouldSkipRow) {
                     rows.add(rowReader.readRow(row, clazz));
                 }
                 break;

@@ -1,10 +1,10 @@
 package com.mihai.reader.table;
 
+import java.util.List;
+
 import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
-
-import java.util.List;
 
 public class TableReadingContext {
 
@@ -43,7 +43,7 @@ public class TableReadingContext {
     }
 
     public String getCurrentTableId() {
-        if(isReadingTable) {
+        if (isReadingTable) {
             return currentBeanNode.getTableId();
         }
         return "";
@@ -94,7 +94,7 @@ public class TableReadingContext {
         if (row == null) {
             return null;
         }
-        if(getCurrentTableHeaders() == null) {
+        if (getCurrentTableHeaders() == null) {
             return new ReadableRow(row.getRowNumber(), List.of());
         }
         List<ReadableCell> tableRowCells = row.stream()

@@ -2,16 +2,16 @@ package com.mihai.reader;
 
 import com.mihai.core.CellPointer;
 import com.mihai.reader.bean.RootTableBeanReadNode;
+import com.mihai.reader.deserializer.DeserializationContext;
+import com.mihai.reader.exception.BadInputException;
+import com.mihai.reader.exception.BadInputExceptionConsumer;
 import com.mihai.reader.table.DeserializedCellValues;
 import com.mihai.reader.table.ReadTable;
 import com.mihai.reader.table.TableHeaders;
 import com.mihai.reader.table.TableReadingContext;
 import com.mihai.reader.workbook.sheet.ReadableCell;
-import com.mihai.reader.workbook.sheet.ReadableSheet;
-import com.mihai.reader.deserializer.DeserializationContext;
-import com.mihai.reader.exception.BadInputException;
-import com.mihai.reader.exception.BadInputExceptionConsumer;
 import com.mihai.reader.workbook.sheet.ReadableRow;
+import com.mihai.reader.workbook.sheet.ReadableSheet;
 
 public class ReadingContext {
 
@@ -143,8 +143,7 @@ public class ReadingContext {
             return value;
         } catch (BadInputException exception) {
             exceptionConsumer.accept(this, exception);
-        }
-        finally {
+        } finally {
             cellPointer.setCurrentRow(currentRow);
             cellPointer.setCurrentColumn(currentColumn);
         }

@@ -1,5 +1,9 @@
 package com.mihai.writer.writers;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
+
 import com.mihai.core.workbook.CellLocation;
 import com.mihai.writer.ExcelWritingTest;
 import com.mihai.writer.WritableCell;
@@ -11,10 +15,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CellWriterTest extends ExcelWritingTest {
 

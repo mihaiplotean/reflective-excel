@@ -1,5 +1,15 @@
 package com.mihai.integration.fixedcolumns;
 
+import static com.mihai.core.utils.DateFormatUtils.createDate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
 import com.mihai.assertion.ExcelAssert;
 import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.reader.ExcelReadingSettings;
@@ -10,16 +20,6 @@ import com.mihai.writer.ReflectiveExcelWriter;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyles;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-
-import static com.mihai.core.utils.DateFormatUtils.createDate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FixedColumnsTest {
 
@@ -52,8 +52,7 @@ public class FixedColumnsTest {
         try (InputStream expectedInputStream = getClass().getResourceAsStream("/test-fixed-columns.xlsx")) {
             ExcelAssert.assertThat(actualFile)
                     .isEqualTo(expectedInputStream);
-        }
-        finally {
+        } finally {
             actualFile.delete();
         }
     }
@@ -90,7 +89,9 @@ public class FixedColumnsTest {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
+            if (this == o) {
+                return true;
+            }
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }

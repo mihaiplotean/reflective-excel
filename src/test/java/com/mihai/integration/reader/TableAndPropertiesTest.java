@@ -1,16 +1,16 @@
 package com.mihai.integration.reader;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.InputStream;
+import java.util.List;
+
 import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.core.annotation.ExcelProperty;
 import com.mihai.core.annotation.TableId;
 import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReflectiveExcelReader;
 import org.junit.jupiter.api.Test;
-
-import java.io.InputStream;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TableAndPropertiesTest {
 

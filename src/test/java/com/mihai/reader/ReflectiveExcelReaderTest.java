@@ -1,10 +1,7 @@
 package com.mihai.reader;
 
-import com.mihai.core.ReflectiveExcelException;
-import com.mihai.core.annotation.ExcelCellValue;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,8 +9,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import com.mihai.core.ReflectiveExcelException;
+import com.mihai.core.annotation.ExcelCellValue;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.jupiter.api.Test;
 
 class ReflectiveExcelReaderTest {
 

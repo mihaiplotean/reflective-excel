@@ -1,11 +1,11 @@
 package com.mihai.reader.deserializer;
 
-import com.mihai.reader.exception.BadInputException;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Date;
+
+import com.mihai.reader.exception.BadInputException;
 
 public class CellDeserializers {
 

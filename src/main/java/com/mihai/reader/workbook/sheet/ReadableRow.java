@@ -1,11 +1,11 @@
 package com.mihai.reader.workbook.sheet;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class ReadableRow implements Iterable<ReadableCell> {
 
@@ -49,8 +49,12 @@ public class ReadableRow implements Iterable<ReadableCell> {
 
     @Override
     public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
         ReadableRow other = (ReadableRow) object;
         return row == other.row && Objects.equals(cells, other.cells);
     }

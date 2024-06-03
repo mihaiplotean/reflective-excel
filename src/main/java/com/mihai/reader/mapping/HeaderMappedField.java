@@ -1,8 +1,8 @@
 package com.mihai.reader.mapping;
 
+import com.mihai.core.field.AnnotatedField;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.table.TableHeader;
-import com.mihai.core.field.AnnotatedField;
 
 public interface HeaderMappedField {
 

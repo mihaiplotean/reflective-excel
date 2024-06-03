@@ -1,9 +1,9 @@
 package com.mihai.writer.style;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.apache.poi.ss.usermodel.*;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ColorStyleUtilsTest {
 

@@ -1,13 +1,13 @@
 package com.mihai.reader.workbook.sheet;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import com.mihai.core.workbook.Bounds;
 import com.mihai.reader.ExcelReadingTest;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class MergedCellTest extends ExcelReadingTest {
 
@@ -15,7 +15,7 @@ class MergedCellTest extends ExcelReadingTest {
     public void cellsAreEqualIfPOICellIsEqual() {
         Cell cell = createRow(0).createCell(0);
         assertEquals(new MergedCell(cell, "a", new Bounds(0, 0, 0, 0)),
-                new MergedCell(cell, "b", new Bounds(0, 0, 0, 0)));
+                     new MergedCell(cell, "b", new Bounds(0, 0, 0, 0)));
     }
 
     @Test

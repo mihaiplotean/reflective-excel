@@ -1,13 +1,13 @@
 package com.mihai.reader.detector;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.mihai.reader.ExcelReadingTest;
 import com.mihai.reader.ReadableSheetContext;
 import com.mihai.reader.ReadingContext;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SimpleRowColumnDetectorTest extends ExcelReadingTest {
 

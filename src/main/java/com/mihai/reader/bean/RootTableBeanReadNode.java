@@ -1,10 +1,10 @@
 package com.mihai.reader.bean;
 
-import com.mihai.core.annotation.TableId;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.mihai.core.annotation.TableId;
 
 public class RootTableBeanReadNode {
 

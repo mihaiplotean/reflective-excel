@@ -3,7 +3,9 @@ package com.mihai.reader;
 import com.mihai.reader.deserializer.CellDeserializer;
 import com.mihai.reader.deserializer.DefaultDeserializationContext;
 import com.mihai.reader.deserializer.DeserializationContext;
-import com.mihai.reader.detector.*;
+import com.mihai.reader.detector.AutoRowColumnDetector;
+import com.mihai.reader.detector.SimpleRowColumnDetector;
+import com.mihai.reader.detector.TableRowColumnDetector;
 import com.mihai.reader.exception.BadInputExceptionConsumer;
 
 public class ExcelReadingSettings {

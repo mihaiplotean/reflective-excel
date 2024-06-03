@@ -1,10 +1,10 @@
 package com.mihai.writer.node;
 
-import com.mihai.core.utils.ReflectionUtilities;
-
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
+
+import com.mihai.core.utils.ReflectionUtilities;
 
 public class FixedBeanWriteNode implements ChildBeanWriteNode {
 

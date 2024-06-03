@@ -1,5 +1,7 @@
 package com.mihai.writer.style;
 
+import java.util.Objects;
+
 import com.mihai.writer.style.border.CellBorder;
 import com.mihai.writer.style.border.CellBorders;
 import com.mihai.writer.style.color.StyleColor;
@@ -8,8 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
-
-import java.util.Objects;
 
 public class WritableCellStyle {
 
@@ -72,20 +72,20 @@ public class WritableCellStyle {
     }
 
     private CellBorder combinedBorder(CellBorder other) {
-        if(this.border == null) {
+        if (this.border == null) {
             return other;
         }
-        if(other == null) {
+        if (other == null) {
             return this.border;
         }
         return border.combineWith(other);
     }
 
     private StyleFont combinedFont(StyleFont other) {
-        if(this.font == null) {
+        if (this.font == null) {
             return other;
         }
-        if(other == null) {
+        if (other == null) {
             return this.font;
         }
         return font.combineWith(other);
@@ -97,8 +97,12 @@ public class WritableCellStyle {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         WritableCellStyle cellStyle = (WritableCellStyle) o;
         return wrapText == cellStyle.wrapText
                 && horizontalAlignment == cellStyle.horizontalAlignment

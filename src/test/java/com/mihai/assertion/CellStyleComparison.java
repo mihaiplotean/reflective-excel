@@ -1,12 +1,12 @@
 package com.mihai.assertion;
 
-import com.mihai.writer.style.WritableCellStyle;
-import com.mihai.writer.style.border.CellBorder;
-import com.mihai.writer.style.font.StyleFont;
+import static org.apache.poi.ss.util.CellUtil.*;
 
 import java.util.*;
 
-import static org.apache.poi.ss.util.CellUtil.*;
+import com.mihai.writer.style.WritableCellStyle;
+import com.mihai.writer.style.border.CellBorder;
+import com.mihai.writer.style.font.StyleFont;
 
 public class CellStyleComparison {
 
@@ -44,7 +44,7 @@ public class CellStyleComparison {
     }
 
     private static Map<String, Object> getProperties(WritableCellStyle style) {
-        if(style == null) {
+        if (style == null) {
             return Map.of();
         }
         Map<String, Object> properties = new HashMap<>();

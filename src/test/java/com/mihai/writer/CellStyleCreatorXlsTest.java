@@ -1,5 +1,9 @@
 package com.mihai.writer;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+
 import com.mihai.writer.style.WritableCellStyle;
 import com.mihai.writer.style.border.CellBorder;
 import com.mihai.writer.style.color.StyleColor;
@@ -15,10 +19,6 @@ import org.apache.poi.ss.usermodel.Font;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class CellStyleCreatorXlsTest {
 
@@ -46,8 +46,8 @@ public class CellStyleCreatorXlsTest {
                 .color(new StyleColor(1, 2, 3))
                 .build();
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .border(border)
-                .build());
+                                                            .border(border)
+                                                            .build());
         assertEquals(BorderStyle.THIN, style.getBorderTop());
         assertEquals(BorderStyle.MEDIUM, style.getBorderRight());
         assertEquals(BorderStyle.THICK, style.getBorderBottom());
@@ -71,8 +71,8 @@ public class CellStyleCreatorXlsTest {
                 .underLine(true)
                 .build();
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .font(font)
-                .build());
+                                                            .font(font)
+                                                            .build());
 
         HSSFFont styleFont = getFontAtIndex(style.getFontIndex());
 
@@ -87,17 +87,17 @@ public class CellStyleCreatorXlsTest {
     @Test
     public void backGroundColorApplied() {
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .backgroundColor(new StyleColor(0, 0, 0))
-                .build());
-        assertArrayEquals(new short[]{0, 0, 0}, ((HSSFCellStyle)style).getFillForegroundColorColor().getTriplet());
+                                                            .backgroundColor(new StyleColor(0, 0, 0))
+                                                            .build());
+        assertArrayEquals(new short[]{0, 0, 0}, ((HSSFCellStyle) style).getFillForegroundColorColor().getTriplet());
         assertEquals(FillPatternType.SOLID_FOREGROUND, style.getFillPattern());
     }
 
     @Test
     public void textWrapApplied() {
         CellStyle style = styleCreator.getCellStyle(WritableCellStyle.builder()
-                .wrapText(true)
-                .build());
+                                                            .wrapText(true)
+                                                            .build());
         assertTrue(style.getWrapText());
     }
 

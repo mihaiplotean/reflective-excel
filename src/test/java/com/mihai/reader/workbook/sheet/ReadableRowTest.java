@@ -1,13 +1,13 @@
 package com.mihai.reader.workbook.sheet;
 
-import com.mihai.reader.ExcelReadingTest;
-import org.apache.poi.ss.usermodel.Cell;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import com.mihai.reader.ExcelReadingTest;
+import org.apache.poi.ss.usermodel.Cell;
+import org.junit.jupiter.api.Test;
 
 class ReadableRowTest extends ExcelReadingTest {
 
@@ -15,7 +15,7 @@ class ReadableRowTest extends ExcelReadingTest {
     public void rowsAreEqualIfCellsAndRowNumberIsEqual() {
         Cell cell = createRow(0).createCell(0);
         assertEquals(new ReadableRow(1, List.of(new SimpleCell(cell, "value"))),
-                new ReadableRow(1, List.of(new SimpleCell(cell, "value"))));
+                     new ReadableRow(1, List.of(new SimpleCell(cell, "value"))));
     }
 
     @Test

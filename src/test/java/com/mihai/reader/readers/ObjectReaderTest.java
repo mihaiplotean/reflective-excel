@@ -1,5 +1,10 @@
 package com.mihai.reader.readers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
+
 import com.mihai.core.annotation.ExcelCellValue;
 import com.mihai.core.annotation.ExcelProperty;
 import com.mihai.core.annotation.TableId;
@@ -10,11 +15,6 @@ import com.mihai.reader.exception.BadInputException;
 import com.mihai.reader.readers.TableReaderTest.TestRow;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ObjectReaderTest extends ExcelReadingTest {
 
