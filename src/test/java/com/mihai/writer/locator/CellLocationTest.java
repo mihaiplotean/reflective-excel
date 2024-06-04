@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.mihai.core.workbook.CellLocation;
 import org.junit.jupiter.api.Test;
 
-class CellLocationTest {
+public class CellLocationTest {
 
     @Test
     public void createdFromReferenceGivesCorrectRowAndColumn() {

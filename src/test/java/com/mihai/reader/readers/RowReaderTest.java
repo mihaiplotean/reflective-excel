@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
 
-class RowReaderTest extends ExcelReadingTest {
+public class RowReaderTest extends ExcelReadingTest {
 
     @Test
     public void pojoValuesEqualColumnValuesOfRow() throws NoSuchFieldException {

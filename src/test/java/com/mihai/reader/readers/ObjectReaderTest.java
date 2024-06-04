@@ -16,7 +16,7 @@ import com.mihai.reader.readers.TableReaderTest.TestRow;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
-class ObjectReaderTest extends ExcelReadingTest {
+public class ObjectReaderTest extends ExcelReadingTest {
 
     @Test
     public void cellValuesCorrectlyRead() {

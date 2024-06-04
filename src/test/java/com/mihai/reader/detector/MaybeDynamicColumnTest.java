@@ -9,7 +9,7 @@ import com.mihai.reader.ReadingContext;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
-class MaybeDynamicColumnTest extends ExcelReadingTest {
+public class MaybeDynamicColumnTest extends ExcelReadingTest {
 
     @Test
     public void leftCellIsNotAfterRightCell() {

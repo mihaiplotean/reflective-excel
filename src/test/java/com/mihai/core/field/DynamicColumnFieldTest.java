@@ -7,7 +7,7 @@ import java.util.List;
 import com.mihai.core.annotation.DynamicColumns;
 import org.junit.jupiter.api.Test;
 
-class DynamicColumnFieldTest {
+public class DynamicColumnFieldTest {
 
     @Test
     public void invalidTypeParameterThrowsException() {

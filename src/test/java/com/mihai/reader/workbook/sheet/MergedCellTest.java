@@ -9,7 +9,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
-class MergedCellTest extends ExcelReadingTest {
+public class MergedCellTest extends ExcelReadingTest {
 
     @Test
     public void cellsAreEqualIfPOICellIsEqual() {

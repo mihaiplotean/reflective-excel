@@ -11,7 +11,7 @@ import com.mihai.core.annotation.ExcelCellGroup;
 import com.mihai.core.annotation.ExcelColumn;
 import org.junit.jupiter.api.Test;
 
-class RootTableBeanReadNodeTest {
+public class RootTableBeanReadNodeTest {
 
     @Test
     public void beanTreeStructureCorrectlyCreated() {

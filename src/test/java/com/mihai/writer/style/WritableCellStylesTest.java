@@ -6,7 +6,7 @@ import com.mihai.writer.style.border.CellBorders;
 import com.mihai.writer.style.color.StyleColor;
 import org.junit.jupiter.api.Test;
 
-class WritableCellStylesTest {
+public class WritableCellStylesTest {
 
     @Test
     public void dateStyleFormatIsNotEmpty() {

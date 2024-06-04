@@ -72,6 +72,6 @@ public class DefaultStyleContext implements CellStyleContext {
 
     @Override
     public WritableCellStyle getCellStyle(WritingContext context, Object cellValue) {
-        return cellStyleProvider.getStyle(context, context);
+        return cellStyleProvider.getStyle(context, cellValue);
     }
 }

@@ -18,10 +18,6 @@ public class DeserializedCellValues {
         return (T) valueCache.get(valueReference);
     }
 
-    public void reset() {
-        valueCache.clear();
-    }
-
     private record DeserializedCellValue(int row, int column, Class<?> valueType) {
 
     }

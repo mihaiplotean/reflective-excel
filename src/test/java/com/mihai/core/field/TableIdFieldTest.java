@@ -7,7 +7,7 @@ import java.util.List;
 import com.mihai.core.annotation.TableId;
 import org.junit.jupiter.api.Test;
 
-class TableIdFieldTest {
+public class TableIdFieldTest {
 
     @Test
     public void invalidTypeParameterThrowsException() {

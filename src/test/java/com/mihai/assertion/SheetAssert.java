@@ -112,12 +112,6 @@ public class SheetAssert {
         Assertions.fail(message);
     }
 
-    private static Cell getCell(Sheet sheet, int rowIndex, int columnIndex) {
-        return Optional.ofNullable(sheet.getRow(rowIndex))
-                .map(row -> row.getCell(columnIndex))
-                .orElse(null);
-    }
-
     private String getCellValue(Cell cell) {
         if (cell == null) {
             return "";

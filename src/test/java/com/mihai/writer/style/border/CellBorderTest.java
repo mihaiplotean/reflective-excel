@@ -7,7 +7,7 @@ import com.mihai.writer.style.color.StyleColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.junit.jupiter.api.Test;
 
-class CellBorderTest {
+public class CellBorderTest {
 
     @Test
     public void creatingBorderUsingBuilderSetsValues() {

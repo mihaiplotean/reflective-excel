@@ -16,10 +16,6 @@ public interface ChildBeanReadNode {
         return getAnnotatedField().getField();
     }
 
-    default Class<?> getType() {
-        return getAnnotatedField().getFieldType();
-    }
-
     List<ChildBeanReadNode> getChildren();
 
     List<ChildBeanReadNode> getLeaves();

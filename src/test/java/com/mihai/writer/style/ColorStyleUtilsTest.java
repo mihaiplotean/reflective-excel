@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.apache.poi.ss.usermodel.*;
 import org.junit.jupiter.api.Test;
 
-class ColorStyleUtilsTest {
+public class ColorStyleUtilsTest {
 
     @Test
     public void assertionErrorThrownOnUnknownCellStyle() {

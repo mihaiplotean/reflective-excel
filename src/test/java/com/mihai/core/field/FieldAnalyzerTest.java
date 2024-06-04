@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.mihai.core.annotation.ExcelColumn;
 import org.junit.jupiter.api.Test;
 
-class FieldAnalyzerTest {
+public class FieldAnalyzerTest {
 
     @Test
     public void duplicateFixedColumnNamesThrowsException() {

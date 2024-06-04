@@ -9,7 +9,7 @@ import com.mihai.reader.bean.RootTableBeanReadNode;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 import org.junit.jupiter.api.Test;
 
-class TableReadingContextTest {
+public class TableReadingContextTest {
 
     @Test
     public void tableIdIsReturnedWhenInReadingState() {

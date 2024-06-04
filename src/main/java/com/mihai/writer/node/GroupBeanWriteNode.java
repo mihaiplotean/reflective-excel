@@ -29,11 +29,6 @@ public class GroupBeanWriteNode implements ChildBeanWriteNode {
     }
 
     @Override
-    public Class<?> getType() {
-        return field.getType();
-    }
-
-    @Override
     public int getLength() {
         return children.stream()
                 .mapToInt(ChildBeanWriteNode::getLength)

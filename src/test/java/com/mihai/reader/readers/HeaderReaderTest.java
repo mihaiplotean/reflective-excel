@@ -13,7 +13,7 @@ import com.mihai.reader.workbook.sheet.ReadableCell;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
-class HeaderReaderTest extends ExcelReadingTest {
+public class HeaderReaderTest extends ExcelReadingTest {
 
     @Test
     public void allHeadersInOneRowAreReadCorrectly() {

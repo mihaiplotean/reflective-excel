@@ -9,8 +9,6 @@ public interface ChildBeanWriteNode {
 
     Field getField();
 
-    Class<?> getType();
-
     int getLength();
 
     int getHeight();

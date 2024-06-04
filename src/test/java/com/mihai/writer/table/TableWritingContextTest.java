@@ -8,7 +8,7 @@ import java.util.List;
 import com.mihai.core.workbook.Bounds;
 import org.junit.jupiter.api.Test;
 
-class TableWritingContextTest {
+public class TableWritingContextTest {
 
     @Test
     public void appendedTableItLastTable() {

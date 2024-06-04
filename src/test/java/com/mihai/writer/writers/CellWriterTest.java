@@ -16,7 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.junit.jupiter.api.Test;
 
-class CellWriterTest extends ExcelWritingTest {
+public class CellWriterTest extends ExcelWritingTest {
 
     @Test
     public void cellIsCreated() {

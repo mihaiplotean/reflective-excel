@@ -8,7 +8,7 @@ import com.mihai.writer.style.color.StyleColor;
 import com.mihai.writer.table.TableWritingContext;
 import org.junit.jupiter.api.Test;
 
-class StyleProvidersTest {
+public class StyleProvidersTest {
 
     @Test
     public void noStyleProviderDoesNothing() {

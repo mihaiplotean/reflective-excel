@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.apache.poi.ss.usermodel.Cell;
 import org.junit.jupiter.api.Test;
 
-class CellValueFormatterTest extends ExcelReadingTest {
+public class CellValueFormatterTest extends ExcelReadingTest {
 
     @Test
     public void intValueCorrectlyFormatted() {

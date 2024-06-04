@@ -15,7 +15,7 @@ import com.mihai.reader.table.TableHeaders;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
-class AutoRowColumnDetectorTest extends ExcelReadingTest {
+public class AutoRowColumnDetectorTest extends ExcelReadingTest {
 
     @Test
     public void headerRowIsFoundBasedOnDefinedColumnsInBean() {

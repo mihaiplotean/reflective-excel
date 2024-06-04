@@ -9,7 +9,7 @@ import com.mihai.reader.ExcelReadingTest;
 import org.apache.poi.ss.usermodel.Cell;
 import org.junit.jupiter.api.Test;
 
-class ReadableRowTest extends ExcelReadingTest {
+public class ReadableRowTest extends ExcelReadingTest {
 
     @Test
     public void rowsAreEqualIfCellsAndRowNumberIsEqual() {

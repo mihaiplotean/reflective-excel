@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-class WrittenTableTest {
+public class WrittenTableTest {
 
     @Test
     public void columnNameRetrieval() {

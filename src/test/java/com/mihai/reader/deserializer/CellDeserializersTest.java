@@ -15,7 +15,7 @@ import com.mihai.reader.exception.BadInputException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.junit.jupiter.api.Test;
 
-class CellDeserializersTest extends ExcelReadingTest {
+public class CellDeserializersTest extends ExcelReadingTest {
 
     @Test
     public void stringDeserializationReturnsDefinedCellValue() {

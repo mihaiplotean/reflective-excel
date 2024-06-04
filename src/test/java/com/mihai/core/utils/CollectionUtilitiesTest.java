@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-class CollectionUtilitiesTest {
+public class CollectionUtilitiesTest {
 
     @Test
     public void lastElementMatchingConditionIsKept() {

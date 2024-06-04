@@ -16,7 +16,7 @@ import com.mihai.writer.node.RootTableBeanWriteNode;
 import com.mihai.writer.table.WrittenTableHeaders;
 import org.junit.jupiter.api.Test;
 
-class HeaderWriterTest extends ExcelWritingTest {
+public class HeaderWriterTest extends ExcelWritingTest {
 
     @Test
     public void fixedColumnHeaderIsWritten() {

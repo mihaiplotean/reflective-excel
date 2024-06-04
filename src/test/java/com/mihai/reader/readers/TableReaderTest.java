@@ -19,7 +19,7 @@ import com.mihai.reader.workbook.sheet.ReadableRow;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
-class TableReaderTest extends ExcelReadingTest {
+public class TableReaderTest extends ExcelReadingTest {
 
     private static final List<TestRow> EXPECTED_ROWS = List.of(
             new TestRow("value A", "value B"),

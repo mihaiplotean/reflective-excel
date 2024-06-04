@@ -12,7 +12,7 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.junit.jupiter.api.Test;
 
-class WritableCellStyleTest {
+public class WritableCellStyleTest {
 
     @Test
     public void formatIsSet() {

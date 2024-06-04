@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.mihai.reader.exception.BadInputException;
 import org.junit.jupiter.api.Test;
 
-class DefaultDeserializationContextTest {
+public class DefaultDeserializationContextTest {
 
     @Test
     public void missingDeserializerThrowsException() {

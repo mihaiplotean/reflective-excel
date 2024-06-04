@@ -15,7 +15,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 
-class ReflectiveExcelReaderTest {
+public class ReflectiveExcelReaderTest {
 
     @Test
     public void readingWorkbookWithoutSheetsReturnsEmptyList() throws IOException {

@@ -8,7 +8,7 @@ import java.util.List;
 import com.mihai.core.annotation.DynamicColumns;
 import org.junit.jupiter.api.Test;
 
-class DynamicBeanWriteNodeTest {
+public class DynamicBeanWriteNodeTest {
 
     @Test
     public void annotatingListAsDynamicColumnThrowsException() throws NoSuchFieldException {
@@ -16,7 +16,7 @@ class DynamicBeanWriteNodeTest {
         assertThrows(IllegalStateException.class, () -> new DynamicBeanWriteNode(field, new DummyValue()));
     }
 
-    public class DummyValue {
+    public static class DummyValue {
 
         @DynamicColumns
         private List<Object> values;

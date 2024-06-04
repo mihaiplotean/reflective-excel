@@ -12,7 +12,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.junit.jupiter.api.Test;
 
-class WritableCellTest extends ExcelWritingTest {
+public class WritableCellTest extends ExcelWritingTest {
 
     @Test
     public void stringValueAppliedToCell() {

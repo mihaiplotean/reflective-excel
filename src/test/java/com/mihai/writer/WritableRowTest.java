@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
-class WritableRowTest extends ExcelWritingTest {
+public class WritableRowTest extends ExcelWritingTest {
 
     @Test
     public void retrievingCellByColumnTwiceReturnsSameCell() {

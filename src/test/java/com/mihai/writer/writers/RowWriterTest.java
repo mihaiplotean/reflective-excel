@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.mihai.core.annotation.DynamicColumns;
 import com.mihai.core.annotation.ExcelColumn;
+import com.mihai.writer.ExcelWritingTest;
 import com.mihai.writer.WritableSheet;
 import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.node.RootTableBeanWriteNode;
@@ -19,21 +20,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class RowWriterTest {
-
-    private XSSFWorkbook workbook;
-    private XSSFSheet actualSheet;
-
-    @BeforeEach
-    public void setUp() {
-        workbook = new XSSFWorkbook();
-        actualSheet = workbook.createSheet();
-    }
-
-    @AfterEach
-    public void tearDown() throws IOException {
-        workbook.close();
-    }
+public class RowWriterTest extends ExcelWritingTest {
 
     @Test
     public void rowsWithFixedColumnsWritten() {
@@ -45,10 +32,10 @@ class RowWriterTest {
         writer.writeRow(row2);
 
         // row 0 is reserved for the header, so the first written row has index 1
-        assertEquals("value A", actualSheet.getRow(1).getCell(0).getStringCellValue());
-        assertEquals("value B", actualSheet.getRow(1).getCell(1).getStringCellValue());
-        assertEquals("value C", actualSheet.getRow(2).getCell(0).getStringCellValue());
-        assertEquals("value D", actualSheet.getRow(2).getCell(1).getStringCellValue());
+        assertEquals("value A", getCell(1,0).getStringCellValue());
+        assertEquals("value B", getCell(1,1).getStringCellValue());
+        assertEquals("value C", getCell(2,0).getStringCellValue());
+        assertEquals("value D", getCell(2,1).getStringCellValue());
     }
 
     @Test
@@ -60,17 +47,15 @@ class RowWriterTest {
         writer.writeRow(row1);
         writer.writeRow(row2);
 
-        assertEquals("a", actualSheet.getRow(1).getCell(0).getStringCellValue());
-        assertNull(actualSheet.getRow(1).getCell(1));
-        assertEquals("b", actualSheet.getRow(2).getCell(0).getStringCellValue());
-        assertNull(actualSheet.getRow(2).getCell(1));
+        assertEquals("a", getCell(1,0).getStringCellValue());
+        assertNull(getCell(1,1));
+        assertEquals("b", getCell(2,0).getStringCellValue());
+        assertNull(getCell(2,1));
     }
 
     private RowWriter createWriter(Object firstRow) {
         RootTableBeanWriteNode node = new RootTableBeanWriteNode(firstRow.getClass(), firstRow);
-
-        return new RowWriter(new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()), node,
-                             new CellWriter(new WritableSheet(actualSheet)));
+        return new RowWriter(createSheetContext(), node, new CellWriter(getWritableSheet()));
     }
 
     private static class FixedColumnsRow {

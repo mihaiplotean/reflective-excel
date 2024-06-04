@@ -10,7 +10,7 @@ import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 
-class DefaultSerializationContextTest {
+public class DefaultSerializationContextTest {
 
     @Test
     public void serializedIntPrimitiveIsInputInt() {

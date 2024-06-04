@@ -27,11 +27,6 @@ public class FixedBeanWriteNode implements ChildBeanWriteNode {
     }
 
     @Override
-    public Class<?> getType() {
-        return field.getType();
-    }
-
-    @Override
     public int getLength() {
         return 1;
     }

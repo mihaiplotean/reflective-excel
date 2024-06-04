@@ -2,45 +2,21 @@ package com.mihai.writer.writers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.IOException;
 import java.util.List;
 
 import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.core.workbook.Bounds;
 import com.mihai.core.workbook.CellLocation;
 import com.mihai.writer.ExcelWritingSettings;
-import com.mihai.writer.WritableSheet;
-import com.mihai.writer.WritableSheetContext;
-import com.mihai.writer.serializer.DefaultSerializationContext;
-import com.mihai.writer.style.DefaultStyleContext;
+import com.mihai.writer.ExcelWritingTest;
 import com.mihai.writer.table.WrittenTable;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TableWriterTest {
-
-    private XSSFWorkbook workbook;
-    private XSSFSheet actualSheet;
-
-    @BeforeEach
-    public void setUp() {
-        workbook = new XSSFWorkbook();
-        actualSheet = workbook.createSheet();
-    }
-
-    @AfterEach
-    public void tearDown() throws IOException {
-        workbook.close();
-    }
+public class TableWriterTest extends ExcelWritingTest {
 
     @Test
     public void tableFixedHeadersAndRowsAreWritten() {
-        TableWriter writer = new TableWriter(new WritableSheet(actualSheet),
-                                             new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()),
-                                             ExcelWritingSettings.DEFAULT);
+        TableWriter writer = createTableWriter();
 
         List<FixedColumnsRow> rows = List.of(
                 new FixedColumnsRow("row 1 value A", "row 1 value B"),
@@ -54,32 +30,30 @@ class TableWriterTest {
         assertEquals("test column B", table.getColumnName(1));
         assertEquals(new Bounds(0, 0, 2, 1), table.getBounds());
 
-        assertEquals("test column A", actualSheet.getRow(0).getCell(0).getStringCellValue());
-        assertEquals("test column B", actualSheet.getRow(0).getCell(1).getStringCellValue());
-        assertEquals("row 1 value A", actualSheet.getRow(1).getCell(0).getStringCellValue());
-        assertEquals("row 1 value B", actualSheet.getRow(1).getCell(1).getStringCellValue());
-        assertEquals("row 2 value A", actualSheet.getRow(2).getCell(0).getStringCellValue());
-        assertEquals("row 2 value B", actualSheet.getRow(2).getCell(1).getStringCellValue());
+        assertEquals("test column A", getCell(0, 0).getStringCellValue());
+        assertEquals("test column B", getCell(0, 1).getStringCellValue());
+        assertEquals("row 1 value A", getCell(1, 0).getStringCellValue());
+        assertEquals("row 1 value B", getCell(1, 1).getStringCellValue());
+        assertEquals("row 2 value A", getCell(2, 0).getStringCellValue());
+        assertEquals("row 2 value B", getCell(2, 1).getStringCellValue());
     }
 
     @Test
     public void onlyFixedHeadersWrittenWhenNoRowsToWrite() {
-        TableWriter writer = new TableWriter(new WritableSheet(actualSheet),
-                                             new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()),
-                                             ExcelWritingSettings.DEFAULT);
+        TableWriter writer = createTableWriter();
 
         WrittenTable table = writer.writeTable(List.of(), FixedColumnsRow.class, "");
 
         assertEquals(new Bounds(0, 0, 0, 1), table.getBounds());
 
-        assertEquals("test column A", actualSheet.getRow(0).getCell(0).getStringCellValue());
-        assertEquals("test column B", actualSheet.getRow(0).getCell(1).getStringCellValue());
+        assertEquals("test column A", getCell(0, 0).getStringCellValue());
+        assertEquals("test column B", getCell(0, 1).getStringCellValue());
     }
 
     @Test
     public void tableOffsetIsApplied() {
-        TableWriter writer = new TableWriter(new WritableSheet(actualSheet),
-                                             new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()),
+        TableWriter writer = new TableWriter(getWritableSheet(),
+                                             createSheetContext(),
                                              ExcelWritingSettings.builder()
                                                      .tableStartCellLocator((context, tableId) -> new CellLocation(3, 3)).build());
 

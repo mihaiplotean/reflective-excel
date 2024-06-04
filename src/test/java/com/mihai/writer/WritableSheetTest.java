@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.junit.jupiter.api.Test;
 
-class WritableSheetTest extends ExcelWritingTest {
+public class WritableSheetTest extends ExcelWritingTest {
 
     @Test
     public void cellIsCreatedOnWrite() {

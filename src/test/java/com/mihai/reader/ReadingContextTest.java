@@ -6,7 +6,7 @@ import com.mihai.reader.exception.BadInputException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.junit.jupiter.api.Test;
 
-class ReadingContextTest extends ExcelReadingTest {
+public class ReadingContextTest extends ExcelReadingTest {
 
     @Test
     public void retrievingNonExistentCellValueByRowColumnReturnsNull() {

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.mihai.writer.style.color.StyleColor;
 import org.junit.jupiter.api.Test;
 
-class StyleFontTest {
+public class StyleFontTest {
 
     @Test
     public void creatingFontUsingBuilderSetsValues() {

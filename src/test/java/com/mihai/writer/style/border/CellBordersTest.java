@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.junit.jupiter.api.Test;
 
-class CellBordersTest {
+public class CellBordersTest {
 
     @Test
     public void allSidesThingBorderCorrectlyCreated() {

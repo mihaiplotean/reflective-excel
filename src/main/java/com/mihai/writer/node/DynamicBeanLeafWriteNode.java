@@ -25,11 +25,6 @@ public class DynamicBeanLeafWriteNode implements ChildBeanWriteNode {
     }
 
     @Override
-    public Class<?> getType() {
-        return type;
-    }
-
-    @Override
     public int getLength() {
         return 1;
     }

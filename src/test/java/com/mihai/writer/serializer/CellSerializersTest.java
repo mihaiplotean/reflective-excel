@@ -6,7 +6,7 @@ import java.util.Currency;
 
 import org.junit.jupiter.api.Test;
 
-class CellSerializersTest {
+public class CellSerializersTest {
 
     @Test
     public void serializedValueUsingIdentitySerializerIsEqualToInput() {

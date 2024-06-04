@@ -13,7 +13,7 @@ import com.mihai.writer.table.WrittenTable;
 import com.mihai.writer.table.WrittenTableHeaders;
 import org.junit.jupiter.api.Test;
 
-class DefaultTableStartCellLocatorTest {
+public class DefaultTableStartCellLocatorTest {
 
     @Test
     public void firstTableIsLocatedAtCellA1() {

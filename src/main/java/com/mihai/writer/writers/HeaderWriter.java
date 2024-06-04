@@ -26,7 +26,7 @@ public class HeaderWriter {
         int currentColumn = 0;
         List<WrittenTableHeader> leafHeaders = new ArrayList<>();
         for (ChildBeanWriteNode child : rootNode.getChildren()) {
-            List<WrittenTableHeader> headers = writeHeader(child, rootNode.getHeight() + 1, 0, currentColumn);
+            List<WrittenTableHeader> headers = writeHeader(child, rootNode.getHeight() + 1, currentColumn);
             currentColumn += child.getLength();
             leafHeaders.addAll(headers);
         }
@@ -34,9 +34,9 @@ public class HeaderWriter {
         return new WrittenTableHeaders(rootNode.getHeight() - 1, leafHeaders);
     }
 
-    private List<WrittenTableHeader> writeHeader(ChildBeanWriteNode node, int headerHeight, int currentRow, int currentColumn) {
+    private List<WrittenTableHeader> writeHeader(ChildBeanWriteNode node, int headerHeight, int currentColumn) {
         List<WrittenTableHeader> headers = new ArrayList<>();
-        writeHeader(node, headerHeight, currentRow, currentColumn, headers);
+        writeHeader(node, headerHeight, 0, currentColumn, headers);
         return headers;
     }
 

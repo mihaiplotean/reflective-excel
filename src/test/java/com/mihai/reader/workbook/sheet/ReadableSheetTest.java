@@ -8,7 +8,7 @@ import com.mihai.reader.ExcelReadingTest;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
-class ReadableSheetTest extends ExcelReadingTest {
+public class ReadableSheetTest extends ExcelReadingTest {
 
     @Test
     public void rowContainsOnlyCellsWithDefinedValue() {

@@ -8,7 +8,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
-class SimpleCellTest extends ExcelReadingTest {
+public class SimpleCellTest extends ExcelReadingTest {
 
     @Test
     public void cellsAreEqualIfPOICellIsEqual() {

@@ -10,7 +10,7 @@ import com.mihai.writer.table.WrittenTableHeader;
 import com.mihai.writer.table.WrittenTableHeaders;
 import org.junit.jupiter.api.Test;
 
-class WritingContextTest {
+public class WritingContextTest {
 
     @Test
     public void currentColumnEmptyWhenNoHeadersSpecified() {

@@ -6,6 +6,7 @@ import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.writers.CellWriter;
 import com.mihai.writer.writers.HeaderWriter;
+import com.mihai.writer.writers.TableWriter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -48,7 +49,14 @@ public class ExcelWritingTest {
     }
 
     public HeaderWriter createHeaderWriter() {
-        return new HeaderWriter(createCellWriter(),
-                                new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext()));
+        return new HeaderWriter(createCellWriter(), createSheetContext());
+    }
+
+    public TableWriter createTableWriter() {
+        return new TableWriter(writableSheet, createSheetContext(), ExcelWritingSettings.DEFAULT);
+    }
+
+    public WritableSheetContext createSheetContext() {
+        return new WritableSheetContext(new DefaultSerializationContext(), new DefaultStyleContext());
     }
 }
