@@ -2,6 +2,11 @@ package com.mihai.reader.table;
 
 import com.mihai.core.workbook.Bounds;
 
+/**
+ * Table which has already been read. Can be useful when multiple tables are read at once
+ * using {@link com.mihai.reader.ReflectiveExcelReader#read(Class)} and you need the information about a previously
+ * read table.
+ */
 public class ReadTable {
 
     private final String id;

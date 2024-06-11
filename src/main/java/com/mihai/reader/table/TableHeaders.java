@@ -7,6 +7,10 @@ import java.util.stream.Collectors;
 
 import com.mihai.reader.workbook.sheet.ReadableCell;
 
+/**
+ * Contains the header cells of a table.
+ * If the table header contains grouped cells, the header is represented by the cells in the last header row.
+ */
 public class TableHeaders implements Iterable<TableHeader> {
 
     private final List<TableHeader> headers;

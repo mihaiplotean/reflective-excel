@@ -8,6 +8,13 @@ import com.mihai.reader.ReadingContext;
 import com.mihai.reader.exception.BadInputException;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 
+/**
+ * Deserializes a currency code to a {@link Currency}. It is case-insensitive.
+ * <pre>
+ * Example: "eur" -> Currency.getInstance("EUR")
+ * </pre>
+ * @see Currency
+ */
 public class CurrencyDeserializer implements CellDeserializer<Currency> {
 
     private static final Set<String> KNOWN_CURRENCIES = getKnownCurrencyCodes();

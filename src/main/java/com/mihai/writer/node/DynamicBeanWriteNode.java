@@ -48,7 +48,7 @@ public class DynamicBeanWriteNode implements ChildBeanWriteNode {
     @Override
     public List<? extends ChildBeanWriteNode> getChildren() {
         return columnToValueMap.keySet().stream()
-                .map(value -> new DynamicBeanLeafWriteNode(valueType, value))
+                .map(value -> new DynamicBeanLeafWriteNode(value))
                 .toList();
     }
 

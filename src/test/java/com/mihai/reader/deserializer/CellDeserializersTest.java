@@ -42,6 +42,17 @@ public class CellDeserializersTest extends ExcelReadingTest {
     }
 
     @Test
+    public void numberDeserializationOfFormulaCellReturnsCorrectInteger() {
+        createRow(0).createCell(0).setCellValue(1);
+        createRow(1).createCell(0).setCellValue(2);
+
+        Cell cell = createRow(2).createCell(0);
+        cell.setCellFormula("SUM(A1,A2)");
+        Double cellValue = CellDeserializers.forDouble().deserialize(null, getReadableCell(2, 0));
+        assertEquals(3, cellValue);
+    }
+
+    @Test
     public void trueValueDeserializationReturnsCorrectBoolean() {
         Cell cell = createRow(0).createCell(0);
         cell.setCellValue(true);

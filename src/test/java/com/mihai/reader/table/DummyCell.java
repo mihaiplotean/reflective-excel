@@ -23,6 +23,11 @@ public class DummyCell implements ReadableCell {
     }
 
     @Override
+    public double getNumericValue() {
+        return -1;
+    }
+
+    @Override
     public Date getDateValue() {
         return null;
     }

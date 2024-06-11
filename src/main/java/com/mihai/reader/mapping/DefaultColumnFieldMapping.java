@@ -48,6 +48,9 @@ public class DefaultColumnFieldMapping implements ColumnFieldMapping {
             HeaderMappedField matchingField = findMatchingField(childBeanNodes, header);
             columnIndexToFieldMap.put(header.getColumnNumber(), matchingField);
         }
+
+        // todo: throw exception on duplicate fixed columns in sheet, or missing defined columns? now exception thrown when developer
+        //  defines to dynamic columns.
     }
 
     private HeaderMappedField findMatchingField(List<ChildBeanReadNode> fields, TableHeader header) {

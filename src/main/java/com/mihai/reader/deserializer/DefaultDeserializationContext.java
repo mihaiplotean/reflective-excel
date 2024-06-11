@@ -11,6 +11,11 @@ import com.mihai.reader.ReadingContext;
 import com.mihai.reader.exception.BadInputException;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 
+/**
+ * Provides a default implementation for the deserialization of the most used java primitive types,
+ * their corresponding wrapper classes and some other types, as defined in {@link #registerDeserializers()}.
+ * You are encouraged to extend this class if you would like to provide more, or replace some of the existing deserializers.
+ */
 public class DefaultDeserializationContext implements DeserializationContext {
 
     private final Map<Class<?>, CellDeserializer<?>> deserializerMap = new HashMap<>();

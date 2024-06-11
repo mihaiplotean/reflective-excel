@@ -41,7 +41,7 @@ public class MultiTableTest {
     public void readingMultipleTablesReturnsExpectedTableObjects() {
         InputStream inputStream = getClass().getResourceAsStream("/test-multiple-tables.xlsx");
         ExcelReadingSettings settings = ExcelReadingSettings.builder()
-                .autoRowColumnDetector()
+                .autoHeaderStartDetection()
                 .build();
         ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream, settings);
         ShippingSheet table = reader.read(ShippingSheet.class);

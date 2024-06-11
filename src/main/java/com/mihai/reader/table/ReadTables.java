@@ -4,6 +4,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Keeps track which tables have been read so far.
+ */
 public class ReadTables implements Iterable<ReadTable> {
 
     private final Map<String, ReadTable> tablePerId = new LinkedHashMap<>();

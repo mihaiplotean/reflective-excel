@@ -4,9 +4,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Date;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import com.mihai.reader.exception.BadInputException;
+import com.mihai.reader.workbook.sheet.ReadableCell;
 
+/**
+ * Provides cell deserializers for various types.
+ * @see CellDeserializer
+ */
 public class CellDeserializers {
 
     private CellDeserializers() {
@@ -28,6 +35,17 @@ public class CellDeserializers {
                 ));
             }
         };
+    }
+
+    private static <T> T parseStringValueToNumeric(ReadableCell cell, Function<String, T> parsingFunction, String failureMessageFormat) {
+        String cellValue = cell.getValue();
+        try {
+            return parsingFunction.apply(cellValue);
+        } catch (NumberFormatException ex) {
+            throw new BadInputException(String.format(
+                    failureMessageFormat, cellValue, cell.getCellReference()
+            ));
+        }
     }
 
     public static CellDeserializer<Long> forLong() {

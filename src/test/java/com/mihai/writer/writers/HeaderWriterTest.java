@@ -9,7 +9,7 @@ import com.mihai.core.annotation.DynamicColumns;
 import com.mihai.core.annotation.ExcelCellGroup;
 import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.reader.ReadingContext;
-import com.mihai.reader.detector.ColumnDetector;
+import com.mihai.reader.detector.DynamicColumnDetector;
 import com.mihai.reader.detector.MaybeDynamicColumn;
 import com.mihai.writer.ExcelWritingTest;
 import com.mihai.writer.node.RootTableBeanWriteNode;
@@ -96,7 +96,7 @@ public class HeaderWriterTest extends ExcelWritingTest {
 
     protected static class DynamicColumnSet {
 
-        @DynamicColumns(detector = NeverColumnDetector.class)
+        @DynamicColumns(detector = NeverDynamicColumnDetector.class)
         private Map<Integer, String> columns = new LinkedHashMap<>();
 
         public DynamicColumnSet() {
@@ -104,9 +104,9 @@ public class HeaderWriterTest extends ExcelWritingTest {
             columns.put(2, "");
         }
 
-        protected static class NeverColumnDetector implements ColumnDetector {
+        protected static class NeverDynamicColumnDetector implements DynamicColumnDetector {
 
-            public NeverColumnDetector() {
+            public NeverDynamicColumnDetector() {
             }
 
             @Override

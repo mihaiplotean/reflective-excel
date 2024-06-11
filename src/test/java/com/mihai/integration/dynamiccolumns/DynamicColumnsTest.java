@@ -14,7 +14,7 @@ import com.mihai.core.annotation.DynamicColumns;
 import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.ReflectiveExcelReader;
-import com.mihai.reader.detector.ColumnDetector;
+import com.mihai.reader.detector.DynamicColumnDetector;
 import com.mihai.reader.detector.MaybeDynamicColumn;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.ReflectiveExcelWriter;
@@ -84,7 +84,7 @@ public class DynamicColumnsTest {
         @ExcelColumn("Country")
         private String country;
 
-        @DynamicColumns(detector = PopulationRowDynamicColumnDetector.class)
+        @DynamicColumns(detector = PopulationRowDynamicDynamicColumnDetector.class)
         private Map<Integer, Integer> populationPerYear;
 
         public PopulationRow() {
@@ -108,7 +108,7 @@ public class DynamicColumnsTest {
             return populationPerYear.getOrDefault(year, -1);
         }
 
-        public static class PopulationRowDynamicColumnDetector implements ColumnDetector {
+        public static class PopulationRowDynamicDynamicColumnDetector implements DynamicColumnDetector {
 
             @Override
             public boolean test(ReadingContext context, MaybeDynamicColumn column) {

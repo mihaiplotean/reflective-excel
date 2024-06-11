@@ -8,6 +8,9 @@ import com.mihai.reader.ReadingContext;
 import com.mihai.reader.exception.BadInputException;
 import com.mihai.reader.workbook.sheet.ReadableCell;
 
+/**
+ * Deserializes a local date time string representation to a {@link LocalDateTime}, using the provided date format.
+ */
 public class LocalDateTimeDeserializer implements CellDeserializer<LocalDateTime> {
 
     private final DateTimeFormatter dateTimeFormatter;

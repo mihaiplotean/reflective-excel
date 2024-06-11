@@ -2,7 +2,10 @@ package com.mihai.reader.detector;
 
 import com.mihai.reader.ReadingContext;
 
-public class AlwaysTrueColumnDetector implements ColumnDetector {
+/**
+ * A column detector which considers all columns dynamic.
+ */
+public class AlwaysTrueDynamicColumnDetector implements DynamicColumnDetector {
 
     @Override
     public boolean test(ReadingContext context, MaybeDynamicColumn column) {

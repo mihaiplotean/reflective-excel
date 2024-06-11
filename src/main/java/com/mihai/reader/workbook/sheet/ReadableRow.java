@@ -7,6 +7,10 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Represents a row, or a part of a row in the Excel sheet. Since, for simplicity, this framework considers merged cells
+ * as one single cell, the row might contain cells that start in another row but intersect this one.
+ */
 public class ReadableRow implements Iterable<ReadableCell> {
 
     private final int row;

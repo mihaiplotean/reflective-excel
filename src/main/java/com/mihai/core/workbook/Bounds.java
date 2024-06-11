@@ -1,5 +1,9 @@
 package com.mihai.core.workbook;
 
+/**
+ * Represents the bounds of a cell, or a group of cells. In case of a single cell,
+ * the starting row is equal to the end row, and the starting column - to the end column.
+ */
 public record Bounds(int startRow, int startColumn, int endRow, int endColumn) {
 
     public Bounds {
@@ -41,15 +45,5 @@ public record Bounds(int startRow, int startColumn, int endRow, int endColumn) {
 
     public int getLength() {
         return endColumn - startColumn + 1;
-    }
-
-    @Override
-    public String toString() {
-        return "Bounds{" +
-                "startRow=" + startRow +
-                ", startColumn=" + startColumn +
-                ", endRow=" + endRow +
-                ", endColumn=" + endColumn +
-                '}';
     }
 }

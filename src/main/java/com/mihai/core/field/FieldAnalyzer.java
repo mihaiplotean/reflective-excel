@@ -12,7 +12,7 @@ import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.core.annotation.ExcelProperty;
 import com.mihai.core.annotation.TableId;
 import com.mihai.core.utils.ReflectionUtilities;
-import com.mihai.reader.detector.ColumnDetector;
+import com.mihai.reader.detector.DynamicColumnDetector;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 public class FieldAnalyzer {
@@ -49,8 +49,8 @@ public class FieldAnalyzer {
         List<Field> fields = FieldUtils.getFieldsListWithAnnotation(clazz, DynamicColumns.class);
         return fields.stream()
                 .map(field -> {
-                    Class<? extends ColumnDetector> detectorClazz = field.getAnnotation(DynamicColumns.class).detector();
-                    ColumnDetector detector = ReflectionUtilities.newObject(detectorClazz);
+                    Class<? extends DynamicColumnDetector> detectorClazz = field.getAnnotation(DynamicColumns.class).detector();
+                    DynamicColumnDetector detector = ReflectionUtilities.newObject(detectorClazz);
                     return new DynamicColumnField(field, detector);
                 })
                 .toList();

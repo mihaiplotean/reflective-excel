@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
+import com.mihai.reader.exception.BadInputException;
 import org.apache.poi.ss.usermodel.Cell;
 
 public class SimpleCell implements ReadableCell {
@@ -35,12 +36,24 @@ public class SimpleCell implements ReadableCell {
 
     @Override
     public Date getDateValue() {
-        return cell.getDateCellValue();
+        try {
+            return cell.getDateCellValue();
+        } catch (IllegalStateException e) {
+            throw new BadInputException(String.format(
+                    "Value \"%s\" defined in cell %s does not have a date number format", cellValue, cellReference
+            ));
+        }
     }
 
     @Override
     public LocalDateTime getLocalDateTimeValue() {
-        return cell.getLocalDateTimeCellValue();
+        try {
+            return cell.getLocalDateTimeCellValue();
+        } catch (IllegalStateException e) {
+            throw new BadInputException(String.format(
+                    "Value \"%s\" defined in cell %s does not have a date number format", cellValue, cellReference
+            ));
+        }
     }
 
     @Override

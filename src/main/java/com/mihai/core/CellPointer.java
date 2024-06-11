@@ -1,5 +1,8 @@
 package com.mihai.core;
 
+/**
+ * Keeps track of the current row and cell that is being read or written.
+ */
 public class CellPointer {
 
     private int currentRow = -1;

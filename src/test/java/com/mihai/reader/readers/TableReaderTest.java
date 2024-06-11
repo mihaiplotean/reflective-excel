@@ -66,7 +66,7 @@ public class TableReaderTest extends ExcelReadingTest {
         ExcelReadingSettings skipAllRowsSettings = ExcelReadingSettings.builder()
                 .rowColumnDetector(new SimpleRowColumnDetector("A1") {
                     @Override
-                    public boolean shouldSkipRow(ReadingContext context, ReadableRow row) {
+                    public boolean shouldSkipRow(ReadingContext context, ReadableRow tableRow) {
                         return true;
                     }
                 })

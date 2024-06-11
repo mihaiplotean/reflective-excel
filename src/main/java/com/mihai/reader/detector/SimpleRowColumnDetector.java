@@ -6,10 +6,17 @@ import com.mihai.reader.workbook.sheet.ReadableRow;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.util.CellReference;
 
+/**
+ * Denotes that the table header starts at the provided cell. The headers end when an empty header is encountered.
+ * The table rows end when an empty row is encountered.
+ */
 public class SimpleRowColumnDetector implements TableRowColumnDetector {
 
     private final String headerStartCellReference;
 
+    /**
+     * @param headerStartCellReference the reference to the table's first header cell. Example: "A1", "B2".
+     */
     public SimpleRowColumnDetector(String headerStartCellReference) {
         this.headerStartCellReference = headerStartCellReference;
     }
@@ -29,7 +36,7 @@ public class SimpleRowColumnDetector implements TableRowColumnDetector {
     }
 
     @Override
-    public boolean shouldSkipRow(ReadingContext context, ReadableRow row) {
+    public boolean shouldSkipRow(ReadingContext context, ReadableRow tableRow) {
         return false;
     }
 

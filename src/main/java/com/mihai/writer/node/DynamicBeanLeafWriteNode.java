@@ -6,12 +6,10 @@ import java.util.List;
 
 public class DynamicBeanLeafWriteNode implements ChildBeanWriteNode {
 
-    private final Class<?> type;
     private final Object name;
 
-    public DynamicBeanLeafWriteNode(Class<?> type, Object name) {
+    public DynamicBeanLeafWriteNode(Object name) {
         this.name = name;
-        this.type = type;
     }
 
     @Override

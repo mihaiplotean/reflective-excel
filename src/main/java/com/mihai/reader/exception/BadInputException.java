@@ -2,6 +2,9 @@ package com.mihai.reader.exception;
 
 import com.mihai.core.ReflectiveExcelException;
 
+/**
+ * Exception denoting issues with the input sheet data.
+ */
 public class BadInputException extends ReflectiveExcelException {
 
     private static final String NO_DESERIALIZER_CLASS_X_MESSAGE = "A deserializer for class \"%s\" has not been registered";

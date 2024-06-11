@@ -12,6 +12,10 @@ import com.mihai.reader.workbook.sheet.ReadableCell;
 import com.mihai.reader.workbook.sheet.ReadableRow;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Tries to automatically find the table bounds of the type to be read, based on the defined
+ * bean information, such as the fixed and grouped column names.
+ */
 public class AutoRowColumnDetector implements TableRowColumnDetector {
 
     @Override
@@ -72,7 +76,7 @@ public class AutoRowColumnDetector implements TableRowColumnDetector {
     }
 
     @Override
-    public boolean shouldSkipRow(ReadingContext context, ReadableRow row) {
+    public boolean shouldSkipRow(ReadingContext context, ReadableRow tableRow) {
         return false;
     }
 }

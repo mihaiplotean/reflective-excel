@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.mihai.core.utils.ReflectionUtilities;
-import com.mihai.reader.detector.ColumnDetector;
+import com.mihai.reader.detector.DynamicColumnDetector;
 
 public class DynamicColumnField implements AnnotatedField {
 
@@ -16,10 +16,10 @@ public class DynamicColumnField implements AnnotatedField {
             Map.class
     );
 
-    private final ColumnDetector columnDetector;
+    private final DynamicColumnDetector columnDetector;
     private final Field field;
 
-    public DynamicColumnField(Field field, ColumnDetector columnDetector) {
+    public DynamicColumnField(Field field, DynamicColumnDetector columnDetector) {
         validateFieldType(field);
         this.columnDetector = columnDetector;
         this.field = field;
@@ -49,7 +49,7 @@ public class DynamicColumnField implements AnnotatedField {
         return ReflectionUtilities.hasClassTypeParameters(field);
     }
 
-    public ColumnDetector getColumnDetector() {
+    public DynamicColumnDetector getColumnDetector() {
         return columnDetector;
     }
 

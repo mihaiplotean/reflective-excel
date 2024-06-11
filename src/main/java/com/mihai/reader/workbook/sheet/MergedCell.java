@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import com.mihai.core.workbook.Bounds;
+import com.mihai.reader.exception.BadInputException;
 import org.apache.poi.ss.usermodel.Cell;
 
 public final class MergedCell implements ReadableCell {
