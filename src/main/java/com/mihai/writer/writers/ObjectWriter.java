@@ -49,34 +49,32 @@ public class ObjectWriter {
     @SuppressWarnings("unchecked")
     private void writeCellValues(CellWriter cellWriter, CellValueField valueField, Object object) {
         Field field = valueField.getField();
-        Class<Object> type = (Class<Object>) field.getType();
         Object value = ReflectionUtilities.readField(field, object);
 
         sheetContext.setCurrentRow(valueField.getRow());
         sheetContext.setCurrentColumn(valueField.getColumn());
 
-        WritableCellStyle style = sheetContext.getCellStyle(value);
-        WritableCellStyle typeStyle = sheetContext.getTypeStyle(type);
+        WritableCellStyle typeStyle = sheetContext.getTypeStyle((Class<Object>) field.getType(), value);
+        WritableCellStyle cellStyle = sheetContext.getCellStyle(value);
 
         cellWriter.writeCell(
                 new WritableCell(
                         value,
                         valueField.getRow(),
                         valueField.getColumn()
-                ), List.of(style, typeStyle));
+                ), List.of(typeStyle, cellStyle));
         sheetContext.resetCellPointer();
     }
 
     @SuppressWarnings("unchecked")
     private void writePropertyValuePairs(CellWriter cellWriter, KeyValueField propertyField, Object object) {
         Field field = propertyField.getField();
-        Class<Object> type = (Class<Object>) field.getType();
         Object value = ReflectionUtilities.readField(field, object);
 
         sheetContext.setCurrentRow(propertyField.getValueRow());
         sheetContext.setCurrentColumn(propertyField.getValueColumn());
 
-        WritableCellStyle valueTypeStyle = sheetContext.getTypeStyle(type);
+        WritableCellStyle valueTypeStyle = sheetContext.getTypeStyle((Class<Object>) field.getType(), value);
         WritableCellStyle valueCellStyle = sheetContext.getCellStyle(value);
 
         cellWriter.writeCell(
@@ -84,20 +82,21 @@ public class ObjectWriter {
                         value,
                         propertyField.getValueRow(),
                         propertyField.getValueColumn()
-                ), List.of(valueCellStyle, valueTypeStyle));
+                ), List.of(valueTypeStyle, valueCellStyle));
 
         sheetContext.setCurrentRow(propertyField.getPropertyRow());
         sheetContext.setCurrentColumn(propertyField.getPropertyColumn());
 
-        WritableCellStyle propertyTypeStyle = sheetContext.getTypeStyle(String.class);
-        WritableCellStyle propertyCellStyle = sheetContext.getCellStyle(propertyField.getPropertyName());
+        String propertyName = propertyField.getPropertyName();
+        WritableCellStyle propertyTypeStyle = sheetContext.getTypeStyle(String.class, propertyName);
+        WritableCellStyle propertyCellStyle = sheetContext.getCellStyle(propertyName);
 
         cellWriter.writeCell(
                 new WritableCell(
-                        propertyField.getPropertyName(),
+                        propertyName,
                         propertyField.getPropertyRow(),
                         propertyField.getPropertyColumn()
-                ), List.of(propertyCellStyle, propertyTypeStyle));
+                ), List.of(propertyTypeStyle, propertyCellStyle));
         sheetContext.resetCellPointer();
     }
 

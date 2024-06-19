@@ -4,6 +4,9 @@ import com.mihai.core.workbook.CellLocation;
 import com.mihai.writer.WritingContext;
 import com.mihai.writer.table.WrittenTable;
 
+/**
+ * The first table is written at cell A1. The following ones are written 2 rows down after each other.
+ */
 public class DefaultTableStartCellLocator implements TableStartCellLocator {
 
     @Override

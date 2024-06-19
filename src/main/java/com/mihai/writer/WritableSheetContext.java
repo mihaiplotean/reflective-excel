@@ -1,6 +1,7 @@
 package com.mihai.writer;
 
 import com.mihai.core.CellPointer;
+import com.mihai.writer.node.TypedValue;
 import com.mihai.writer.serializer.SerializationContext;
 import com.mihai.writer.style.CellStyleContext;
 import com.mihai.writer.style.WritableCellStyle;
@@ -42,16 +43,16 @@ public class WritableSheetContext {
         return cellStyleContext.getRowStyle(writingContext, row);
     }
 
-    public WritableCellStyle getTypeStyle(Object target) {
-        return cellStyleContext.getTypeStyle(writingContext, target);
+    public <T> WritableCellStyle getTypeStyle(Class<T> clazz, T target) {
+        return cellStyleContext.getTypeStyle(writingContext, clazz, target);
     }
 
-    public WritableCellStyle getColumnStyle(Object target) {
-        return cellStyleContext.getColumnStyle(writingContext, target);
+    public WritableCellStyle getColumnStyle(Object columnName) {
+        return cellStyleContext.getColumnStyle(writingContext, columnName);
     }
 
-    public WritableCellStyle getCellStyle(Object target) {
-        return cellStyleContext.getCellStyle(writingContext, target);
+    public WritableCellStyle getCellStyle(Object cellValue) {
+        return cellStyleContext.getCellStyle(writingContext, cellValue);
     }
 
     public void setWritingTable(boolean writingTable) {

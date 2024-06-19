@@ -2,6 +2,9 @@ package com.mihai.writer.node;
 
 import java.util.List;
 
+/**
+ * This is a tree representation of type to be written, corresponding to the table row. The child nodes are the type's fields.
+ */
 public class RootTableBeanWriteNode {
 
     private final Class<?> type;

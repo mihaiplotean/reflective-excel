@@ -11,6 +11,7 @@ import java.util.Locale;
 import com.mihai.assertion.ExcelAssert;
 import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.core.workbook.CellLocation;
+import com.mihai.integration.writer.StyledTableTest.FoodExpensesRow.Money;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.ReflectiveExcelWriter;
 import com.mihai.writer.WritingContext;
@@ -40,14 +41,14 @@ public class StyledTableTest {
                 .headerStyleProvider(StyleProviders.of(WritableCellStyles.boldText()))
                 .cellStyleProvider(StyleProviders.of(WritableCellStyles.allSideBorder()))
                 .rowStyleProvider(StyleProviders.stripedRows(new StyleColor(240, 248, 255), null))
-                .registerSerializer(FoodExpensesRow.Money.class, FoodExpensesRow.Money::getAmount)
-                .registerTypeStyleProvider(FoodExpensesRow.Money.class, new StyleProvider() {
+                .registerSerializer(Money.class, Money::getAmount)
+                .registerTypeStyleProvider(Money.class, new StyleProvider() {
 
                     private static final String CURRENCY_FORMAT = "_(%s* #,##_);_(%<s * -#,##_);_(%<s* \"\"-\"\"??_);_(@_)";
 
                     @Override
                     public WritableCellStyle getStyle(WritingContext context, Object target) {
-                        FoodExpensesRow.Money money = (FoodExpensesRow.Money) target;
+                        Money money = (Money) target;
                         return WritableCellStyle.builder()
                                 .format(CURRENCY_FORMAT.formatted(money.getCurrencySymbol(Locale.US)))
                                 .build();

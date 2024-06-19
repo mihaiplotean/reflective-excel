@@ -2,6 +2,10 @@ package com.mihai.writer.style.color;
 
 import java.util.Objects;
 
+/**
+ * Defines the color of some style.
+ * For .xls files, a similar color to the one defined will be used, since the color palette is limited in size.
+ */
 public class StyleColor {
 
     public static final StyleColor BLACK = new StyleColor(0, 0, 0);
@@ -10,6 +14,9 @@ public class StyleColor {
     private final byte green;
     private final byte blue;
 
+    /**
+     * Creates a color based on rgb values. Each value should be between 0 and 255, both inclusive.
+     */
     public StyleColor(int red, int green, int blue) {
         validateColorValueRange(red, green, blue);
         this.red = (byte) red;

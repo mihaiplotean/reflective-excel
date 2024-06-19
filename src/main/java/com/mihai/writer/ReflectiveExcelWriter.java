@@ -13,20 +13,41 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ * Main class for writing tables and objects to the sheet.
+ * Both .xlsx and .xls formats are supported.
+ */
 public class ReflectiveExcelWriter {
 
     private final File destinationFile;
     private final ExcelWritingSettings settings;
 
+    /**
+     * Constructs an Excel file writer using default settings.
+     *
+     * @param destinationFile file to write to.
+     */
     public ReflectiveExcelWriter(File destinationFile) {
         this(destinationFile, ExcelWritingSettings.DEFAULT);
     }
 
+    /**
+     * Constructs an Excel file writer using the provided settings.
+     *
+     * @param destinationFile file to write to.
+     * @param settings writing settings.
+     */
     public ReflectiveExcelWriter(File destinationFile, ExcelWritingSettings settings) {
         this.destinationFile = destinationFile;
         this.settings = settings;
     }
 
+    /**
+     * Writes the given rows into a table in the Excel sheet.
+     *
+     * @param rows the rows to be written.
+     * @param clazz the type of the rows to be written.
+     */
     public <T> void writeRows(List<T> rows, Class<T> clazz) {
         try (Workbook workbook = createWorkbook();
              FileOutputStream outputStream = new FileOutputStream(destinationFile)) {
@@ -38,6 +59,16 @@ public class ReflectiveExcelWriter {
         }
     }
 
+    /**
+     * Writes the object to the sheet. This can be seen as an object representing the sheet to be written.
+     * Compared to {@link #writeRows(List, Class)}, this allows writing multiple tables at once, as well as writing
+     * values to given cell locations.
+     *
+     * @param object the object to be written.
+     * @see com.mihai.core.annotation.TableId
+     * @see com.mihai.core.annotation.ExcelCellValue
+     * @see com.mihai.core.annotation.ExcelProperty
+     */
     public void write(Object object) {
         try (Workbook workbook = createWorkbook();
              FileOutputStream outputStream = new FileOutputStream(destinationFile)) {

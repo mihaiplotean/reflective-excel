@@ -7,6 +7,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Provides a default implementation for the serialization of the most used java primitive types,
+ * their corresponding wrapper classes and some other types, as defined in {@link #registerSerializers()}.
+ * You are encouraged to extend this class if you would like to provide more, or replace some of the existing serializers.
+ */
 public class DefaultSerializationContext implements SerializationContext {
 
     private final Map<Class<?>, CellSerializer<?>> serializerMap = new HashMap<>();

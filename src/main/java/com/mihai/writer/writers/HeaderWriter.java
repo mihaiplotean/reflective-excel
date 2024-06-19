@@ -40,24 +40,26 @@ public class HeaderWriter {
         return headers;
     }
 
+    @SuppressWarnings("unchecked")
     private void writeHeader(ChildBeanWriteNode node, int headerHeight, int currentRow, int currentColumn,
                              List<WrittenTableHeader> leafHeaders) {
         if (node.getHeight() > 0 && node.getLength() > 0) {
-            Object valueToWrite = sheetContext.serialize(node.getName().getClass(), node.getName());
-
             sheetContext.setCurrentRow(currentRow + cellWriter.getOffsetRows());
             sheetContext.setCurrentColumn(currentColumn + cellWriter.getOffsetColumns());
 
-            WritableCellStyle style = sheetContext.getHeaderStyle(node.getName());
+            Class<?> nodeType = node.getName().getClass();
+            Object valueToWrite = sheetContext.serialize(nodeType, node.getName());
+
+            WritableCellStyle headerStyle = sheetContext.getHeaderStyle(node.getName());
             WritableCellStyle cellStyle = sheetContext.getCellStyle(node.getName());
-            WritableCellStyle typeStyle = sheetContext.getTypeStyle(node.getName());
+            WritableCellStyle typeStyle = sheetContext.getTypeStyle((Class<Object>) nodeType, node.getName());
 
             WritableCell cell = new WritableCell(valueToWrite,
                                                  currentRow,
                                                  currentColumn,
                                                  currentRow + headerHeight - node.getHeight() - 1,
                                                  currentColumn + node.getLength() - 1);
-            CellLocation cellLocation = cellWriter.writeCell(cell, List.of(style, cellStyle, typeStyle));
+            CellLocation cellLocation = cellWriter.writeCell(cell, List.of(headerStyle, typeStyle, cellStyle));
             currentRow += headerHeight - node.getHeight();
 
             if (node.isLeafValue()) {

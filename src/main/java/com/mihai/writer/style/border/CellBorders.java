@@ -2,6 +2,10 @@ package com.mihai.writer.style.border;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 
+/**
+ * Provides some default borders that can be used.
+ * @see CellBorder
+ */
 public class CellBorders {
 
     private static final CellBorder ALL_SIDES_THIN = new CellBorder.CellBorderBuilder()

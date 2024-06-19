@@ -45,7 +45,7 @@ public class ReflectiveExcelReader {
      * Constructs an Excel file reader using the provided settings.
      *
      * @param file Excel file.
-     * @param settings reading settings..
+     * @param settings reading settings.
      */
     public ReflectiveExcelReader(File file, ExcelReadingSettings settings) {
         this(new WorkbookFromFileCreator(file), settings);
@@ -111,7 +111,7 @@ public class ReflectiveExcelReader {
      * @return the rows of the table.
      * @see com.mihai.core.annotation.TableId
      * @see com.mihai.core.annotation.ExcelCellValue
-     * @see com.mihai.core.annotation.ExcelCellGroup
+     * @see com.mihai.core.annotation.ExcelProperty
      */
     public <T> T read(Class<T> clazz) {
         try (Workbook workbook = workbookCreator.create()) {

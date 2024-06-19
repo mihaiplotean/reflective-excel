@@ -8,10 +8,17 @@ public class CellSerializers {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Serializer that simply returns the input value.
+     */
     public static <T> CellSerializer<T> identity() {
         return value -> value;
     }
 
+    /**
+     * Currency serializer. The currency is serializer to its currency code.
+     * For example, the USD currency is converted to "USD";
+     */
     public static CellSerializer<Currency> forCurrency() {
         return Currency::getCurrencyCode;
     }

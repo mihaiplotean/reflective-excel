@@ -70,26 +70,54 @@ public class ExcelWritingSettings {
         private SerializationContext serializationContext = new DefaultSerializationContext();
         private CellStyleContext cellStyleContext = new DefaultStyleContext();
 
+        /**
+         * Specifies the name of the sheet to which the table(s) will be written.
+         *
+         * @param sheetName name of the sheet.
+         */
         public ExcelWritingSettingsBuilder sheetName(String sheetName) {
             this.sheetName = sheetName;
             return this;
         }
 
+        /**
+         * Specifies the format of the Excel file that will be written.
+         *
+         * @param fileFormat Excel format.
+         */
         public ExcelWritingSettingsBuilder fileFormat(ExcelFileFormat fileFormat) {
             this.fileFormat = fileFormat;
             return this;
         }
 
+        /**
+         * Used to specify the cell at which the table starts. By default, the first table starts at cell "A1".
+         *
+         * @param tableStartCellLocator table start cell locator.
+         */
         public ExcelWritingSettingsBuilder tableStartCellLocator(TableStartCellLocator tableStartCellLocator) {
             this.tableStartCellLocator = tableStartCellLocator;
             return this;
         }
 
+        /**
+         * Instead of creating a new Excel file to which the table(s) are written, this method can be used
+         * to write the table(s) to a template file. The setting {@link #fileFormat(ExcelFileFormat)} is ignored in this case.
+         * This could be useful, if, for example, there should be some images or other fixed information on top of the written table(s).
+         *
+         * @param templateFile the file to which the table(s) should be written.
+         */
         public ExcelWritingSettingsBuilder templateFile(File templateFile) {
             this.templateFile = templateFile;
             return this;
         }
 
+        /**
+         * Allows to provide a custom serialization context, which specifies how a type is converted to
+         * a cell value.
+         *
+         * @param serializationContext serialization context to be used during writing.
+         */
         public ExcelWritingSettingsBuilder serializationContext(SerializationContext serializationContext) {
             this.serializationContext = serializationContext;
             return this;
@@ -100,6 +128,11 @@ public class ExcelWritingSettings {
             return this;
         }
 
+        /**
+         * Allows to provide a custom cell style context, which applies styling to the written cells.
+         *
+         * @param cellStyleContext cell style context to be used during writing.
+         */
         public ExcelWritingSettingsBuilder cellStyleContext(CellStyleContext cellStyleContext) {
             this.cellStyleContext = cellStyleContext;
             return this;

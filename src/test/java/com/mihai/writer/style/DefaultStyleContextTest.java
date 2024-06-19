@@ -3,6 +3,7 @@ package com.mihai.writer.style;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.mihai.writer.node.TypedValue;
 import com.mihai.writer.style.color.StyleColor;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ public class DefaultStyleContextTest {
     @Test
     public void defaultTypeStyleIsNone() {
         DefaultStyleContext styleContext = new DefaultStyleContext();
-        assertEquals(WritableCellStyles.noStyle(), styleContext.getTypeStyle(null, "unused"));
+        assertEquals(WritableCellStyles.noStyle(), styleContext.getTypeStyle(null, String.class, "unused"));
     }
 
     @Test
@@ -52,8 +53,8 @@ public class DefaultStyleContextTest {
         styleContext.setTypeStyleProvider(String.class, StyleProviders.of(WritableCellStyles.backgroundColor(1, 1, 1)));
         styleContext.setTypeStyleProvider(Integer.class, StyleProviders.of(WritableCellStyles.backgroundColor(2, 2, 2)));
 
-        assertEquals(new StyleColor(1, 1, 1), styleContext.getTypeStyle(null, "test").getBackgroundColor());
-        assertEquals(new StyleColor(2, 2, 2), styleContext.getTypeStyle(null, 42).getBackgroundColor());
+        assertEquals(new StyleColor(1, 1, 1), styleContext.getTypeStyle(null, String.class, "unused").getBackgroundColor());
+        assertEquals(new StyleColor(2, 2, 2), styleContext.getTypeStyle(null, Integer.class, 42).getBackgroundColor());
     }
 
     @Test

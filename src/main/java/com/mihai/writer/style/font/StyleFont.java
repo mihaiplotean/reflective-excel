@@ -5,6 +5,10 @@ import java.util.Objects;
 import com.mihai.writer.style.color.StyleColor;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Defines the font properties.
+ * Not providing some property means that the Excel default will be used.
+ */
 public class StyleFont {
 
     private final String name;
@@ -48,6 +52,14 @@ public class StyleFont {
         return underLine;
     }
 
+    /**
+     * Combines the properties of this font with the properties of another one into a new font.
+     * Defined properties have priority over non-defined properties.
+     * The properties of this font have priority over the other font, except boolean properties, where "true" has priority.
+     *
+     * @param other another font.
+     * @return a new font, with properties combined.
+     */
     public StyleFont combineWith(StyleFont other) {
         return new CellFontBuilder()
                 .name(!StringUtils.isEmpty(name) ? name : other.name)
@@ -107,31 +119,61 @@ public class StyleFont {
         private boolean italic;
         private boolean underLine;
 
+        /**
+         * Specifies the name of the font. If not specified, the default Excel font is used.
+         *
+         * @param name the name of the font.
+         */
         public CellFontBuilder name(String name) {
             this.name = name;
             return this;
         }
 
+        /**
+         * Specifies the size of the font. If not specified, the default Excel font size is used.
+         *
+         * @param size the size of the font.
+         */
         public CellFontBuilder size(int size) {
             this.size = (short) size;
             return this;
         }
 
+        /**
+         * Specifies the color of the font. If not specified, the default Excel font color (black) is used.
+         *
+         * @param color the size of the font.
+         */
         public CellFontBuilder color(StyleColor color) {
             this.color = color;
             return this;
         }
 
+        /**
+         * Specifies the bold property of the font. False by default.
+         *
+         * @param bold true if the font should be bold.
+         */
         public CellFontBuilder bold(boolean bold) {
             this.bold = bold;
             return this;
         }
 
+        /**
+         * Specifies the italic property of the font. False by default.
+         *
+         * @param italic true if the font should be italic.
+         */
         public CellFontBuilder italic(boolean italic) {
             this.italic = italic;
             return this;
         }
 
+        /**
+         * Specifies the underline property of the font. None by default.
+         *
+         * @param underLine true if the font text should be underlined.
+         */
         public CellFontBuilder underLine(boolean underLine) {
             this.underLine = underLine;
             return this;

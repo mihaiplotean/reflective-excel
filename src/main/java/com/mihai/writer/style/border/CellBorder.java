@@ -5,6 +5,9 @@ import java.util.Objects;
 import com.mihai.writer.style.color.StyleColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
 
+/**
+ * Defines the style of the border surrounding one or multiple cells.
+ */
 public class CellBorder {
 
     private final BorderStyle topBorderStyle;
@@ -14,6 +17,11 @@ public class CellBorder {
 
     private final StyleColor color;
 
+    /**
+     * Constructs a border which is the same on all sides and has the default border color.
+     *
+     * @param borderStyle the border style to be used, i.e. thin, thick or other.
+     */
     public CellBorder(BorderStyle borderStyle) {
         topBorderStyle = borderStyle;
         rightBorderStyle = borderStyle;
@@ -50,6 +58,14 @@ public class CellBorder {
         return color;
     }
 
+    /**
+     * Combines the properties of this border with the properties of another one into a new border.
+     * Defined properties have priority over non-defined properties.
+     * The properties of this border have priority over the other border.
+     *
+     * @param other another border.
+     * @return a new border, with properties combined.
+     */
     public CellBorder combineWith(CellBorder other) {
         return new CellBorderBuilder()
                 .topBorderStyle(topBorderStyle != null ? topBorderStyle : other.topBorderStyle)
@@ -94,26 +110,51 @@ public class CellBorder {
 
         private StyleColor color;
 
+        /**
+         * Specifies the style of the top side of the border.
+         *
+         * @param topBorderStyle style of the border.
+         */
         public CellBorderBuilder topBorderStyle(BorderStyle topBorderStyle) {
             this.topBorderStyle = topBorderStyle;
             return this;
         }
 
+        /**
+         * Specifies the style of the right side of the border.
+         *
+         * @param rightBorderStyle style of the border.
+         */
         public CellBorderBuilder rightBorderStyle(BorderStyle rightBorderStyle) {
             this.rightBorderStyle = rightBorderStyle;
             return this;
         }
 
+        /**
+         * Specifies the style of the bottom side of the border.
+         *
+         * @param bottomBorderStyle style of the border.
+         */
         public CellBorderBuilder bottomBorderStyle(BorderStyle bottomBorderStyle) {
             this.bottomBorderStyle = bottomBorderStyle;
             return this;
         }
 
+        /**
+         * Specifies the style of the left side of the border.
+         *
+         * @param leftBorderStyle style of the border.
+         */
         public CellBorderBuilder leftBorderStyle(BorderStyle leftBorderStyle) {
             this.leftBorderStyle = leftBorderStyle;
             return this;
         }
 
+        /**
+         * Specifies the color of the border on all sides.
+         *
+         * @param color color of the border.
+         */
         public CellBorderBuilder color(StyleColor color) {
             this.color = color;
             return this;

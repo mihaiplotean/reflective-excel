@@ -7,6 +7,10 @@ import java.util.Map;
 
 import com.mihai.writer.WritingContext;
 
+/**
+ * Cell style context which only formats the date according the system locale.
+ * Other than that, no styling is applied.
+ */
 public class DefaultStyleContext implements CellStyleContext {
 
     private final Map<Class<?>, StyleProvider> typeStyleProviderMap = new HashMap<>();
@@ -41,8 +45,8 @@ public class DefaultStyleContext implements CellStyleContext {
     }
 
     @Override
-    public WritableCellStyle getTypeStyle(WritingContext context, Object cellValue) {
-        return typeStyleProviderMap.getOrDefault(cellValue.getClass(), StyleProviders.noStyle()).getStyle(context, cellValue);
+    public WritableCellStyle getTypeStyle(WritingContext context, Class<?> clazz, Object cellValue) {
+        return typeStyleProviderMap.getOrDefault(clazz, StyleProviders.noStyle()).getStyle(context, cellValue);
     }
 
     @Override
