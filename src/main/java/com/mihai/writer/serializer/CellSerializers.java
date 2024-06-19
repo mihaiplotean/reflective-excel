@@ -2,6 +2,8 @@ package com.mihai.writer.serializer;
 
 import java.util.Currency;
 
+import com.mihai.writer.WritingContext;
+
 public class CellSerializers {
 
     private CellSerializers() {
@@ -12,7 +14,7 @@ public class CellSerializers {
      * Serializer that simply returns the input value.
      */
     public static <T> CellSerializer<T> identity() {
-        return value -> value;
+        return (context, value) -> value;
     }
 
     /**
@@ -20,6 +22,6 @@ public class CellSerializers {
      * For example, the USD currency is converted to "USD";
      */
     public static CellSerializer<Currency> forCurrency() {
-        return Currency::getCurrencyCode;
+        return (context, currency) -> currency.getCurrencyCode();
     }
 }

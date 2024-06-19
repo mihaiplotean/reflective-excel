@@ -1,9 +1,7 @@
 package com.mihai.reader;
 
-import com.mihai.reader.deserializer.CellDeserializer;
 import com.mihai.reader.deserializer.DefaultDeserializationContext;
 import com.mihai.reader.deserializer.DeserializationContext;
-import com.mihai.reader.detector.AutoRowColumnDetector;
 import com.mihai.reader.detector.SimpleRowColumnDetector;
 import com.mihai.reader.detector.TableRowColumnDetector;
 import com.mihai.reader.exception.BadInputExceptionConsumer;
@@ -88,19 +86,11 @@ public class ExcelReadingSettings {
         }
 
         /**
-         * Specifies where does the table (header) start. By default, it is considered to be cell "A1".
+         * Defines how to find various parts of a table, i.e. where the header starts and ends, where the last table row
+         * is and which rows to skip.
+         *
+         * @param rowColumnDetector table row and column detector.
          */
-        public ExcelReadingSettingsBuilder headerStartCellReference(String cellReference) {
-            return rowColumnDetector(new SimpleRowColumnDetector(cellReference));
-        }
-
-        /**
-         * Specifies that the table start should be found automatically by the framework.
-         */
-        public ExcelReadingSettingsBuilder autoHeaderStartDetection() {
-            return rowColumnDetector(new AutoRowColumnDetector());
-        }
-
         public ExcelReadingSettingsBuilder rowColumnDetector(TableRowColumnDetector rowColumnDetector) {
             this.rowColumnDetector = rowColumnDetector;
             return this;
@@ -122,19 +112,8 @@ public class ExcelReadingSettings {
          *
          * @param deserializationContext deserialization context to be used during reading.
          */
-        public ExcelReadingSettingsBuilder setDeserializationContext(DeserializationContext deserializationContext) {
+        public ExcelReadingSettingsBuilder deserializationContext(DeserializationContext deserializationContext) {
             this.deserializationContext = deserializationContext;
-            return this;
-        }
-
-        /**
-         * Allows adding a deserializer for the given class to the currently set deserialization context.
-         *
-         * @param clazz type for which the deserializer is registered.
-         * @param deserializer the registered deserializer.
-         */
-        public <T> ExcelReadingSettingsBuilder registerDeserializer(Class<T> clazz, CellDeserializer<T> deserializer) {
-            deserializationContext.registerDeserializer(clazz, deserializer);
             return this;
         }
 

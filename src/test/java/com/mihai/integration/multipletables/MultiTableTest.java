@@ -17,8 +17,11 @@ import com.mihai.integration.multipletables.MultiTableTest.ShippingSheet.Shippin
 import com.mihai.integration.multipletables.MultiTableTest.ShippingSheet.SupplierRow;
 import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReflectiveExcelReader;
+import com.mihai.reader.detector.AutoRowColumnDetector;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.ReflectiveExcelWriter;
+import com.mihai.writer.style.CellStyleContext;
+import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyles;
 import org.junit.jupiter.api.Test;
@@ -41,7 +44,7 @@ public class MultiTableTest {
     public void readingMultipleTablesReturnsExpectedTableObjects() {
         InputStream inputStream = getClass().getResourceAsStream("/test-multiple-tables.xlsx");
         ExcelReadingSettings settings = ExcelReadingSettings.builder()
-                .autoHeaderStartDetection()
+                .rowColumnDetector(new AutoRowColumnDetector())
                 .build();
         ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream, settings);
         ShippingSheet table = reader.read(ShippingSheet.class);
@@ -55,9 +58,12 @@ public class MultiTableTest {
     public void writingMultipleTablesGeneratesExpectedExcelFile() throws IOException {
         ShippingSheet sheet = new ShippingSheet(SHIPPING_COST_ROWS, SUPPLIER_ROWS, DESTINATION_ROWS);
 
+        CellStyleContext styleContext = new DefaultStyleContext();
+        styleContext.setHeaderStyleProvider(StyleProviders.of(WritableCellStyles.boldText()));
+
         File actualFile = File.createTempFile("reflective-excel-writer", "multi-table.xlsx");
         ReflectiveExcelWriter writer = new ReflectiveExcelWriter(actualFile, ExcelWritingSettings.builder()
-                .headerStyleProvider(StyleProviders.of(WritableCellStyles.boldText()))
+                .cellStyleContext(styleContext)
                 .tableStartCellLocator((context, tableId) -> {
                     if (tableId.equalsIgnoreCase("Shipping Rows")) {
                         return CellLocation.fromReference("B4");

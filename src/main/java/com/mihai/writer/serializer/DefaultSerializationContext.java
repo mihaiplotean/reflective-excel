@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mihai.writer.WritingContext;
+
 /**
  * Provides a default implementation for the serialization of the most used java primitive types,
  * their corresponding wrapper classes and some other types, as defined in {@link #registerSerializers()}.
@@ -44,12 +46,12 @@ public class DefaultSerializationContext implements SerializationContext {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> Object serialize(Class<T> clazz, T value) {
+    public <T> Object serialize(WritingContext context, Class<T> clazz, T value) {
         CellSerializer<T> serializer = (CellSerializer<T>) serializerMap.get(clazz);
         if (serializer == null) {
             return value == null ? "" : value.toString();
         }
-        return serializer.serialize(value);
+        return serializer.serialize(context, value);
     }
 
     @Override

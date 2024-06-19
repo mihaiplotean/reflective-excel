@@ -10,6 +10,7 @@ import com.mihai.core.annotation.ExcelProperty;
 import com.mihai.core.annotation.TableId;
 import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReflectiveExcelReader;
+import com.mihai.reader.detector.SimpleRowColumnDetector;
 import org.junit.jupiter.api.Test;
 
 public class TableAndPropertiesTest {
@@ -19,7 +20,7 @@ public class TableAndPropertiesTest {
         InputStream inputStream = getClass().getResourceAsStream("/test-table-and-properties.xlsx");
 
         ExcelReadingSettings settings = ExcelReadingSettings.builder()
-                .headerStartCellReference("B5")
+                .rowColumnDetector(new SimpleRowColumnDetector("B5"))
                 .build();
 
         ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream, settings);

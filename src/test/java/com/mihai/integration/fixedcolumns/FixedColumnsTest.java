@@ -12,11 +12,15 @@ import java.util.Objects;
 
 import com.mihai.assertion.ExcelAssert;
 import com.mihai.core.annotation.ExcelColumn;
+import com.mihai.integration.fixedcolumns.FixedColumnsTest.TodoRow.TodoPriority;
 import com.mihai.reader.ExcelReadingSettings;
 import com.mihai.reader.ReflectiveExcelReader;
 import com.mihai.reader.deserializer.CellDeserializers;
+import com.mihai.reader.deserializer.DefaultDeserializationContext;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.ReflectiveExcelWriter;
+import com.mihai.writer.style.CellStyleContext;
+import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyles;
 import org.junit.jupiter.api.Test;
@@ -24,16 +28,19 @@ import org.junit.jupiter.api.Test;
 public class FixedColumnsTest {
 
     private static final List<TodoRow> EXCEL_ROWS = List.of(
-            new TodoRow("buy milk", createDate(12, 12, 2023), TodoRow.TodoPriority.HIGH),
-            new TodoRow("go to school", createDate(13, 12, 2023), TodoRow.TodoPriority.MEDIUM),
-            new TodoRow("write this library", createDate(14, 3, 2024), TodoRow.TodoPriority.LOW)
+            new TodoRow("buy milk", createDate(12, 12, 2023), TodoPriority.HIGH),
+            new TodoRow("go to school", createDate(13, 12, 2023), TodoPriority.MEDIUM),
+            new TodoRow("write this library", createDate(14, 3, 2024), TodoPriority.LOW)
     );
 
     @Test
     public void readingTableWithFixedColumnsReturnsExpectedRows() throws IOException {
         try (InputStream inputStream = getClass().getResourceAsStream("/test-fixed-columns.xlsx")) {
+            DefaultDeserializationContext deserializationContext = new DefaultDeserializationContext();
+            deserializationContext.registerDeserializer(TodoPriority.class, CellDeserializers.forEnum(TodoPriority.class));
+
             ReflectiveExcelReader reader = new ReflectiveExcelReader(inputStream, ExcelReadingSettings.builder()
-                    .registerDeserializer(TodoRow.TodoPriority.class, CellDeserializers.forEnum(TodoRow.TodoPriority.class))
+                    .deserializationContext(deserializationContext)
                     .build());
             List<TodoRow> actualRows = reader.readRows(TodoRow.class);
             assertEquals(EXCEL_ROWS, actualRows);
@@ -44,9 +51,14 @@ public class FixedColumnsTest {
     public void writingTableWithFixedColumnsGeneratesExpectedExcelFile() throws IOException {
         File actualFile = File.createTempFile("reflective-excel-writer", "test-fixed-columns.xlsx");
 
-        ReflectiveExcelWriter writer = new ReflectiveExcelWriter(actualFile, ExcelWritingSettings.builder()
-                .headerStyleProvider(StyleProviders.of(WritableCellStyles.boldText()))
-                .build());
+        CellStyleContext styleContext = new DefaultStyleContext();
+        styleContext.setHeaderStyleProvider(StyleProviders.of(WritableCellStyles.boldText()));
+
+        ExcelWritingSettings settings = ExcelWritingSettings.builder()
+                .cellStyleContext(styleContext)
+                .build();
+
+        ReflectiveExcelWriter writer = new ReflectiveExcelWriter(actualFile, settings);
         writer.writeRows(EXCEL_ROWS, TodoRow.class);
 
         try (InputStream expectedInputStream = getClass().getResourceAsStream("/test-fixed-columns.xlsx")) {

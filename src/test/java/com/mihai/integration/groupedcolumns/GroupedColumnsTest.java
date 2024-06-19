@@ -10,9 +10,12 @@ import java.util.List;
 import com.mihai.assertion.ExcelAssert;
 import com.mihai.core.annotation.ExcelCellGroup;
 import com.mihai.core.annotation.ExcelColumn;
+import com.mihai.integration.groupedcolumns.GroupedColumnsTest.FoodRow.PizzaGroup;
 import com.mihai.reader.ReflectiveExcelReader;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.ReflectiveExcelWriter;
+import com.mihai.writer.style.CellStyleContext;
+import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyles;
 import org.junit.jupiter.api.Test;
@@ -43,10 +46,14 @@ public class GroupedColumnsTest {
                 new AddressesRow(1, new AddressesRow.Address("street A", "street B"), new AddressesRow.Address("street C", "street D"))
         );
 
+        CellStyleContext styleContext = new DefaultStyleContext();
+        styleContext.setHeaderStyleProvider(StyleProviders.of(WritableCellStyles.boldText()));
+        styleContext.setCellStyleProvider(StyleProviders.of(WritableCellStyles.allSideBorder()));
+
         ExcelWritingSettings settings = ExcelWritingSettings.builder()
-                .cellStyleProvider(StyleProviders.of(WritableCellStyles.allSideBorder()))
-                .headerStyleProvider(StyleProviders.of(WritableCellStyles.boldText()))
+                .cellStyleContext(styleContext)
                 .build();
+
         new ReflectiveExcelWriter(actualFile, settings).writeRows(rows, AddressesRow.class);
 
         try (InputStream expectedInputStream = getClass().getResourceAsStream("/test-grouped-columns.xlsx")) {
@@ -80,12 +87,17 @@ public class GroupedColumnsTest {
         File actualFile = File.createTempFile("reflective-excel-writer", "nested-grouped-columns-test.xlsx");
 
         List<FoodRow> rows = List.of(
-                new FoodRow(new FoodRow.PizzaGroup(new FoodRow.PizzaGroup.PizzaSize("20cm", "28cm"), "Capriciosa"), 42)
+                new FoodRow(new PizzaGroup(new FoodRow.PizzaGroup.PizzaSize("20cm", "28cm"), "Capriciosa"), 42)
         );
 
+        CellStyleContext styleContext = new DefaultStyleContext();
+        styleContext.setHeaderStyleProvider(StyleProviders.of(WritableCellStyles.boldText()
+                                                                      .combineWith(WritableCellStyles.allSideBorder())));
+
         ExcelWritingSettings settings = ExcelWritingSettings.builder()
-                .headerStyleProvider(StyleProviders.of(WritableCellStyles.boldText().combineWith(WritableCellStyles.allSideBorder())))
+                .cellStyleContext(styleContext)
                 .build();
+
         ReflectiveExcelWriter writer = new ReflectiveExcelWriter(actualFile, settings);
         writer.writeRows(rows, FoodRow.class);
 

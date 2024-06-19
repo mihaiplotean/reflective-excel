@@ -15,6 +15,10 @@ import com.mihai.integration.writer.StyledTableTest.FoodExpensesRow.Money;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.ReflectiveExcelWriter;
 import com.mihai.writer.WritingContext;
+import com.mihai.writer.serializer.DefaultSerializationContext;
+import com.mihai.writer.serializer.SerializationContext;
+import com.mihai.writer.style.CellStyleContext;
+import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.style.StyleProvider;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyle;
@@ -36,24 +40,30 @@ public class StyledTableTest {
 
         File actualFile = File.createTempFile("reflective-excel-writer", "fancy-table-test.xlsx");
 
+        SerializationContext serializationContext = new DefaultSerializationContext();
+        serializationContext.registerSerializer(Money.class, (context, value) -> value.getAmount());
+
+        CellStyleContext styleContext = new DefaultStyleContext();
+        styleContext.setHeaderStyleProvider(StyleProviders.of(WritableCellStyles.boldText()));
+        styleContext.setCellStyleProvider(StyleProviders.of(WritableCellStyles.allSideBorder()));
+        styleContext.setRowStyleProvider(StyleProviders.stripedRows(new StyleColor(240, 248, 255), null));
+        styleContext.setTypeStyleProvider(Money.class, new StyleProvider() {
+
+            private static final String CURRENCY_FORMAT = "_(%s* #,##_);_(%<s * -#,##_);_(%<s* \"\"-\"\"??_);_(@_)";
+
+            @Override
+            public WritableCellStyle getStyle(WritingContext context, Object target) {
+                Money money = (Money) target;
+                return WritableCellStyle.builder()
+                        .format(CURRENCY_FORMAT.formatted(money.getCurrencySymbol(Locale.US)))
+                        .build();
+            }
+        });
+
         ExcelWritingSettings settings = ExcelWritingSettings.builder()
                 .tableStartCellLocator((context, tableId) -> CellLocation.fromReference("C3"))
-                .headerStyleProvider(StyleProviders.of(WritableCellStyles.boldText()))
-                .cellStyleProvider(StyleProviders.of(WritableCellStyles.allSideBorder()))
-                .rowStyleProvider(StyleProviders.stripedRows(new StyleColor(240, 248, 255), null))
-                .registerSerializer(Money.class, Money::getAmount)
-                .registerTypeStyleProvider(Money.class, new StyleProvider() {
-
-                    private static final String CURRENCY_FORMAT = "_(%s* #,##_);_(%<s * -#,##_);_(%<s* \"\"-\"\"??_);_(@_)";
-
-                    @Override
-                    public WritableCellStyle getStyle(WritingContext context, Object target) {
-                        Money money = (Money) target;
-                        return WritableCellStyle.builder()
-                                .format(CURRENCY_FORMAT.formatted(money.getCurrencySymbol(Locale.US)))
-                                .build();
-                    }
-                })
+                .serializationContext(serializationContext)
+                .cellStyleContext(styleContext)
                 .build();
 
         ReflectiveExcelWriter writer = new ReflectiveExcelWriter(actualFile, settings);

@@ -1,5 +1,6 @@
 package com.mihai.writer.serializer;
 
+import com.mihai.writer.WritingContext;
 import org.apache.poi.ss.usermodel.Cell;
 
 /**
@@ -16,7 +17,7 @@ public interface SerializationContext {
      * @param value the value to be serialized.
      * @return the serialized value.
      */
-    <T> Object serialize(Class<T> clazz, T value);
+    <T> Object serialize(WritingContext context, Class<T> clazz, T value);
 
     /**
      * Registers a serializer for a given type.

@@ -18,6 +18,8 @@ import com.mihai.reader.detector.DynamicColumnDetector;
 import com.mihai.reader.detector.MaybeDynamicColumn;
 import com.mihai.writer.ExcelWritingSettings;
 import com.mihai.writer.ReflectiveExcelWriter;
+import com.mihai.writer.style.CellStyleContext;
+import com.mihai.writer.style.DefaultStyleContext;
 import com.mihai.writer.style.StyleProviders;
 import com.mihai.writer.style.WritableCellStyles;
 import org.junit.jupiter.api.Test;
@@ -62,8 +64,12 @@ public class DynamicColumnsTest {
                 new PopulationRow(2, "Netherlands", nlPopulationPerYear)
         );
         File actualFile = File.createTempFile("reflective-excel-writer", "dynamic-columns-test.xlsx");
+
+        CellStyleContext styleContext = new DefaultStyleContext();
+        styleContext.setHeaderStyleProvider(StyleProviders.of(WritableCellStyles.boldText()));
+
         ExcelWritingSettings settings = ExcelWritingSettings.builder()
-                .headerStyleProvider(StyleProviders.of(WritableCellStyles.boldText()))
+                .cellStyleContext(styleContext)
                 .build();
         ReflectiveExcelWriter writer = new ReflectiveExcelWriter(actualFile, settings);
         writer.writeRows(rows, PopulationRow.class);

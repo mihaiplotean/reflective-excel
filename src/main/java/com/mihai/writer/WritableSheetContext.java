@@ -32,7 +32,7 @@ public class WritableSheetContext {
 
     @SuppressWarnings("unchecked")
     public Object serialize(Class<?> clazz, Object value) {
-        return serializationContext.serialize((Class<Object>) clazz, value);
+        return serializationContext.serialize(writingContext, (Class<Object>) clazz, value);
     }
 
     public WritableCellStyle getHeaderStyle(Object headerValue) {

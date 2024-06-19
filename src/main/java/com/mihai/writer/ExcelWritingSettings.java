@@ -123,11 +123,6 @@ public class ExcelWritingSettings {
             return this;
         }
 
-        public <T> ExcelWritingSettingsBuilder registerSerializer(Class<T> clazz, CellSerializer<T> serializer) {
-            serializationContext.registerSerializer(clazz, serializer);
-            return this;
-        }
-
         /**
          * Allows to provide a custom cell style context, which applies styling to the written cells.
          *
@@ -135,31 +130,6 @@ public class ExcelWritingSettings {
          */
         public ExcelWritingSettingsBuilder cellStyleContext(CellStyleContext cellStyleContext) {
             this.cellStyleContext = cellStyleContext;
-            return this;
-        }
-
-        public ExcelWritingSettingsBuilder registerTypeStyleProvider(Class<?> clazz, StyleProvider style) {
-            this.cellStyleContext.setTypeStyleProvider(clazz, style);
-            return this;
-        }
-
-        public ExcelWritingSettingsBuilder headerStyleProvider(StyleProvider style) {
-            this.cellStyleContext.setHeaderStyleProvider(style);
-            return this;
-        }
-
-        public ExcelWritingSettingsBuilder cellStyleProvider(StyleProvider style) {
-            this.cellStyleContext.setCellStyleProvider(style);
-            return this;
-        }
-
-        public ExcelWritingSettingsBuilder rowStyleProvider(StyleProvider style) {
-            this.cellStyleContext.setRowStyleProvider(style);
-            return this;
-        }
-
-        public ExcelWritingSettingsBuilder columnStyleProvider(StyleProvider style) {
-            this.cellStyleContext.setColumnStyleProvider(style);
             return this;
         }
 

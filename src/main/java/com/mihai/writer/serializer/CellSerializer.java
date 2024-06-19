@@ -1,5 +1,7 @@
 package com.mihai.writer.serializer;
 
+import com.mihai.writer.WritingContext;
+
 /**
  * Defines how to convert a given type to a cell value.
  *
@@ -7,5 +9,5 @@ package com.mihai.writer.serializer;
  */
 public interface CellSerializer<T> {
 
-    Object serialize(T value);  // todo: add writingcontext?
+    Object serialize(WritingContext context, T value);
 }
