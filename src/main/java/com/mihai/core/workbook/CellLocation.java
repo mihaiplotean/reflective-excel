@@ -6,7 +6,7 @@ import org.apache.poi.ss.util.CellReference;
  * Represents the coordinates of a cell in the Excel sheet.
  * The top-left cell has the row and column equal to zero.
  *
- * @param row the row index in the Excel sheet.
+ * @param row    the row index in the Excel sheet.
  * @param column the column index in the Excel sheet.
  */
 public record CellLocation(int row, int column) {
@@ -77,7 +77,7 @@ public record CellLocation(int row, int column) {
     /**
      * Creates a new instance of this object, where the row is shifted down, and the column to the right.
      *
-     * @param rows the amount of rows to shift.
+     * @param rows    the amount of rows to shift.
      * @param columns the amount of columns to shift.
      * @return a new instance of this object, with the given number of rows down and the given number of columns
      * to the right.

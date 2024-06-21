@@ -33,9 +33,9 @@ public class StyledTableTest {
         Currency eurCurrency = Currency.getInstance("EUR");
         Currency usdCurrency = Currency.getInstance("USD");
         List<FoodExpensesRow> rows = List.of(
-                new FoodExpensesRow("pizza", LocalDate.of(2022, 11, 1), new FoodExpensesRow.Money(120, eurCurrency)),
-                new FoodExpensesRow("carbonara", LocalDate.of(2022, 11, 2), new FoodExpensesRow.Money(90, usdCurrency)),
-                new FoodExpensesRow("placinte", LocalDate.of(2022, 11, 3), new FoodExpensesRow.Money(90, usdCurrency))
+                new FoodExpensesRow("pizza", LocalDate.of(2022, 11, 1), new Money(120, eurCurrency)),
+                new FoodExpensesRow("carbonara", LocalDate.of(2022, 11, 2), new Money(90, usdCurrency)),
+                new FoodExpensesRow("placinte", LocalDate.of(2022, 11, 3), new Money(90, usdCurrency))
         );
 
         File actualFile = File.createTempFile("reflective-excel-writer", "fancy-table-test.xlsx");

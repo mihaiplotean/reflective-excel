@@ -1,7 +1,6 @@
 package com.mihai.writer;
 
 import com.mihai.core.CellPointer;
-import com.mihai.writer.node.TypedValue;
 import com.mihai.writer.serializer.SerializationContext;
 import com.mihai.writer.style.CellStyleContext;
 import com.mihai.writer.style.WritableCellStyle;

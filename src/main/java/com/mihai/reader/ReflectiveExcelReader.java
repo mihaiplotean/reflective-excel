@@ -44,7 +44,7 @@ public class ReflectiveExcelReader {
     /**
      * Constructs an Excel file reader using the provided settings.
      *
-     * @param file Excel file.
+     * @param file     Excel file.
      * @param settings reading settings.
      */
     public ReflectiveExcelReader(File file, ExcelReadingSettings settings) {
@@ -55,7 +55,7 @@ public class ReflectiveExcelReader {
      * Constructs an Excel input stream reader using the provided settings.
      *
      * @param inputStream input stream representing an Excel file.
-     * @param settings reading settings.
+     * @param settings    reading settings.
      */
     public ReflectiveExcelReader(InputStream inputStream, ExcelReadingSettings settings) {
         this(new WorkbookFromInputStreamCreator(inputStream), settings);

@@ -3,21 +3,12 @@ package com.mihai.writer.writers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.io.IOException;
 import java.util.Map;
 
 import com.mihai.core.annotation.DynamicColumns;
 import com.mihai.core.annotation.ExcelColumn;
 import com.mihai.writer.ExcelWritingTest;
-import com.mihai.writer.WritableSheet;
-import com.mihai.writer.WritableSheetContext;
 import com.mihai.writer.node.RootTableBeanWriteNode;
-import com.mihai.writer.serializer.DefaultSerializationContext;
-import com.mihai.writer.style.DefaultStyleContext;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class RowWriterTest extends ExcelWritingTest {
@@ -32,10 +23,10 @@ public class RowWriterTest extends ExcelWritingTest {
         writer.writeRow(row2);
 
         // row 0 is reserved for the header, so the first written row has index 1
-        assertEquals("value A", getCell(1,0).getStringCellValue());
-        assertEquals("value B", getCell(1,1).getStringCellValue());
-        assertEquals("value C", getCell(2,0).getStringCellValue());
-        assertEquals("value D", getCell(2,1).getStringCellValue());
+        assertEquals("value A", getCell(1, 0).getStringCellValue());
+        assertEquals("value B", getCell(1, 1).getStringCellValue());
+        assertEquals("value C", getCell(2, 0).getStringCellValue());
+        assertEquals("value D", getCell(2, 1).getStringCellValue());
     }
 
     @Test
@@ -47,10 +38,10 @@ public class RowWriterTest extends ExcelWritingTest {
         writer.writeRow(row1);
         writer.writeRow(row2);
 
-        assertEquals("a", getCell(1,0).getStringCellValue());
-        assertNull(getCell(1,1));
-        assertEquals("b", getCell(2,0).getStringCellValue());
-        assertNull(getCell(2,1));
+        assertEquals("a", getCell(1, 0).getStringCellValue());
+        assertNull(getCell(1, 1));
+        assertEquals("b", getCell(2, 0).getStringCellValue());
+        assertNull(getCell(2, 1));
     }
 
     private RowWriter createWriter(Object firstRow) {

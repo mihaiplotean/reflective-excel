@@ -10,7 +10,6 @@ import com.mihai.reader.ReadableSheetContext;
 import org.apache.poi.ss.usermodel.Row;
 import org.junit.jupiter.api.Test;
 
-
 public class RowReaderTest extends ExcelReadingTest {
 
     @Test

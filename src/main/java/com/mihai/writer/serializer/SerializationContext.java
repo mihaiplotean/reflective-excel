@@ -22,7 +22,7 @@ public interface SerializationContext {
     /**
      * Registers a serializer for a given type.
      *
-     * @param clazz the type the serializer is registered for.
+     * @param clazz      the type the serializer is registered for.
      * @param serializer the serializer to be used for the given type.
      */
     <T> void registerSerializer(Class<T> clazz, CellSerializer<T> serializer);

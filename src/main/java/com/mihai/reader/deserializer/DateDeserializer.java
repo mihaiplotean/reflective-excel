@@ -3,7 +3,6 @@ package com.mihai.reader.deserializer;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Currency;
 import java.util.Date;
 
 import com.mihai.reader.ReadingContext;

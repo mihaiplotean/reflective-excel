@@ -6,7 +6,6 @@ import com.mihai.core.utils.ReflectionUtilities;
 import com.mihai.reader.ReadingContext;
 import com.mihai.reader.table.TableHeader;
 
-
 public class FixedHeaderMappedField implements HeaderMappedField {
 
     private final FixedColumnField field;

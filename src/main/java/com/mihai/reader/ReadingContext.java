@@ -176,7 +176,7 @@ public class ReadingContext {
     /**
      * Returns the string representation of the cell (value) at the given row and column.
      *
-     * @param row the row of the cell.
+     * @param row    the row of the cell.
      * @param column the column of the cell.
      * @return string representation of the cell (value).
      */
@@ -192,7 +192,7 @@ public class ReadingContext {
      * Returns the cell (value) at the given cell reference, deserialized to the given type.
      *
      * @param cellReference reference of the cell.
-     * @param clazz the type the cell should be deserialized to.
+     * @param clazz         the type the cell should be deserialized to.
      * @return the value of the cell.
      */
     public <T> T getCellValue(String cellReference, Class<T> clazz) {
@@ -206,9 +206,9 @@ public class ReadingContext {
     /**
      * Returns the cell (value) at the given row and column, deserialized to the given type.
      *
-     * @param row the row of the cell.
+     * @param row    the row of the cell.
      * @param column the column of the cell.
-     * @param clazz the type the cell should be deserialized to.
+     * @param clazz  the type the cell should be deserialized to.
      * @return the value of the cell.
      */
     public <T> T getCellValue(int row, int column, Class<T> clazz) {

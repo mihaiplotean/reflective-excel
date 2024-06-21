@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.mihai.core.workbook.CellLocation;
-import com.mihai.reader.exception.BadInputException;
+import org.apache.poi.ss.usermodel.CellType;
 
 /**
-* Denotes a cell, or in case of merged cells - a group of cells in the sheet.
+ * Denotes a cell, or in case of merged cells - a group of cells in the sheet.
  */
 public interface ReadableCell {
 
@@ -19,6 +19,8 @@ public interface ReadableCell {
      */
     String getValue();
 
+    CellType getValueType();
+
     int getRowNumber();
 
     int getColumnNumber();
@@ -27,9 +29,15 @@ public interface ReadableCell {
      * Returns the date defined in the cell. This only works if the cell value is formatted as a date number format in Excel.
      *
      * @return the date defined in the cell.
-     * @throws BadInputException if the cell does not have a date numeric format.
      */
     Date getDateValue();
+
+    /**
+     * Returns the date defined in the cell. This only works if the cell value is formatted as numeric cell.
+     *
+     * @return the number defined in the cell.
+     */
+    double getDoubleValue();
 
     /**
      * Returns the date defined in the cell. This only works if the cell value is formatted as a date number format in Excel.
@@ -47,6 +55,10 @@ public interface ReadableCell {
     int getStartColumn();
 
     int getEndColumn();
+
+    default boolean isNumeric() {
+        return getValueType() == CellType.NUMERIC;
+    }
 
     default boolean isWithinRowBounds(int row) {
         return getStartRow() <= row && row <= getEndRow();

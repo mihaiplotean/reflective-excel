@@ -25,7 +25,7 @@ public interface CellStyleContext {
     /**
      * Returns the style of the header to be written.
      *
-     * @param context information related to the sheet's writing process.
+     * @param context     information related to the sheet's writing process.
      * @param headerValue the name/value of the header.
      * @return the style of the header.
      */
@@ -42,7 +42,7 @@ public interface CellStyleContext {
      * Returns the style of the row to be written.
      *
      * @param context information related to the sheet's writing process.
-     * @param row the row to be written.
+     * @param row     the row to be written.
      * @return the style of the row cells.
      */
     WritableCellStyle getRowStyle(WritingContext context, Object row);
@@ -57,7 +57,7 @@ public interface CellStyleContext {
     /**
      * Returns the style of the column to be written.
      *
-     * @param context information related to the sheet's writing process.
+     * @param context    information related to the sheet's writing process.
      * @param columnName the name/value of the header corresponding to the column.
      * @return the style of the column cells.
      */
@@ -74,8 +74,8 @@ public interface CellStyleContext {
     /**
      * Returns the style of the type (before serialization) to be written.
      *
-     * @param context information related to the sheet's writing process.
-     * @param clazz the type of the value.
+     * @param context   information related to the sheet's writing process.
+     * @param clazz     the type of the value.
      * @param cellValue value of the cell.
      * @return the style of the column cells.
      */
@@ -91,7 +91,7 @@ public interface CellStyleContext {
     /**
      * Returns the style of the cell to be written.
      *
-     * @param context information related to the sheet's writing process.
+     * @param context   information related to the sheet's writing process.
      * @param cellValue value of the cell.
      * @return the style of the cell.
      */

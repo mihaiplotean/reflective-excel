@@ -13,7 +13,7 @@ public interface TableRowColumnDetector {
      * Used to determine in which row the table header is.
      *
      * @param context information related to the sheet's reading process.
-     * @param row the row to be checked if it represents the table header row.
+     * @param row     the row to be checked if it represents the table header row.
      * @return true if the provided row belongs to the table header.
      */
     boolean isHeaderRow(ReadingContext context, ReadableRow row);
@@ -23,7 +23,7 @@ public interface TableRowColumnDetector {
      * header starting cell.
      *
      * @param context information related to the sheet's reading process.
-     * @param cell the cell to be checked if it is the first header cell.
+     * @param cell    the cell to be checked if it is the first header cell.
      * @return true if the provided cell is the first header cell.
      */
     boolean isHeaderStartColumn(ReadingContext context, ReadableCell cell);
@@ -33,7 +33,7 @@ public interface TableRowColumnDetector {
      * header row is the final header cell.
      *
      * @param context information related to the sheet's reading process.
-     * @param cell the cell to be checked if it is the last header cell.
+     * @param cell    the cell to be checked if it is the last header cell.
      * @return true if the provided cell is the first last cell.
      */
     boolean isHeaderLastColumn(ReadingContext context, ReadableCell cell);
@@ -43,7 +43,7 @@ public interface TableRowColumnDetector {
      * which rows within the table should be skipped. The row is bounded based on the determined header, meaning that
      * it won't contain cells outside the table bounds.
      *
-     * @param context information related to the sheet's reading process.
+     * @param context  information related to the sheet's reading process.
      * @param tableRow the row to be checked if it should be skipped.
      * @return true if the provided row should be skipped.
      */
@@ -53,7 +53,7 @@ public interface TableRowColumnDetector {
      * This method is used to check where the table ends.
      *
      * @param context information related to the sheet's reading process.
-     * @param row the row to be checked if it is the last table rows.
+     * @param row     the row to be checked if it is the last table rows.
      * @return true if the provided row is the last table row.
      */
     boolean isLastRow(ReadingContext context, ReadableRow row);

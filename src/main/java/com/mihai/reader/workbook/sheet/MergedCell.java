@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.Objects;
 
 import com.mihai.core.workbook.Bounds;
-import com.mihai.reader.exception.BadInputException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 
 public final class MergedCell implements ReadableCell {
 
@@ -28,6 +28,11 @@ public final class MergedCell implements ReadableCell {
     }
 
     @Override
+    public CellType getValueType() {
+        return cell.getCellType();
+    }
+
+    @Override
     public int getRowNumber() {
         return cell.getRowIndex();
     }
@@ -40,6 +45,11 @@ public final class MergedCell implements ReadableCell {
     @Override
     public Date getDateValue() {
         return cell.getDateCellValue();
+    }
+
+    @Override
+    public double getDoubleValue() {
+        return cell.getNumericCellValue();
     }
 
     @Override

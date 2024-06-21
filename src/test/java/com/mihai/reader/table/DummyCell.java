@@ -4,12 +4,18 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.mihai.reader.workbook.sheet.ReadableCell;
+import org.apache.poi.ss.usermodel.CellType;
 
 public class DummyCell implements ReadableCell {
 
     @Override
     public String getValue() {
         return "";
+    }
+
+    @Override
+    public CellType getValueType() {
+        return CellType.STRING;
     }
 
     @Override
@@ -25,6 +31,11 @@ public class DummyCell implements ReadableCell {
     @Override
     public Date getDateValue() {
         return null;
+    }
+
+    @Override
+    public double getDoubleValue() {
+        return 0d;
     }
 
     @Override

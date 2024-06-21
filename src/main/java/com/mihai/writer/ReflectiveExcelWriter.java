@@ -35,7 +35,7 @@ public class ReflectiveExcelWriter {
      * Constructs an Excel file writer using the provided settings.
      *
      * @param destinationFile file to write to.
-     * @param settings writing settings.
+     * @param settings        writing settings.
      */
     public ReflectiveExcelWriter(File destinationFile, ExcelWritingSettings settings) {
         this.destinationFile = destinationFile;
@@ -45,7 +45,7 @@ public class ReflectiveExcelWriter {
     /**
      * Writes the given rows into a table in the Excel sheet.
      *
-     * @param rows the rows to be written.
+     * @param rows  the rows to be written.
      * @param clazz the type of the rows to be written.
      */
     public <T> void writeRows(List<T> rows, Class<T> clazz) {

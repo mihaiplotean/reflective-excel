@@ -13,6 +13,7 @@ import com.mihai.reader.workbook.sheet.ReadableCell;
  * <pre>
  * Example: "eur" -> Currency.getInstance("EUR")
  * </pre>
+ *
  * @see Currency
  */
 public class CurrencyDeserializer implements CellDeserializer<Currency> {

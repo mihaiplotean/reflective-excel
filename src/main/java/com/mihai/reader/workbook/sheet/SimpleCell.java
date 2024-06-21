@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import com.mihai.reader.exception.BadInputException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 
 public class SimpleCell implements ReadableCell {
 
@@ -25,6 +26,11 @@ public class SimpleCell implements ReadableCell {
     }
 
     @Override
+    public CellType getValueType() {
+        return cell.getCellType();
+    }
+
+    @Override
     public int getRowNumber() {
         return cell.getRowIndex();
     }
@@ -36,13 +42,12 @@ public class SimpleCell implements ReadableCell {
 
     @Override
     public Date getDateValue() {
-        try {
-            return cell.getDateCellValue();
-        } catch (IllegalStateException e) {
-            throw new BadInputException(String.format(
-                    "Value \"%s\" defined in cell %s does not have a date number format", cellValue, cellReference
-            ));
-        }
+        return cell.getDateCellValue();
+    }
+
+    @Override
+    public double getDoubleValue() {
+        return cell.getNumericCellValue();
     }
 
     @Override

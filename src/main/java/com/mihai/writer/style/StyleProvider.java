@@ -4,6 +4,7 @@ import com.mihai.writer.WritingContext;
 
 /**
  * Used in combination with {@link CellStyleContext} to provide a cell style to be applied.
+ *
  * @see CellStyleContext
  */
 public interface StyleProvider {

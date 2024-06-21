@@ -2,8 +2,6 @@ package com.mihai.writer.serializer;
 
 import java.util.Currency;
 
-import com.mihai.writer.WritingContext;
-
 public class CellSerializers {
 
     private CellSerializers() {

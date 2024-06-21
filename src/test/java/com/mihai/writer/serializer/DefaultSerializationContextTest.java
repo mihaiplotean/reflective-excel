@@ -14,7 +14,7 @@ import com.mihai.writer.table.TableWritingContext;
 import org.junit.jupiter.api.Test;
 
 public class DefaultSerializationContextTest {
-    
+
     private final WritingContext context = new WritingContext(new TableWritingContext(), new CellPointer());
 
     @Test

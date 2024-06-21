@@ -4,14 +4,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Date;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 import com.mihai.reader.exception.BadInputException;
-import com.mihai.reader.workbook.sheet.ReadableCell;
 
 /**
  * Provides cell deserializers for various types.
+ *
  * @see CellDeserializer
  */
 public class CellDeserializers {
@@ -26,6 +24,9 @@ public class CellDeserializers {
 
     public static CellDeserializer<Integer> forInteger() {
         return (context, cell) -> {
+            if (cell.isNumeric()) {
+                return (int) cell.getDoubleValue();
+            }
             String cellValue = cell.getValue();
             try {
                 return Integer.parseInt(cellValue);
@@ -37,19 +38,11 @@ public class CellDeserializers {
         };
     }
 
-    private static <T> T parseStringValueToNumeric(ReadableCell cell, Function<String, T> parsingFunction, String failureMessageFormat) {
-        String cellValue = cell.getValue();
-        try {
-            return parsingFunction.apply(cellValue);
-        } catch (NumberFormatException ex) {
-            throw new BadInputException(String.format(
-                    failureMessageFormat, cellValue, cell.getCellReference()
-            ));
-        }
-    }
-
     public static CellDeserializer<Long> forLong() {
         return (context, cell) -> {
+            if (cell.isNumeric()) {
+                return (long) cell.getDoubleValue();
+            }
             String cellValue = cell.getValue();
             try {
                 return Long.parseLong(cellValue);
@@ -63,6 +56,9 @@ public class CellDeserializers {
 
     public static CellDeserializer<Double> forDouble() {
         return (context, cell) -> {
+            if (cell.isNumeric()) {
+                return cell.getDoubleValue();
+            }
             String cellValue = cell.getValue();
             try {
                 return Double.parseDouble(cellValue);
@@ -76,6 +72,9 @@ public class CellDeserializers {
 
     public static CellDeserializer<Float> forFloat() {
         return (context, cell) -> {
+            if (cell.isNumeric()) {
+                return (float) cell.getDoubleValue();
+            }
             String cellValue = cell.getValue();
             try {
                 return Float.parseFloat(cellValue);

@@ -2,6 +2,7 @@ package com.mihai.writer.style.font;
 
 /**
  * Provides some default font styles that can be used.
+ *
  * @see StyleFont
  */
 public class StyleFonts {

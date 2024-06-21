@@ -1,13 +1,13 @@
 package com.mihai.writer.style;
 
 import com.mihai.core.utils.DateFormatUtils;
-import com.mihai.writer.style.border.CellBorder;
 import com.mihai.writer.style.border.CellBorders;
 import com.mihai.writer.style.color.StyleColor;
 import com.mihai.writer.style.font.StyleFonts;
 
 /**
  * Provides some useful cell styles that can be used.
+ *
  * @see WritableCellStyle
  */
 public final class WritableCellStyles {
@@ -62,9 +62,9 @@ public final class WritableCellStyles {
     /**
      * Cell style which applies a background color with given rgb values to the cell.
      *
-     * @param red red value. Should be between 0 and 255, both inclusive.
+     * @param red   red value. Should be between 0 and 255, both inclusive.
      * @param green green value. Should be between 0 and 255, both inclusive.
-     * @param blue blue value. Should be between 0 and 255, both inclusive.
+     * @param blue  blue value. Should be between 0 and 255, both inclusive.
      * @return cell style which sets the background color.
      */
     public static WritableCellStyle backgroundColor(int red, int green, int blue) {

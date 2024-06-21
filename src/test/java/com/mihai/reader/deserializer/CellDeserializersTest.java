@@ -13,6 +13,7 @@ import com.mihai.core.utils.DateFormatUtils;
 import com.mihai.reader.ExcelReadingTest;
 import com.mihai.reader.exception.BadInputException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.junit.jupiter.api.Test;
 
 public class CellDeserializersTest extends ExcelReadingTest {
@@ -34,9 +35,25 @@ public class CellDeserializersTest extends ExcelReadingTest {
     }
 
     @Test
+    public void numberDeserializationOfStringValueReturnsCorrectInteger() {
+        Cell cell = createRow(0).createCell(0);
+        cell.setCellValue("42");
+        Integer cellValue = CellDeserializers.forInteger().deserialize(null, getReadableCell(0, 0));
+        assertEquals(42, cellValue);
+    }
+
+    @Test
     public void numberDeserializationReturnsCorrectDouble() {
         Cell cell = createRow(0).createCell(0);
         cell.setCellValue(42.2);
+        Double cellValue = CellDeserializers.forDouble().deserialize(null, getReadableCell(0, 0));
+        assertEquals(42.2, cellValue);
+    }
+
+    @Test
+    public void numberDeserializationOfStringValueReturnsCorrectDouble() {
+        Cell cell = createRow(0).createCell(0);
+        cell.setCellValue("42.2");
         Double cellValue = CellDeserializers.forDouble().deserialize(null, getReadableCell(0, 0));
         assertEquals(42.2, cellValue);
     }
@@ -50,6 +67,20 @@ public class CellDeserializersTest extends ExcelReadingTest {
         cell.setCellFormula("SUM(A1,A2)");
         Double cellValue = CellDeserializers.forDouble().deserialize(null, getReadableCell(2, 0));
         assertEquals(3, cellValue);
+    }
+
+    @Test
+    public void numberDeserializationWithNumberFormattingReturnsCorrectInteger() {
+        Cell cell = createRow(0).createCell(0);
+        cell.setCellValue(42.2);
+
+        CellStyle style = getWorkbook().createCellStyle();
+        style.setDataFormat((short) 5);  // prepends a dollar sign to the value
+
+        cell.setCellStyle(style);
+
+        Double cellValue = CellDeserializers.forDouble().deserialize(null, getReadableCell(0, 0));
+        assertEquals(42.2, cellValue);
     }
 
     @Test

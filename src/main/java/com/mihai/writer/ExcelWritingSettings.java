@@ -4,12 +4,10 @@ import java.io.File;
 
 import com.mihai.writer.locator.DefaultTableStartCellLocator;
 import com.mihai.writer.locator.TableStartCellLocator;
-import com.mihai.writer.serializer.CellSerializer;
 import com.mihai.writer.serializer.DefaultSerializationContext;
 import com.mihai.writer.serializer.SerializationContext;
 import com.mihai.writer.style.CellStyleContext;
 import com.mihai.writer.style.DefaultStyleContext;
-import com.mihai.writer.style.StyleProvider;
 
 public class ExcelWritingSettings {
 

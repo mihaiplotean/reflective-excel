@@ -3,7 +3,6 @@ package com.mihai.writer.style;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.mihai.writer.node.TypedValue;
 import com.mihai.writer.style.color.StyleColor;
 import org.junit.jupiter.api.Test;
 

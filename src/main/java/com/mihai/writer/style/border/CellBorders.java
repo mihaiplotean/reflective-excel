@@ -4,6 +4,7 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 
 /**
  * Provides some default borders that can be used.
+ *
  * @see CellBorder
  */
 public class CellBorders {
