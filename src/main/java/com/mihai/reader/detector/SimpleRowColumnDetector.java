@@ -27,7 +27,7 @@ public class SimpleRowColumnDetector implements TableRowColumnDetector {
     }
 
     private static boolean isNextRowEmpty(ReadingContext context, ReadableRow row) {
-        return context.getRow(row.getRowNumber() + 1).isEmpty();
+        return context.getCurrentTableRow(row.getRowNumber() + 1).isEmpty();
     }
 
     @Override

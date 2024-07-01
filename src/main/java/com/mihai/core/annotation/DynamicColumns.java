@@ -33,7 +33,7 @@ public @interface DynamicColumns {
 
     /**
      * Used to specify which columns are dynamic when reading. By default, all columns which could not be mapped as fixed
-     * columns, annotated as {@link ExcelColumn} or grouped columns, annotated as {@link ExcelCellGroup} are considered dynamic.
+     * or grouped columns are considered dynamic.
      */
     Class<? extends DynamicColumnDetector> detector() default AlwaysTrueDynamicColumnDetector.class;
 }
