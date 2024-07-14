@@ -70,7 +70,7 @@ follows:
 
 ```java
 DefaultDeserializationContext deserializationContext = new DefaultDeserializationContext();
-        deserializationContext.registerDeserializer(Date.class, CellDeserializers.forDate("dd/MM/yyyy"));
+deserializationContext.registerDeserializer(Date.class, CellDeserializers.forDate("dd/MM/yyyy"));
 
 ExcelReadingSettings settings = ExcelReadingSettings.builder()
         .deserializationContext(deserializationContext)
@@ -153,7 +153,7 @@ deserializationContext.registerDeserializer(EmploymentType.class, new Employment
 ExcelReadingSettings settings = ExcelReadingSettings.builder()
         .deserializationContext(deserializationContext)
         .build();
-List<EmployeeRow> rows = new ReflectiveExcelReader(excelFile,settings).readRows(EmployeeRow.class);
+List<EmployeeRow> rows = new ReflectiveExcelReader(excelFile, settings).readRows(EmployeeRow.class);
 ```
 
 Note that an implementation for deserialization to enum types already exists, and is provided
@@ -206,7 +206,7 @@ of a month. In this case, these columns are "dynamic", as they vary between 28 a
 
 | **ID** | **Employee** | **1** | **2** | **3** | ... | **31** |
 |--------|--------------|-------|-------|-------|-----|--------|
-| 1      | Joe          | 8     | 8     | 10    | ... | 7      |
+| 1      | Joe          | 8     | 8     | 10    | ... | 7.5    |
 | 2      | Maria        | 4.5   | 8     | 8     | ... | 8      |
 
 The `@DynamicColumns` annotation can be used to specify these columns as follows:
@@ -221,7 +221,7 @@ class EmployeeRow {
     private String name;
 
     @DynamicColumns
-    private Map<Integer, Integer> workedHoursPerDay;
+    private Map<Integer, Double> workedHoursPerDay;
 }
 ```
 
@@ -365,11 +365,82 @@ ExcelReadingSettings settings = ExcelReadingSettings.builder()
 ## Reading more than one table
 
 Besides reading one table, we can read multiple tables at once, as well as values outside tables.
-This is achieved through `ReflectiveExcelReader#read`.
+This is done through the `ReflectiveExcelReader#read` method.
 
 ### Reading multiple tables
 
+We can read multiple tables by using the `@TableId` annotation on the list of rows. Assuming we have an employee table, where the corresponding
+java type is `EmployeeRow`, as well a vacation table, with the corresponding type `VacationRow`:
+
+```java
+class EmployeeSheet {
+
+  @TableId("employee-table")
+  private List<EmployeeRow> employeeRows;
+
+  @TableId("vacation-table")
+  private List<VacationRow> vacationRows;
+}
+```
+
+The default reading settings assume that the tables start at cell "A1". However, this is not the case when there are multiple
+tables in one sheet, so we will need to specify where each table starts using a `TableRowColumnDetector`. We will use the provided
+`AutoRowColumnDetector`:
+
+```java
+ExcelReadingSettings settings = ExcelReadingSettings.builder()
+        .rowColumnDetector(new AutoRowColumnDetector())
+        .build();
+EmployeeSheet sheet = new ReflectiveExcelReader(excelFile, settings).read(EmployeeSheet.class);
+```
+
 ### Reading a cell value
+
+We can also get a cell value using a cell reference by using the `@ExcelCellValue` annotation. The value will be deserialized
+using the specified deserializer for the annotated type.
+
+```java
+class EmployeeSheet {
+
+  @ExcelCellValue(cellReference = "B1")
+  private Integer year;
+
+  @TableId("employee-table")
+  private List<EmployeeRow> employeeRows;
+}
+```
+
+```java
+ExcelReadingSettings settings = ExcelReadingSettings.builder()
+        .rowColumnDetector(new AutoRowColumnDetector())
+        .build();
+EmployeeSheet sheet = new ReflectiveExcelReader(excelFile, settings).read(EmployeeSheet.class);
+System.out.println(sheet.year);
+```
 
 ### Reading properties with values
 
+Sometimes, a sheet contains key-value properties. While we could read the value using the `@ExcelCellValue` annotation, we might
+want to ensure the sheet correctness by checking that the property name is as expected. We can do that by using the `@ExcelProperty`
+annotation. As parameters, we will need to specify the cell reference of the property name, the property name itself, and the
+reference of the property value. If in the sheet, the property name at the given cell location does not match the provided one, a
+`BadInputException` will be thrown during reading.
+
+```java
+class EmployeeSheet {
+
+  @ExcelProperty(name = "Year:", nameReference = "B1", valueReference = "B2")
+  private Integer year;
+
+  @TableId("employee-table")
+  private List<EmployeeRow> employeeRows;
+}
+```
+
+```java
+ExcelReadingSettings settings = ExcelReadingSettings.builder()
+        .rowColumnDetector(new AutoRowColumnDetector())
+        .build();
+EmployeeSheet sheet = new ReflectiveExcelReader(excelFile, settings).read(EmployeeSheet.class);
+System.out.println(sheet.year);
+```
