@@ -19,13 +19,13 @@ public class StyleFont {
     private final boolean italic;
     private final boolean underLine;
 
-    private StyleFont(CellFontBuilder cellFontBuilder) {
-        name = cellFontBuilder.name;
-        size = cellFontBuilder.size;
-        color = cellFontBuilder.color;
-        bold = cellFontBuilder.bold;
-        italic = cellFontBuilder.italic;
-        underLine = cellFontBuilder.underLine;
+    private StyleFont(StyleFontBuilder styleFontBuilder) {
+        name = styleFontBuilder.name;
+        size = styleFontBuilder.size;
+        color = styleFontBuilder.color;
+        bold = styleFontBuilder.bold;
+        italic = styleFontBuilder.italic;
+        underLine = styleFontBuilder.underLine;
     }
 
     public String getName() {
@@ -61,7 +61,7 @@ public class StyleFont {
      * @return a new font, with properties combined.
      */
     public StyleFont combineWith(StyleFont other) {
-        return new CellFontBuilder()
+        return new StyleFontBuilder()
                 .name(!StringUtils.isEmpty(name) ? name : other.name)
                 .size(size > 0 ? size : other.size)
                 .color(color != null ? color : other.color)
@@ -71,8 +71,8 @@ public class StyleFont {
                 .build();
     }
 
-    public static CellFontBuilder builder() {
-        return new CellFontBuilder();
+    public static StyleFontBuilder builder() {
+        return new StyleFontBuilder();
     }
 
     @Override
@@ -109,7 +109,7 @@ public class StyleFont {
                 '}';
     }
 
-    public static final class CellFontBuilder {
+    public static final class StyleFontBuilder {
 
         private String name;
         private short size;
@@ -124,7 +124,7 @@ public class StyleFont {
          *
          * @param name the name of the font.
          */
-        public CellFontBuilder name(String name) {
+        public StyleFontBuilder name(String name) {
             this.name = name;
             return this;
         }
@@ -134,7 +134,7 @@ public class StyleFont {
          *
          * @param size the size of the font.
          */
-        public CellFontBuilder size(int size) {
+        public StyleFontBuilder size(int size) {
             this.size = (short) size;
             return this;
         }
@@ -144,7 +144,7 @@ public class StyleFont {
          *
          * @param color the size of the font.
          */
-        public CellFontBuilder color(StyleColor color) {
+        public StyleFontBuilder color(StyleColor color) {
             this.color = color;
             return this;
         }
@@ -154,7 +154,7 @@ public class StyleFont {
          *
          * @param bold true if the font should be bold.
          */
-        public CellFontBuilder bold(boolean bold) {
+        public StyleFontBuilder bold(boolean bold) {
             this.bold = bold;
             return this;
         }
@@ -164,7 +164,7 @@ public class StyleFont {
          *
          * @param italic true if the font should be italic.
          */
-        public CellFontBuilder italic(boolean italic) {
+        public StyleFontBuilder italic(boolean italic) {
             this.italic = italic;
             return this;
         }
@@ -174,7 +174,7 @@ public class StyleFont {
          *
          * @param underLine true if the font text should be underlined.
          */
-        public CellFontBuilder underLine(boolean underLine) {
+        public StyleFontBuilder underLine(boolean underLine) {
             this.underLine = underLine;
             return this;
         }

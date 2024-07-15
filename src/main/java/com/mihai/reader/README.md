@@ -1,6 +1,6 @@
 # Reflective Excel Reader
 
-Reflective Excel Reader allows mapping of Excel sheets to Java Objects. To provide an idea
+Reflective Excel Reader allows mapping of Excel sheets to Java objects. To provide an idea
 of what is possible, we will showcase each feature in the next sections.
 
 ## Table with fixed columns
@@ -58,7 +58,7 @@ sheet from the end, i.e. passing `-1` will read the last sheet.
 
 By default, converting the cell value to the following types is supported:
 
-- All primitives and their corresponding wrappers.
+- `String`, all primitives and their corresponding wrappers.
 - `Date`, `LocalDate` and `LocalDateTime`. This is assuming that in the sheet, the cell value has a date number format.
 - `java.util.Currency` – the cell value needs to be the currency code.
 
@@ -332,7 +332,7 @@ class EmployeeRow {
 }
 ```
 
-An `ExcelCellGroup` can contain fixed columns, dynamic column, or even other cell grouping columns.
+An `ExcelCellGroup` can contain fixed columns, dynamic columns, or even other cell grouping columns.
 
 ## Detecting table bounds, skipping rows
 
