@@ -3,7 +3,23 @@
 Reflective Excel Reader allows mapping of Excel sheets to Java objects. To provide an idea
 of what is possible, we will showcase each feature in the next sections.
 
-## Table with fixed columns
+## Table of contents
+
+  * [Fixed columns](#fixed-columns)
+  * [Deserializing cell values](#deserializing-cell-values)
+    * [Default Deserializers](#default-deserializers)
+    * [Custom Deserializer](#custom-deserializer)
+      * [What if deserialization requires information outside the current cell?](#what-if-deserialization-requires-information-outside-the-current-cell)
+    * [Handling invalid cell values](#handling-invalid-cell-values)
+  * [Dynamic columns](#dynamic-columns)
+  * [Grouped columns](#grouped-columns)
+  * [Detecting table bounds, skipping rows](#detecting-table-bounds-skipping-rows)
+  * [Reading more than one table](#reading-more-than-one-table)
+    * [Reading multiple tables](#reading-multiple-tables)
+    * [Reading a cell value](#reading-a-cell-value)
+    * [Reading properties with values](#reading-properties-with-values)
+
+## Fixed columns
 
 Let's say we have the following table in the sheet (starting at cell "A1"):
 
@@ -267,16 +283,6 @@ a `DynamicColumnDetector`.
 
 Sometimes, related columns/headers are grouped into one. For example:
 
-<style>
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-style:solid;border-width:1px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-style:solid;border-width:1px;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-64cd{font-weight:bold;text-align:center;vertical-align:middle}
-.tg .tg-js8t{font-weight:bold;text-align:center;vertical-align:top}
-.tg .tg-g9ke{text-align:center;vertical-align:top}
-.tg .tg-0pky{text-align:left;vertical-align:top}
-</style>
 <table class="tg"><thead>
   <tr>
     <th class="tg-64cd" rowspan="2">ID</th>

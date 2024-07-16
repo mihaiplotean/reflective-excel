@@ -3,7 +3,24 @@
 Reflective Excel Writer allows mapping of Java objects to Excel sheets. To provide an idea
 of what is possible, we will showcase each feature in the next sections.
 
-## Table with fixed columns
+## Table of contents
+
+  * [Fixed columns](#fixed-columns)
+  * [Dynamic columns](#dynamic-columns)
+  * [Grouped columns](#grouped-columns)
+  * [Writing settings](#writing-settings)
+    * [Table location](#table-location)
+    * [Template file](#template-file)
+  * [Serializing cell values](#serializing-cell-values)
+    * [Default serializers](#default-serializers)
+    * [Custom Serializer](#custom-serializer)
+  * [Table and cell styling](#table-and-cell-styling)
+  * [Writing more than one table](#writing-more-than-one-table)
+    * [Writing multiple tables](#writing-multiple-tables)
+    * [Writing a cell value](#writing-a-cell-value)
+    * [Writing properties with values](#writing-properties-with-values)
+
+## Fixed columns
 
 Let's say we want to write the following table to the sheet:
 
@@ -83,16 +100,6 @@ new ReflectiveExcelWriter(file).writeRows(List.of(row1, row2), EmployeeRow.class
 
 Sometimes, we want to group related columns/headers into one. For example:
 
-<style>
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-style:solid;border-width:1px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-style:solid;border-width:1px;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .header-style{font-weight:bold;text-align:center;vertical-align:middle}
-.tg .tg-js8t{font-weight:bold;text-align:center;vertical-align:top}
-.tg .tg-g9ke{text-align:center;vertical-align:top}
-.tg .row-style{text-align:left;vertical-align:top}
-</style>
 <table class="tg"><thead>
   <tr>
     <th class="header-style" rowspan="2">ID</th>
@@ -245,41 +252,9 @@ We can define styling for the following elements:
 - Java Type
 - Sheet cell
 
-To illustrate, we will assume that we want to write the following table:
+To illustrate, assume that we want to write the following table:
 
-<style>
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-style:solid;border-width:3px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-style:solid;border-width:3px;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .header-style{font-weight:bold;text-align:center;vertical-align:middle;width:100px}
-.tg .row-style-odd{text-align:left;vertical-align:top;background-color:#008080}
-.tg .row-style-even{text-align:left;vertical-align:top}
-</style>
-<table class="tg"><thead>
-  <tr>
-    <th class="header-style">ID</th>
-    <th class="header-style">Employee</th>
-    <th class="header-style">Worked hours</th>
-  </tr>
-<tbody>
-  <tr>
-    <td class="row-style-odd" style="font-style:italic">1</td>
-    <td class="row-style-odd">Joe</td>
-    <td class="row-style-odd">140.0</td>
-  </tr>
-  <tr>
-    <td class="row-style" style="font-style:italic">2</td>
-    <td class="row-style">Maria</td>
-    <td class="row-style">120.5</td>
-  </tr>
-  <tr>
-    <td class="row-style-odd" style="font-style:italic">3</td>
-    <td class="row-style-odd">Ragnar</td>
-    <td class="row-style-odd">115.5</td>
-  </tr>
-</tbody>
-</table>
+<p><img height="150" src="../../../../../test/resources/docs-images/styled-table-example.png" alt="Reflective Excel Logo"/></p>
 
 That is:
 - Table headers are bold and centered. Text-wrap is enabled.
@@ -302,6 +277,7 @@ StyleProvider headerStyleProvider = new StyleProvider() {
         return WritableCellStyle.builder()
                 .font(italicFont)
                 .horizontalAlignment(HorizontalAlignment.CENTER)
+                .verticalAlignment(VerticalAlignment.CENTER)
                 .wrapText(true)
                 .build();
     }
@@ -409,6 +385,7 @@ CellStyleContext styleContext = new DefaultStyleContext();
 styleContext.setHeaderStyleProvider(StyleProviders.of(WritableCellStyle.builder()
         .font(StyleFonts.bold())
         .horizontalAlignment(HorizontalAlignment.CENTER)
+        .verticalAlignment(VerticalAlignment.CENTER)
         .wrapText(true)
         .build()));
 styleContext.setRowStyleProvider(StyleProviders.stripedRows(new StyleColor(0, 128, 128), null));
@@ -488,7 +465,7 @@ class EmployeeSheet {
 }
 ```
 
-The following will write the table, as well as the value `42` to cell "B1":
+The following will write the value `42` to cell "B1" and the table:
 
 ```java
 new ReflectiveExcelWriter(file).write(new EmployeeSheet(42, employeeRows));
@@ -496,7 +473,7 @@ new ReflectiveExcelWriter(file).write(new EmployeeSheet(42, employeeRows));
 
 ### Writing properties with values
 
-Sometimes, we want to write key-value properties.  We can do that by using the `@ExcelProperty`
+Sometimes, we want to write key-value properties. We can do that by using the `@ExcelProperty`
 annotation. As parameters, we will need to specify the cell reference of the property name, the property name itself, and the
 reference of the property value.
 

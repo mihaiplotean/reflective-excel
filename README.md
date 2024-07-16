@@ -1,5 +1,7 @@
 <h1 align="center">Reflective Excel</h1>
 
+<p align="center"><img height="200" width="200" src="src/test/resources/docs-images/reflective-excel-logo.png" alt="Reflective Excel Logo"/></p>
+
 <p align="center">
     Reading and writing Excel sheets made easy.
 </p>
@@ -16,7 +18,7 @@ Some supported features:
 - [De]serialization of cell values from/to any java type.
 - Styling the table/cell with properties such as font, background color, and other.
 - Reading and writing a cell value at a fixed location in the sheet.
-- Reading and writing a table no matter the location in the sheet. For writing, auto-detection of the table start is supported.
+- Reading and writing a table no matter the location in the sheet. For reading, auto-detection of the table start is supported.
 - For writing, providing a template Excel file.
 - Multiple tables in one sheet.
 
@@ -81,7 +83,7 @@ and tables as well, including, but not limited to:
 - Grouped columns.
 - Deserialization of the cell value to any java type.  
 
-For further instructions, see the documentation for the <a href="??">Reflective Excel Reader</a>.
+For further instructions, see the documentation for the [Reflective Excel Reader](src/main/java/com/mihai/reader/README.md).
 
 ### Writing an Excel sheet
 
@@ -126,7 +128,7 @@ and tables as well, including, but not limited to:
 - Serialization of any java type to a cell value.
 - Tables which start anywhere in the sheet.
 
-For further instructions, see the documentation for the <a href="??">Reflective Excel Writer</a>.
+For further instructions, see the documentation for the [Reflective Excel Writer](src/main/java/com/mihai/writer/README.md)
 
 ## Contributing
 
