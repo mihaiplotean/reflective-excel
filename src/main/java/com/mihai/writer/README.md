@@ -193,7 +193,7 @@ ExcelWritingSettings settings = ExcelWritingSettings.builder()
 
 ### Template file
 
-A template file can be provided using `ExcelWritingSettingsBuilder#templateFile` if your sheet should have a logo, or some other fixed information. 
+If your sheet should have a logo, or some other fixed information, a template file can be provided using `ExcelWritingSettingsBuilder#templateFile`. 
 Instead of creating an empty Excel file and writing to it, the template will be used as a base. Note that nothing in the template
 is shifted. The tables are written on top of what is already there.
 
@@ -215,7 +215,7 @@ All the default serializers are defined by the `DefaultSerializationContext`.
 If you want to define how to serialize a type `T`, you can define a custom
 serializer by implementing `CellSerializer<T>` and adding it to the `SerializationContext`.
 
-For example, let's say we want to define how to convert the `YearMonth` from the `java.time` package to a cell value.
+For example, let's say we want to define how to convert the `YearMonth` from the `java.time` package to a cell value. Then:
 
 ```java
 class YearMonthSerializer implements CellSerializer<YearMonth> {

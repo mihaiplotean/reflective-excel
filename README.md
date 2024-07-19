@@ -16,13 +16,11 @@ Some supported features:
 - Tables with dynamic columns.
 - Tables with grouped columns.
 - [De]serialization of cell values from/to any java type.
-- Styling the table/cell with properties such as font, background color, and other.
+- Styling the table/cell with custom fonts, background colors, and other.
+- Reading and writing a table no matter the location in the sheet. For reading, auto-detection of the table is supported.
 - Reading and writing a cell value at a fixed location in the sheet.
-- Reading and writing a table no matter the location in the sheet. For reading, auto-detection of the table start is supported.
 - For writing, providing a template Excel file.
 - Multiple tables in one sheet.
-
-For more information, consult our <a href="??">wiki page</a>.
 <hr>
 
 ## Development Setup
@@ -112,6 +110,7 @@ class TodoRow {
 }
 ```
 
+Writing the rows:
 ```java
 List<TodoRow> rows = List.of(
     new TodoRow(1, "Buy Milk", LocalDate.of(2024, 1, 20)),
@@ -128,7 +127,7 @@ and tables as well, including, but not limited to:
 - Serialization of any java type to a cell value.
 - Tables which start anywhere in the sheet.
 
-For further instructions, see the documentation for the [Reflective Excel Writer](src/main/java/com/mihai/writer/README.md)
+For further instructions, see the documentation for the [Reflective Excel Writer](src/main/java/com/mihai/writer/README.md).
 
 ## Contributing
 

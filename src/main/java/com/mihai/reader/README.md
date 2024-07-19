@@ -154,11 +154,11 @@ class EmploymentTypeDeserializer implements CellDeserializer<EmploymentType> {
 
 To briefly explain what we did:
 
-- The `ReadableCell` object provides us useful information about the cell that we are deserializing. We retrieve the
+- The `ReadableCell` object provides useful information about the cell that we are deserializing. We retrieve the
   cell value.
 - We map the cell value to the corresponding enum value.
-- If we could not map the value to an enum, we throw a `BadInputException` to signal invalid values in the sheet. The
-  exception message also contains the cell reference (e.g. "A1"), to make it easy to see which cell value is wrong.
+- If we could not map the cell value to an enum value, we throw a `BadInputException` to signal invalid values in the sheet. The
+  exception message also contains the cell reference (e.g. "A1") to make it easy to see where the cell value is located.
 
 The only thing remaining is to add the cell deserializer to the `DeserializationContext` and read the rows:
 
@@ -309,7 +309,7 @@ Sometimes, related columns/headers are grouped into one. For example:
 </tbody>
 </table>
 
-The grouped columns need to be grouped into a new java object and annotated with `@ExcelCellGroup`, as follows:
+In this case, the grouped columns need to be grouped into a new java object and annotated with `@ExcelCellGroup`, as follows:
 
 ```java
 class EmployeeRow {
