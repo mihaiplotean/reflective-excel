@@ -7,6 +7,10 @@
 </p>
 
 <hr>
+
+![Build](https://github.com/mihaiplotean/reflective-excel/actions/workflows/build-and-test.yml/badge.svg)
+[![codecov](https://codecov.io/github/mihaiplotean/reflective-excel/graph/badge.svg?token=WVV881E6XZ)](https://codecov.io/github/mihaiplotean/reflective-excel)
+
 Reflective Excel is a java library for mapping Excel sheets to Java Objects and vice-versa. 
 It is designed to be versatile and simple to use. 
 Under the hood, it uses <a href="https://poi.apache.org/">Apache POI</a>.
