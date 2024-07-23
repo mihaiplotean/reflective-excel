@@ -3,11 +3,14 @@ package com.mihai.assertion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.mihai.reader.CellValueFormatter;
 import com.mihai.writer.style.WritableCellStyle;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.FormulaError;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -21,7 +24,6 @@ public class SheetAssert {
 
     private final Sheet sheetA;
     private final Sheet sheetB;
-    private final Map<Sheet, CellValueFormatter> cellValueFormatterProvider;
     private final Map<Sheet, WritableCellStyleExtractor> cellStyleExtractorProvider;
     private final ExcelAssertSettings settings;
 
@@ -29,10 +31,6 @@ public class SheetAssert {
         this.sheetA = sheetA;
         this.sheetB = sheetB;
         this.settings = settings;
-        this.cellValueFormatterProvider = Map.of(
-                sheetA, new CellValueFormatter(sheetA.getWorkbook()),
-                sheetB, new CellValueFormatter(sheetB.getWorkbook())
-        );
         this.cellStyleExtractorProvider = Map.of(
                 sheetA, new WritableCellStyleExtractor(sheetA.getWorkbook()),
                 sheetB, new WritableCellStyleExtractor(sheetB.getWorkbook())
@@ -52,8 +50,8 @@ public class SheetAssert {
                     // these cells do not have a value and do not impact the style of the merged region
                     continue;
                 }
-                String actualValue = getCellValue(cellA);
-                String expectedValue = getCellValue(cellB);
+                Object actualValue = getCellValue(cellA);
+                Object expectedValue = getCellValue(cellB);
                 String currentCellReference = new CellReference(row, column).formatAsString();
 
                 if (areValuesDifferent(actualValue, expectedValue)) {
@@ -111,15 +109,33 @@ public class SheetAssert {
         Assertions.fail(message);
     }
 
-    private String getCellValue(Cell cell) {
+    private Object getCellValue(Cell cell) {
         if (cell == null) {
             return "";
         }
-        return cellValueFormatterProvider.get(cell.getSheet()).toString(cell);
+        return switch (cell.getCellType()) {
+            case NUMERIC -> {
+                if(DateUtil.isCellDateFormatted(cell)) {
+                    yield cell.getDateCellValue();
+                }
+                yield cell.getNumericCellValue();
+            }
+            case STRING -> cell.getStringCellValue();
+            case BOOLEAN -> cell.getBooleanCellValue();
+            case BLANK -> "";
+            default -> throw new IllegalStateException("Implement value conversion for cell type: " + cell.getCellType());
+        };
     }
 
-    private boolean areValuesDifferent(String valueA, String valueB) {
+    private boolean areValuesDifferent(Object valueA, Object valueB) {
         return !areValuesEqual(valueA, valueB);
+    }
+
+    private boolean areValuesEqual(Object valueA, Object valueB) {
+        if(valueA instanceof String textValueA && valueB instanceof String textValueB) {
+            return areValuesEqual(textValueA, textValueB);
+        }
+        return Objects.equals(valueA, valueB);
     }
 
     private boolean areValuesEqual(String valueA, String valueB) {
