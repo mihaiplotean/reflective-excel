@@ -49,7 +49,7 @@ public class StyledTableTest {
         styleContext.setRowStyleProvider(StyleProviders.stripedRows(new StyleColor(240, 248, 255), null));
         styleContext.setTypeStyleProvider(Money.class, new StyleProvider() {
 
-            private static final String CURRENCY_FORMAT = "_(%s* #,##_);_(%<s * -#,##_);_(%<s* \"\"-\"\"??_);_(@_)";
+            private static final String CURRENCY_FORMAT = "_(\\%s* #,###_);_(\\%<s\\ * \\-#,###_);_(\\%<s* \"\"\\-\"\"??_);_(@_)";
 
             @Override
             public WritableCellStyle getStyle(WritingContext context, Object target) {
