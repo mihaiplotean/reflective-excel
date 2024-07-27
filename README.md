@@ -40,8 +40,8 @@ In the `pom.xml` file of your project, add the following dependency:
 
 ```xml
 <dependency>
-    <groupId>?????</groupId>
-    <artifactId>?????</artifactId>
+    <groupId>io.github.mihaiplotean</groupId>
+    <artifactId>reflective-excel</artifactId>
     <version>0.1.0</version>
 </dependency>
 ```
@@ -85,7 +85,7 @@ and tables as well, including, but not limited to:
 - Grouped columns.
 - Deserialization of the cell value to any java type.  
 
-For further instructions, see the documentation for the [Reflective Excel Reader](src/main/java/com/mihai/reader/README.md).
+For further instructions, see the documentation for the [Reflective Excel Reader](src/main/java/com/reflectiveexcel/reader/README.md).
 
 ### Writing an Excel sheet
 
@@ -131,7 +131,7 @@ and tables as well, including, but not limited to:
 - Serialization of any java type to a cell value.
 - Tables which start anywhere in the sheet.
 
-For further instructions, see the documentation for the [Reflective Excel Writer](src/main/java/com/mihai/writer/README.md).
+For further instructions, see the documentation for the [Reflective Excel Writer](src/main/java/com/reflectiveexcel/writer/README.md).
 
 ## Contributing
 
