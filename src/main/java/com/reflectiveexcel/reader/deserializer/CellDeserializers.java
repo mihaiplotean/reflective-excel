@@ -1,11 +1,15 @@
 package com.reflectiveexcel.reader.deserializer;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Date;
 
+import com.reflectiveexcel.reader.ReadingContext;
 import com.reflectiveexcel.reader.exception.BadInputException;
+import com.reflectiveexcel.reader.workbook.sheet.ReadableCell;
 
 /**
  * Provides cell deserializers for various types.
@@ -154,6 +158,32 @@ public class CellDeserializers {
     public static CellDeserializer<LocalDate> forLocalDate() {
         CellDeserializer<LocalDateTime> dateTimeCellDeserializer = forLocalDateTime();
         return (context, cell) -> dateTimeCellDeserializer.deserialize(context, cell).toLocalDate();
+    }
+
+    public static CellDeserializer<BigDecimal> forBigDecimal() {
+        return new CellDeserializer<>() {
+
+            private final CellDeserializer<Double> doubleDeserializer = CellDeserializers.forDouble();
+
+            @Override
+            public BigDecimal deserialize(ReadingContext context, ReadableCell cell) throws BadInputException {
+                Double deserializedDouble = doubleDeserializer.deserialize(context, cell);
+                return BigDecimal.valueOf(deserializedDouble);
+            }
+        };
+    }
+
+    public static CellDeserializer<BigInteger> forBigInteger() {
+        return new CellDeserializer<>() {
+
+            private final CellDeserializer<Integer> intDeserializer = CellDeserializers.forInteger();
+
+            @Override
+            public BigInteger deserialize(ReadingContext context, ReadableCell cell) throws BadInputException {
+                Integer deserializedInteger = intDeserializer.deserialize(context, cell);
+                return BigInteger.valueOf(deserializedInteger);
+            }
+        };
     }
 
     public static CellDeserializer<LocalDate> forLocalDate(String datePattern) {

@@ -3,6 +3,8 @@ package com.reflectiveexcel.writer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -96,5 +98,25 @@ public class WritableCellTest extends ExcelWritingTest {
 
         assertEquals(CellType.NUMERIC, actualCell.getCellType());
         assertEquals(calendar.getTime(), actualCell.getDateCellValue());
+    }
+
+    @Test
+    public void bigIntegerValueAppliedToCell() {
+        WritableCell cell = new WritableCell(BigInteger.valueOf(12), 0, 0);
+        Cell actualCell = getSheet().createRow(0).createCell(0);
+        cell.writeTo(actualCell);
+
+        assertEquals(CellType.NUMERIC, actualCell.getCellType());
+        assertEquals(12, actualCell.getNumericCellValue());
+    }
+
+    @Test
+    public void bigDecimalValueAppliedToCell() {
+        WritableCell cell = new WritableCell(BigDecimal.valueOf(12d), 0, 0);
+        Cell actualCell = getSheet().createRow(0).createCell(0);
+        cell.writeTo(actualCell);
+
+        assertEquals(CellType.NUMERIC, actualCell.getCellType());
+        assertEquals(12d, actualCell.getNumericCellValue());
     }
 }

@@ -1,5 +1,7 @@
 package com.reflectiveexcel.reader.deserializer;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -41,6 +43,8 @@ public class DefaultDeserializationContext implements DeserializationContext {
         registerDeserializer(Date.class, CellDeserializers.forDate());
         registerDeserializer(LocalDateTime.class, CellDeserializers.forLocalDateTime());
         registerDeserializer(LocalDate.class, CellDeserializers.forLocalDate());
+        registerDeserializer(BigDecimal.class, CellDeserializers.forBigDecimal());
+        registerDeserializer(BigInteger.class, CellDeserializers.forBigInteger());
     }
 
     @SuppressWarnings("unchecked")
