@@ -1,5 +1,7 @@
 package com.reflectiveexcel.writer.serializer;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -42,6 +44,8 @@ public class DefaultSerializationContext implements SerializationContext {
         registerSerializer(LocalDateTime.class, CellSerializers.identity());
         registerSerializer(LocalDate.class, CellSerializers.identity());
         registerSerializer(Currency.class, CellSerializers.forCurrency());
+        registerSerializer(BigDecimal.class, CellSerializers.identity());
+        registerSerializer(BigInteger.class, CellSerializers.identity());
     }
 
     @SuppressWarnings("unchecked")

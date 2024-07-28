@@ -3,6 +3,8 @@ package com.reflectiveexcel.reader.deserializer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -191,5 +193,21 @@ public class CellDeserializersTest extends ExcelReadingTest {
         cell.setCellValue("14-05-2024 08:33");
         assertEquals(LocalDateTime.of(2024, 5, 14, 8, 33),
                      CellDeserializers.forLocalDateTime("dd-MM-yyyy HH:mm").deserialize(null, getReadableCell(0, 0)));
+    }
+
+    @Test
+    public void numberDeserializationReturnsCorrectBigInteger() {
+        Cell cell = createRow(0).createCell(0);
+        cell.setCellValue(42);
+        BigInteger cellValue = CellDeserializers.forBigInteger().deserialize(null, getReadableCell(0, 0));
+        assertEquals(BigInteger.valueOf(42), cellValue);
+    }
+
+    @Test
+    public void numberDeserializationReturnsCorrectBigDecimal() {
+        Cell cell = createRow(0).createCell(0);
+        cell.setCellValue(42d);
+        BigDecimal cellValue = CellDeserializers.forBigDecimal().deserialize(null, getReadableCell(0, 0));
+        assertEquals(BigDecimal.valueOf(42d), cellValue);
     }
 }
