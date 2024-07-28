@@ -3,6 +3,8 @@ package com.reflectiveexcel.writer.serializer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -158,5 +160,17 @@ public class DefaultSerializationContextTest {
     public void serializedNullValueWhenMissingSerializerIsEmptyString() {
         DefaultSerializationContext serializationContext = new DefaultSerializationContext();
         assertEquals("", serializationContext.serialize(context, DefaultSerializationContext.class, null));
+    }
+
+    @Test
+    public void serializedBigDecimalIsInputValue() {
+        DefaultSerializationContext serializationContext = new DefaultSerializationContext();
+        assertEquals(BigDecimal.valueOf(12d), serializationContext.serialize(context, BigDecimal.class, BigDecimal.valueOf(12d)));
+    }
+
+    @Test
+    public void serializedBigIntegerIsInputValue() {
+        DefaultSerializationContext serializationContext = new DefaultSerializationContext();
+        assertEquals(BigInteger.valueOf(12), serializationContext.serialize(context, BigInteger.class, BigInteger.valueOf(12)));
     }
 }
