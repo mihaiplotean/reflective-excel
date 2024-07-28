@@ -204,6 +204,7 @@ is shifted. The tables are written on top of what is already there.
 By default, converting the following types to a cell value is supported:
 
 - `String`, all primitives and their corresponding wrappers.
+- `BigDecimal` and `BigInteger`.
 - `Date`, `LocalDate` and `LocalDateTime`.
 - `java.util.Currency` – the cell value will represent the currency code.
 - Other types are serialized using the `Object#toString` method.

@@ -75,6 +75,7 @@ sheet from the end, i.e. passing `-1` will read the last sheet.
 By default, converting the cell value to the following types is supported:
 
 - `String`, all primitives and their corresponding wrappers.
+- `BigDecimal` and `BigInteger`.
 - `Date`, `LocalDate` and `LocalDateTime`. This is assuming that in the sheet, the cell value has a date number format.
 - `java.util.Currency` – the cell value needs to be the currency code.
 
