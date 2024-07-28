@@ -176,11 +176,11 @@ public class CellDeserializers {
     public static CellDeserializer<BigInteger> forBigInteger() {
         return new CellDeserializer<>() {
 
-            private final CellDeserializer<Integer> doubleDeserializer = CellDeserializers.forInteger();
+            private final CellDeserializer<Integer> intDeserializer = CellDeserializers.forInteger();
 
             @Override
             public BigInteger deserialize(ReadingContext context, ReadableCell cell) throws BadInputException {
-                Integer deserializedInteger = doubleDeserializer.deserialize(context, cell);
+                Integer deserializedInteger = intDeserializer.deserialize(context, cell);
                 return BigInteger.valueOf(deserializedInteger);
             }
         };
