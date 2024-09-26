@@ -12,6 +12,11 @@ public class DeserializedCellValues {
         valueCache.put(valueReference, value);
     }
 
+    public boolean hasValue(int row, int colum, Class<?> type) {
+        DeserializedCellValue valueReference = new DeserializedCellValue(row, colum, type);
+        return valueCache.containsKey(valueReference);
+    }
+
     @SuppressWarnings("unchecked")
     public <T> T getValue(int row, int colum, Class<T> type) {
         DeserializedCellValue valueReference = new DeserializedCellValue(row, colum, type);

@@ -1,7 +1,9 @@
 package com.reflectiveexcel.reader.readers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,10 +15,17 @@ import com.reflectiveexcel.reader.ExcelReadingTest;
 import com.reflectiveexcel.reader.ReadableSheetContext;
 import com.reflectiveexcel.reader.ReadingContext;
 import com.reflectiveexcel.reader.detector.SimpleRowColumnDetector;
+import com.reflectiveexcel.reader.event.RowReadEvent;
+import com.reflectiveexcel.reader.event.RowSkippedEvent;
+import com.reflectiveexcel.reader.event.TableReadEvent;
+import com.reflectiveexcel.reader.event.listener.EventListeners;
+import com.reflectiveexcel.reader.event.listener.RowReadListener;
+import com.reflectiveexcel.reader.event.listener.TableReadListener;
 import com.reflectiveexcel.reader.table.ReadTable;
 import com.reflectiveexcel.reader.table.TableHeaders;
 import com.reflectiveexcel.reader.workbook.sheet.ReadableRow;
 import org.apache.poi.ss.usermodel.Row;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TableReaderTest extends ExcelReadingTest {
@@ -98,6 +107,181 @@ public class TableReaderTest extends ExcelReadingTest {
         List<TestRow> testRows = tableReader.readRows(TestRow.class);
 
         assertEquals(List.of(), testRows);
+    }
+
+    @Test
+    public void whenHeaderMissingEventFired() {
+        createRow(0).createCell(0).setCellValue("Column A");
+
+        List<String> missingHeaderNames = new ArrayList<>();
+        EventListeners eventListeners = new EventListeners();
+        eventListeners.addHeaderReadListener(event -> missingHeaderNames.addAll(event.getMissingHeaders()));
+        ExcelReadingSettings settings = ExcelReadingSettings.builder()
+                .eventListener(eventListeners)
+                .build();
+
+        TableReader tableReader = new TableReader(createSheetContext(), settings);
+        tableReader.readRows(TestRow.class);
+        assertEquals(List.of("Column B"), missingHeaderNames);
+    }
+
+    @Test
+    public void whenAllHeadersPresentNoEventFired() {
+        Row row = createRow(0);
+        row.createCell(0).setCellValue("Column A");
+        row.createCell(1).setCellValue("Column B");
+
+        EventListeners eventListeners = new EventListeners();
+        eventListeners.addHeaderReadListener(event -> Assertions.fail("Should not be reached"));
+        ExcelReadingSettings settings = ExcelReadingSettings.builder()
+                .eventListener(eventListeners)
+                .build();
+
+        TableReader tableReader = new TableReader(createSheetContext(), settings);
+        tableReader.readRows(TestRow.class);
+    }
+
+    @Test
+    public void whenRowReadEventFired() {
+        Row row1 = createRow(0);
+        row1.createCell(0).setCellValue("Column A");
+        row1.createCell(1).setCellValue("Column B");
+        Row row2 = createRow(1);
+        row2.createCell(0).setCellValue("value A");
+        row2.createCell(1).setCellValue("value B");
+
+        List<TestRow> readRows = new ArrayList<>();
+        List<Integer> readRowIndices = new ArrayList<>();
+
+        EventListeners eventListeners = new EventListeners();
+        eventListeners.addRowReadListener(new RowReadListener() {
+            @Override
+            public void onRowSkipped(RowSkippedEvent event) {
+                // do nothing
+            }
+
+            @Override
+            public void afterRowRead(RowReadEvent event) {
+                readRows.add((TestRow) event.getCreatedRow());
+                readRowIndices.add(event.getRowIndex());
+            }
+        });
+        ExcelReadingSettings settings = ExcelReadingSettings.builder()
+                .eventListener(eventListeners)
+                .build();
+
+        TableReader tableReader = new TableReader(createSheetContext(), settings);
+        tableReader.readRows(TestRow.class);
+
+        assertEquals(List.of(new TestRow("value A", "value B")), readRows);
+        assertEquals(List.of(1), readRowIndices);
+    }
+
+    @Test
+    public void whenRowSkippedEventFired() {
+        Row row1 = createRow(0);
+        row1.createCell(0).setCellValue("Column A");
+        row1.createCell(1).setCellValue("Column B");
+        Row row2 = createRow(1);
+        row2.createCell(0).setCellValue("value A");
+        row2.createCell(1).setCellValue("value B");
+        Row row3 = createRow(2);
+        row3.createCell(0).setCellValue("value C");
+        row3.createCell(1).setCellValue("value D");
+
+        List<Integer> skippedRows = new ArrayList<>();
+
+        EventListeners eventListeners = new EventListeners();
+        eventListeners.addRowReadListener(new RowReadListener() {
+            @Override
+            public void onRowSkipped(RowSkippedEvent event) {
+                skippedRows.add(event.getRowIndex());
+            }
+
+            @Override
+            public void afterRowRead(RowReadEvent event) {
+                Assertions.fail("Should not be reached as all rows are skipped");
+            }
+        });
+        ExcelReadingSettings settings = ExcelReadingSettings.builder()
+                .eventListener(eventListeners)
+                .rowColumnDetector(new SimpleRowColumnDetector("A1") {
+                    @Override
+                    public boolean shouldSkipRow(ReadingContext context, ReadableRow tableRow) {
+                        return true;
+                    }
+                })
+                .build();
+
+        TableReader tableReader = new TableReader(createSheetContext(), settings);
+        tableReader.readRows(TestRow.class);
+
+        assertEquals(List.of(1, 2), skippedRows);
+    }
+
+    @Test
+    public void beforeTableReadEventFired() {
+        Row row1 = createRow(0);
+        row1.createCell(0).setCellValue("Column A");
+        row1.createCell(1).setCellValue("Column B");
+        Row row2 = createRow(1);
+        row2.createCell(0).setCellValue("value A");
+        row2.createCell(1).setCellValue("value B");
+
+        List<String> readTableIds = new ArrayList<>();
+        EventListeners eventListeners = new EventListeners();
+        eventListeners.addTableReadListeners(new TableReadListener() {
+            @Override
+            public void beforeTableRead(TableReadEvent event) {
+                readTableIds.add(event.getTableId());
+            }
+
+            @Override
+            public void afterTableRead(TableReadEvent event) {
+                // do nothing
+            }
+        });
+        ExcelReadingSettings settings = ExcelReadingSettings.builder()
+                .eventListener(eventListeners)
+                .build();
+
+        TableReader tableReader = new TableReader(createSheetContext(), settings);
+        tableReader.readRows(TestRow.class);
+
+        assertEquals(List.of("test-table"), readTableIds);
+    }
+
+    @Test
+    public void afterTableReadEventFired() {
+        Row row1 = createRow(0);
+        row1.createCell(0).setCellValue("Column A");
+        row1.createCell(1).setCellValue("Column B");
+        Row row2 = createRow(1);
+        row2.createCell(0).setCellValue("value A");
+        row2.createCell(1).setCellValue("value B");
+
+        List<String> readTableIds = new ArrayList<>();
+        EventListeners eventListeners = new EventListeners();
+        eventListeners.addTableReadListeners(new TableReadListener() {
+            @Override
+            public void beforeTableRead(TableReadEvent event) {
+                // do nothing
+            }
+
+            @Override
+            public void afterTableRead(TableReadEvent event) {
+                assertNotNull(event.getReadTable());
+                readTableIds.add(event.getTableId());
+            }
+        });
+        ExcelReadingSettings settings = ExcelReadingSettings.builder()
+                .eventListener(eventListeners)
+                .build();
+
+        TableReader tableReader = new TableReader(createSheetContext(), settings);
+        tableReader.readRows(TestRow.class);
+
+        assertEquals(List.of("test-table"), readTableIds);
     }
 
     @TableId("test-table")
