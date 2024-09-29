@@ -12,6 +12,7 @@ import com.reflectiveexcel.reader.ReadingContext;
 import com.reflectiveexcel.reader.bean.ChildBeanReadNode;
 import com.reflectiveexcel.reader.bean.RootTableBeanReadNode;
 import com.reflectiveexcel.reader.detector.TableRowColumnDetector;
+import com.reflectiveexcel.reader.event.HeaderReadEvent;
 import com.reflectiveexcel.reader.event.MissingHeadersEvent;
 import com.reflectiveexcel.reader.event.RowReadEvent;
 import com.reflectiveexcel.reader.event.RowSkippedEvent;
@@ -54,6 +55,9 @@ public class TableReader {
         fireBeforeTableReadEvent(new TableReadEvent(readingContext, tableId, null));
 
         TableHeaders tableHeaders = new HeaderReader(sheetContext, settings.getRowColumnDetector()).readHeaders();
+        sheetContext.setCurrentTableHeaders(tableHeaders);
+        fireAfterHeadersReadEvent(new HeaderReadEvent(sheetContext.getReadingContext(), tableHeaders));
+
         List<String> missingHeaders = getMissingHeaders(tableHeaders);
         if (!missingHeaders.isEmpty()) {
             fireMissingHeadersEvent(new MissingHeadersEvent(readingContext, missingHeaders));
@@ -63,7 +67,6 @@ public class TableReader {
             fireAfterTableReadEvent(new TableReadEvent(readingContext, tableId, null));
             return List.of();
         }
-        sheetContext.setCurrentTableHeaders(tableHeaders);
         List<T> rows = readRows(tableHeaders, clazz);
 
         CellLocation topRightTableLocation = tableHeaders.asList().get(0).getRoot().getLocation();
@@ -119,6 +122,10 @@ public class TableReader {
 
     private void fireBeforeTableReadEvent(TableReadEvent event) {
         eventListeners.getTableReadListeners().forEach(listener -> listener.beforeTableRead(event));
+    }
+
+    private void fireAfterHeadersReadEvent(HeaderReadEvent event) {
+        eventListeners.getHeaderReadListeners().forEach(listener -> listener.afterHeaderRead(event));
     }
 
     private void fireMissingHeadersEvent(MissingHeadersEvent event) {

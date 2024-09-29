@@ -15,10 +15,13 @@ import com.reflectiveexcel.reader.ExcelReadingTest;
 import com.reflectiveexcel.reader.ReadableSheetContext;
 import com.reflectiveexcel.reader.ReadingContext;
 import com.reflectiveexcel.reader.detector.SimpleRowColumnDetector;
+import com.reflectiveexcel.reader.event.HeaderReadEvent;
+import com.reflectiveexcel.reader.event.MissingHeadersEvent;
 import com.reflectiveexcel.reader.event.RowReadEvent;
 import com.reflectiveexcel.reader.event.RowSkippedEvent;
 import com.reflectiveexcel.reader.event.TableReadEvent;
 import com.reflectiveexcel.reader.event.listener.EventListeners;
+import com.reflectiveexcel.reader.event.listener.HeaderReadListener;
 import com.reflectiveexcel.reader.event.listener.RowReadListener;
 import com.reflectiveexcel.reader.event.listener.TableReadListener;
 import com.reflectiveexcel.reader.table.ReadTable;
@@ -115,7 +118,17 @@ public class TableReaderTest extends ExcelReadingTest {
 
         List<String> missingHeaderNames = new ArrayList<>();
         EventListeners eventListeners = new EventListeners();
-        eventListeners.addHeaderReadListener(event -> missingHeaderNames.addAll(event.getMissingHeaders()));
+        eventListeners.addHeaderReadListener(new HeaderReadListener() {
+            @Override
+            public void onMissingHeaders(MissingHeadersEvent event) {
+                missingHeaderNames.addAll(event.getMissingHeaders());
+            }
+
+            @Override
+            public void afterHeaderRead(HeaderReadEvent event) {
+                // do nothing
+            }
+        });
         ExcelReadingSettings settings = ExcelReadingSettings.builder()
                 .eventListener(eventListeners)
                 .build();
@@ -126,13 +139,52 @@ public class TableReaderTest extends ExcelReadingTest {
     }
 
     @Test
+    public void whenHeaderReadEventFired() {
+        Row row = createRow(0);
+        row.createCell(0).setCellValue("Column A");
+        row.createCell(1).setCellValue("Unknown");
+
+        EventListeners eventListeners = new EventListeners();
+        eventListeners.addHeaderReadListener(new HeaderReadListener() {
+            @Override
+            public void onMissingHeaders(MissingHeadersEvent event) {
+                // do nothing
+            }
+
+            @Override
+            public void afterHeaderRead(HeaderReadEvent event) {
+                TableHeaders readHeaders = event.getHeaders();
+                assertNotNull(readHeaders);
+                assertEquals("Column A", readHeaders.getHeader(0).getValue());
+                assertEquals("Unknown", readHeaders.getHeader(1).getValue());
+            }
+        });
+        ExcelReadingSettings settings = ExcelReadingSettings.builder()
+                .eventListener(eventListeners)
+                .build();
+
+        TableReader tableReader = new TableReader(createSheetContext(), settings);
+        tableReader.readRows(TestRow.class);
+    }
+
+    @Test
     public void whenAllHeadersPresentNoEventFired() {
         Row row = createRow(0);
         row.createCell(0).setCellValue("Column A");
         row.createCell(1).setCellValue("Column B");
 
         EventListeners eventListeners = new EventListeners();
-        eventListeners.addHeaderReadListener(event -> Assertions.fail("Should not be reached"));
+        eventListeners.addHeaderReadListener(new HeaderReadListener() {
+            @Override
+            public void onMissingHeaders(MissingHeadersEvent event) {
+                Assertions.fail("Should not be reached");
+            }
+
+            @Override
+            public void afterHeaderRead(HeaderReadEvent event) {
+                // do nothing
+            }
+        });
         ExcelReadingSettings settings = ExcelReadingSettings.builder()
                 .eventListener(eventListeners)
                 .build();
@@ -274,9 +326,7 @@ public class TableReaderTest extends ExcelReadingTest {
                 readTableIds.add(event.getTableId());
             }
         });
-        ExcelReadingSettings settings = ExcelReadingSettings.builder()
-                .eventListener(eventListeners)
-                .build();
+        ExcelReadingSettings settings = ExcelReadingSettings.builder().eventListener(eventListeners).build();
 
         TableReader tableReader = new TableReader(createSheetContext(), settings);
         tableReader.readRows(TestRow.class);
