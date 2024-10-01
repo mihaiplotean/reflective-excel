@@ -15,6 +15,7 @@ of what is possible, we will showcase each feature in the next sections.
     * [Default serializers](#default-serializers)
     * [Custom Serializer](#custom-serializer)
   * [Table and cell styling](#table-and-cell-styling)
+      * [Data Filter](#data-filter)
   * [Writing more than one table](#writing-more-than-one-table)
     * [Writing multiple tables](#writing-multiple-tables)
     * [Writing a cell value](#writing-a-cell-value)
@@ -395,6 +396,12 @@ styleContext.setTypeStyleProvider(Integer.class, StyleProviders.of(WritableCellS
         .font(StyleFonts.italic())
         .build())));
 ```
+
+### Data Filter
+
+Turning on data filtering for the table can be done using the `@InstallFilter` annotation on top of class corresponding
+to the table. In Excel, this is activated via "Data Tab" > "Filter". Note that only one table can
+have this filter applied.
 
 ## Writing more than one table
 

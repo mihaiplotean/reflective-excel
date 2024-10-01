@@ -31,7 +31,7 @@ public class HeaderWriter {
             leafHeaders.addAll(headers);
         }
         sheetContext.resetCellPointer();
-        return new WrittenTableHeaders(rootNode.getHeight() - 1, leafHeaders);
+        return new WrittenTableHeaders(cellWriter.getOffsetRows() + rootNode.getHeight() - 1, leafHeaders);
     }
 
     private List<WrittenTableHeader> writeHeader(ChildBeanWriteNode node, int headerHeight, int currentColumn) {

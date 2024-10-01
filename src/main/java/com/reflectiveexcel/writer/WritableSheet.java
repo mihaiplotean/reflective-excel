@@ -94,4 +94,8 @@ public class WritableSheet {
             return;
         }
     }
+
+    public void installFiltering(int row, int startColumn, int endColumn) {
+        sheet.setAutoFilter(new CellRangeAddress(row, row, startColumn, endColumn));
+    }
 }
