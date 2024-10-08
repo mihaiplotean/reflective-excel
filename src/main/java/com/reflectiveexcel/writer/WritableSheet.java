@@ -94,4 +94,13 @@ public class WritableSheet {
             return;
         }
     }
+
+    public int autoSizeColumnWidth(int columnIndex) {
+        sheet.autoSizeColumn(columnIndex);
+        return sheet.getColumnWidth(columnIndex);
+    }
+
+    public void setColumnWidth(int columnIndex, int width) {
+        sheet.setColumnWidth(columnIndex, width);
+    }
 }

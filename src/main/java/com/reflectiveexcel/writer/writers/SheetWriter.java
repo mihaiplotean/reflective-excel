@@ -30,7 +30,6 @@ public class SheetWriter {
         tableWriter.writeTable(rows, clazz, "");
 
         sheet.evaluateAllFormulas();
-        sheet.autoResizeAllColumns();
     }
 
     public void write(Object object) {
@@ -38,6 +37,5 @@ public class SheetWriter {
         new ObjectWriter(sheet, sheetContext, settings).write(object);
 
         sheet.evaluateAllFormulas();
-        sheet.autoResizeAllColumns();
     }
 }

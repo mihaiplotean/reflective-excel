@@ -1,13 +1,16 @@
 package com.reflectiveexcel.writer.writers;
 
 import java.util.List;
+import java.util.Map;
 
 import com.reflectiveexcel.core.workbook.Bounds;
 import com.reflectiveexcel.core.workbook.CellLocation;
 import com.reflectiveexcel.writer.ExcelWritingSettings;
 import com.reflectiveexcel.writer.WritableSheet;
 import com.reflectiveexcel.writer.WritableSheetContext;
+import com.reflectiveexcel.writer.node.ChildBeanWriteNode;
 import com.reflectiveexcel.writer.node.RootTableBeanWriteNode;
+import com.reflectiveexcel.writer.sizing.ColumnSizeSetter;
 import com.reflectiveexcel.writer.table.WrittenTable;
 import com.reflectiveexcel.writer.table.WrittenTableHeaders;
 
@@ -38,6 +41,7 @@ public class TableWriter {
         for (T row : rows) {
             rowWriter.writeRow(row);
         }
+        setSetColumnSizes(headerWriter.getLeafNodeToColumnIndexMap());
 
         sheetContext.setWritingTable(false);
         return new WrittenTable(tableId, headers, new Bounds(cellWriter.getOffsetRows(),
@@ -54,5 +58,9 @@ public class TableWriter {
         cellWriter.setOffSet(startingCell.row(), startingCell.column());
 
         return cellWriter;
+    }
+
+    private void setSetColumnSizes(Map<ChildBeanWriteNode, Integer> leafNodeToColumnIndexMap) {
+        new ColumnSizeSetter(sheet).setColumnSizes(leafNodeToColumnIndexMap);
     }
 }
