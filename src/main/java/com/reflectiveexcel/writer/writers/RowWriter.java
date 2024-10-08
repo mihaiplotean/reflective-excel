@@ -34,8 +34,6 @@ public class RowWriter {
         for (ChildBeanWriteNode tableHeader : rootNode.getChildren()) {
             List<TypedValue> leafValues = tableHeader.getLeafValues(row);
             for (TypedValue typedValue : leafValues) {
-                updateWritingContext();
-
                 Object valueToWrite = sheetContext.serialize(typedValue.getType(), typedValue.getValue());
                 WritableCellStyle columnStyle = sheetContext.getColumnStyle(tableHeader.getName());
                 WritableCellStyle typeStyle = sheetContext.getTypeStyle((Class<Object>) typedValue.getType(), typedValue.getValue());
@@ -44,9 +42,11 @@ public class RowWriter {
                 WritableCell cell = new WritableCell(valueToWrite, currentRow, currentColumn);
                 cellWriter.writeCell(cell, List.of(rowStyle, columnStyle, typeStyle, cellStyle));
                 currentColumn++;
+                updateWritingContext();
             }
         }
         currentRow++;
+        updateWritingContext();
     }
 
     private void updateWritingContext() {

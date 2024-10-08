@@ -8,6 +8,7 @@ import java.util.Map;
 import com.reflectiveexcel.core.annotation.DynamicColumns;
 import com.reflectiveexcel.core.annotation.ExcelColumn;
 import com.reflectiveexcel.writer.ExcelWritingTest;
+import com.reflectiveexcel.writer.WritableSheetContext;
 import com.reflectiveexcel.writer.node.RootTableBeanWriteNode;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +43,20 @@ public class RowWriterTest extends ExcelWritingTest {
         assertNull(getCell(1, 1));
         assertEquals("b", getCell(2, 0).getStringCellValue());
         assertNull(getCell(2, 1));
+    }
+
+    @Test
+    public void tableRowIndexUpdatedAfterRowWritten() {
+        DynamicColumnsRow row1 = new DynamicColumnsRow(Map.of("col 1", "a"));
+
+        RootTableBeanWriteNode node = new RootTableBeanWriteNode(DynamicColumnsRow.class, row1);
+        WritableSheetContext sheetContext = createSheetContext();
+        sheetContext.setWritingTable(true);
+        RowWriter rowWriter = new RowWriter(sheetContext, node, new CellWriter(getWritableSheet()));
+
+        assertEquals(0, sheetContext.getWritingContext().getCurrentTableRow());
+        rowWriter.writeRow(row1);
+        assertEquals(1, sheetContext.getWritingContext().getCurrentTableRow());
     }
 
     private RowWriter createWriter(Object firstRow) {
