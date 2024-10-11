@@ -42,7 +42,7 @@ In the `pom.xml` file of your project, add the following dependency:
 <dependency>
     <groupId>io.github.mihaiplotean</groupId>
     <artifactId>reflective-excel</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.5</version>
 </dependency>
 ```
 
