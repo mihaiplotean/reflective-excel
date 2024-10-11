@@ -2,6 +2,8 @@ package com.reflectiveexcel.writer.node;
 
 import java.util.List;
 
+import com.reflectiveexcel.writer.annotation.InstallFilter;
+
 /**
  * This is a tree representation of type to be written, corresponding to the table row. The child nodes are the type's fields.
  */
@@ -37,5 +39,9 @@ public class RootTableBeanWriteNode {
 
     public List<ChildBeanWriteNode> getChildren() {
         return children;
+    }
+
+    public boolean isFilteringApplied() {
+        return type.getAnnotation(InstallFilter.class) != null;
     }
 }

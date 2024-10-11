@@ -15,6 +15,7 @@ import com.reflectiveexcel.integration.writer.StyledTableTest.FoodExpensesRow.Mo
 import com.reflectiveexcel.writer.ExcelWritingSettings;
 import com.reflectiveexcel.writer.ReflectiveExcelWriter;
 import com.reflectiveexcel.writer.WritingContext;
+import com.reflectiveexcel.writer.annotation.InstallFilter;
 import com.reflectiveexcel.writer.serializer.DefaultSerializationContext;
 import com.reflectiveexcel.writer.serializer.SerializationContext;
 import com.reflectiveexcel.writer.style.CellStyleContext;
@@ -77,6 +78,7 @@ public class StyledTableTest {
         }
     }
 
+    @InstallFilter
     public static class FoodExpensesRow {
 
         @ExcelColumn("name")
