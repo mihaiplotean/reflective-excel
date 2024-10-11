@@ -7,9 +7,11 @@ import java.util.List;
 public class DynamicBeanLeafWriteNode implements ChildBeanWriteNode {
 
     private final Object name;
+    private final ColumnSizePreferences sizePreferences;
 
-    public DynamicBeanLeafWriteNode(Object name) {
+    public DynamicBeanLeafWriteNode(Object name, ColumnSizePreferences sizePreferences) {
         this.name = name;
+        this.sizePreferences = sizePreferences;
     }
 
     @Override
@@ -45,5 +47,10 @@ public class DynamicBeanLeafWriteNode implements ChildBeanWriteNode {
     @Override
     public boolean isLeafValue() {
         return true;
+    }
+
+    @Override
+    public ColumnSizePreferences getColumnSize() {
+        return sizePreferences;
     }
 }

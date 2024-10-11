@@ -18,4 +18,6 @@ public interface ChildBeanWriteNode {
     List<TypedValue> getLeafValues(Object target);
 
     boolean isLeafValue();
+
+    ColumnSizePreferences getColumnSize();
 }
