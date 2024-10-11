@@ -15,6 +15,8 @@ import com.reflectiveexcel.integration.writer.StyledTableTest.FoodExpensesRow.Mo
 import com.reflectiveexcel.writer.ExcelWritingSettings;
 import com.reflectiveexcel.writer.ReflectiveExcelWriter;
 import com.reflectiveexcel.writer.WritingContext;
+import com.reflectiveexcel.writer.annotation.ColumnSize;
+import com.reflectiveexcel.writer.annotation.InstallFilter;
 import com.reflectiveexcel.writer.serializer.DefaultSerializationContext;
 import com.reflectiveexcel.writer.serializer.SerializationContext;
 import com.reflectiveexcel.writer.style.CellStyleContext;
@@ -77,11 +79,14 @@ public class StyledTableTest {
         }
     }
 
+    @InstallFilter
     public static class FoodExpensesRow {
 
+        @ColumnSize(preferred = 16)
         @ExcelColumn("name")
         private String name;
 
+        @ColumnSize(min = 32)
         @ExcelColumn("date")
         private LocalDate date;
 

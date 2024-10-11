@@ -77,4 +77,11 @@ public class TableHeader {
 
         return leafNodes;
     }
+
+    public String getPath() {
+        if(parent == null) {
+            return cell.getValue();
+        }
+        return parent.getPath() + "/" + cell.getValue();
+    }
 }

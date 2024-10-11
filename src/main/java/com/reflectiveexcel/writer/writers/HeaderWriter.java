@@ -1,7 +1,9 @@
 package com.reflectiveexcel.writer.writers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.reflectiveexcel.core.workbook.CellLocation;
 import com.reflectiveexcel.writer.WritableCell;
@@ -16,6 +18,7 @@ public class HeaderWriter {
 
     private final CellWriter cellWriter;
     private final WritableSheetContext sheetContext;
+    private final Map<ChildBeanWriteNode, Integer> leafNodeToColumnIndexMap = new HashMap<>();
 
     public HeaderWriter(CellWriter cellWriter, WritableSheetContext sheetContext) {
         this.cellWriter = cellWriter;
@@ -31,7 +34,7 @@ public class HeaderWriter {
             leafHeaders.addAll(headers);
         }
         sheetContext.resetCellPointer();
-        return new WrittenTableHeaders(rootNode.getHeight() - 1, leafHeaders);
+        return new WrittenTableHeaders(cellWriter.getOffsetRows() + rootNode.getHeight() - 1, leafHeaders);
     }
 
     private List<WrittenTableHeader> writeHeader(ChildBeanWriteNode node, int headerHeight, int currentColumn) {
@@ -63,6 +66,7 @@ public class HeaderWriter {
             currentRow += headerHeight - node.getHeight();
 
             if (node.isLeafValue()) {
+                leafNodeToColumnIndexMap.put(node, currentColumn + cellWriter.getOffsetColumns());
                 leafHeaders.add(new WrittenTableHeader(String.valueOf(valueToWrite), cellLocation.column()));
             }
         }
@@ -70,5 +74,9 @@ public class HeaderWriter {
             writeHeader(child, node.getHeight() > 0 ? headerHeight - 1 : headerHeight, currentRow, currentColumn, leafHeaders);
             currentColumn += child.getLength();
         }
+    }
+
+    public Map<ChildBeanWriteNode, Integer> getLeafNodeToColumnIndexMap() {
+        return leafNodeToColumnIndexMap;
     }
 }

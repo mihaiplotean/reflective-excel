@@ -81,17 +81,16 @@ public class WritableSheet {
         BaseFormulaEvaluator.evaluateAllFormulaCells(sheet.getWorkbook());
     }
 
-    public void autoResizeAllColumns() {
-        for (Row row : sheet) {
-            for (Cell cell : row) {
-                int columnIndex = cell.getColumnIndex();
-                int originalColumnWidth = sheet.getColumnWidth(columnIndex);
-                sheet.autoSizeColumn(columnIndex);
-                if (originalColumnWidth > sheet.getColumnWidth(columnIndex)) {
-                    sheet.setColumnWidth(columnIndex, originalColumnWidth);
-                }
-            }
-            return;
-        }
+    public int autoSizeColumnWidth(int columnIndex) {
+        sheet.autoSizeColumn(columnIndex);
+        return sheet.getColumnWidth(columnIndex);
+    }
+
+    public void setColumnWidth(int columnIndex, int width) {
+        sheet.setColumnWidth(columnIndex, width);
+    }
+
+    public void installFiltering(int row, int startColumn, int endColumn) {
+        sheet.setAutoFilter(new CellRangeAddress(row, row, startColumn, endColumn));
     }
 }

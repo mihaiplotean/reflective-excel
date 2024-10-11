@@ -15,6 +15,8 @@ of what is possible, we will showcase each feature in the next sections.
     * [Default serializers](#default-serializers)
     * [Custom Serializer](#custom-serializer)
   * [Table and cell styling](#table-and-cell-styling)
+    * [Column width](#column-width)
+    * [Data Filter](#data-filter)
   * [Writing more than one table](#writing-more-than-one-table)
     * [Writing multiple tables](#writing-multiple-tables)
     * [Writing a cell value](#writing-a-cell-value)
@@ -395,6 +397,40 @@ styleContext.setTypeStyleProvider(Integer.class, StyleProviders.of(WritableCellS
         .font(StyleFonts.italic())
         .build())));
 ```
+
+### Column Width
+
+By default, the writer will adjust all column widths automatically by trying to make sure that the longest
+text from each column fits. Specifying custom column widths is possible using the `@ColumnSize` annotation. 
+The unit used is the same as the default one is Excel, meaning that the specified size is approximately equal to the 
+number of characters that will fit in the column.
+
+Let's say we want all column sizes to be `50`. Then:
+
+```java
+class EmployeeRow {
+
+    @ColumnSize(preferred = 50)
+    @ExcelColumn("ID")
+    private Integer id;
+
+    @ColumnSize(preferred = 50)
+    @ExcelColumn("Employee")
+    private String name;
+}
+```
+
+`@ColumnSize` also gives the option of providing a minimum and maximum column size. This is useful if you don't
+want the automatically calculated column width to be below or above a certain limit. 
+
+The sizing can be applied on fixed and dynamic columns.
+When dynamic columns are annotated, the specified sizing will be applied to each of the dynamic columns.
+
+### Data Filter
+
+Turning on data filtering for the table can be done using the `@InstallFilter` annotation on top of class corresponding
+to the table. In Excel, this is activated via "Data Tab" > "Filter". Note that only one table can
+have this filter applied.
 
 ## Writing more than one table
 

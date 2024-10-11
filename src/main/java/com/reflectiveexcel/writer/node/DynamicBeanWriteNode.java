@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.reflectiveexcel.core.utils.ReflectionUtilities;
+import com.reflectiveexcel.writer.annotation.ColumnSize;
 
 public class DynamicBeanWriteNode implements ChildBeanWriteNode {
 
     private final Field field;
     private final Map<Object, Object> columnToValueMap;
     private final Class<?> valueType;
+    private final ColumnSizePreferences sizePreferences;
 
     public DynamicBeanWriteNode(Field field, Object target) {
         this.field = field;
@@ -23,6 +25,10 @@ public class DynamicBeanWriteNode implements ChildBeanWriteNode {
         } else {
             throw new IllegalStateException("Only Map.class fields can be annotated as dynamic writable fields!");
         }
+        ColumnSize sizeAnnotation = field.getAnnotation(ColumnSize.class);
+        this.sizePreferences = sizeAnnotation != null
+                ? new ColumnSizePreferences(sizeAnnotation.max(), sizeAnnotation.preferred(), sizeAnnotation.min())
+                : ColumnSizePreferences.DEFAULT;
     }
 
     @Override
@@ -48,7 +54,7 @@ public class DynamicBeanWriteNode implements ChildBeanWriteNode {
     @Override
     public List<? extends ChildBeanWriteNode> getChildren() {
         return columnToValueMap.keySet().stream()
-                .map(DynamicBeanLeafWriteNode::new)
+                .map(column -> new DynamicBeanLeafWriteNode(column, sizePreferences))
                 .toList();
     }
 
@@ -63,5 +69,10 @@ public class DynamicBeanWriteNode implements ChildBeanWriteNode {
     @Override
     public boolean isLeafValue() {
         return false;
+    }
+
+    @Override
+    public ColumnSizePreferences getColumnSize() {
+        return sizePreferences;
     }
 }

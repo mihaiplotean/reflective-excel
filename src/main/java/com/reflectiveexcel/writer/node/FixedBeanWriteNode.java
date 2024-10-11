@@ -5,15 +5,21 @@ import java.util.Collections;
 import java.util.List;
 
 import com.reflectiveexcel.core.utils.ReflectionUtilities;
+import com.reflectiveexcel.writer.annotation.ColumnSize;
 
 public class FixedBeanWriteNode implements ChildBeanWriteNode {
 
     private final Field field;
     private final String name;
+    private final ColumnSizePreferences sizePreferences;
 
     public FixedBeanWriteNode(Field field, String name) {
         this.field = field;
         this.name = name;
+        ColumnSize sizeAnnotation = field.getAnnotation(ColumnSize.class);
+        this.sizePreferences = sizeAnnotation != null
+                ? new ColumnSizePreferences(sizeAnnotation.max(), sizeAnnotation.preferred(), sizeAnnotation.min())
+                : ColumnSizePreferences.DEFAULT;
     }
 
     @Override
@@ -49,5 +55,10 @@ public class FixedBeanWriteNode implements ChildBeanWriteNode {
     @Override
     public boolean isLeafValue() {
         return true;
+    }
+
+    @Override
+    public ColumnSizePreferences getColumnSize() {
+        return sizePreferences;
     }
 }

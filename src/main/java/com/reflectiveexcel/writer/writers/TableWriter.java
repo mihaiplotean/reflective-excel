@@ -1,14 +1,18 @@
 package com.reflectiveexcel.writer.writers;
 
 import java.util.List;
+import java.util.Map;
 
 import com.reflectiveexcel.core.workbook.Bounds;
 import com.reflectiveexcel.core.workbook.CellLocation;
 import com.reflectiveexcel.writer.ExcelWritingSettings;
 import com.reflectiveexcel.writer.WritableSheet;
 import com.reflectiveexcel.writer.WritableSheetContext;
+import com.reflectiveexcel.writer.node.ChildBeanWriteNode;
 import com.reflectiveexcel.writer.node.RootTableBeanWriteNode;
+import com.reflectiveexcel.writer.sizing.ColumnSizeSetter;
 import com.reflectiveexcel.writer.table.WrittenTable;
+import com.reflectiveexcel.writer.table.WrittenTableHeader;
 import com.reflectiveexcel.writer.table.WrittenTableHeaders;
 
 public class TableWriter {
@@ -30,6 +34,11 @@ public class TableWriter {
 
         HeaderWriter headerWriter = new HeaderWriter(cellWriter, sheetContext);
         WrittenTableHeaders headers = headerWriter.writeHeaders(rootNode);
+
+        if(rootNode.isFilteringApplied()) {
+            installFiltering(headers);
+        }
+
         sheetContext.setWritingTable(true);
         sheetContext.setCurrentTableHeaders(headers);
 
@@ -38,6 +47,7 @@ public class TableWriter {
         for (T row : rows) {
             rowWriter.writeRow(row);
         }
+        setSetColumnSizes(headerWriter.getLeafNodeToColumnIndexMap());
 
         sheetContext.setWritingTable(false);
         return new WrittenTable(tableId, headers, new Bounds(cellWriter.getOffsetRows(),
@@ -54,5 +64,22 @@ public class TableWriter {
         cellWriter.setOffSet(startingCell.row(), startingCell.column());
 
         return cellWriter;
+    }
+
+    private void installFiltering(WrittenTableHeaders headers) {
+        List<WrittenTableHeader> leafHeaders = headers.getLeafHeaders();
+        int minColumn = leafHeaders.stream()
+                .mapToInt(WrittenTableHeader::getColumn)
+                .min()
+                .orElse(0);
+        int maxColumn = leafHeaders.stream()
+                .mapToInt(WrittenTableHeader::getColumn)
+                .max()
+                .orElse(0);
+        sheet.installFiltering(headers.getRow(), minColumn, maxColumn);
+    }
+
+    private void setSetColumnSizes(Map<ChildBeanWriteNode, Integer> leafNodeToColumnIndexMap) {
+        new ColumnSizeSetter(sheet).setColumnSizes(leafNodeToColumnIndexMap);
     }
 }
