@@ -14,6 +14,7 @@ of what is possible, we will showcase each feature in the next sections.
   * [Dynamic columns](#dynamic-columns)
   * [Grouped columns](#grouped-columns)
   * [Detecting table bounds, skipping rows](#detecting-table-bounds-skipping-rows)
+  * [Read events](#read-events)
   * [Reading more than one table](#reading-more-than-one-table)
     * [Reading multiple tables](#reading-multiple-tables)
     * [Reading a cell value](#reading-a-cell-value)
@@ -366,6 +367,41 @@ This is provided by the `AutoRowColumnDetector`:
 ```java
 ExcelReadingSettings settings = ExcelReadingSettings.builder()
         .rowColumnDetector(new AutoRowColumnDetector())
+        .build();
+```
+
+## Read events
+
+`ReflectiveExcelReader` fires various events while a table is read. We distinguish table, header and row
+read events. Events are fired:
+* Before a table is read.
+* When a row is skipped.
+* After table headers are read.
+* When some specified headers are missing.
+* When a row is skipped.
+* After a row is read.
+* After a table is read.
+
+Each event holds properties relevant to it, as well as a reference to the `ReadingContext`.
+Adding an event listener is done using the `EventListeners`. For example, let's say that we want to print the row string
+representation, as well as the row number after each row is read.
+
+```java
+EventListeners eventListeners = new EventListeners();
+eventListeners.addRowReadListener(new RowReadListener() {
+    @Override
+    public void onRowSkipped(RowSkippedEvent event) {
+        // do nothing
+    }
+
+    @Override
+    public void afterRowRead(RowReadEvent event) {
+        System.out.println("Row read" + event.getCreatedRow().toString());
+        System.out.println("Done reading row at index " + event.getRowIndex());
+    }
+});
+ExcelReadingSettings settings = ExcelReadingSettings.builder()
+        .eventListener(eventListeners)
         .build();
 ```
 
