@@ -81,20 +81,6 @@ public class WritableSheet {
         BaseFormulaEvaluator.evaluateAllFormulaCells(sheet.getWorkbook());
     }
 
-    public void autoResizeAllColumns() {
-        for (Row row : sheet) {
-            for (Cell cell : row) {
-                int columnIndex = cell.getColumnIndex();
-                int originalColumnWidth = sheet.getColumnWidth(columnIndex);
-                sheet.autoSizeColumn(columnIndex);
-                if (originalColumnWidth > sheet.getColumnWidth(columnIndex)) {
-                    sheet.setColumnWidth(columnIndex, originalColumnWidth);
-                }
-            }
-            return;
-        }
-    }
-
     public int autoSizeColumnWidth(int columnIndex) {
         sheet.autoSizeColumn(columnIndex);
         return sheet.getColumnWidth(columnIndex);
