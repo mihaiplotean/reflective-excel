@@ -16,6 +16,7 @@ of what is possible, we will showcase each feature in the next sections.
     * [Custom Serializer](#custom-serializer)
   * [Table and cell styling](#table-and-cell-styling)
     * [Column width](#column-width)
+    * [Data Filter](#data-filter)
   * [Writing more than one table](#writing-more-than-one-table)
     * [Writing multiple tables](#writing-multiple-tables)
     * [Writing a cell value](#writing-a-cell-value)
@@ -205,6 +206,7 @@ is shifted. The tables are written on top of what is already there.
 By default, converting the following types to a cell value is supported:
 
 - `String`, all primitives and their corresponding wrappers.
+- `BigDecimal` and `BigInteger`.
 - `Date`, `LocalDate` and `LocalDateTime`.
 - `java.util.Currency` – the cell value will represent the currency code.
 - Other types are serialized using the `Object#toString` method.
@@ -423,6 +425,12 @@ want the automatically calculated column width to be below or above a certain li
 
 The sizing can be applied on fixed and dynamic columns.
 When dynamic columns are annotated, the specified sizing will be applied to each of the dynamic columns.
+
+### Data Filter
+
+Turning on data filtering for the table can be done using the `@InstallFilter` annotation on top of class corresponding
+to the table. In Excel, this is activated via "Data Tab" > "Filter". Note that only one table can
+have this filter applied.
 
 ## Writing more than one table
 

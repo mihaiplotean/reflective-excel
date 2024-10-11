@@ -12,6 +12,7 @@ import com.reflectiveexcel.writer.node.ChildBeanWriteNode;
 import com.reflectiveexcel.writer.node.RootTableBeanWriteNode;
 import com.reflectiveexcel.writer.sizing.ColumnSizeSetter;
 import com.reflectiveexcel.writer.table.WrittenTable;
+import com.reflectiveexcel.writer.table.WrittenTableHeader;
 import com.reflectiveexcel.writer.table.WrittenTableHeaders;
 
 public class TableWriter {
@@ -33,6 +34,11 @@ public class TableWriter {
 
         HeaderWriter headerWriter = new HeaderWriter(cellWriter, sheetContext);
         WrittenTableHeaders headers = headerWriter.writeHeaders(rootNode);
+
+        if(rootNode.isFilteringApplied()) {
+            installFiltering(headers);
+        }
+
         sheetContext.setWritingTable(true);
         sheetContext.setCurrentTableHeaders(headers);
 
@@ -58,6 +64,19 @@ public class TableWriter {
         cellWriter.setOffSet(startingCell.row(), startingCell.column());
 
         return cellWriter;
+    }
+
+    private void installFiltering(WrittenTableHeaders headers) {
+        List<WrittenTableHeader> leafHeaders = headers.getLeafHeaders();
+        int minColumn = leafHeaders.stream()
+                .mapToInt(WrittenTableHeader::getColumn)
+                .min()
+                .orElse(0);
+        int maxColumn = leafHeaders.stream()
+                .mapToInt(WrittenTableHeader::getColumn)
+                .max()
+                .orElse(0);
+        sheet.installFiltering(headers.getRow(), minColumn, maxColumn);
     }
 
     private void setSetColumnSizes(Map<ChildBeanWriteNode, Integer> leafNodeToColumnIndexMap) {

@@ -55,7 +55,8 @@ public class TableWriterTest extends ExcelWritingTest {
         TableWriter writer = new TableWriter(getWritableSheet(),
                                              createSheetContext(),
                                              ExcelWritingSettings.builder()
-                                                     .tableStartCellLocator((context, tableId) -> new CellLocation(3, 3)).build());
+                                                     .tableStartCellLocator((context, tableId) -> new CellLocation(3, 3))
+                                                     .build());
 
         List<FixedColumnsRow> rows = List.of(
                 new FixedColumnsRow("", ""),

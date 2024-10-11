@@ -4,6 +4,7 @@ import com.reflectiveexcel.reader.deserializer.DefaultDeserializationContext;
 import com.reflectiveexcel.reader.deserializer.DeserializationContext;
 import com.reflectiveexcel.reader.detector.SimpleRowColumnDetector;
 import com.reflectiveexcel.reader.detector.TableRowColumnDetector;
+import com.reflectiveexcel.reader.event.listener.EventListeners;
 import com.reflectiveexcel.reader.exception.BadInputExceptionConsumer;
 
 /**
@@ -19,6 +20,7 @@ public class ExcelReadingSettings {
     private final TableRowColumnDetector rowColumnDetector;
     private final BadInputExceptionConsumer exceptionConsumer;
     private final DeserializationContext deserializationContext;
+    private final EventListeners eventListeners;
 
     private ExcelReadingSettings(ExcelReadingSettingsBuilder builder) {
         sheetName = builder.sheetName;
@@ -27,6 +29,7 @@ public class ExcelReadingSettings {
         rowColumnDetector = builder.rowColumnDetector;
         exceptionConsumer = builder.exceptionConsumer;
         deserializationContext = builder.deserializationContext;
+        eventListeners = builder.eventListeners;
     }
 
     public String getSheetName() {
@@ -49,6 +52,10 @@ public class ExcelReadingSettings {
         return deserializationContext;
     }
 
+    public EventListeners getEventListeners() {
+        return eventListeners;
+    }
+
     public static ExcelReadingSettingsBuilder builder() {
         return new ExcelReadingSettingsBuilder();
     }
@@ -65,6 +72,7 @@ public class ExcelReadingSettings {
         };
 
         private DeserializationContext deserializationContext = new DefaultDeserializationContext();
+        private EventListeners eventListeners = new EventListeners();
 
         /**
          * Specifies the name of the sheet to be read.
@@ -114,6 +122,11 @@ public class ExcelReadingSettings {
          */
         public ExcelReadingSettingsBuilder deserializationContext(DeserializationContext deserializationContext) {
             this.deserializationContext = deserializationContext;
+            return this;
+        }
+
+        public ExcelReadingSettingsBuilder eventListener(EventListeners eventListeners) {
+            this.eventListeners = eventListeners;
             return this;
         }
 

@@ -223,9 +223,8 @@ public class ReadingContext {
         int row = cell.getRowNumber();
         int column = cell.getColumnNumber();
 
-        T cachedValue = cellValues.getValue(row, column, clazz);
-        if (cachedValue != null) {
-            return cachedValue;
+        if (cellValues.hasValue(row, column, clazz)) {
+            return cellValues.getValue(row, column, clazz);
         }
 
         int currentRow = cellPointer.getCurrentRow();

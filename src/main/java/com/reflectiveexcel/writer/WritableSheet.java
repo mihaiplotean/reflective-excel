@@ -103,4 +103,8 @@ public class WritableSheet {
     public void setColumnWidth(int columnIndex, int width) {
         sheet.setColumnWidth(columnIndex, width);
     }
+
+    public void installFiltering(int row, int startColumn, int endColumn) {
+        sheet.setAutoFilter(new CellRangeAddress(row, row, startColumn, endColumn));
+    }
 }
